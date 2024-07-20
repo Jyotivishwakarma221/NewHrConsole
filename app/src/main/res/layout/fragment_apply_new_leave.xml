@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:background="@color/black"
+        android:orientation="vertical"
+        android:padding="@dimen/_10dp"
+        tools:context=".manager.activity.ApplyNewLeaveFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="@dimen/_20dp">
+
+            <ImageView
+                android:id="@+id/backBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:visibility="gone"
+                android:src="@drawable/backbutton" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Ask For Leave"
+                android:textColor="@color/greyforText"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10dp"
+            android:layout_marginTop="@dimen/_20dp"
+            android:text="Leave Type"
+            android:textColor="@color/greyforText"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/leaveType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5dp"
+            android:spinnerMode="dropdown"
+            android:drawableEnd="@drawable/spinner_dropdown"
+            android:background="@drawable/light_grey_bg"
+            android:padding="@dimen/_5dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10dp"
+            android:layout_marginTop="@dimen/_20dp"
+            android:text="Leave Cause"
+            android:textColor="@color/greyforText"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/reason"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginStart="@dimen/_10dp"
+            android:layout_marginTop="@dimen/_20dp"
+            android:background="@drawable/light_grey_bg"
+            android:hint="Leave Cause"
+            android:inputType="textMultiLine"
+            android:maxLines="5"
+            android:padding="@dimen/_5dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10dp"
+            android:layout_marginTop="@dimen/_20dp"
+            android:text="Date"
+            android:textColor="@color/greyforText"
+            android:textSize="18sp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10">
+
+            <ImageView
+                android:id="@+id/calender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5dp"
+                android:background="@drawable/blue_bg"
+                android:padding="@dimen/_10"
+                android:src="@drawable/baseline_calendar_month_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5dp"
+                android:layout_marginStart="@dimen/_10dp"
+                android:background="@drawable/grey_bg_rounded"
+                android:gravity="center"
+                android:maxLines="5"
+                android:padding="@dimen/_10"
+                android:text="  Select Date  "
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/datelayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10dp"
+            android:visibility="invisible"
+            android:layout_marginTop="@dimen/_20dp"
+            android:padding="@dimen/_15">
+
+            <ImageView
+                android:layout_width="@dimen/_20dp"
+                android:layout_height="@dimen/_20dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_10"
+                android:padding="@dimen/_5dp"
+                android:src="@drawable/baseline_brightness_1_24" />
+
+            <TextView
+                android:id="@+id/dateForLeave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="14 April"
+                android:textColor="@color/greyforText"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10"
+                android:src="@drawable/baseline_close_24_red" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_100dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5dp"
+                android:layout_weight="1"
+                android:background="@drawable/delete_btn"
+                android:gravity="center"
+                android:paddingTop="@dimen/_10"
+                android:paddingBottom="@dimen/_10"
+                android:text="x  Clear"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/askNow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/attendancebutton"
+                android:gravity="center"
+                android:paddingTop="@dimen/_10"
+                android:paddingBottom="@dimen/_10"
+                android:text="+  Ask Now"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

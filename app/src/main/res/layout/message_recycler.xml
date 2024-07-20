@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10"
+        android:background="@drawable/dark_grey_bg"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10"
+            android:layout_marginStart="@dimen/_5dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginEnd="2dp"
+            android:background="@drawable/grey_bg_rounded"
+            android:orientation="horizontal"
+            android:padding="@dimen/_5dp">
+
+
+            <ImageView
+                android:id="@+id/profilephoto"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_5dp"
+                android:src="@drawable/profilephoto" />
+
+            <TextView
+                android:id="@+id/messgFrom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/grey_bg_rounded"
+                android:paddingStart="@dimen/_20dp"
+                android:paddingTop="@dimen/_5dp"
+                android:paddingBottom="@dimen/_5dp"
+                android:text="Meena (HR)"
+                android:textColor="#CCCCCC" />
+
+            <TextView
+                android:id="@+id/dateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/grey_bg_rounded"
+                android:paddingStart="@dimen/_10dp"
+                android:paddingTop="@dimen/_5dp"
+                android:maxLines="1"
+                android:paddingEnd="@dimen/_20dp"
+                android:paddingBottom="@dimen/_5dp"
+                android:text="April 1 at 8:41 AM"
+                android:textColor="#666666"
+                android:textSize="14dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10"
+            android:background="@drawable/medium_grey_bg"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/Heading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/firstlay"
+                android:layout_marginStart="@dimen/_20dp"
+                android:layout_marginTop="@dimen/_10"
+                android:layout_marginEnd="@dimen/_20dp"
+                android:gravity="start"
+                android:padding="@dimen/_5dp"
+                android:text="Regarding App Progress and Design"
+                android:textColor="#CCCCCC"
+                android:textSize="@dimen/_16" />
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/Heading"
+                android:layout_marginStart="@dimen/_20dp"
+                android:layout_marginEnd="@dimen/_20dp"
+                android:layout_marginBottom="@dimen/_20dp"
+                android:gravity="start"
+                android:maxLength="400"
+                android:maxLines="5"
+                android:padding="@dimen/_5dp"
+                android:text="Prepare a progress report for app development
+and Design Implementations. Feedback require
+from Every member"
+                android:textColor="#CCCCCC" />
+        </LinearLayout>
+    </LinearLayout>
+
+</layout>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:background="@color/black"
+        android:orientation="vertical"
+        tools:context=".EmployeeAction.EmplyDetail.FilteredMeetingFragment">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20dp"
+            android:fontFamily="@font/dm_sans"
+            android:gravity="center"
+            android:text="Scheduled Meeting"
+            android:textColor="@color/greyforText"
+            android:textSize="22sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerForMember"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_margin="@dimen/_5dp"
+            android:layout_marginTop="@dimen/_15"
+            android:background="@drawable/medium_grey_bg"
+            android:padding="@dimen/_5dp" />
+        <TextView
+            android:id="@+id/noMeeting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No Meetings Found."
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:visibility="gone"
+            android:fontFamily="@font/dm_sans"
+            android:textSize="@dimen/_18sp"/>
+
+
+
+
+    </LinearLayout>
+</layout>

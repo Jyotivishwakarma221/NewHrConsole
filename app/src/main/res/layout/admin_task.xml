@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_20dp"
+    android:layout_marginTop="@dimen/_10"
+    android:layout_marginEnd="@dimen/_20dp"
+    android:gravity="center"
+    android:background="@drawable/background_outline"
+    android:orientation="vertical"
+    android:padding="@dimen/_15">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:text=":"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150dp"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:text=":"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/Name_Text_View"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150dp"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Task"
+            android:layout_marginStart="@dimen/_5dp"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:fontFamily="@font/poppins" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="72dp"
+            android:text=":"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/task_Text_View"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:maxLines="1"
+            android:layout_marginStart="45dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppins" />
+
+        <ImageView
+            android:id="@+id/fileTextView"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/search"
+            />
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comment"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:text=":"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/comment_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textColor="@color/white"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:text=":"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/status_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textColor="@color/white"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Comment"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="@dimen/_5dp"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:layout_weight="1"
+            android:fontFamily="@font/poppins" />
+
+        <ImageView
+            android:id="@+id/addCommentImageView"
+            android:layout_width="@dimen/_30dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:src="@drawable/comment"
+            />
+
+    </LinearLayout>
+</LinearLayout>

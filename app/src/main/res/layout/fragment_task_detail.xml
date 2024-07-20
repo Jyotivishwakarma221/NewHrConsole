@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        tools:context=".manager.activity.ManagerActivity.TaskDetailFragment">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5dp"
+            android:layout_marginTop="@dimen/_20dp"
+            android:background="@drawable/dark_grey_bg"
+            android:elevation="@dimen/_5dp"
+            android:paddingLeft="@dimen/_5dp"
+            android:paddingRight="@dimen/_5dp"
+            android:paddingTop="@dimen/_20dp"
+
+            android:paddingBottom="@dimen/_20dp">
+
+            <LinearLayout
+                android:id="@+id/firstlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5dp"
+                android:background="@drawable/black_button"
+                android:padding="@dimen/_5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ID :"
+                    android:textColor="@color/greyforText" />
+
+                <TextView
+                    android:id="@+id/id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="333"
+                    android:textColor="@color/white" />
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="15dp"
+                    android:layout_marginStart="@dimen/_5dp"
+                    android:src="@drawable/green_dot" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_50dp"
+                android:layout_marginTop="@dimen/_10"
+                android:layout_toEndOf="@+id/firstlay"
+                android:text="Tue, 1 April"
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:id="@+id/downloadIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/_5dp"
+                android:src="@drawable/download" />
+
+            <LinearLayout
+                android:id="@+id/lay2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/downloadIcon"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Name"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text=":"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Aman Verma"
+                    android:textSize="14dp"
+                    android:textColor="@color/greyforText" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lay3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lay2"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Update Task"
+                    android:textColor="@color/white" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/grey_bg_rounded"
+                        android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
+                        android:inputType="none"
+                        android:padding="2dp"
+                        android:spinnerMode="dropdown"
+                        android:text="Completed"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:textSize="14dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/taskk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lay3"
+                android:layout_marginStart="@dimen/_15"
+                android:gravity="center"
+                android:text="Tasks"
+                android:textColor="@color/white" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/taskComments"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/taskk"
+                android:layout_marginLeft="@dimen/_5dp"
+                android:layout_marginRight="@dimen/_5dp"
+                android:layout_marginTop="@dimen/_10"
+                android:layout_marginBottom="@dimen/_20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/taskComments"
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                android:padding="@dimen/_5dp"
+                android:weightSum="3">
+
+                <ImageView
+                    android:id="@+id/profilephoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:src="@drawable/profile"
+                    android:textColor="@color/white" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:background="@drawable/grey_bg_rounded"
+                    android:gravity="center"
+                    android:hint="Write a comment"
+                    android:padding="5dp"
+                    android:textColor="@color/greyforText"
+                    android:textColorHint="@color/white"
+                    android:textSize="14dp" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/_5dp"
+            android:padding="@dimen/_10"
+            android:weightSum="3">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/right_arrow" />
+
+            <TextView
+                android:id="@+id/pagenumber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="7dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="2/98"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_18sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/left_arrow" />
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

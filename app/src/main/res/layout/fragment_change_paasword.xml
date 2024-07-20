@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        tools:context=".newHomePage.ForgetPasswrdFragment">
+
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="@dimen/_200dp"
+            android:layout_height="@dimen/_200dp"
+            android:layout_centerInParent="true"
+            android:foregroundGravity="center"
+            android:visibility="gone" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/_15">
+
+            <TextView
+                android:id="@+id/enter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="New Password"
+                android:textColor="#CDCDCD"
+                android:textSize="20dp" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10"
+                android:layout_marginTop="@dimen/_40dp"
+                android:background="@drawable/grey_bg_rounded"
+                android:orientation="horizontal">
+
+
+                <EditText
+                    android:id="@+id/psswrd"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50dp"
+                    android:drawableStart="@drawable/lock_grey"
+                    android:drawablePadding="@dimen/_8dp"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:padding="@dimen/_8dp"
+                    android:textColor="#999999"
+                    android:textColorHint="#999999"
+                    android:textSize="@dimen/_15sp" />
+
+                <ImageButton
+                    android:id="@+id/passwordeye"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/psswrd"
+                    android:layout_alignEnd="@id/psswrd"
+                    android:background="@android:color/transparent"
+                    android:padding="@dimen/_8dp"
+                    android:src="@drawable/ic_open_eye" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Confirm Password"
+                android:textColor="#CDCDCD"
+                android:textSize="20dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10"
+                android:layout_marginTop="@dimen/_40dp"
+                android:background="@drawable/grey_bg_rounded"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/confirmPsswrd"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50dp"
+                    android:background="@drawable/grey_bg_rounded"
+                    android:drawableStart="@drawable/lock_grey"
+                    android:drawablePadding="@dimen/_8dp"
+                    android:hint="Confirm Password"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:textColor="#999999"
+                    android:textColorHint="#999999"
+                    android:textSize="@dimen/_15sp" />
+
+                <ImageButton
+                    android:id="@+id/confirmPsswrdEye"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/confirmPsswrd"
+                    android:layout_alignEnd="@id/confirmPsswrd"
+                    android:background="@android:color/transparent"
+                    android:padding="@dimen/_8dp"
+                    android:src="@drawable/ic_open_eye" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10"
+                android:layout_marginTop="30dp"
+                android:text="Password must contains :"
+                android:textColor="#CDCDCD"
+                android:textSize="15dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/char8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10"
+                    android:layout_marginTop="30dp"
+                    android:drawableStart="@drawable/green_tick"
+                    android:padding="@dimen/_5dp"
+                    android:text="  Min 8 Characters"
+                    android:textColor="#CDCDCD"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/upperchar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10"
+                    android:layout_marginTop="30dp"
+                    android:drawableStart="@drawable/green_tick"
+                    android:padding="@dimen/_5dp"
+                    android:text="  Upper-case Letter"
+                    android:textColor="#CDCDCD"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/lowerchar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10"
+                    android:layout_marginTop="10dp"
+                    android:drawableStart="@drawable/green_tick"
+                    android:padding="@dimen/_5dp"
+                    android:text="  Lower-case Letter"
+                    android:textColor="#CDCDCD"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10"
+                    android:layout_marginTop="10dp"
+                    android:drawableStart="@drawable/green_tick"
+                    android:padding="@dimen/_5dp"
+                    android:text="  Number"
+                    android:textColor="#CDCDCD"
+                    android:textSize="15dp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/spclChar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10"
+                android:layout_marginTop="10dp"
+                android:drawableStart="@drawable/green_tick"
+                android:padding="@dimen/_5dp"
+                android:text="  Special Character"
+                android:textColor="#CDCDCD"
+                android:textSize="15dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/_20dp">
+                <!--on below line we are creating a progress bar-->
+
+                <TextView
+                    android:id="@+id/chngePassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/blue_bg"
+                    android:fontFamily="@font/dm_sans"
+                    android:gravity="center"
+                    android:hint="Change Password"
+                    android:paddingTop="@dimen/_15"
+                    android:paddingBottom="@dimen/_15"
+                    android:textColorHint="@color/white"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/black_button"
+            android:elevation="@dimen/_10"
+            android:visibility="invisible" />
+
+    </RelativeLayout>
+</layout>

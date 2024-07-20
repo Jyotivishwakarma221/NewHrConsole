@@ -1,0 +1,247 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="@dimen/_10"
+    android:layout_marginStart="@dimen/_20dp"
+    android:layout_marginEnd="@dimen/_20dp"
+    android:gravity="center"
+    android:background="@drawable/background_outline"
+    android:padding="@dimen/_15">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Leave Id"
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":      "
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:paddingEnd="10dp" />
+
+
+        <TextView
+            android:id="@+id/leave_Id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <!-- Name -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/_5dp"
+        android:paddingBottom="@dimen/_5dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Reason"
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":      "
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:paddingEnd="10dp" />
+
+        <TextView
+            android:id="@+id/reasonText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+    </LinearLayout>
+
+    <!-- Leave Type -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/_5dp"
+        android:paddingBottom="@dimen/_5dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Leave Type"
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":      "
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:paddingEnd="10dp" />
+
+        <TextView
+            android:id="@+id/leaveType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+    </LinearLayout>
+
+    <!-- Comment -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/_5dp"
+        android:paddingBottom="@dimen/_5dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Comment"
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":      "
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:paddingEnd="10dp" />
+
+        <TextView
+            android:id="@+id/commentTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <!-- Approved By -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/_5dp"
+        android:paddingBottom="@dimen/_5dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Approved By"
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":      "
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:paddingEnd="10dp" />
+
+        <TextView
+            android:id="@+id/approvedByTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <!-- Status -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/_5dp"
+        android:paddingBottom="@dimen/_5dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Status"
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":      "
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:paddingEnd="10dp" />
+
+        <TextView
+            android:id="@+id/statusTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <!-- Request Date -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/_5dp"
+        android:paddingBottom="@dimen/_5dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Request Date"
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+
+
+        <Spinner
+            android:id="@+id/dateSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:spinnerMode="dropdown" />
+    </LinearLayout>
+</LinearLayout>

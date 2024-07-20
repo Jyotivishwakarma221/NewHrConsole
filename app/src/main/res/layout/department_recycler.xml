@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/department_layout"
+        android:clickable="true"
+        android:background="@drawable/dark_grey_bg"
+        android:layout_margin="@dimen/_10"
+        android:padding="@dimen/_20dp">
+
+
+        <TextView
+            android:id="@+id/departmentName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5dp"
+            android:fontFamily="@font/dm_sans"
+            android:paddingStart="@dimen/_10"
+            android:text="Marketing"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="@dimen/_20dp"
+            android:layout_alignParentEnd="false"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignEnd="@+id/departmentName"
+            android:layout_marginStart="@dimen/_10"
+            android:src="@drawable/left_arrow" />
+    </RelativeLayout>
+</layout>

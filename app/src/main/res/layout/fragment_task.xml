@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_container"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Background"
+    tools:context=".user.fragment.TaskFragment">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black">
+
+            <ImageView
+                android:id="@+id/filter"
+                android:layout_width="@dimen/_25dp"
+                android:layout_height="@dimen/_30dp"
+                android:layout_marginTop="@dimen/_60dp"
+                android:layout_marginEnd="@dimen/_50dp"
+                android:src="@drawable/threedot"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_marginTop="@dimen/_100dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/taskRecyclerView">
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+
+
+</FrameLayout>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:orientation="vertical"
+        android:padding="@dimen/_10dp"
+        tools:context=".EmployeeAction.EmployeeActions">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/_20dp">
+
+            <TextView
+                android:id="@+id/myTeam"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="My Team"
+                android:textColor="@color/greyforText"
+                android:textSize="22sp" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/grey_bg_rounded"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10">
+
+            <AutoCompleteTextView
+                android:id="@+id/All"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cardview_border"
+                android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
+                android:padding="@dimen/_5dp"
+                android:text="ALL" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/cardview_border"
+                android:drawableRight="@drawable/baseline_search_24"
+                android:hint="Search by Name  "
+                android:padding="@dimen/_5dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</layout>

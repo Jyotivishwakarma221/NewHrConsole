@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        tools:context=".profile.DocumentUploadFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70dp"
+                android:layout_marginBottom="@dimen/_20dp">
+
+                <ImageView
+                    android:id="@+id/backBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:src="@drawable/backbutton" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="User Documentation"
+                    android:textColor="#CDCDCD"
+                    android:textSize="22sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:fontFamily="@font/dm_sans"
+                android:text="Aadhar Card"
+                android:textColor="#CDCDCD"
+                android:textSize="@dimen/_18sp" />
+
+            <LinearLayout
+                android:id="@+id/editAdhar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/upload_adhar" />
+
+                <ImageView
+                    android:id="@+id/chngAdhar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-150dp"
+                    android:layout_marginTop="@dimen/_100dp"
+                    android:layout_marginEnd="20dp"
+                    android:elevation="@dimen/_20dp"
+                    android:src="@drawable/edit" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/uploadAdhar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginEnd="@dimen/_15"
+                android:layout_marginBottom="@dimen/_10"
+                android:background="@drawable/light_grey_bg"
+                android:padding="@dimen/_10"
+                android:src="@drawable/uploadwhite" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:fontFamily="@font/dm_sans"
+                android:text="Pan Card"
+                android:textColor="#CDCDCD"
+                android:textSize="@dimen/_18sp" />
+
+            <LinearLayout
+                android:id="@+id/editPan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/upload_pan" />
+
+                <ImageView
+                    android:id="@+id/chngPan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-150dp"
+                    android:layout_marginTop="@dimen/_100dp"
+                    android:layout_marginEnd="20dp"
+                    android:elevation="@dimen/_20dp"
+                    android:src="@drawable/edit" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/uploadpan"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginEnd="@dimen/_15"
+                android:layout_marginBottom="@dimen/_10"
+                android:background="@drawable/light_grey_bg"
+                android:padding="@dimen/_10"
+                android:src="@drawable/uploadwhite" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:fontFamily="@font/dm_sans"
+                android:text="10th Marksheet "
+                android:textColor="#CDCDCD"
+                android:textSize="@dimen/_18sp" />
+
+            <ImageView
+                android:id="@+id/uploadmarksheet10"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginEnd="@dimen/_15"
+                android:layout_marginBottom="@dimen/_10"
+                android:background="@drawable/light_grey_bg"
+                android:padding="@dimen/_10"
+                android:src="@drawable/uploadwhite" />
+
+            <LinearLayout
+                android:id="@+id/editmarksheet10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/marksheet" />
+
+                <ImageView
+                    android:id="@+id/chng10marksheet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-150dp"
+                    android:layout_marginTop="@dimen/_100dp"
+                    android:layout_marginEnd="20dp"
+                    android:elevation="@dimen/_20dp"
+                    android:src="@drawable/edit" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:fontFamily="@font/dm_sans"
+                android:text="12th Marksheet "
+                android:textColor="#CDCDCD"
+                android:textSize="@dimen/_18sp" />
+
+            <ImageView
+                android:id="@+id/uploadmarksheet12"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginEnd="@dimen/_15"
+                android:layout_marginBottom="@dimen/_10"
+                android:background="@drawable/light_grey_bg"
+                android:padding="@dimen/_10"
+                android:src="@drawable/uploadwhite" />
+
+            <LinearLayout
+                android:id="@+id/editmarksheet12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/marksheet" />
+
+                <ImageView
+                    android:id="@+id/chng12marksheet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-150dp"
+                    android:layout_marginTop="@dimen/_100dp"
+                    android:layout_marginEnd="20dp"
+                    android:elevation="@dimen/_20dp"
+                    android:src="@drawable/edit" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:fontFamily="@font/dm_sans"
+                android:text="Graduation Certificate"
+                android:textColor="#CDCDCD"
+                android:textSize="@dimen/_18sp" />
+
+            <ImageView
+                android:id="@+id/uploadGraduation"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginEnd="@dimen/_15"
+                android:layout_marginBottom="@dimen/_10"
+                android:background="@drawable/light_grey_bg"
+                android:padding="@dimen/_10"
+                android:src="@drawable/uploadwhite" />
+
+            <LinearLayout
+                android:id="@+id/editGraduation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/marksheet" />
+
+                <ImageView
+                    android:id="@+id/chngGraduation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-150dp"
+                    android:layout_marginTop="@dimen/_100dp"
+                    android:layout_marginEnd="20dp"
+                    android:elevation="@dimen/_20dp"
+                    android:src="@drawable/edit" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:fontFamily="@font/dm_sans"
+                android:text="Post Graduation Certificate"
+                android:textColor="#CDCDCD"
+                android:textSize="@dimen/_18sp" />
+
+            <ImageView
+                android:id="@+id/uploadPostGraduation"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginEnd="@dimen/_15"
+                android:layout_marginBottom="@dimen/_10"
+                android:background="@drawable/light_grey_bg"
+                android:padding="@dimen/_10"
+                android:src="@drawable/uploadwhite" />
+
+            <LinearLayout
+                android:id="@+id/editPostGraduation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/marksheet" />
+
+                <ImageView
+                    android:id="@+id/chngPostgra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-150dp"
+                    android:layout_marginTop="@dimen/_100dp"
+                    android:layout_marginEnd="20dp"
+                    android:elevation="@dimen/_20dp"
+                    android:src="@drawable/edit" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:fontFamily="@font/dm_sans"
+                android:text="Experience Letter "
+                android:textColor="#CDCDCD"
+                android:textSize="@dimen/_18sp" />
+
+            <ImageView
+                android:id="@+id/uploadExperienceLetter"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginEnd="@dimen/_15"
+                android:layout_marginBottom="@dimen/_10"
+                android:background="@drawable/light_grey_bg"
+                android:padding="@dimen/_10"
+                android:src="@drawable/uploadwhite" />
+
+            <LinearLayout
+                android:id="@+id/editExperienceLetter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/marksheet" />
+
+                <ImageView
+                    android:id="@+id/chngExperience"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-150dp"
+                    android:layout_marginTop="@dimen/_100dp"
+                    android:layout_marginEnd="20dp"
+                    android:elevation="@dimen/_20dp"
+                    android:src="@drawable/edit" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:fontFamily="@font/dm_sans"
+                android:text="Last Company Offer Letter"
+                android:textColor="#CDCDCD"
+                android:textSize="@dimen/_18sp" />
+
+            <ImageView
+                android:id="@+id/uploadLastCompanyOffer"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginEnd="@dimen/_15"
+                android:layout_marginBottom="@dimen/_10"
+                android:background="@drawable/light_grey_bg"
+                android:padding="@dimen/_10"
+                android:src="@drawable/uploadwhite" />
+
+            <LinearLayout
+                android:id="@+id/editLastCompanyOffer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/marksheet" />
+
+                <ImageView
+                    android:id="@+id/chnglastCompOffer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-150dp"
+                    android:layout_marginTop="@dimen/_100dp"
+                    android:layout_marginEnd="20dp"
+                    android:elevation="@dimen/_20dp"
+                    android:src="@drawable/edit" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:fontFamily="@font/dm_sans"
+                android:text="Salary Slip"
+                android:textColor="#CDCDCD"
+                android:textSize="@dimen/_18sp" />
+
+            <ImageView
+                android:id="@+id/uploadSalarySlipn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginEnd="@dimen/_15"
+                android:layout_marginBottom="@dimen/_10"
+                android:background="@drawable/light_grey_bg"
+                android:padding="@dimen/_10"
+                android:src="@drawable/uploadwhite"
+            />
+
+            <LinearLayout
+                android:id="@+id/editSalarySlip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/marksheet" />
+
+                <ImageView
+                    android:id="@+id/chngSaralyslip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-150dp"
+                    android:layout_marginTop="@dimen/_100dp"
+                    android:layout_marginEnd="20dp"
+                    android:elevation="@dimen/_20dp"
+                    android:src="@drawable/edit" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:fontFamily="@font/dm_sans"
+                android:text="Appointment letter"
+                android:textColor="#CDCDCD"
+                android:textSize="@dimen/_18sp" />
+
+            <ImageView
+                android:id="@+id/uploadAppointmentletter"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="@dimen/_15"
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginEnd="@dimen/_15"
+                android:layout_marginBottom="@dimen/_10"
+                android:background="@drawable/light_grey_bg"
+                android:padding="@dimen/_10"
+                android:src="@drawable/uploadwhite" />
+
+            <LinearLayout
+                android:id="@+id/editAppointmentletter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_20dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/marksheet" />
+
+                <ImageView
+                    android:id="@+id/chngAppointmnt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-150dp"
+                    android:layout_marginTop="@dimen/_100dp"
+                    android:layout_marginEnd="20dp"
+                    android:elevation="@dimen/_20dp"
+                    android:src="@drawable/edit" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+</layout>

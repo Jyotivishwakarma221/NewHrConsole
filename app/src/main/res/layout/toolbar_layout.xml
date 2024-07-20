@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/toolbar"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:elevation="@dimen/_30dp"
+    android:background="@color/Card"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/imgDrawer"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/drawerIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_30dp"
+            android:layout_marginStart="@dimen/_10dp"
+            android:src="@drawable/toggler"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvTittle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/imgDrawer"
+        android:text="@string/hr_console"
+        android:fontFamily="@font/poppins"
+        android:layout_marginStart="5dp"
+        android:textColor="@color/white"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/logoutTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15"
+        android:layout_marginEnd="38dp"
+        android:layout_toStartOf="@+id/toolbarImage"
+        android:fontFamily="@font/poppins"
+        android:gravity="center_vertical"
+        android:text="Logout"
+        android:textColor="@color/white"
+        android:textSize="15sp"> <!-- Use layout_toStartOf to position it before the toolbarImage -->
+    </TextView>
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/toolbarImage"
+        android:layout_width="@dimen/_40dp"
+        android:layout_height="@dimen/_40dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="5dp"
+        android:scaleType="centerCrop"
+        app:riv_oval="true"
+        />
+
+</RelativeLayout>

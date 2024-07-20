@@ -1,0 +1,21 @@
+<!-- popup_filter.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white">
+
+    <!-- Add your filter options here -->
+    <TextView
+        android:id="@+id/statusAll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Status"
+        android:textColor="@color/black"
+        android:fontFamily="@font/poppins"
+        android:padding="16dp"
+        android:gravity="center"
+        android:background="?android:attr/selectableItemBackground"/>
+
+
+</LinearLayout>

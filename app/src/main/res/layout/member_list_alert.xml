@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dark_grey_bg"
+        android:padding="@dimen/_15">
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="@dimen/_20dp"
+            android:layout_height="@dimen/_20dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/crosssmall" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Members "
+            android:textColor="@color/greyforText"
+            android:textSize="20dp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/close"
+            android:layout_marginTop="@dimen/_15"
+            android:layout_marginBottom="@dimen/_20dp"
+            android:paddingBottom="@dimen/_20dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/membersList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/light_grey_bg"
+                android:padding="@dimen/_5dp" />
+        </ScrollView>
+
+        <Button
+            android:id="@+id/done"
+            style="@style/AttendanceButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/_50dp"
+            android:background="@drawable/attendancebutton"
+            android:fontFamily="@font/dm_sans"
+            android:hint="Done"
+            android:textColorHint="@color/white" />
+
+    </RelativeLayout>
+</LinearLayout>

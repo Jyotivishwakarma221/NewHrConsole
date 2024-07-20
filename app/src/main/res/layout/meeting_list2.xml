@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_20dp"
+    android:layout_marginTop="@dimen/_10"
+    android:layout_marginEnd="@dimen/_20dp"
+    android:background="@drawable/background_outline"
+    android:orientation="vertical"
+    android:padding="@dimen/_10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:text="@string/meeting_id_t_t_t_t_t"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:textStyle="bold"
+            android:layout_marginStart="120dp"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/User_ID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150dp"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:text="@string/time_t_t_t_t_t_t_t_t"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:textStyle="bold"
+            android:layout_marginStart="120dp"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/TimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:text="@string/purpose_t_t_t_t_t_t"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:textStyle="bold"
+            android:layout_marginStart="120dp"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/PurposeTextVew"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location_t_t_t_t_t_t"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:textStyle="bold"
+            android:layout_marginStart="120dp"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/Location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:textStyle="bold"
+            android:layout_marginStart="120dp"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Requested Date"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textColor="@color/white"
+            android:gravity="start"/>
+
+
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:paddingStart="@dimen/_30dp"
+            android:backgroundTint="@color/white"
+            android:spinnerMode="dropdown"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:text="Employee"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+
+
+        <ImageView
+            android:id="@+id/assignUser"
+            android:layout_width="@dimen/_30dp"
+            android:layout_height="25dp"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/baseline_person_24" />
+
+    </RelativeLayout>
+
+</LinearLayout>

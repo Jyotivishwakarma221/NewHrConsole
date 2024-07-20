@@ -1,0 +1,27 @@
+<!-- background_outline.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background shape with corner radius and white fill -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/Button" />
+            <corners android:radius="20dp" />
+        </shape>
+    </item>
+
+    <!-- Outline shape with transparent fill at the bottom -->
+    <item android:bottom="2dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <corners android:radius="20dp"/>
+        </shape>
+    </item>
+
+    <!-- Border shape at the bottom in dark blue -->
+    <item android:bottom="2dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/Card" /> <!-- Border color at the bottom -->
+            <size android:height="2dp" /> <!-- Border height -->
+            <corners android:radius="20dp"/>
+        </shape>
+    </item>
+</layer-list>

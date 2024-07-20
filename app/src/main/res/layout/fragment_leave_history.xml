@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:clickable="true"
+        tools:context=".manager.activity.fragment.MyPerformance">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/_10dp"
+            tools:context=".manager.activity.fragment.MyPerformance">
+
+            <LinearLayout
+                android:id="@+id/bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:src="@drawable/backbutton"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Leave History"
+                    android:textColor="@color/greyforText"
+                    android:textSize="22sp" />
+
+            </LinearLayout>
+
+
+            <AutoCompleteTextView
+                android:id="@+id/months"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bar"
+                android:background="@drawable/cardview_border"
+                android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
+                android:padding="@dimen/_5dp"
+                android:text="ALL"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bar"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/_10"
+                android:src="@drawable/outline_filter_alt_24" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/leaverequest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/filter"
+                android:padding="5dp" />
+
+            <TextView
+                android:id="@+id/noDataFound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/filter"
+                android:layout_margin="@dimen/_10"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="No data Found."
+                android:textColor="@color/white"
+                android:textSize="@dimen/_18sp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+</layout>

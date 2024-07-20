@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn = "navigation_view">
+
+    <!-- Corrected the group tag and added checkableBehavior attribute -->
+    <group
+        android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menuHomes"
+            android:title="Home"
+            android:icon="@drawable/outline_home_24"
+            />
+
+        <item
+            android:id="@+id/menu_Performances"
+            android:title="@string/my_performance"
+            android:icon="@drawable/improvement"
+            />
+
+        <item
+            android:id="@+id/menu_attendance"
+            android:title="@string/attendances"
+            android:icon="@drawable/baseline_fingerprint_24"
+            />
+
+        <item
+            android:id="@+id/menu_document"
+            android:title="Document"
+            android:icon="@drawable/employees"
+            />
+
+<!--        <item-->
+<!--            android:id="@+id/menu_admin_message"-->
+<!--            android:title="Admin Message"-->
+<!--            android:icon="@drawable/employees"-->
+<!--            />-->
+
+        <item
+            android:id="@+id/update_profile"
+            android:title="Update Profile"
+            android:icon="@drawable/upload"
+            />
+
+        <item
+            android:id="@+id/menu_today_present"
+            android:title="@string/today_present_employee"
+            android:icon="@drawable/employees" />
+
+        <item
+            android:id="@+id/menu_assignMeeting"
+            android:title="@string/assign_meetings"
+            android:icon="@drawable/meeting"
+            />
+
+        <item
+            android:id="@+id/menu_assignTask"
+            android:title="@string/assign_taskss"
+            android:icon="@drawable/clipboard"
+            />
+
+        <item
+            android:id="@+id/menu_addEvent"
+            android:title="Add Event"
+            android:icon="@drawable/event"
+            />
+
+        <item
+            android:id="@+id/menu_approved_leaves"
+            android:title="@string/approved_leaves"
+            android:icon="@drawable/checkmark"/>
+
+        <item
+            android:id="@+id/menu_update_password"
+            android:title="@string/change_password"
+            android:icon="@drawable/lock"/>
+
+        <item
+            android:id="@+id/admin_menu_logout"
+            android:title="@string/logout"
+            android:icon="@drawable/exit_to_app"
+            />
+    </group>
+</menu>

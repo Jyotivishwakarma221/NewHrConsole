@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="7dp"
+        android:id="@+id/layoutfull"
+        android:background="@drawable/cardview_border"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/_5dp"
+        android:weightSum="5">
+
+        <TextView
+            android:id="@+id/id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5dp"
+            android:layout_weight="1"
+            android:text="103"
+            android:textColor="@color/white" />
+
+        <ImageView
+            android:id="@+id/profilepic"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/_5dp"
+            android:layout_weight="1"
+            android:src="@drawable/profile" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5dp"
+            android:layout_marginStart="@dimen/_25dp"
+            android:layout_weight="1"
+            android:maxLines="2"
+            android:text="Abhay"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/department"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5dp"
+            android:layout_weight="1"
+            android:text="  IT "
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/position"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5dp"
+            android:maxLines="2"
+            android:layout_marginStart="@dimen/_25dp"
+            android:layout_weight="1"
+            android:text="  UI DEVELOPER"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+</layout>

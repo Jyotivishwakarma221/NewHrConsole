@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:background="@color/black"
+        android:orientation="vertical"
+        android:padding="@dimen/_10"
+        tools:context=".manager.activity.ProjectsFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <ImageView
+                    android:id="@+id/backbutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:src="@drawable/backbutton"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Projects "
+                    android:textColor="@color/greyforText"
+                    android:textSize="22sp" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_200dp"
+                android:layout_marginStart="@dimen/_20dp"
+                android:layout_marginTop="@dimen/_20dp"
+                android:layout_marginEnd="@dimen/_20dp"
+                android:background="@drawable/bg_img"
+                android:elevation="@dimen/_10">
+
+                <TextView
+                    android:id="@+id/priority"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10"
+                    android:layout_marginTop="@dimen/_20dp"
+                    android:background="@drawable/dark_grey_bg"
+                    android:drawableStart="@drawable/red_dot"
+                    android:padding="@dimen/_10"
+                    android:text="  High Priority  "
+                    android:textColor="@color/greyforText"
+                    android:textSize="@dimen/_10" />
+
+                <TextView
+                    android:id="@+id/projectName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/priority"
+                    android:layout_marginStart="@dimen/_10"
+                    android:layout_marginTop="@dimen/_10"
+                    android:gravity="start"
+                    android:text="  Hr Console UI"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/prog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/projectName"
+                    android:layout_marginStart="@dimen/_10"
+                    android:layout_marginTop="@dimen/_10"
+                    android:gravity="start"
+                    android:text="  Progress :"
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
+
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progressbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/prog"
+                    android:layout_marginStart="@dimen/_5dp"
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:layout_marginEnd="@dimen/_5dp" />
+
+                <TextView
+                    android:id="@+id/projctMember"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/progressbar"
+                    android:layout_marginStart="@dimen/_10"
+                    android:layout_marginTop="@dimen/_10"
+                    android:gravity="start"
+                    android:text="  Project member "
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
+
+
+                <ImageView
+                    android:id="@+id/photo1"
+                    android:layout_width="@dimen/_20dp"
+                    android:layout_height="20dp"
+                    android:layout_below="@+id/projctMember"
+                    android:layout_marginStart="@dimen/_10"
+                    android:layout_marginTop="@dimen/_10"
+                    android:src="@drawable/profilephoto" />
+
+                <ImageView
+                    android:id="@+id/photo2"
+                    android:layout_width="@dimen/_20dp"
+                    android:layout_height="20dp"
+                    android:layout_below="@+id/projctMember"
+                    android:layout_marginTop="@dimen/_10"
+                    android:layout_toEndOf="@+id/photo1"
+                    android:src="@drawable/profilephoto" />
+
+                <ImageView
+                    android:layout_width="@dimen/_20dp"
+                    android:layout_height="20dp"
+                    android:layout_below="@+id/projctMember"
+                    android:layout_marginTop="@dimen/_10"
+                    android:layout_toEndOf="@+id/photo2"
+                    android:src="@drawable/profilephoto" />
+
+                <TextView
+                    android:id="@+id/dead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/progressbar"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="@dimen/_10"
+                    android:layout_marginTop="@dimen/_10"
+                    android:layout_marginEnd="@dimen/_40dp"
+                    android:gravity="start"
+                    android:text="  Dead Line "
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/deadlineDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dead"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="@dimen/_10"
+                    android:layout_marginTop="@dimen/_10"
+                    android:layout_marginEnd="@dimen/_30dp"
+                    android:background="@drawable/light_grey_bg"
+                    android:gravity="start"
+                    android:paddingStart="@dimen/_20dp"
+                    android:paddingTop="@dimen/_5dp"
+                    android:paddingEnd="@dimen/_20dp"
+                    android:paddingBottom="@dimen/_5dp"
+                    android:text="  12 May 2024 "
+                    android:textColor="@color/white"
+                    android:textSize="10sp" />
+
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10"
+                android:gravity="center"
+                android:text="Assignment Details "
+                android:textColor="@color/greyforText"
+                android:textSize="20sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5dp"
+                android:background="@drawable/dark_grey_bg">
+
+                <TextView
+                    android:id="@+id/projectNamee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10"
+                    android:layout_marginTop="@dimen/_10"
+                    android:gravity="start"
+                    android:text="  Hr Console UI"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/priorityy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/_20dp"
+                    android:background="@drawable/dark_grey_bg"
+                    android:drawableStart="@drawable/red_dot"
+                    android:padding="@dimen/_10"
+                    android:text="  High Priority  "
+                    android:textColor="@color/greyforText"
+                    android:textSize="@dimen/_10" />
+
+                <TextView
+                    android:id="@+id/due"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/projectNamee"
+                    android:layout_marginStart="@dimen/_20dp"
+                    android:layout_marginTop="@dimen/_10"
+                    android:gravity="start"
+                    android:text="  Due Date "
+                    android:textColor="#E2E2E2"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/duedate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/projectNamee"
+                    android:layout_marginStart="@dimen/_20dp"
+                    android:layout_marginTop="@dimen/_10"
+                    android:layout_toEndOf="@+id/due"
+                    android:drawableStart="@drawable/calender2"
+                    android:gravity="start"
+                    android:text="  24 May 2024 "
+                    android:textColor="#D3D3D3"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/Assign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/duedate"
+                    android:layout_marginStart="@dimen/_20dp"
+                    android:layout_marginTop="@dimen/_10"
+                    android:gravity="start"
+                    android:text="  Assigned to: "
+                    android:textColor="#E2E2E2"
+                    android:textSize="15sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/assignedRecyccler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/Assign" />
+
+                <TextView
+                    android:id="@+id/tool"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/assignedRecyccler"
+                    android:layout_marginStart="@dimen/_20dp"
+                    android:layout_marginTop="@dimen/_10"
+                    android:gravity="start"
+                    android:text="  Assigned to: "
+                    android:textColor="#E2E2E2"
+                    android:textSize="15sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/toolRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tool" />
+
+                <TextView
+                    android:id="@+id/file"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/toolRecycler"
+                    android:layout_marginStart="@dimen/_20dp"
+                    android:layout_marginTop="@dimen/_10"
+                    android:gravity="start"
+                    android:text="  Project files: "
+                    android:textColor="#E2E2E2"
+                    android:textSize="15sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fileRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/file" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5dp"
+                android:background="@drawable/dark_grey_bg"
+                android:orientation="vertical"
+                android:padding="@dimen/_20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10"
+                    android:layout_marginTop="@dimen/_10"
+                    android:layout_marginBottom="@dimen/_10"
+                    android:gravity="start"
+                    android:text="My Task "
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/light_grey_bg"
+                    android:padding="@dimen/_10">
+
+
+                    <LinearLayout
+                        android:id="@+id/name_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_10"
+                        android:layout_marginStart="@dimen/_5dp"
+                        android:layout_marginEnd="2dp"
+                        android:background="@drawable/grey_bg_rounded"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_5dp">
+
+
+                        <ImageView
+                            android:id="@+id/profilephoto"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_5dp"
+                            android:src="@drawable/profilephoto" />
+
+                        <TextView
+                            android:id="@+id/name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:paddingStart="@dimen/_20dp"
+                            android:paddingEnd="@dimen/_20dp"
+                            android:text="Akash"
+                            android:textColor="#CCCCCC" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/addNew"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="@dimen/_20dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/blue_border"
+                        android:drawableStart="@drawable/baseline_add_24"
+                        android:gravity="start"
+                        android:paddingStart="@dimen/_10"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="@dimen/_10"
+                        android:paddingBottom="5dp"
+                        android:text=" Add Task"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/name_layout"
+                        android:layout_marginStart="@dimen/_20dp"
+                        android:layout_marginEnd="@dimen/_20dp"
+                        android:background="#444444" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_for_task"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/name_layout"
+                        android:layout_marginTop="@dimen/_10" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+</layout>

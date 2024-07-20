@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipeRefreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+
+    <FrameLayout
+        android:id="@+id/redirect"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Container with four sides -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <!-- Task Title TextView -->
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Approval"
+                android:layout_marginBottom="@dimen/_10dp"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:layout_gravity="center_horizontal" />
+
+            <!-- Add Comment EditText -->
+            <EditText
+                android:id="@+id/addCommentEditText"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:hint="Add Comment"
+                android:textSize="14sp"
+                android:layout_marginTop="@dimen/_10dp"
+                android:textColorHint="@color/white"
+                android:textColor="@color/white"
+                android:gravity="start|top"
+                android:paddingStart="@dimen/_8dp"
+                android:paddingEnd="@dimen/_5dp"
+                android:paddingTop="@dimen/_5dp"
+                android:inputType="textMultiLine"
+                android:scrollHorizontally="false"
+                android:background="@drawable/login_background_outline" />
+
+            <!-- Approval Status Spinner -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_15"
+                android:layout_marginHorizontal="@dimen/_15sp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Approval Status"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textStyle="bold"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/white" />
+
+                <Spinner
+                    android:id="@+id/Spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:backgroundTint="@color/white"
+                    android:layout_marginStart="@dimen/_20dp" />
+
+            </LinearLayout>
+
+            <!-- Button -->
+            <Button
+                android:id="@+id/Approved_Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/add"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:textSize="@dimen/_15sp"
+                android:fontFamily="@font/poppins"
+                android:textColorHint="@color/white"
+                style="@style/CustomButtonStyle"
+                android:background="@drawable/button"
+                android:layout_marginTop="15dp" />
+
+        </LinearLayout>
+    </FrameLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

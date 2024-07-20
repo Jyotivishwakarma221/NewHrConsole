@@ -1,0 +1,340 @@
+package com.investmango.hrconsole.manager.activity;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.investmango.hrconsole.R;
+import com.investmango.hrconsole.api.ApiClient;
+import com.investmango.hrconsole.api.ApiInterface;
+import com.investmango.hrconsole.databinding.FragmentPerformanceBinding;
+import com.investmango.hrconsole.model.MonthlyPerformanceResp;
+
+import org.json.JSONObject;
+
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class PerformanceFragment extends Fragment {
+
+    private FragmentPerformanceBinding binding;
+    private long userId;
+    String[] languages;
+    private ApiInterface apiInterface;
+    MonthlyPerformanceResp empPerformanceList;
+
+
+    private String token;
+    String month, ViewOf;
+    String[] descriptionData = {"C", "C++", "Java", "DSA"};
+
+    private SharedPreferences preferences;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        preferences = requireActivity().getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+        token = preferences.getString("token", "0");
+        userId = preferences.getLong("userId", 0);
+
+        if (getArguments().containsKey("childUserid")) {
+            ViewOf = getArguments().getString("ViewOf");
+            userId = getArguments().getLong("childUserid");
+            Log.e("Achievements", "onCreate: " + userId);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_performance, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        languages = getResources().getStringArray(R.array.Months);
+
+        if (ViewOf!=null && ViewOf.equals("child"))
+        {
+            binding.linearlay2.setVisibility(View.VISIBLE);
+            binding.linearlay.setVisibility(View.GONE);
+        }
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LocalDate currentdate = LocalDate.now();
+            Month thismonth = currentdate.getMonth();
+            month = thismonth.toString();
+
+            Log.e("performance", "onResponse: " + month);
+        }
+        binding.months.setAdapter(new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, languages));
+        fetchPerformanceReport();
+
+
+        binding.months.setOnItemClickListener((parent, view1, position, id) -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                month = (String) parent.getItemAtPosition(position);
+                fetchPerformanceReport();
+
+            }
+        });
+
+        stepBar();
+        lineGraph();
+    }
+
+    private void stepBar() {
+        binding.stepsView.setLabels(descriptionData);
+        binding.stepsView.setBarColorIndicator(Color.BLACK);
+        binding.stepsView.setProgressColorIndicator(getResources().getColor(R.color.greyOfEye));
+        binding.stepsView.setLabelColorIndicator(getResources().getColor(R.color.orange));
+        binding.stepsView.setCompletedPosition(0);
+        binding.stepsView.drawView();
+        binding.stepsView.setCompletedPosition(2);
+    }
+
+    private void populatePieChart(long totalPresent, long totalAbsent, int total, long halfDay, PieChart pieChart) {
+        ArrayList<PieEntry> pieEntries = new ArrayList<>();
+        pieEntries.add(new PieEntry(totalPresent, "llll"));
+        pieEntries.add(new PieEntry(totalAbsent, "kkkkkk"));
+        pieEntries.add(new PieEntry(halfDay, "mmm"));
+
+        PieDataSet pieDataSet = new PieDataSet(pieEntries, "Employee Attendance");
+        // on below line we are setting icons.
+        pieDataSet.setDrawIcons(false);
+
+        pieDataSet.setColors(
+                ContextCompat.getColor(requireContext(), R.color.darkBlue),
+                ContextCompat.getColor(requireContext(), R.color.yellow),
+                ContextCompat.getColor(requireContext(), R.color.strokeBlack)
+        );
+
+        //draw value are the text that come on the pie slice
+        pieDataSet.setDrawValues(false);
+
+        //the small icons come in the chart are legends
+        pieChart.getLegend().setEnabled(false);
+
+        pieChart.setRotationEnabled(true);
+        pieChart.setHighlightPerTapEnabled(true);
+        pieChart.setRotationAngle(0f);
+        pieChart.animateY(1400, Easing.EaseInOutQuad);
+
+        // on below line we are setting hole
+        // and hole color for pie chart
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setHoleColor(R.color.black);
+
+        // on below line we are setting circle color and alpha
+        pieChart.setTransparentCircleColor(Color.WHITE);
+//        pieChart.setTransparentCircleAlpha(110);
+
+        // on  below line we are setting hole radius
+        pieChart.setHoleRadius(58f);
+        pieChart.setTransparentCircleRadius(61f);
+
+        // on below line we are setting center text
+        pieChart.setDrawCenterText(true);
+        pieChart.setCenterText("Total \n " + total + "  ");
+        pieChart.setCenterTextColor(Color.WHITE);
+        pieChart.setDrawEntryLabels(false);
+        pieChart.setUsePercentValues(false);
+
+
+        PieData pieData = new PieData(pieDataSet);
+
+
+        pieChart.setData(pieData);
+
+        pieChart.setHoleRadius(50);
+        pieChart.setTransparentCircleRadius(50);
+
+        pieChart.getDescription().setEnabled(false);
+
+        pieChart.invalidate();
+    }
+
+    @SuppressLint("ResourceType")
+    private void lineGraph() {
+        ArrayList<Entry> entries = new ArrayList<>();
+        entries.add(new Entry(0, 2));
+        entries.add(new Entry(1, 4));
+        entries.add(new Entry(2, 1));
+        entries.add(new Entry(3, 3));
+        entries.add(new Entry(4, 5));
+
+        LineDataSet lineDataSet = new LineDataSet(entries, "This Month");
+        lineDataSet.setColor(Color.BLUE); // Line color
+        lineDataSet.setDrawFilled(true); // Enable filling
+        lineDataSet.setFillColor(Color.BLUE); // Fill color
+        lineDataSet.setFillAlpha(70); // Fill transparency
+        lineDataSet.setValueTextColor(Color.RED); // Change to your preferred color
+        lineDataSet.setValueTextSize(12f); // Set text size
+        lineDataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
+
+
+        ArrayList<Entry> entries2 = new ArrayList<>();
+        entries2.add(new Entry(0, 2));
+        entries2.add(new Entry(1, 3));
+        entries2.add(new Entry(2, 4));
+        entries2.add(new Entry(3, 1));
+        entries2.add(new Entry(4, 3));
+
+        LineDataSet lineDataSet2 = new LineDataSet(entries2, " Previous");
+        lineDataSet2.setColor(Color.parseColor("#FFBD59")); // Line color
+        lineDataSet2.setDrawFilled(false); // Enable filling
+        lineDataSet2.setFillColor(Color.YELLOW); // Fill color
+        lineDataSet2.setFillAlpha(50); // Fill transparency
+
+//        lineDataSet.setColor(Color.GRAY);
+//        lineDataSet.setCircleHoleColor(Color.GREEN);
+//        lineDataSet.setCircleColor(R.color.white);
+        lineDataSet.setDrawCircles(false);
+        lineDataSet2.setDrawCircles(false);
+//        lineDataSet.setHighLightColor(Color.RED);
+        lineDataSet.setDrawValues(false);
+        lineDataSet.setCircleRadius(0);
+
+        //to make the smooth line as the graph is adrapt change so smooth curve
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        //to enable the cubic density : if 1 then it will be sharp curve
+        lineDataSet.setCubicIntensity(0.2f);//to make the smooth line as the graph is adrapt change so smooth curve
+
+        lineDataSet2.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        //to enable the cubic density : if 1 then it will be sharp curve
+        lineDataSet2.setCubicIntensity(0.2f);
+
+
+        // Combine the two data sets
+        LineData lineData = new LineData(lineDataSet, lineDataSet2);
+        binding.lineChart.setData(lineData);
+        binding.lineChart.invalidate();
+
+
+        // Optional: Customize the chart
+        XAxis xAxis = binding.lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setTextColor(Color.WHITE);
+
+        YAxis leftAxis = binding.lineChart.getAxisLeft();
+        leftAxis.setTextColor(Color.WHITE);
+
+        Legend legend = binding.lineChart.getLegend();
+        legend.setTextColor(Color.WHITE);
+        binding.lineChart.getAxisRight().setEnabled(true); // Disable right Y-axis
+
+        leftAxis.setAxisMinimum(0); // Start at 0
+
+        lineDataSet.setLineWidth(2f); // Set line width
+//        lineDataSet.setFillColor(getResources().getColor(R.drawable.fill_chart)); // Change fill color
+        lineDataSet.setDrawFilled(true);
+
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.fill_chart);
+        lineDataSet.setFillDrawable(drawable);
+
+        lineDataSet.setFillAlpha(100); // Change fill transparency
+        xAxis.setDrawGridLines(false); // Disable X-axis grid lines
+        leftAxis.setDrawGridLines(false); // Disable Y-axis grid lines
+
+    }
+
+    private void fetchPerformanceReport() {
+        ApiClient apiClient = new ApiClient(getContext());
+        apiInterface = apiClient.getApiInterface();
+
+        Call<MonthlyPerformanceResp> call = apiInterface.getMonthPerformance(userId, month.toString().toLowerCase());
+        call.enqueue(new Callback<MonthlyPerformanceResp>() {
+            @Override
+            public void onResponse(@NonNull Call<MonthlyPerformanceResp> call, @NonNull Response<MonthlyPerformanceResp> response) {
+                if (response.isSuccessful()) {
+                    empPerformanceList = response.body();
+                    setUpData();
+                    Log.e("performance", "onResponse: " + empPerformanceList);
+                } else {
+                    Toast.makeText(getContext(), getErrorMessage(response), Toast.LENGTH_SHORT).show();
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MonthlyPerformanceResp> call, @NonNull Throwable t) {
+                Log.e("EmployeePerformance", "Server error", t);
+            }
+        });
+    }
+
+    private void setUpData() {
+        binding.PendingCount.setText(empPerformanceList.getPendingTasks().toString());
+        binding.AssignedCount.setText(empPerformanceList.getAssignedTasks().toString());
+        binding.DoneCount.setText(empPerformanceList.getTotalTasks().toString());
+
+        binding.PendingCount2.setText(empPerformanceList.getPendingTasks().toString());
+        binding.AssignedCount2.setText(empPerformanceList.getAssignedTasks().toString());
+        binding.DoneCount2.setText(empPerformanceList.getTotalTasks().toString());
+
+
+        binding.Attendanceday.setText(empPerformanceList.getPresentDays().toString());
+        binding.Halfday.setText(empPerformanceList.getHalfDay().toString());
+        binding.Absentday.setText(empPerformanceList.getAbsentDays().toString());
+        binding.MeetingAbsent.setText(empPerformanceList.getAbsentMeetings().toString());
+        binding.MeetingPresence.setText(empPerformanceList.getPresentMeetings().toString());
+        binding.MeetingPresence.setText(empPerformanceList.getPresentMeetings().toString());
+        binding.totalMeetings.setText(empPerformanceList.getTotalMeetings().toString());
+
+
+        binding.completionRate.setText(empPerformanceList.getTaskCompletionRatio().toString());
+        populatePieChart(empPerformanceList.getPresentDays(), empPerformanceList.getHalfDay(), empPerformanceList.getAbsentDays(), empPerformanceList.getTotalWorkingDays(), binding.pieChart);
+        populatePieChart(empPerformanceList.getPresentMeetings(), empPerformanceList.getAbsentMeetings(), empPerformanceList.getTotalMeetings(), empPerformanceList.getTotalMeetings(), binding.pieChart2);
+
+    }
+
+    private String getErrorMessage(Response<MonthlyPerformanceResp> response) {
+        String errorMessage = "Unknown error";
+        try {
+            JSONObject errorJson = new JSONObject(response.errorBody().string());
+            errorMessage = errorJson.optString("message", errorMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return errorMessage;
+    }
+
+}

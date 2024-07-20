@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/removeUploadDoc"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".user.fragment.UpdateDocumentFragment"
+   android:layout_gravity="center"
+    android:background="@color/white">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_20dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/_20dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <Button
+                    android:id="@+id/updateDoc1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/white"
+                    style="@style/CustomButtonStyle"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:hint="Update Document" />
+
+                <ImageView
+                    android:id="@+id/doc1update"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/ic_launcher" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <Button
+                    android:id="@+id/updateDoc2"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/white"
+                    style="@style/CustomButtonStyle"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:hint="Update Document" />
+
+                <ImageView
+                    android:id="@+id/doc2update"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/ic_launcher" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <Button
+                    android:id="@+id/updateDoc3"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/white"
+                    style="@style/CustomButtonStyle"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:hint="Update Document" />
+
+                <ImageView
+                    android:id="@+id/doc3update"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/ic_launcher" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_5dp"
+                tools:ignore="MissingConstraints">
+
+                <Button
+                    android:id="@+id/updateDoc4"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/white"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    style="@style/CustomButtonStyle"
+                    android:hint="Update Document" />
+
+                <ImageView
+                    android:id="@+id/doc4update"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/ic_launcher" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <Button
+                    android:id="@+id/updateDoc5"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/white"
+                    android:layout_weight="1"
+                    style="@style/CustomButtonStyle"
+                    android:fontFamily="@font/poppins"
+                    android:hint="Update Document" />
+
+                <ImageView
+                    android:id="@+id/doc5update"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/ic_launcher" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/update_Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Submit"
+                android:layout_marginTop="@dimen/_20dp"
+                style="@style/CustomButtonStyle"
+                android:background="@drawable/button_background"
+                android:textColorHint="@color/white"
+                android:textSize="@dimen/_15sp"
+                android:fontFamily="@font/poppins"
+                android:layout_marginStart="@dimen/_20dp"
+                android:layout_marginEnd="@dimen/_20dp"/>
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

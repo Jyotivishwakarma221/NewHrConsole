@@ -1,0 +1,239 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:clickable="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:padding="@dimen/_10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/backbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:visibility="gone"
+                android:src="@drawable/backbutton" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Attendance "
+                android:textColor="@color/greyforText"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_30dp"
+            android:fontFamily="@font/dm_sans"
+            android:text="Your Location"
+            android:textColor="#F9F9F9"
+            android:textSize="@dimen/_20dp"
+            android:layout_marginTop="@dimen/_20dp"
+            android:textStyle="bold" />
+
+
+        <!-- TODO: Update blank fragment layout -->
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/liveMapOfUser"
+            android:layout_margin="@dimen/_10"
+            android:layout_width="match_parent"
+            android:layout_height="300dp" />
+
+        <!--            <ImageView-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:src="@drawable/location_img" />-->
+
+        <LinearLayout
+            android:id="@+id/notOfficeRange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/warning_yellow" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.8"
+                android:fontFamily="@font/robotomedium"
+                android:text=" Status :"
+                android:textColor="#989898" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.7"
+                android:fontFamily="@font/robotomedium"
+                android:text=" You are not in office range"
+                android:textColor="#FF0000" />
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20dp"
+            android:background="@color/black"
+            android:padding="@dimen/_20dp"
+            app:cardCornerRadius="@dimen/_10"
+            app:cardElevation="@dimen/_10"
+            app:cardUseCompatPadding="true">
+
+            <com.zerobranch.layout.SwipeLayout
+                android:id="@+id/swipeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:draggedItem="@id/someswipe"
+                app:isFreeDragAfterOpen="false"
+                app:isFreeHorizontalDrag="true"
+                app:leftItem="@id/swipeIn"
+                app:rightItem="@id/swipeOut"
+                app:swipeDirection="left|right">
+
+                <LinearLayout
+                    android:id="@+id/swipeOut"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_60dp"
+                    android:layout_gravity="start"
+                    android:background="@drawable/attendance_bg"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/outTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/red_attendace_bg"
+                        android:fontFamily="@font/dm_sans"
+                        android:gravity="center"
+                        android:text="    "
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_20dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/dm_sans"
+                        android:gravity="center"
+                        android:text="OUT"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_20dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/swipeIn"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_60dp"
+                    android:layout_gravity="end"
+                    android:background="@drawable/attendance_bg"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/dm_sans"
+                        android:gravity="center"
+                        android:text="IN"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_20dp" />
+
+                    <TextView
+                        android:id="@+id/inTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/green_attendance_bg"
+                        android:fontFamily="@font/dm_sans"
+                        android:gravity="center"
+                        android:text="  -- "
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_20dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/someswipe"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_60dp"
+                    android:background="@drawable/attendance_bg"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/dm_sans"
+                        android:gravity="center"
+                        android:text="OUT"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_20dp" />
+
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="70dp"
+                        android:layout_marginTop="-10dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/baseline_do_not_disturb_on_total_silence_24" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/dm_sans"
+                        android:gravity="center"
+                        android:text="IN"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_20dp" />
+                </LinearLayout>
+
+            </com.zerobranch.layout.SwipeLayout>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/AttendanceReport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_25dp"
+            android:layout_marginEnd="@dimen/_25dp"
+            android:background="@drawable/grey_bg_rounded"
+            android:drawableEnd="@drawable/left_arrow"
+            android:fontFamily="@font/dm_sans"
+            android:gravity="center"
+            android:paddingStart="@dimen/_10"
+            android:paddingTop="@dimen/_10"
+            android:paddingEnd="@dimen/_10"
+            android:paddingBottom="@dimen/_10"
+            android:text="Attendance Report "
+            android:textColor="#CDCDCD"
+            android:textSize="@dimen/_18sp" />
+
+    </LinearLayout>
+</ScrollView>
+
+</layout>

@@ -1,0 +1,188 @@
+<resources>
+    <string name="app_name">HR Console</string>
+    <string name="login">Login</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="logIn">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="loGin">Login</string>
+    <string name="department"><u> Management</u></string>
+    <string name="design_and_developed_by_virtual_intelligence">Design and Developed by Virtual Intelligence</string>
+    <string name="invest_mango">Invest Mango</string>
+    <string name="user_page">User Page</string>
+
+    // for toogle navigation
+
+    <string name="OpenDrawer">Open navigation drawer</string>
+    <string name="CloseDrawer">Open navigation drawer</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="leave_type">Leave Type</string>
+    <string name="task">Task</string>
+    <string name="add_task">Add Task</string>
+    <string name="enter_your_task_here">Enter your task here</string>
+    <string name="enter_your_task_her">Enter your task here</string>
+    <string name="add">Submit</string>
+    <string name="add_tas">Add Task</string>
+    <string name="meeting">Meeting</string>
+    <string name="moblie">Mobile Number</string>
+    <string name="profile">Profile</string>
+    <string name="designation_t_t">Designation</string>
+    <string name="status_t_t_t_t_t">Status</string>
+    <string name="email_t_t_t_t_t_t">Email</string>
+    <string name="address_t_t_t_t">Address</string>
+    <string name="gender_t_t_t_t_t">Gender</string>
+    <string name="role_t_t_t_t_t_t_t">Role</string>
+    <string name="date_of_birth_t">Date of Birth</string>
+    <string name="mobile_t_t_t_t_t">Mobile</string>
+    <string name="name_t_t_t_t_t_t">Name</string>
+    <string name="username_t_t_t">Username</string>
+    <string name="department_t_t">Department</string>
+    <string name="meeting_id_t_t_t_t_t">Meeting Id</string>
+    <string name="user_id">User Id</string>
+    <string name="date_t_t_t_t_t_t_t_t">Date</string>
+    <string name="date">Date</string>
+    <string name="time_t_t_t_t_t_t_t_t">Time</string>
+    <string name="time">Time</string>
+    <string name="purpose_t_t_t_t_t_t">Purpose</string>
+    <string name="purpose">Purpose</string>
+    <string name="location_t_t_t_t_t_t">Location</string>
+    <string name="location">Location</string>
+    <string name="status_t_t_t_t_t_t_t">Status</string>
+    <string name="status">Status</string>
+    <string name="update_status_t_t">Update Status</string>
+    <string name="salary_details">Salary Detail</string>
+    <string name="username_t_t_t_t_t_t">Username</string>
+    <string name="basic_salary_t_t_t_t_t">Basic Salary</string>
+    <string name="hra_t_t_t_t_t_t_t_t_t_t">HRA</string>
+    <string name="medical_fund_t_t_t_t">Medical Fund</string>
+    <string name="bonus_t_t_t_t_t_t_t_t_t">Bonus</string>
+    <string name="insensitive_t_t_t_t_t_t">Insensitive</string>
+    <string name="total_salary_t_t_t_t_t">Total Salary</string>
+    <string name="monthly_salary_t_t_t">Monthly Salary</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="leave_apply_for">Leave Apply For</string>
+    <string name="select_leave">Select Leave</string>
+    <string name="leave_date">Leave Date</string>
+    <string name="dd_mm_yyyy">dd-mm-yyyy</string>
+    <string name="selected_date">Selected Date</string>
+    <string name="reason">Reason</string>
+    <string name="submit_request">Submit Request</string>
+    <string name="submit">Submit</string>
+    <string name="AddTask">Add Task</string>
+    <string name="enter_reason_for_leave">Enter reason for Leave</string>
+    <string name="leave_request">Leaves Report</string>
+    <string name="add_attendance">+ Attendance</string>
+    <string name="greeting_hi">Hi, </string>
+    <string name="logout">Sign Off</string>
+    <string name="task1">Task</string>
+    <string name="assignment">Assignment</string>
+    <string name="holiday">Holiday</string>
+    <string name="attendance">Attendance</string>
+    <string name="meeting1">Meeting</string>
+    <string name="home">Home</string>
+    <string name="salary_details1">Salary Details</string>
+    <string name="all_active_users_download">Download</string>
+    <string name="request_date">Request Date</string>
+    <string name="abc">:</string>
+    <string name="admin_profile">Admin Profile</string>
+    <string name="active_employee">Active Employee</string>
+    <string name="attendances">Days Presence</string>
+    <string name="tasks">Task</string>
+    <string name="meetings">Meeting</string>
+    <string name="salary_detailss">Salary Details</string>
+    <string name="approved_leaves">Approved Leaves</string>
+    <string name="change_password">Reset Password</string>
+    <string name="profiles">Profile</string>
+    <string name="attendancess">Days Presence</string>
+    <string name="meetingss">Meeting</string>
+    <string name="taskss">Task</string>
+    <string name="salary_detailsss">Salary Details</string>
+    <string name="leave_requests">Leave Request</string>
+    <string name="user_leave">User Leave</string>
+    <string name="change_passwords">Reset Password</string>
+    <string name="logouts">Sign Off</string>
+    <string name="add_tasks">Add Task</string>
+    <string name="hr_console">HR Console</string>
+    <string name="salary_detail">Payroll Panel</string>
+    <string name="meetin">Meetings</string>
+    <string name="tasksss">Tasks</string>
+    <string name="leave_requestss">Day of Applications</string>
+    <string name="attendancesss">Attendance</string>
+    <string name="active_employees">Active Employee</string>
+    <string name="admin_profiles">My Profile</string>
+    <string name="last_login">Last Login:</string>
+    <string name="leave_types">Leave Type</string>
+    <string name="select_employee">Select Employee</string>
+    <string name="assign_task">Assign Task</string>
+    <string name="employee_attendance">Employee Attendance</string>
+    <string name="assign_tasks">Assign Task</string>
+    <string name="assign_meeting">Add Meeting</string>
+    <string name="assign_meetings">Add Meeting</string>
+    <string name="assign_taskss">Assign Task</string>
+    <string name="percentage_of_your_attendance">Attendance Analysis</string>
+    <string name="percentage_of_your_attendances">Attendance Analysis</string>
+    <string name="are_you_sure_you_want_to_logout">Are you sure you want to sign off ?</string>
+    <string name="logoutss">Logout</string>
+    <string name="obtained_score">Obtained Score</string>
+    <string name="comment">Comment</string>
+    <string name="total_score">Total Score</string>
+    <string name="job_knowledge">Job-Knowledge</string>
+    <string name="skills">Skills</string>
+    <string name="s">Attendance</string>
+    <string name="work_quality">Work Quality</string>
+    <string name="intiative">Intiative</string>
+    <string name="team_work">Team Work</string>
+    <string name="general_conduct">General Conduct</string>
+    <string name="discipline">Discipline</string>
+    <string name="performance">Performance</string>
+    <string name="job_knowledges">Job-Knowledge</string>
+    <string name="my_performance">My Performance</string>
+    <string name="today_present_employee">Today Availability</string>
+    <string name="approved">Approved</string>
+    <string name="todo">TODO</string>
+
+    // for meeting
+
+    <string-array name="listLeaveType">
+        <item>Absent</item>
+        <item>Half Day</item>
+        <item>Short Leave</item>
+        <item>Paid Leave</item>
+    </string-array>
+    <string-array name="statusType">
+        <item>PENDING</item>
+        <item>APPROVED</item>
+        <item>REJECTED</item>
+    </string-array>
+    <string-array name="TaskType">
+        <item> -- </item>
+        <item>PENDING</item>
+        <item>DONE</item>
+    </string-array>
+    <string-array name="TaskTypeStatus">
+        <item>PENDING</item>
+        <item>DONE</item>
+    </string-array>
+    <string-array name="MeetingType">
+        <item>SCHEDULED</item>
+        <item>PENDING</item>
+        <item>POSTPONED</item>
+        <item>DONE</item>
+    </string-array>
+
+    <string-array name="Months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April </item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+</resources>

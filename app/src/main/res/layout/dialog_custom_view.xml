@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#111111"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Attendance "
+        android:layout_marginTop="@dimen/_10"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/greyforText"
+        android:textSize="22sp" />
+
+
+    <EditText
+        android:id="@+id/number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10"
+        android:layout_marginEnd="@dimen/_10"
+        android:background="#252525"
+        android:gravity="center"
+        android:hint="Enter Number"
+        android:inputType="number"
+        android:padding="@dimen/_5dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/showResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_25dp"
+        android:layout_marginTop="@dimen/_10"
+        android:layout_marginEnd="@dimen/_25dp"
+        android:background="@drawable/cardview_border"
+        android:fontFamily="@font/dm_sans"
+        android:gravity="center"
+        android:paddingStart="@dimen/_10"
+        android:paddingTop="@dimen/_10"
+        android:paddingEnd="@dimen/_10"
+        android:paddingBottom="@dimen/_10"
+        android:text="Show"
+        android:textColor="#CDCDCD"
+        android:textSize="14dp" />
+</LinearLayout>

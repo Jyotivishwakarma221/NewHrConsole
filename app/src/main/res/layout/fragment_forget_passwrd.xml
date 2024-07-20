@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        tools:context=".newHomePage.ForgetPasswrdFragment">
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="@dimen/_200dp"
+            android:layout_height="@dimen/_200dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:foregroundGravity="center"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="top"
+            android:orientation="vertical"
+            android:padding="@dimen/_10">
+
+            <TextView
+                android:id="@+id/enter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
+                android:text="Enter your email"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="@dimen/_30dp"
+                android:gravity="center"
+                android:text="Enter your registered email to \n
+receive OTP "
+                android:textColor="#999999"
+                android:textSize="17dp" />
+
+
+            <EditText
+                android:id="@+id/emailId"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50dp"
+                android:layout_margin="@dimen/_10"
+                android:layout_marginTop="@dimen/_40dp"
+                android:background="@drawable/grey_bg_rounded"
+                android:drawableStart="@drawable/mail2"
+                android:drawablePadding="@dimen/_8dp"
+                android:hint="UserA@Investmango.com"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="@dimen/_8dp"
+                android:textColor="#999999"
+                android:textColorHint="#999999"
+                android:textSize="@dimen/_15sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/_20dp">
+                <!--on below line we are creating a progress bar-->
+
+                <TextView
+                    android:id="@+id/requestOtp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/blue_bg"
+                    android:fontFamily="@font/dm_sans"
+                    android:gravity="center"
+                    android:hint="Request OTP"
+                    android:paddingTop="@dimen/_15"
+                    android:paddingBottom="@dimen/_15"
+                    android:textColorHint="@color/white"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:elevation="@dimen/_10"
+            android:background="@drawable/black_button"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:background="@android:color/black"
+        tools:context=".manager.activity.fragment.MyPerformance">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/_10dp">
+
+            <LinearLayout
+                android:id="@+id/heading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:visibility="gone"
+                    android:src="@drawable/backbutton" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Leave Requests"
+                    android:textColor="@color/greyforText"
+                    android:textSize="22sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/today"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_marginTop="@dimen/_10"
+                android:text="Today"
+                android:layout_below="@+id/heading"
+                android:textColor="@color/greyforText"
+                android:textSize="20sp" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/leaverequest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/today"
+                android:padding="5dp" />
+
+            <TextView
+                android:id="@+id/leaveHistory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20dp"
+                android:layout_marginTop="@dimen/_10"
+                android:layout_marginRight="@dimen/_20dp"
+                android:background="@drawable/grey_bg_rounded"
+                android:drawableRight="@drawable/baseline_arrow_forward_24"
+                android:gravity="center"
+                android:padding="@dimen/_10"
+                android:layout_below="@+id/leaverequest"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:text="      Leave History      "
+                android:textColor="@color/greyforText"
+                android:textSize="@dimen/_24dp" />
+        </RelativeLayout>
+    </ScrollView>
+
+</layout>

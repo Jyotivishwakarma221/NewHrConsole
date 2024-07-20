@@ -1,0 +1,11 @@
+<!-- res/layout/item_doc.xml -->
+<ImageView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/imageView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_10"
+    android:background="@drawable/doc_outline"
+    android:layout_marginStart="@dimen/_10"
+    android:layout_marginEnd="@dimen/_10"
+    android:scaleType="fitXY" />

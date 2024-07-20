@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/cardview_border"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="@dimen/_5dp">
+
+        <LinearLayout
+            android:id="@+id/photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="@dimen/_20dp"
+            android:layout_marginTop="@dimen/_10"
+            android:layout_marginBottom="@dimen/_10"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/_5dp">
+
+
+            <ImageView
+                android:id="@+id/profilepic"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/profile" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reeya Sharma"
+                android:textColor="@color/white" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearlay"
+            android:layout_width="@dimen/_200dp"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/photo"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/_10"
+            android:layout_marginTop="@dimen/_10"
+            android:layout_marginEnd="@dimen/_20dp"
+            android:layout_marginBottom="@dimen/_10"
+            android:orientation="vertical"
+            android:padding="@dimen/_5dp">
+
+
+            <TextView
+                android:id="@+id/comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10"
+                android:maxLines="2"
+                android:text=" -------- "
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="Mon, 22 May - Thu, 25 May"
+                android:textColor="@color/greyforText"
+                android:textSize="14sp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text=" Reason :  "
+                    android:textColor="@color/greyforText"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/Reason"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:text=" --------------------"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/approveLay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearlay"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/_10"
+            android:layout_marginBottom="@dimen/_10"
+            android:background="@drawable/cardview_border"
+            android:padding="@dimen/_5dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/approved"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Approved by "
+                android:textColor="@color/greyforText" />
+
+            <TextView
+                android:id="@+id/approvedBy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Approved by "
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/pendingOrReject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearlay"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/_10"
+            android:layout_marginBottom="@dimen/_10"
+            android:background="@drawable/cardview_border"
+            android:paddingStart="@dimen/_20dp"
+            android:paddingTop="@dimen/_5dp"
+            android:paddingEnd="@dimen/_20dp"
+            android:paddingBottom="@dimen/_5dp"
+            android:text="approved"
+            android:textColor="@color/greyforText" />
+    </RelativeLayout>
+</layout>

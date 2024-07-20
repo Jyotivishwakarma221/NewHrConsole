@@ -1,0 +1,57 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/_20dp"
+    android:background="@android:color/white"
+    >
+
+    <TextView
+        android:id="@+id/dialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/logoutss"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/dialogMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/are_you_sure_you_want_to_logout"
+        android:textColor="@color/black"
+        android:paddingStart="16dp"
+        android:paddingEnd="0dp"
+        android:fontFamily="sans-serif-medium"
+        android:textSize="16sp"
+        android:padding="2dp"/>
+    <!-- Icons and Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_5dp"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/iconNo"
+            android:layout_width="@dimen/_30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/cross" />
+
+        <ImageView
+            android:id="@+id/iconYes"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="@dimen/_50dp"
+            android:src="@drawable/checkmark"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:clickable="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="@dimen/_20dp">
+
+            <ImageView
+                android:id="@+id/backBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:src="@drawable/backbutton"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Schedule Meeting"
+                android:textColor="@color/greyforText"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:orientation="vertical"
+                android:padding="@dimen/_10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10dp"
+                    android:layout_marginTop="@dimen/_20dp"
+                    android:text="Title"
+                    android:textColor="@color/greyforText"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:background="@drawable/light_grey_bg"
+                    android:padding="@dimen/_10dp"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10dp"
+                    android:layout_marginTop="@dimen/_20dp"
+                    android:text="Meeting Details"
+                    android:textColor="@color/greyforText"
+                    android:textSize="18sp" />
+
+
+                <EditText
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginStart="@dimen/_10dp"
+                    android:layout_marginTop="@dimen/_20dp"
+                    android:background="@drawable/light_grey_bg"
+                    android:hint="Meeting details"
+                    android:inputType="textMultiLine"
+                    android:maxLines="5"
+                    android:padding="@dimen/_5dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10dp"
+                    android:layout_marginTop="@dimen/_20dp"
+                    android:text="Add team members"
+                    android:textColor="@color/greyforText"
+                    android:textSize="18sp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/memberRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/departName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_5dp"
+                    android:layout_marginStart="@dimen/_20dp"
+                    android:layout_marginEnd="@dimen/_20dp"
+                    android:background="@drawable/blue_bg"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="Team"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_5dp">
+
+                    <ImageView
+                        android:id="@+id/addMore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5dp"
+                        android:background="@drawable/white_grey_bg"
+                        android:padding="5dp"
+                        android:src="@drawable/addsquare" />
+
+                    <TextView
+                        android:id="@+id/removeall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="@dimen/_5dp"
+                        android:layout_marginStart="@dimen/_10dp"
+                        android:background="@drawable/cardview_border"
+                        android:gravity="center"
+                        android:maxLines="5"
+                        android:padding="@dimen/_10"
+                        android:text="  Remove All "
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10dp"
+                    android:layout_marginTop="@dimen/_20dp"
+                    android:text="Time &amp; Date"
+                    android:textColor="@color/greyforText"
+                    android:textSize="18sp" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10">
+
+                    <ImageView
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5dp"
+                        android:background="@drawable/blue_bg"
+                        android:padding="@dimen/_10"
+                        android:src="@drawable/clock_white" />
+
+                    <TextView
+                        android:id="@+id/selectedTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5dp"
+                        android:layout_marginStart="@dimen/_10dp"
+                        android:background="@drawable/grey_bg_rounded"
+                        android:gravity="center"
+                        android:maxLines="5"
+                        android:padding="@dimen/_10"
+                        android:text="  Select Time  "
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/calender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5dp"
+                        android:background="@drawable/blue_bg"
+                        android:padding="@dimen/_10"
+                        android:src="@drawable/baseline_calendar_month_24" />
+
+                    <TextView
+                        android:id="@+id/dateSelected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5dp"
+                        android:layout_marginStart="@dimen/_10dp"
+                        android:background="@drawable/grey_bg_rounded"
+                        android:gravity="center"
+                        android:maxLines="5"
+                        android:padding="@dimen/_10"
+                        android:text="  Select Date  "
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10dp"
+                    android:layout_marginTop="@dimen/_20dp"
+                    android:text="Location"
+                    android:textColor="@color/greyforText"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10"
+                    android:layout_marginBottom="@dimen/_10"
+                    android:padding="@dimen/_5dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5dp"
+                        android:src="@drawable/location_white" />
+
+                    <EditText
+                        android:id="@+id/location"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5dp"
+                        android:hint="location"
+                        android:textColorHint="@color/white"
+                        android:background="@drawable/light_grey_bg"
+                        android:padding="@dimen/_5dp"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/delete"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/delete_btn"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/_10"
+                        android:paddingBottom="@dimen/_10"
+                        android:text="x  Delete"
+                        android:textColor="@color/white"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:id="@+id/createNow"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/attendancebutton"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/_10"
+                        android:paddingBottom="@dimen/_10"
+                        android:text="+  Create"
+                        android:textColor="@color/white"
+                        android:textSize="18dp" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</layout>

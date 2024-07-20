@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:padding="@dimen/_10dp"
+        tools:context=".EmployeeAction.EmployeeActions">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="@dimen/_20dp">
+
+            <ImageView
+                android:id="@+id/backBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:src="@drawable/backbutton"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/dm_sans"
+                android:gravity="center"
+                android:text="Payroll Panel"
+                android:textColor="@color/greyforText"
+                android:textSize="22sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/grey_bg_rounded"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="ID"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="Name"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="Basic Salary"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="Medical Fund"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="HRA"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="Bonus"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="Incentive"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="Convenience"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="Total Salary"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="Deduction"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="Pay Salary"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:weightSum="3">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text=":"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text=":"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text=":"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text=":"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text=":"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text=":"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text=":"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text=":"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text=":"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text=":"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text=":"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/black_button"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="121"
+                    android:textColor="@color/greyforText"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/black_button"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="Aman Verma"
+                    android:textColor="@color/greyforText"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:id="@+id/basicSalary"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/black_button"
+                    android:drawableStart="@drawable/baseline_currency_rupee_24"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="---"
+                    android:textColor="@color/greyforText"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:id="@+id/medicalfund"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/black_button"
+                    android:drawableStart="@drawable/baseline_currency_rupee_24"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="---"
+                    android:textColor="@color/greyforText"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:id="@+id/hra"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/black_button"
+                    android:drawableStart="@drawable/baseline_currency_rupee_24"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="---"
+                    android:textColor="@color/greyforText"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:id="@+id/bonus"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/black_button"
+                    android:drawableStart="@drawable/baseline_currency_rupee_24"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="---"
+                    android:textColor="@color/greyforText"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:id="@+id/incentive"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/black_button"
+                    android:drawableStart="@drawable/baseline_currency_rupee_24"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="---"
+                    android:textColor="@color/greyforText"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/black_button"
+                    android:drawableStart="@drawable/baseline_currency_rupee_24"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="---"
+                    android:textColor="@color/greyforText"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:id="@+id/totalSalary"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/black_button"
+                    android:drawableStart="@drawable/baseline_currency_rupee_24"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="---"
+                    android:textColor="@color/greyforText"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:id="@+id/deduction"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/black_button"
+                    android:drawableStart="@drawable/baseline_currency_rupee_24"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="---"
+                    android:textColor="@color/greyforText"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:id="@+id/paySalary"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/black_button"
+                    android:drawableStart="@drawable/baseline_currency_rupee_24"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="---"
+                    android:textColor="@color/light_green"
+                    android:textSize="@dimen/_15" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

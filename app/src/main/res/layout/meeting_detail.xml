@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="600dp"
+    android:background="@drawable/dark_grey_bg"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/_20dp"
+    android:paddingTop="@dimen/_20dp"
+    android:paddingEnd="@dimen/_20dp"
+    android:paddingBottom="@dimen/_40dp" >
+
+    <TextView
+        android:id="@+id/dateTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_20dp"
+        android:padding="@dimen/_10"
+        android:text="fri, March 29 • 11:00AM - 2:00PM"
+        android:textColor="@color/lighter_Grey"
+        android:textSize="@dimen/_15sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/_20dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/dm_sans"
+            android:padding="@dimen/_5dp"
+            android:text="Pre Launch Testing"
+            android:textColor="@color/white"
+            android:textSize="22dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/dm_sans"
+            android:padding="@dimen/_5dp"
+            android:text="Participants:"
+            android:textColor="@color/lighter_Grey"
+            android:textSize="15dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/members"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/dm_sans"
+            android:padding="@dimen/_5dp"
+            android:text="Minutes of Meeting"
+            android:textColor="@color/lighter_Grey"
+            android:textSize="18dp" />
+
+
+        <TextView
+            android:id="@+id/details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5dp"
+            android:padding="@dimen/_10"
+            android:text="Reduce Backend Load"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

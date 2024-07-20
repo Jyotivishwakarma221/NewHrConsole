@@ -1,0 +1,514 @@
+package com.investmango.hrconsole.api;
+
+import com.investmango.hrconsole.model.AddEvent;
+import com.investmango.hrconsole.model.AddTask;
+import com.investmango.hrconsole.model.AdminSalaryDetails;
+import com.investmango.hrconsole.model.AdminTask;
+import com.investmango.hrconsole.model.AllActiveUsers;
+import com.investmango.hrconsole.model.AllLeaveResponse;
+import com.investmango.hrconsole.model.AllSalaryDetail;
+import com.investmango.hrconsole.model.ApprovedLeaves;
+import com.investmango.hrconsole.model.AssignMeeting;
+import com.investmango.hrconsole.model.AssignTask;
+import com.investmango.hrconsole.model.Assignment;
+import com.investmango.hrconsole.model.Attendance;
+import com.investmango.hrconsole.model.AttendanceResponse;
+import com.investmango.hrconsole.model.Departments;
+import com.investmango.hrconsole.model.DocsModel;
+import com.investmango.hrconsole.model.DocumentModel;
+import com.investmango.hrconsole.model.DocumentResponse;
+import com.investmango.hrconsole.model.EmpPerformance;
+import com.investmango.hrconsole.model.Event;
+import com.investmango.hrconsole.model.FeedbackRequest;
+import com.investmango.hrconsole.model.FeedbackResponseItem;
+import com.investmango.hrconsole.model.LeaveReqResponse;
+import com.investmango.hrconsole.model.LeaveRequest;
+import com.investmango.hrconsole.model.LeaveRequestUpdateStatus;
+import com.investmango.hrconsole.model.MeetingDetails;
+import com.investmango.hrconsole.model.MeetingDetailsAdmin;
+import com.investmango.hrconsole.model.MeetingListResponse;
+import com.investmango.hrconsole.model.MeetingResponse;
+import com.investmango.hrconsole.model.Message;
+import com.investmango.hrconsole.model.MessageResponse;
+import com.investmango.hrconsole.model.MonthlyPerformanceResp;
+import com.investmango.hrconsole.model.PresentEmpRes;
+import com.investmango.hrconsole.model.PresentEmployee;
+import com.investmango.hrconsole.model.PreviousTask;
+import com.investmango.hrconsole.model.Salary;
+import com.investmango.hrconsole.model.SaveUserLeave;
+import com.investmango.hrconsole.model.SignUp;
+import com.investmango.hrconsole.model.Task;
+import com.investmango.hrconsole.model.TaskResponse;
+import com.investmango.hrconsole.model.TodayAttendnce;
+import com.investmango.hrconsole.model.TotalEmpResponseItem;
+import com.investmango.hrconsole.model.UpdateMeeting;
+import com.investmango.hrconsole.model.UpdateTaskStatus;
+import com.investmango.hrconsole.model.User;
+import com.investmango.hrconsole.model.messageItem;
+
+import java.util.List;
+
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.PATCH;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
+
+public interface ApiInterface {
+    // login endpoint
+    @POST("generate-token")
+    Call<User> logInUser(@Body RequestBody requestBody);
+
+    // Refresh Token
+    @POST("user/refresh-token")
+    Call<User> refreshToken(@Body RequestBody requestBody);
+
+    // Current User
+    @GET("current-user")
+    Call<User> getCurrentUser(@Header("Authorization") String token);
+
+    @GET("/user/get/user/by/{user_id}")
+    Call<User> getChildUser(@Path("user_id") long user_id);
+
+    // Sign Up
+    @POST("user/save/new")
+    Call<SignUp> signUp(@Header("Authorization") String token, @Body SignUp requestBody);
+
+    // Save FCM Token
+    @POST("save/device/token/by/id/{user_id}")
+    Call<String> saveDeviceToken(@Header("Authorization") String token, @Body RequestBody deviceToken, @Path("user_id") Long id);
+
+    @GET("/get/meeting/by/meeting/id/{id}")
+    Call<MeetingResponse> getmeetings(@Header("Authorization") String token, @Path("id") Long id);
+
+    @GET("/get/message/by/user/id/{user_id}")
+    Call<List<MessageResponse>> getMessages(@Header("Authorization") String token, @Path("user_id") Long user_id);
+
+    @GET("/get/leaves/of/user/by/userId/{user_id}")
+    Call<AllLeaveResponse>
+    getAllLeaves(@Path("user_id") Long user_id, @Query("page") int page, @Query("size") int size);
+
+    @GET("/get/leaves/of/user/by/userId/{user_id}")
+    Call<AllLeaveResponse>
+    getFilteredLeave(@Path("user_id") Long user_id, @Query("startDate") Long startDate, @Query("endDate") Long endDate, @Query("status") String status);
+
+    @GET("/get/leaves/of/user/by/userId/{user_id}")
+    Call<AllLeaveResponse>
+    getFilteredLeaveWithoutDate(@Path("user_id") Long user_id, @Query("status") String status);
+
+    @GET("/manager/get/all/members/list/by/id/{managerId}")
+    Call<List<TotalEmpResponseItem>> getTotalEmp(@Path("managerId") Long managerId, @Query("subChild") Boolean subChild);
+
+    @GET("/user/get/all/user/list")
+    Call<List<TotalEmpResponseItem>> getAllEmployee(@Query("isEnabled") Boolean isEnabled);
+
+    @GET("/user/get/all/department/list")
+    Call<Departments> getDepartments();
+
+
+    @GET("/monthly/performance/record/by/user/id/{userId}")
+    Call<MonthlyPerformanceResp> getMonthPerformance(@Path("userId") Long userId, @Query("month") String month);
+
+    @GET("/monthly/performance/record/by/user/id/{userId}")
+    Call<MonthlyPerformanceResp> getMonthPerformance(@Path("userId") Long userId);
+
+    @GET("/manager/get/all/members/leaves/by/id/{managerId}")
+    Call<LeaveReqResponse> getPendingLeaves(@Header("Authorization") String token, @Path("managerId") Long managerId, @Query("subChild") Boolean subChild
+            , @Query("managerStatus") String status, @Query("page") int page, @Query("size") int size);
+
+    @GET("get/all/leaves")
+    Call<LeaveReqResponse> getFilteredLeave(@Query("userId") Long userId, @Query("startDate") Long startDate, @Query("endDate") Long endDate
+            , @Query("status") String status, @Query("page") int page, @Query("size") int size);
+
+    @GET("get/all/leaves")
+    Call<LeaveReqResponse> getFilteredLeaveWithoutDate(@Query("userId") Long userId, @Query("status") String status, @Query("page") int page, @Query("size") int size);
+
+
+    @GET("/manager/get/all/members/attendance/by/id/{managerId}")
+    Call<PresentEmpRes> PresentEmployee(@Header("Authorization") String token, @Path("managerId") Long managerId, @Query("subChild") Boolean subChild , @Query("size")int page);
+
+    @GET("manager/get/all/members/tasks/by/id/{managerId}")
+    Call<TaskResponse> memberTaskOFManager(@Path("managerId") Long managerId, @Query("page") int page, @Query("size") int size);
+
+    // Send OTP on registered email id.
+    @POST("forget/send-otp")
+    Call<ResponseBody> sendOtp(@Header("Authorization") String token, @Query("email") String email);
+
+    @POST("forget/send-otp")
+    Call<String> NewsendOtp(@Query("email") String email);
+
+    // Verify - OTP
+    @POST("forget/verify-otp")
+    Call<ResponseBody> verifyOtp(@Query("email") String email, @Query("otp") String otp);
+
+    // Reset Password
+    @POST("forget/change-password")
+    Call<ResponseBody> resetPassword(@Query("email") String email, @Query("password") String password);
+
+    // Change Password
+    @PATCH("forget/update/password/by/id/{user_id}")
+    Call<ResponseBody> updatePassword(
+            @Path("user_id") long userId,
+            @Query("password") String password
+    );
+
+    // Attendance
+    @POST("save/user/attendance/{user_id}")
+    Call<ResponseBody> saveAttendance(
+            @Body Attendance attendance,
+            @Path("user_id") Long id);
+
+    @PUT("update/user/attendance/{user_id}")
+    Call<String> updateAttendance(@Body Attendance attendance,
+                                  @Path("user_id") Long id);
+
+    @PUT("update/new/performance/by/user/id/{user_id}")
+    Call<EmpPerformance> updatePerformance(@Body EmpPerformance performance,
+                                           @Path("user_id") Long id);
+
+    @GET("get/user/attendance/{user_id}")
+    Call<List<Attendance>> getUserAttendance(
+            @Path("user_id") Long id);
+
+    @GET("get/attendance/record/by/{userId}")
+    Call<AttendanceResponse> getAttendance(
+            @Path("userId") Long userId, @Query("page") int page);
+
+    @GET("get/user/attendance/{user_id}/{start_date}/{end_date}")
+    Call<AttendanceResponse> getUsernewAttendancebyMonth(
+            @Path("user_id") Long id, @Path("start_date") Long start_date, @Path("end_date") Long end_date ,@Query("size") int size);
+
+    @PUT("update/user/attendance/{user_id}")
+    Call<ResponseBody> updateUserAttendance(
+            @Header("Authorization") String token,
+            @Body Attendance attendance,
+            @Path("user_id") Long id);
+
+    @GET("get/user/monthly/attendance/count/by/{userId}")
+    Call<Integer> getUserMonthlyAttendanceCount(
+            @Header("Authorization") String token,
+            @Path("userId")
+            long userId);
+
+    @GET("get/attendance/record/of/user/by/{userId}")
+    Call<ResponseBody> getMonthlyAttendance(
+            @Header("Authorization") String token,
+            @Path("userId") long userId);
+
+    @GET("get/today/attendance/{user_id}")
+    Call<TodayAttendnce> getTodayAttendance(
+            @Path("user_id") long userId);
+
+    // Meeting
+    @GET("get/meeting/by/attendees/by/user/id/{user_id}")
+    Call<List<MeetingDetails>> getAllTodayMeeting(
+            @Header("Authorization") String token,
+            @Path("user_id") Long id
+    );
+
+    @GET("get/meeting/by/attendees/by/user/id/{user_id}")
+    Call<MeetingListResponse> getTodayMeeting(
+            @Path("user_id") Long id
+    );
+
+    @GET("get/meeting/by/attendees/by/user/id/{user_id}")
+    Call<MeetingListResponse> getFilteredOwnMeeting(
+            @Path("user_id") Long id,
+            @Query("status") String status,
+            @Query("startDate") long startDate,
+            @Query("endDate") long endDate,
+            @Query("page") int page,
+            @Query("size") int size
+    );
+
+    @POST("assign/meeting/by/user/id/{userId}")
+    Call<AssignMeeting> assignMeetingUser(
+            @Path("userId") long userId,
+            @Body AssignMeeting meetingObj
+    );
+
+    @PUT("update/meeting/by/user/id/{user_id}")
+    Call<AssignMeeting> editMeetingUser(
+            @Path("user_id") long userId,
+            @Body AssignMeeting meetingObj
+    );
+
+    @POST("assign/meeting/by/user/id/{userId}")
+    Call<AssignMeeting> assignMeetingDepartment(
+            @Path("userId") long userId,
+            @Body AssignMeeting meetingObj,
+            @Query("department") String department
+    );
+
+    @POST("custom-chat/save/new")
+    Call<String> sendMessage(
+            @Body messageItem meetingObj
+    );
+
+    @GET("get/today/all/attendance/list")
+    Call<List<PresentEmployee>> getAllTodayAttendance(
+            @Header("Authorization") String token
+    );
+
+    @GET("get/today/all/attendance/list")
+    Call<PresentEmpRes> newgetAllTodayAttendance(
+            @Header("Authorization") String token,
+            @Query("size") int size
+    );
+
+    // Salary
+    @GET("get/salary/by/user/id/{user_id}")
+    Call<List<Salary>> userSalary(
+            @Header("Authorization") String token,
+            @Path("user_id") Long userId
+    );
+
+    @GET("get/all/time/total/salary/cycle/by/user/{user_id}")
+    Call<AllSalaryDetail> allSalaryTaken(
+            @Header("Authorization") String token,
+            @Path("user_id") Long id
+    );
+
+    @GET("get/all/salary")
+    Call<List<AdminSalaryDetails>> getAllSalaryDetails(
+            @Header("Authorization") String token);
+
+    // Task
+    @PUT("update/task/status/by/user/id/{user_id}")
+    Call<ResponseBody> updateUserTaskStatus(
+            @Body UpdateTaskStatus requestBody,
+            @Path("user_id") long userId
+    );
+
+    @GET("get/task/by/user/id/{user_id}")
+    Call<List<Task>> getAllTask(
+            @Header("Authorization") String token,
+            @Path("user_id") Long id
+
+    );
+
+    @GET("get/task/by/user/id/{user_id}")
+    Call<TaskResponse> getAllTaskwithpage(
+            @Path("user_id") Long id,
+            @Query("page") int page,
+            @Query("taskStatus") String taskStatus,
+            @Query("size") int size
+    );
+
+    @GET("get/task/by/user/id/{user_id}")
+    Call<TaskResponse> getFilterTaskwithpage(
+            @Path("user_id") Long id,
+            @Query("page") int page,
+            @Query("taskStatus") String taskStatus,
+            @Query("startDate") long startDate,
+            @Query("endDate") long endDate,
+            @Query("size") int size
+    );
+
+    @GET("get/task/by/user/id/{user_id}")
+    Call<TaskResponse> getFilterTaskwithpageWithoutDate(
+            @Path("user_id") Long id,
+            @Query("page") int page,
+            @Query("taskStatus") String taskStatus,
+            @Query("size") int size
+    );
+
+    @GET("get/task/by/user/id/{user_id}")
+    Call<List<Task>> getFilterTask(
+            @Header("Authorization") String token,
+            @Path("user_id") Long id,
+            @Query("taskStatus") String taskStatus
+    );
+
+
+    @POST("save/tasks/by/user/id/{user_id}")
+    Call<AddTask> addTask(
+            @Header("Authorization") String token,
+            @Body AddTask task, @Path("user_id") Long id
+    );
+
+    @POST("assign/task/to/employee/by/id")
+    Call<AssignTask> assignTaskUser(
+            @Header("Authorization") String token,
+            @Query("user_id") long selectedUserId,
+            @Body AssignTask assignTask
+    );
+
+    @PUT("update/task/by/user/id/{user_id}")
+    Call<AddTask> addComment(
+            @Header("Authorization") String token,
+            @Body AddTask task, @Path("user_id") Long id
+    );
+
+    @GET("get/todays/task/of/all/user")
+    Call<List<AdminTask>> getUserAllTask(
+            @Header("Authorization") String token);
+
+    @GET("get/all/previous/task")
+    Call<List<PreviousTask>> getPreviousTask(
+            @Header("Authorization") String token);
+
+    @GET("monthly-statistics/by/{user_id}")
+    Call<ResponseBody> getMonthlyTaskStatistics(@Header("Authorization") String token, @Path("user_id") long userId);
+
+    // Leave
+    @POST("save/leave/by/user/id/{user_id}")
+    Call<SaveUserLeave> saveUserLeave(
+            @Header("Authorization") String token,
+            @Body RequestBody requestBody,
+            @Path("user_id") Long id
+    );
+
+    @POST("save/leave/by/user/id/{user_id}")
+    Call<String> askForLeave(
+            @Header("Authorization") String token,
+            @Body RequestBody requestBody,
+            @Path("user_id") Long id
+    );
+
+    @GET("get/leaves/of/user/by/userId/{user_id}")
+    Call<List<SaveUserLeave>> getUserLeave(
+            @Header("Authorization") String token,
+            @Path("user_id") Long id
+    );
+
+    @PATCH("update/leave/status/by/user/id/{user_id}")
+    Call<Void> ApproveLeaves(
+            @Header("Authorization") String token,
+            @Body LeaveRequestUpdateStatus requestBody,
+            @Path("user_id") long userId
+    );
+
+    @GET("get/all/pending/leaves")
+    Call<List<LeaveRequest>> getAllPendingLeave(
+            @Header("Authorization") String token);
+
+    @GET("get/all/pending/leaves")
+    Call<LeaveReqResponse> newgetAllPendingLeave(
+            @Header("Authorization") String token);
+
+    @GET("get/all/approved/leaves")
+    Call<List<ApprovedLeaves>> getApprovedLeaves(
+            @Header("Authorization") String token);
+
+    // Meeting
+    @GET("get/meeting/by/meeting/host/{user_id}")
+    Call<List<MeetingDetailsAdmin>> getAllMeeting(
+            @Header("Authorization") String token,
+            @Path("user_id") Long id
+    );
+
+    @PUT("update/meeting/status/by/user/id/{user_id}")
+    Call<ResponseBody> updateAdminMeetingStatus(
+            @Header("Authorization") String token,
+            @Body UpdateMeeting requestBody,
+            @Path("user_id") long userId
+    );
+
+    // Assignment
+    @GET("get/all/pending/assignments")
+    Call<List<Assignment>> getAssignment(@Header("Authorization") String token);
+
+    // All active user
+    @GET("user/active/all")
+    Call<List<AllActiveUsers>> getAllActiveUser(@Header("Authorization") String token);
+
+    // PDF generate
+    @GET("generate/active/user/pdf")
+    Call<Void> downloadPdf();
+
+    // Excel generate
+    @GET("generate/active/user/excel")
+    Call<Void> downloadExcel();
+
+    @GET("generate/get/user/salary/pdf/{user_id}")
+    Call<Void> getUserSalaryPdf(@Header("Authorization") String token, @Path("user_id") long userId);
+
+    @GET("generate/get/user/task/pdf/{user_id}")
+    Call<Void> getTask(@Path("user_id") long userId);
+
+    @GET("generate/get/user/task/pdf/{user_id}")
+    Call<Void> getFilteredTaskDownload(@Path("user_id") long userId, @Query("fromDate") long fromDate, @Query("toDate") long toDate);
+
+    // Update Profile
+    @PATCH("user/update/image/on/cloud/by/{user_id}")
+    Call<ResponseBody> uploadFile(
+            @Header("Authorization") String token,
+            @Path("user_id") long userId,
+            @Query("file") String file
+    );
+
+
+    @PATCH("user/save/user/doc/by/{user_id}")
+    Call<DocumentModel> saveDocByUserId(
+            @Header("Authorization") String token,
+            @Body DocumentModel documentModel,
+            @Path("user_id") Long userId
+    );
+
+    @PATCH("user/save/user/doc/by/{user_id}")
+    Call<String> saveDocument(
+            @Body DocumentResponse documentModel,
+            @Path("user_id") Long userId
+    );
+
+    @PATCH("verify/user/doc/by/{employeeId}")
+    Call<ResponseBody> verifyEmpDocument(
+            @Header("Authorization") String token,
+            @Path("employeeId") long employeeId,
+            @Query("isverified") boolean isverified
+    );
+
+    @PATCH("update/user/doc/by/{user_id}")
+    Call<DocumentModel> updateEmpDocument(
+            @Header("Authorization") String token,
+            @Body DocumentModel documentModel,
+            @Path("user_id") Long userId
+    );
+
+
+    @GET("get/user/doc/by/{user_id}")
+    Call<DocsModel> getDocs(@Header("Authorization") String token, @Path("user_id") long userId);
+
+    @GET("get/user/doc/by/{user_id}")
+    Call<ResponseBody> getDoc(@Header("Authorization") String token, @Path("user_id") long userId);
+
+    @GET("get/user/doc/by/{user_id}")
+    Call<DocumentResponse> getdocument(@Path("user_id") long userId);
+
+    @GET("get/feedback/by/user/id/{userId}")
+    Call<List<FeedbackResponseItem>> getfeedBack(@Path("userId") long userId);
+
+    // Feedback
+    @POST("save/new/feedback/by/user/id/{userId}")
+    Call<FeedbackRequest> saveNewFeedbacks(
+            @Path("userId") Long userId,
+            @Body FeedbackRequest feedbackRequest
+    );
+
+    // Performance
+    @GET("get/performace/of/employee/by/employee/id/{user_id}")
+    Call<List<EmpPerformance>> getSingleEmployeeAllPerformanceByEmpId(@Header("Authorization") String token, @Path("user_id") long userId);
+
+    // Event
+    @POST("save/new/announcement")
+    Call<AddEvent> saveNewAnnouncement(@Header("Authorization") String token, @Body AddEvent addEvent);
+
+    @GET("get/upcoming/events")
+    Call<List<Event>> upcomingEvents(@Header("Authorization") String token);
+
+    @GET("custom-chat/get/by/user/id/{userId}")
+    Call<List<Message>> getCustomMessage(@Header("Authorization") String token, @Path("userId") long userId);
+
+    @GET("custom-chat/get/by/user/id/{userId}")
+    Call<MessageResponse> getNewCustomMessage(@Path("userId") long userId, @Query("page") int page);
+
+    @GET("custom-chat/get/by/user/id/{userId}")
+    Call<MessageResponse> getFilteredMessage(@Path("userId") long userId, @Query("startDate") long startDate, @Query("endDate") long endDate);
+}

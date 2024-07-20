@@ -1,0 +1,125 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'org.jetbrains.kotlin.android'
+
+android {
+    namespace 'com.investmango.hrconsole'
+    compileSdk 34
+
+    defaultConfig {
+        ndk {
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+        }
+        applicationId "com.investmango.hrconsole"
+        minSdk 21
+        targetSdk 33
+        versionCode 11
+        versionName "1.9"
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        viewBinding true
+        dataBinding = true
+
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.12.0'
+
+    implementation "androidx.fragment:fragment-ktx:1.4.0"
+    implementation 'androidx.fragment:fragment:1.3.0'
+
+//    implementation "devs.mulham.horizontalcalendar:horizontalcalendar:1.3.4"
+//    implementation 'com.michalsvec:single-row-calednar:1.0.0'
+
+
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.12'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.6.2'
+
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
+
+    //dependency for kotlin
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "androidx.fragment:fragment-ktx:1.4.0"
+
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.gms:play-services-maps:18.2.0'
+    implementation 'com.google.android.gms:play-services-location:21.2.0'
+    implementation 'com.google.firebase:firebase-database:21.0.0'
+    implementation 'com.google.firebase:firebase-installations:18.0.0'
+    implementation 'com.google.firebase:firebase-messaging:24.0.0'
+    implementation 'com.itextpdf:itextg:5.5.10'
+    implementation 'com.github.dmytrodanylyk.shadow-layout:library:1.0.3'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    // Material Design
+    implementation 'com.google.android.material:material:1.12.0'
+    // Round Image
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+    // For loading image
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    implementation 'androidx.activity:activity:1.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
+    // For Graph
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    // cloudinary
+    implementation 'com.cloudinary:cloudinary-android:2.8.0'
+    // Photo View
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    // Multiple Date Selection
+    implementation 'com.google.android.material:material:1.12.0'
+//
+//    //    // for horizontal calender
+    implementation 'com.github.gastricspark:scrolldatepicker:0.0.1'
+
+    //for time span view
+//    implementation 'com.github.alamkanak:android-week-view:1.2.6'
+
+    //pie Chart
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    //month year picker
+    implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
+    implementation 'com.github.dewinjm:monthyear-picker:1.0.2'
+
+    //for swipe able button
+    implementation 'com.github.zerobranch:SwipeLayout:1.3.1'
+
+    //number picker
+    implementation 'io.github.ShawnLin013:number-picker:2.4.13'
+
+    //increment decrement counts
+    implementation 'com.github.Damercy:IncrementDecrementButton:2.0.0'
+
+    //for steps progress bar in performance.
+    implementation 'com.anton46:stepsview:0.0.2'
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+
+}
+

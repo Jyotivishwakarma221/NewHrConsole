@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:clickable="true"
+        android:orientation="vertical"
+        android:padding="@dimen/_10dp"
+        tools:context=".manager.activity.fragment.NewTaskFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="@dimen/_20dp">
+
+            <ImageView
+
+                android:id="@+id/backBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:visibility="gone"
+                android:src="@drawable/backbutton" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Add Task"
+                android:textColor="@color/greyforText"
+                android:textSize="22sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="Task Description"
+            android:textColor="@color/greyforText"
+            android:textSize="22sp" />
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_margin="5dp"
+    android:fillViewport="true"
+    android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/taskDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:isScrollContainer="true"
+            android:inputType="textMultiLine"
+
+            android:background="@drawable/grey_bg_rounded"
+            android:lines="10"
+            android:padding="10dp" />
+</ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Upload File"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
+
+            <ImageView
+                android:id="@+id/uploadDoc"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="end"
+                android:layout_margin="@dimen/_5dp"
+                android:layout_weight="1"
+                android:background="@drawable/grey_bg_rounded"
+                android:padding="@dimen/_5dp"
+                android:src="@drawable/uploadwhite" />
+            <TextView
+                android:id="@+id/uploadDocname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="@dimen/_5dp"
+                android:layout_weight="1"
+                android:paddingTop="@dimen/_20dp"
+                android:visibility="gone"
+                android:drawableEnd="@drawable/baseline_close_24"
+                android:gravity="center"
+                android:src="@drawable/uploadwhite"
+                android:text="naskdn"
+                android:textColor="@color/white"
+              />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_100dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5dp"
+                android:layout_weight="1"
+                android:background="@drawable/delete_btn"
+                android:gravity="center"
+                android:paddingTop="@dimen/_10"
+                android:paddingBottom="@dimen/_10"
+                android:text="x  Delete"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/assignTask"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/attendancebutton"
+                android:gravity="center"
+                android:paddingTop="@dimen/_10"
+                android:paddingBottom="@dimen/_10"
+                android:text="+   Add Task"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

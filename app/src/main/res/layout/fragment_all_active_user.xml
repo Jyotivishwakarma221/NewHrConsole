@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".admin.fragment.AllActiveUserFragment">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_30dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- ImageView -->
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="@dimen/_25dp"
+                android:layout_height="@dimen/_30dp"
+                android:src="@drawable/activeuser"
+                android:scaleType="centerCrop"
+                android:layout_marginTop="22dp"
+                android:layout_marginEnd="40dp"
+                android:layout_gravity="end"/>
+
+            <!-- RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/background"
+                android:layout_marginTop="5dp"
+                android:id="@+id/activeAllUser_RecyclerView" />
+
+        </LinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</FrameLayout>

@@ -1,0 +1,13 @@
+<!-- res/layout/image_popup_layout.xml -->
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.github.chrisbanes.photoview.PhotoView
+        android:id="@+id/popupPhotoView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>

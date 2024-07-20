@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:background="@android:color/black"
+        android:orientation="vertical"
+        android:padding="@dimen/_10dp"
+        tools:context=".manager.activity.fragment.MyPerformance">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginStart="25dp"
+                android:src="@drawable/backbutton" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="My Performance"
+                android:textColor="@color/greyforText"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+
+        <!-- Add a ScrollView below the second LinearLayout -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"
+                    android:layout_margin="5dp"
+                    app:cardBackgroundColor="@color/lightGreycolor"
+                    app:cardCornerRadius="18dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/grey_bg_rounded" />
+
+
+
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:id="@+id/profilePhoto"
+                            android:layout_width="110dp"
+                            android:layout_height="110dp"
+                            app:riv_oval="true"
+                            android:layout_gravity="center"
+                            android:scaleType="centerCrop"
+                            android:layout_marginBottom="45dp"
+                            android:src="@drawable/profilephoto" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_margin="@dimen/_5dp"
+                        android:background="@drawable/black_button"
+                        android:padding="@dimen/_10dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="Rohan Khanna "
+                            android:textColor="@color/white"
+                            android:textSize="18dp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_15"
+                                android:text="in"
+                                android:textColor="@color/greyforText"
+                                android:textSize="18dp"
+                                android:textStyle="normal" />
+
+                            <TextView
+                                android:id="@+id/department"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:text="@string/department"
+                                android:textColor="@color/white"
+                                android:textSize="15dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:padding="5dp"
+                    android:text="Task History"
+                    android:textColor="@color/greyforText"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:background="@drawable/dark_grey_bg"
+                    android:padding="@dimen/_10dp">
+
+                    <TextView
+                        android:id="@+id/text1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5dp"
+                        android:text="Last Tasks to Do"
+                        android:textColor="@color/white"
+                        android:textSize="14dp" />
+
+
+                    <TextView
+                        android:id="@+id/dotText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignEnd="@+id/text1"
+                        android:drawableStart="@drawable/red_dot"
+                        android:padding="@dimen/_5dp"
+                        android:text="  Very Important"
+                        android:textColor="@color/white"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/task"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/text1"
+                        android:padding="@dimen/_10"
+                        android:text="Team Assign For New Assignment"
+                        android:textColor="@color/greyforText"
+                        android:textSize="14dp" />
+                </RelativeLayout>
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_5dp"
+                    android:animateLayoutChanges="true"
+                    android:background="@drawable/tab_bg"
+                    android:elevation="@dimen/_30dp"
+                    android:paddingBottom="@dimen/_5dp"
+                    app:tabBackground="@drawable/tab_selected"
+                    app:tabGravity="fill"
+                    app:tabIndicator="@drawable/tab_selected"
+                    app:tabMode="fixed"
+                    app:tabSelectedTextColor="@color/white"
+                    app:tabTextColor="#A2A2B5" />
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="1550dp" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+</layout>

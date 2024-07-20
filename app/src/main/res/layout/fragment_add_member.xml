@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:clickable="true"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:orientation="vertical"
+        android:padding="@dimen/_10dp"
+        tools:context=".EmployeeAction.AddMeeting">
+
+        <LinearLayout
+            android:id="@+id/layoutlinear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="@dimen/_20dp">
+
+            <ImageView
+
+                android:id="@+id/backBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:visibility="gone"
+                android:src="@drawable/backbutton" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Scheduled Meeting"
+                android:fontFamily="@font/dm_sans"
+                android:textColor="@color/greyforText"
+                android:textSize="22sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layoutlinear"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/outline_filter_alt_24" />
+        <com.harrywhewell.scrolldatepicker.DayScrollDatePicker
+            android:id="@+id/day_date_picker"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerForCalender"
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/_5dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/Filter" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerFortime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5dp"
+            android:background="@color/strokeBlack"
+            android:layout_below="@+id/recyclerForCalender"
+            android:layout_marginTop="@dimen/_5dp" />
+
+        <Button
+            android:id="@+id/createMeeting"
+            android:layout_width="@dimen/_150dp"
+            android:layout_height="50dp"
+            android:hint="Create"
+            android:fontFamily="@font/dm_sans"
+            style="@style/AttendanceButton"
+            android:textColorHint="@color/white"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/attendancebutton"
+            android:layout_marginBottom="16dp" />
+
+        <!--        <com.alamkanak.weekview.WeekView-->
+<!--            android:id="@+id/weekView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content" />-->
+    </RelativeLayout>
+</layout>

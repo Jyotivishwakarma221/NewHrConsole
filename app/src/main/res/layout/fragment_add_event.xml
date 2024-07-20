@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_20dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="@dimen/_20dp"
+        android:elevation="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#2C282A"
+
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:fontFamily="@font/poppins"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                />
+
+            <EditText
+                android:id="@+id/edit_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter description"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:singleLine="true"
+                android:textSize="@dimen/_15sp"
+                android:inputType="text"
+                android:padding="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Subject"
+                android:fontFamily="@font/poppins"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:layout_marginTop="16dp" />
+
+            <EditText
+                android:id="@+id/edit_subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter subject"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:singleLine="true"
+                android:textSize="@dimen/_15sp"
+                android:inputType="text"
+                android:padding="8dp"
+                 />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/_20dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Choose Poster"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/showImages"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/_13sp"
+                    android:textColor="@color/white" />
+
+                <ImageView
+                    android:id="@+id/edit_poster"
+                    android:layout_width="0dp"
+                    android:layout_height="25dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/baseline_upload_file_24" />
+            </LinearLayout>
+
+            <!-- Date Picker -->
+            <Button
+                android:id="@+id/date_picker_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Select Date"
+                android:textColorHint="@color/white"
+                android:backgroundTint="#DF80A0"
+                android:layout_marginTop="16dp"
+                android:textSize="13sp" />
+
+            <!-- Time Picker -->
+            <Button
+                android:id="@+id/time_picker_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Select Time"
+                android:backgroundTint="#DF80A0"
+                android:textColorHint="@color/white"
+                style="@style/CustomButtonStyle"
+                android:layout_marginTop="16dp"
+                android:textSize="13sp" />
+
+            <Button
+                android:id="@+id/submit_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Submit"
+                android:background="@drawable/button"
+                android:textColorHint="@color/white"
+                android:textStyle="bold"
+                style="@style/CustomButtonStyle"
+                android:textSize="@dimen/_15sp"
+                android:fontFamily="@font/poppins"
+                android:layout_marginTop="16dp" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    </ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

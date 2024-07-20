@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRefreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".admin.fragment.TodayPresentEmployeeFragment">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/present_employee"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background"
+            android:layout_marginTop="@dimen/_60dp" />
+
+    </FrameLayout>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

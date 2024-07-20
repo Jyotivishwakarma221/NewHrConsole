@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/cardview_border"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/_5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/_5dp">
+
+
+            <ImageView
+                android:id="@+id/profilepic"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/profile" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:maxLines="2"
+                    android:text="Abhay"
+                    android:textColor="@color/white" />
+
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" 10:58 AM "
+                    android:textColor="@color/greyforText"
+                    android:textSize="12dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/leaveType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginStart="@dimen/_30dp"
+                android:layout_marginTop="@dimen/_15"
+                android:layout_marginEnd="@dimen/_30dp"
+                android:background="@drawable/cardview_border"
+                android:gravity="center"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="Casual Leave"
+                android:textColor="@color/greyforText"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="-7dp"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:visibility="gone">-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="center"-->
+<!--                android:orientation="vertical">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text="Leave Date :"-->
+<!--                    android:textColor="@color/greyforText"-->
+<!--                    android:textSize="14sp" />-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:gravity="start"-->
+<!--                    android:text=" Duration :   "-->
+<!--                    android:textColor="@color/greyforText"-->
+<!--                    android:textSize="14sp" />-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text=" Reason :  "-->
+<!--                    android:textColor="@color/greyforText"-->
+<!--                    android:textSize="14sp" />-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:gravity="center"-->
+<!--                    android:text=" Manager Status :  "-->
+<!--                    android:textColor="@color/greyforText"-->
+<!--                    android:textSize="14sp" />-->
+
+
+<!--            </LinearLayout>-->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:orientation="vertical">-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="@dimen/_10"-->
+<!--                    android:maxLines="2"-->
+<!--                    android:text="April 1 2024 "-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="14sp" />-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="@dimen/_10"-->
+<!--                    android:gravity="center"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="14sp" />-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="@dimen/_20dp"-->
+<!--                    android:gravity="end"-->
+<!--                    android:maxLines="2"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="14sp" />-->
+
+<!--                <TextView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="@dimen/_20dp"-->
+<!--                    android:gravity="end"-->
+<!--                    android:maxLines="2"-->
+<!--                    android:text="    -&#45;&#45;&#45;&#45;   "-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:textSize="14sp" />-->
+
+<!--            </LinearLayout>-->
+
+<!--        </LinearLayout>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Leave Date :     "
+                    android:textColor="@color/greyforText"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/leaveDae"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10"
+                    android:maxLines="2"
+                    android:padding="2dp"
+                    android:text="April 1 2024 "
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="    Duration :    "
+                    android:textColor="@color/greyforText"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/duration"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginLeft="@dimen/_10"
+                    android:maxLines="2"
+                    android:padding="2dp"
+                    android:text="1 Day(s)"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Manager Status :"
+                    android:textColor="@color/greyforText"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/managerStatus"
+                    android:layout_width="100dp"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10"
+                    android:maxLines="5"
+                    android:padding="2dp"
+                    android:text="    -----   "
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="      Reason :     "
+                    android:textColor="@color/greyforText"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/Reason"
+
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10"
+                    android:maxLines="10"
+                    android:padding="2dp"
+                    android:text="    -----   "
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10"
+                android:gravity="center"
+                android:paddingStart="@dimen/_15sp"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/decline"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_20dp"
+                    android:layout_marginRight="@dimen/_20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/red_border"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="Decline"
+                    android:textColor="@color/greyforText"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/accept"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_20dp"
+                    android:layout_marginRight="@dimen/_20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/green_borderbg"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:text="Accept"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

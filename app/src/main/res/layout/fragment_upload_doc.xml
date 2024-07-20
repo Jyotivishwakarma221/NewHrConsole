@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/removeUploadDoc"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".user.fragment.UploadDocFragment"
+    android:paddingTop="50dp"
+    android:background="@color/white">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_20dp"
+            android:layout_marginEnd="@dimen/_20dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <Button
+                    android:id="@+id/aadharCard"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/white"
+                    style="@style/CustomButtonStyle"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:hint="Aadhar Card" />
+
+                <ImageView
+                    android:id="@+id/aadharCardImageView"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/ic_launcher" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <Button
+                    android:id="@+id/PanCard"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/white"
+                    style="@style/CustomButtonStyle"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:hint="Pan Card" />
+
+                <ImageView
+                    android:id="@+id/PanCardImageView"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/ic_launcher" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <Button
+                    android:id="@+id/matriculation"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/white"
+                    style="@style/CustomButtonStyle"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    android:hint="Matriculation Certifcate" />
+
+                <ImageView
+                    android:id="@+id/matriculationImageView"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/ic_launcher" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_5dp"
+                tools:ignore="MissingConstraints">
+
+                <Button
+                    android:id="@+id/Intermediate"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/white"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    style="@style/CustomButtonStyle"
+                    android:hint="Intermediate Certificate" />
+
+                <ImageView
+                    android:id="@+id/IntermediateImageView"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/ic_launcher" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <Button
+                    android:id="@+id/graduation"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/white"
+                    android:layout_weight="1"
+                    style="@style/CustomButtonStyle"
+                    android:fontFamily="@font/poppins"
+                    android:hint="Graduation" />
+
+                <ImageView
+                    android:id="@+id/graduationImageView"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/ic_launcher" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <Button
+                    android:id="@+id/postGraduation"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/white"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    style="@style/CustomButtonStyle"
+                    android:hint="Post Graduation" />
+
+                <ImageView
+                    android:id="@+id/postGraduationImageView"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/ic_launcher" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <Button
+                    android:id="@+id/experience"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/white"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/poppins"
+                    style="@style/CustomButtonStyle"
+                    android:hint="Experience" />
+
+                <ImageView
+                    android:id="@+id/experienceImageView"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/ic_launcher" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <Button
+                    android:id="@+id/lastCompany"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/white"
+                    android:layout_weight="1"
+                    style="@style/CustomButtonStyle"
+                    android:fontFamily="@font/poppins"
+                    android:hint="Last Company Offer Letter" />
+
+                <ImageView
+                    android:id="@+id/lastCompanyImageView"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/ic_launcher" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <Button
+                    android:id="@+id/appointmentLetter"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/white"
+                    android:layout_weight="1"
+                    style="@style/CustomButtonStyle"
+                    android:fontFamily="@font/poppins"
+                    android:hint="Appointment Letter" />
+
+                <ImageView
+                    android:id="@+id/appointmentLetterImageView"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/ic_launcher" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="MissingConstraints">
+
+                <Button
+                    android:id="@+id/salarySlip"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/white"
+                    android:layout_weight="1"
+                    style="@style/CustomButtonStyle"
+                    android:fontFamily="@font/poppins"
+                    android:hint="Salary Slip" />
+
+                <ImageView
+                    android:id="@+id/salarySlipImageView"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/ic_launcher" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/submit_Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Submit"
+                style="@style/CustomButtonStyle"
+                android:background="@drawable/button_background"
+                android:textColorHint="@color/white"
+                android:textSize="@dimen/_15sp"
+                android:fontFamily="@font/poppins"
+                android:layout_marginStart="@dimen/_20dp"
+                android:layout_marginEnd="@dimen/_20dp"/>
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

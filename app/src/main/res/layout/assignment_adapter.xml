@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_20dp"
+    android:layout_marginEnd="@dimen/_20dp"
+    android:layout_marginTop="@dimen/_10"
+    android:gravity="center"
+    android:background="@drawable/background_outline"
+    android:orientation="vertical"
+    android:padding="@dimen/_15">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            android:textColor="@color/DarkBlue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:text=":"
+            android:textStyle="bold"
+            android:textColor="@color/DarkBlue"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/date_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150dp"
+            android:textSize="15sp"
+            android:textColor="@color/DarkBlue" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            android:textColor="@color/DarkBlue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:text=":"
+            android:textStyle="bold"
+            android:textColor="@color/DarkBlue"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150dp"
+            android:textSize="15sp"
+            android:textColor="@color/DarkBlue" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Assignment"
+            android:textStyle="bold"
+            android:textSize="17sp"
+            android:textColor="@color/DarkBlue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:text=":"
+            android:textStyle="bold"
+            android:textColor="@color/DarkBlue"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/assignment_Text_View"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150"
+            android:textSize="15sp"
+            android:textColor="@color/DarkBlue" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:textStyle="bold"
+            android:textColor="@color/DarkBlue"
+            android:textSize="17sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:text=":"
+            android:textStyle="bold"
+            android:textColor="@color/DarkBlue"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/description_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150"
+            android:textSize="15sp"
+            android:textColor="@color/DarkBlue"/>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Deadline"
+            android:textStyle="bold"
+            android:textColor="@color/DarkBlue"
+            android:textSize="17sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:text=":"
+            android:textStyle="bold"
+            android:textColor="@color/DarkBlue"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/deadline_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150"
+            android:textSize="15sp"
+            android:textColor="@color/DarkBlue"/>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comment"
+            android:textStyle="bold"
+            android:textColor="@color/DarkBlue"
+            android:textSize="17sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:text=":"
+            android:textStyle="bold"
+            android:textColor="@color/DarkBlue"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/comment_Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150"
+            android:textSize="15sp"
+            android:textColor="@color/DarkBlue"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:textStyle="bold"
+            android:textColor="@color/DarkBlue"
+            android:textSize="17sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="100dp"
+            android:text=":"
+            android:textStyle="bold"
+            android:textColor="@color/DarkBlue"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/status_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150"
+            android:textSize="15sp"
+            android:textColor="@color/DarkBlue"/>
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

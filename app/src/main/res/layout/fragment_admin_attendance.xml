@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/Background"
+    android:layout_marginTop="50dp"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:focusable="true"
+    tools:context=".admin.fragment.AdminAttendanceFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginHorizontal="@dimen/_40dp">
+
+        <ImageView
+            android:layout_width="@dimen/_80dp"
+            android:layout_height="@dimen/_80dp"
+            android:id="@+id/inTimeAttendanceImg"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:src="@drawable/in" />
+
+        <TextView
+            android:id="@+id/currentAttendanceDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Current Time"
+            android:textColor="@color/white" />
+
+        <ImageView
+            android:layout_width="@dimen/_80dp"
+            android:layout_height="@dimen/_80dp"
+            android:layout_marginTop="5dp"
+            android:id="@+id/outTimeAttendanceImg"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:src="@drawable/punchin"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginHorizontal="@dimen/_40dp">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="@dimen/_30dp"
+            android:id="@+id/currentInTimeAttendance"
+            android:layout_alignParentStart="true"
+            android:text="IN TIME"
+            android:fontFamily="@font/poppins"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_background"
+            android:gravity="center"
+            />
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="@dimen/_30dp"
+            android:id="@+id/currentOutTimeAttendance"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:text="OUT TIME"
+            android:fontFamily="@font/poppins"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_background"
+            />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Attendance History"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:fontFamily="@font/poppins"
+        android:textColor="@color/white"
+        android:gravity="bottom|center_horizontal" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/white" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/attendanceHistoryRecyclerView"/>
+
+</LinearLayout>

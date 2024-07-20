@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10"
+        android:background="@drawable/cardview_border"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/half_round_bg"
+            android:orientation="horizontal"
+            android:padding="@dimen/_5dp">
+
+
+            <TextView
+                android:id="@+id/feedbackFrom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/light_grey_bg"
+                android:paddingStart="@dimen/_20dp"
+                android:paddingTop="@dimen/_5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="@dimen/_5dp"
+                android:text="Management Issue"
+                android:textColor="@color/greyforText" />
+
+            <TextView
+                android:id="@+id/dateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/light_grey_bg"
+                android:maxLines="1"
+                android:paddingStart="@dimen/_10dp"
+                android:paddingTop="@dimen/_5dp"
+                android:paddingEnd="@dimen/_20dp"
+                android:paddingBottom="@dimen/_5dp"
+                android:text="April 1 at 8:41 AM"
+                android:textColor="@color/greyforText"
+                android:textSize="14dp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/Heading"
+            android:layout_marginStart="@dimen/_20dp"
+            android:layout_marginTop="@dimen/_20dp"
+            android:layout_marginEnd="@dimen/_20dp"
+            android:layout_marginBottom="@dimen/_20dp"
+            android:gravity="start"
+            android:maxLength="400"
+            android:maxLines="5"
+            android:padding="@dimen/_5dp"
+            android:text="Prepare a progress report for app development
+and Design Implementations. Feedback require
+from Every member"
+            android:textColor="#CCCCCC" />
+    </LinearLayout>
+
+</layout>

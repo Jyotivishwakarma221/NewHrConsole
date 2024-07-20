@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_20dp"
+    android:layout_marginTop="@dimen/_10"
+    android:layout_marginEnd="@dimen/_20dp"
+    android:background="@drawable/background_outline"
+    android:orientation="vertical"
+    android:padding="@dimen/_10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/meeting_id_t_t_t_t_t"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:textStyle="bold"
+            android:layout_marginStart="120dp"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/UserId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150dp"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/time_t_t_t_t_t_t_t_t"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textColor="@color/white" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:textStyle="bold"
+            android:layout_marginStart="120dp"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/Time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:text="@string/purpose_t_t_t_t_t_t"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:textStyle="bold"
+            android:layout_marginStart="120dp"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/Purpose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20dp"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins"
+            android:text="@string/location_t_t_t_t_t_t"
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:textStyle="bold"
+            android:layout_marginStart="120dp"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/LocationTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_150"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/Status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/status_t_t_t_t_t_t_t"
+            android:layout_marginStart="@dimen/_20dp"
+            android:fontFamily="@font/poppins"
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:textStyle="bold"
+            android:layout_marginStart="140dp"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/statusTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="170dp"
+            android:fontFamily="@font/poppins"
+            android:textSize="13sp"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
+</LinearLayout>

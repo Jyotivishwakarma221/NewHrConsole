@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/strokeBlack"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/datelay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/_5dp">
+
+            <TextView
+                android:id="@+id/DateOfMeeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/dm_sans"
+                android:text="29 March"
+                android:textColor="#666666"
+                android:textSize="18dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_10"
+                android:background="#666666" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/datelay"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_5dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/_15">
+
+            <TextView
+                android:id="@+id/TimeOfMeeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/dm_sans"
+                android:text="11 Am"
+                android:textColor="@color/white"
+                android:textSize="18dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10dp"
+                android:background="@drawable/cardview_border"
+                android:padding="@dimen/_5dp">
+
+                <ImageView
+                    android:id="@+id/i_bttn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="10dp"
+                    android:src="@drawable/i_button" />
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/dm_sans"
+                    android:padding="@dimen/_5dp"
+                    android:text="Pre Launch Testing"
+                    android:textColor="@color/white"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/host"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/title"
+                    android:fontFamily="@font/dm_sans"
+                    android:paddingStart="@dimen/_10dp"
+                    android:text="Host : "
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/hostname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/title"
+                    android:layout_toEndOf="@+id/host"
+                    android:fontFamily="@font/dm_sans"
+                    android:paddingStart="@dimen/_5dp"
+                    android:text="Abhi"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/locate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/host"
+                    android:fontFamily="@font/dm_sans"
+                    android:paddingStart="@dimen/_10dp"
+                    android:text="Location : "
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/hostname"
+                    android:layout_toEndOf="@+id/locate"
+                    android:fontFamily="@font/dm_sans"
+                    android:paddingStart="@dimen/_5dp"
+                    android:text="Adyanta, Invest Mango Office"
+                    android:textColor="@color/white"
+                    android:textSize="12dp" />
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>

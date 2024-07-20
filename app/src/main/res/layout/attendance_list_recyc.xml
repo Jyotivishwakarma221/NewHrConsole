@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:id="@+id/blue_bg"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_margin="@dimen/_10"
+        android:background="@drawable/blue_one_side">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/_10"
+            android:background="@drawable/dark_grey_bg"
+            android:padding="@dimen/_10">
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5dp"
+                android:text="1 April 2024"
+                android:textColor="#CDCDCD"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/leavetypeabsent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/_20dp"
+                android:layout_marginBottom="@dimen/_20dp"
+                android:background="@drawable/dark_grey_bg"
+                android:drawableStart="@drawable/red_dot"
+                android:fontFamily="@font/dm_sans"
+                android:gravity="center"
+                android:paddingStart="@dimen/_10"
+                android:paddingTop="@dimen/_5dp"
+                android:paddingEnd="@dimen/_10"
+                android:paddingBottom="@dimen/_5dp"
+                android:text=" Absent"
+                android:textColor="@color/white"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/leavetypehalfDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/_20dp"
+                android:layout_marginBottom="@dimen/_20dp"
+                android:background="@drawable/dark_grey_bg"
+                android:drawableStart="@drawable/red_dot"
+                android:fontFamily="@font/dm_sans"
+                android:gravity="center"
+                android:paddingStart="@dimen/_10"
+                android:paddingTop="@dimen/_5dp"
+                android:paddingEnd="@dimen/_10"
+                android:paddingBottom="@dimen/_5dp"
+                android:text=" Half Day"
+                android:textColor="@color/white"
+                android:visibility="gone" />
+
+
+            <LinearLayout
+                android:id="@+id/present"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/date"
+                android:layout_margin="@dimen/_10"
+                android:weightSum="2">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10"
+                    android:layout_marginEnd="@dimen/_20dp"
+                    android:layout_weight="1"
+                    android:background="#252525"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/_5dp"
+                        android:src="@drawable/enter_img" />
+
+
+                    <TextView
+                        android:id="@+id/inTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5dp"
+                        android:text="     "
+                        android:textColor="@color/white" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_20dp"
+                    android:layout_marginEnd="@dimen/_10"
+                    android:layout_weight="1"
+                    android:background="#252525"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/_5dp"
+                        android:src="@drawable/exit_img" />
+
+                    <TextView
+                        android:id="@+id/outTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5dp"
+                        android:text="        "
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/Absent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/date"
+                android:layout_marginTop="@dimen/_10"
+                android:gravity="center"
+                android:text="On leave"
+                android:textColor="@color/white"
+                android:textSize="14dp"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </RelativeLayout>
+</layout>

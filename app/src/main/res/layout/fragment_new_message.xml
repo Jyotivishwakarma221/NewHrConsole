@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:orientation="vertical"
+        android:padding="@dimen/_10dp"
+        android:clickable="true"
+        tools:context=".manager.activity.NewMessageFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10">
+
+<!--            <ImageView-->
+<!--                android:id="@+id/backbutton"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:visibility="invisible"-->
+<!--                android:layout_marginStart="25dp"-->
+<!--                android:src="@drawable/backbutton" />-->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Write a Message "
+                android:textColor="@color/greyforText"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15"
+            android:padding="@dimen/_10"
+            android:text="Select Employee"
+            android:textColor="#CCCCCC"
+            android:textSize="@dimen/_18sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/memberRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/addMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_grey_bg"
+            android:padding="5dp"
+            android:textColor="@color/black"
+            android:text=" Add Member"
+            android:layout_margin="@dimen/_5dp"
+            android:drawableStart="@drawable/addsquare" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15"
+            android:padding="@dimen/_10"
+            android:text="Title"
+            android:textColor="@color/greyforText"
+            android:textSize="@dimen/_18sp" />
+
+
+        <EditText
+            android:id="@+id/Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/grey_bg_rounded"
+            android:hint="Write title "
+            android:lines="3"
+            android:maxLines="3"
+            android:padding="@dimen/_10dp"
+            android:textColor="#666666"
+            android:textColorHint="#666666"
+            android:textSize="16dp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15"
+            android:padding="@dimen/_10"
+            android:text="Message"
+            android:textColor="@color/greyforText"
+            android:textSize="@dimen/_18sp" />
+
+
+        <EditText
+            android:id="@+id/message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/grey_bg_rounded"
+            android:hint="Enter message"
+            android:lines="3"
+            android:maxLines="3"
+            android:padding="@dimen/_10dp"
+            android:textColor="#666666"
+            android:textColorHint="#666666"
+            android:textSize="16dp" />
+
+
+        <Button
+            android:id="@+id/Send"
+            style="@style/AttendanceButton"
+            android:layout_width="@dimen/_150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="30dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/attendancebutton"
+            android:fontFamily="@font/dm_sans"
+            android:hint="Send"
+            android:textColorHint="@color/white" />
+    </LinearLayout>
+</layout>

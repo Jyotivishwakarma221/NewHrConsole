@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:padding="@dimen/_10dp"
+        tools:context=".manager.activity.fragment.MyPerformance">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:visibility="invisible"
+                android:src="@drawable/backbutton" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Assign Task "
+                android:textColor="@color/greyforText"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15"
+                android:padding="@dimen/_10"
+                android:text="Select Employee"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_18sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/selectEmployee"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/grey_bg_rounded"
+                    android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
+                    android:padding="@dimen/_10"
+                    android:hint="Select From Below"
+                    android:textColorHint="@color/greyforText"
+                    android:textColor="@color/greyforText"
+                    android:textSize="@dimen/_18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15"
+                android:padding="@dimen/_10"
+                android:text="Task Description"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_18sp" />
+
+
+            <EditText
+                android:id="@+id/taskDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/grey_bg_rounded"
+                android:hint="Prepare a PPT "
+                android:lines="3"
+                android:maxLines="3"
+                android:padding="@dimen/_5dp"
+                android:textColor="@color/greyforText"
+                android:textColorHint="@color/greyforText"
+                android:textSize="16dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5dp"
+                android:layout_marginTop="@dimen/_10"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Upload File"
+                    android:textColor="@color/white"
+                    android:textSize="18dp" />
+
+                <ImageView
+                    android:id="@+id/uploadDoc"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="end"
+                    android:layout_margin="@dimen/_5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/grey_bg_rounded"
+                    android:padding="@dimen/_5dp"
+                    android:src="@drawable/uploadwhite" />
+
+                <TextView
+                    android:id="@+id/uploadDocname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_margin="@dimen/_5dp"
+                    android:layout_weight="1"
+                    android:drawableEnd="@drawable/baseline_close_24"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:src="@drawable/uploadwhite"
+                    android:text="naskdn"
+                    android:textColor="@color/white"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/assignTask"
+                style="@style/AttendanceButton"
+                android:layout_width="@dimen/_150dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_margin="30dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/attendancebutton"
+                android:fontFamily="@font/dm_sans"
+                android:hint="Assign Task "
+                android:textColorHint="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>
+

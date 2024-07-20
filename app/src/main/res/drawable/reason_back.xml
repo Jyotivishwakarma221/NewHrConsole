@@ -1,0 +1,21 @@
+<!-- background_outline.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background shape with corner radius -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/DarkBlue" /> <!-- Fill color for the background -->
+            <corners android:radius="@dimen/_10" /> <!-- Corner radius -->
+        </shape>
+    </item>
+
+    <!-- Outline shape with border color -->
+    <item android:right="1dp" android:left="1dp"
+        android:top="1dp" android:bottom="1dp">
+        <shape android:shape="rectangle">
+            <stroke
+                android:color="#ebebeb"
+                android:width="1dp" /> <!-- Border width -->
+            <corners android:radius="@dimen/_10dp"/>
+        </shape>
+    </item>
+</layer-list>

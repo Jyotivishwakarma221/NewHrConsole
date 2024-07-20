@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/swipeRefreshLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="55dp"
+    android:background="@color/white"
+    tools:context=".user.fragment.EmployeePerformanceFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="@dimen/_10"
+                android:layout_marginEnd="@dimen/_10dp">
+                <ImageView
+                    android:id="@+id/backButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/arrow_back"
+                    android:layout_marginStart="@dimen/_10dp"
+                     />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Created On"
+                    android:textStyle="bold"
+                    android:layout_marginStart="@dimen/_5dp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins"
+                    android:textSize="16sp"
+                    android:layout_weight="1">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/created_Date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#E46814"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins"
+                    android:textSize="15sp"
+                    android:paddingStart="100dp"
+                    android:paddingEnd="0dp"
+                    android:layout_weight="1">
+                </TextView>
+            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="@dimen/_10"
+            android:paddingEnd="@dimen/_10"
+            android:paddingTop="@dimen/_10"
+            android:paddingBottom="@dimen/_10">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Attendance"
+                    android:textSize="14sp"
+                    android:textColor="@color/Background"
+                    android:fontFamily="@font/poppins" />
+
+                <RatingBar
+                    android:id="@+id/attendance_Rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    style="@style/CustomRatingBarStyle"
+                    android:max="5"
+                    android:isIndicator="true" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Job Knowledge"
+                    android:textSize="14sp"
+                    android:textColor="@color/Background"
+                    android:fontFamily="@font/poppins">
+
+                </TextView>
+
+                <RatingBar
+                    android:id="@+id/job_Knowledge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    style="@style/CustomRatingBarStyle"
+                    android:max="5"
+                    android:isIndicator="true">
+                </RatingBar>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Skills"
+                    android:textSize="14sp"
+                    android:textColor="@color/Background"
+                    android:fontFamily="@font/poppins">
+
+                </TextView>
+
+                <RatingBar
+                    android:id="@+id/skills"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    style="@style/CustomRatingBarStyle"
+                    android:max="5"
+                    android:isIndicator="true">
+                </RatingBar>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Work Quality"
+                    android:textSize="14sp"
+                    android:textColor="@color/Background"
+                    android:fontFamily="@font/poppins">
+
+                </TextView>
+
+                <RatingBar
+                    android:id="@+id/work_Quality"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    style="@style/CustomRatingBarStyle"
+                    android:max="5"
+                    android:isIndicator="true">
+                </RatingBar>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Intiative"
+                    android:textSize="14sp"
+                    android:textColor="@color/Background"
+                    android:fontFamily="@font/poppins">
+
+                </TextView>
+
+                <RatingBar
+                    android:id="@+id/Int"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    style="@style/CustomRatingBarStyle"
+                    android:max="5"
+                    android:isIndicator="true">
+                </RatingBar>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Team Work"
+                    android:textSize="14sp"
+                    android:textColor="@color/Background"
+                    android:fontFamily="@font/poppins">
+
+                </TextView>
+
+                <RatingBar
+                    android:id="@+id/team_Work"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    style="@style/CustomRatingBarStyle"
+                    android:max="5"
+                    android:isIndicator="true">
+                </RatingBar>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="General Conduct"
+                    android:textSize="14sp"
+                    android:textColor="@color/Background"
+                    android:fontFamily="@font/poppins">
+
+                </TextView>
+
+                <RatingBar
+                    android:id="@+id/general_Conduct"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    style="@style/CustomRatingBarStyle"
+                    android:max="5"
+                    android:isIndicator="true">
+                </RatingBar>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Discipline"
+                    android:textSize="14sp"
+                    android:textColor="@color/Background"
+                    android:fontFamily="@font/poppins">
+
+                </TextView>
+
+                <RatingBar
+                    android:id="@+id/discipline_Rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleX="0.5"
+                    android:scaleY="0.5"
+                    style="@style/CustomRatingBarStyle"
+                    android:max="5"
+                    android:isIndicator="true">
+                </RatingBar>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+            <!-- CardView with Total Score, Obtained Score, Performance, and Comment -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="@dimen/_50dp"
+                android:backgroundTint="@color/black">
+
+                <!-- Total Score -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/_80dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingStart="@dimen/_5dp"
+                        android:paddingEnd="0dp"
+                        android:text="@string/total_score"
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/white"
+                        android:textSize="13sp"
+                        android:gravity="center_vertical" />
+
+                    <TextView
+                        android:id="@+id/total_Score"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/white"
+                        android:gravity="center_vertical" />
+                </LinearLayout>
+
+                <!-- Obtained Score -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="60dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/obtained_score"
+                        android:textColor="@color/white"
+                        android:paddingStart="5dp"
+                        android:fontFamily="@font/poppins"
+                        android:textSize="13sp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/obtained_Score"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins"
+                        android:paddingEnd="50dp"
+                        android:maxLines="1"
+                        android:gravity="center_vertical">
+                    </TextView>
+                </LinearLayout>
+
+                <!-- Performance -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/performance"
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/white"
+                        android:paddingStart="5dp"
+                        android:paddingTop="@dimen/_5dp"
+                        android:textSize="13sp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/performance_Score"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_weight="1"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/poppins"
+                        android:gravity="center_vertical">
+                    </TextView>
+                </LinearLayout>
+
+                <!-- Comment -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/_30dp">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/comment"
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/white"
+                        android:paddingStart="5dp"
+                        android:textSize="13sp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/comment_Score"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins"
+                        android:paddingEnd="80dp"
+                        android:gravity="center_vertical">
+                    </TextView>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/bar_Chart"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginStart="@dimen/_10"
+                android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginEnd="@dimen/_10dp"
+                >
+            </com.github.mikephil.charting.charts.BarChart>
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pie_Chart"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginStart="@dimen/_10"
+                android:layout_marginEnd="@dimen/_10dp"
+                android:layout_marginTop="2dp">
+            </com.github.mikephil.charting.charts.PieChart>
+        </LinearLayout>
+    </ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

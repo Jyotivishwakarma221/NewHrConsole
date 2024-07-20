@@ -1,0 +1,59 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginStart="@dimen/_10dp"
+        android:layout_marginEnd="@dimen/_10dp"
+        android:layout_marginTop="60dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/selectemp_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:hint="Select Employee">
+
+            <AutoCompleteTextView
+                android:id="@+id/spinnerEmployee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:editable="false"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/verifyDocumentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Verify Document"
+            style="@style/CustomButtonStyle"
+            android:layout_marginStart="@dimen/_10dp"
+            />
+
+        <ImageView
+            android:id="@+id/verifyDocumentImage"
+            android:layout_width="@dimen/_100dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/document"
+            android:layout_marginStart="@dimen/_10dp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_10dp"/>
+
+</LinearLayout>

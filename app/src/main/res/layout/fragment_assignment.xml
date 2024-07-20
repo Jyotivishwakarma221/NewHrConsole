@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_container"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".admin.fragment.AssignmentFragment"
+    android:background="@drawable/back">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!-- Add other views here if needed -->
+        <Button
+            android:id="@+id/previous_Assigment"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_50dp"
+            android:hint="Previous Assignment"
+            android:fontFamily="sans-serif-medium"
+            android:textColorHint="@color/DarkBlue"
+            android:background="@drawable/white_background"
+            android:layout_marginTop="70dp"
+            android:textStyle="bold"
+            android:padding="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_alignParentStart="true"/> <!-- Use layout_alignParentEnd to align to the right -->
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/admin_assignmentRecyclerView"
+        android:layout_marginTop="140dp">
+    </androidx.recyclerview.widget.RecyclerView>
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Assignment"-->
+<!--        android:layout_marginTop="60dp"-->
+<!--        android:textStyle="bold"-->
+<!--        android:layout_marginStart="@dimen/_170sp"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:gravity="center"-->
+<!--        android:textSize="@dimen/_20sp">-->
+<!--    </TextView>-->
+
+</FrameLayout>
