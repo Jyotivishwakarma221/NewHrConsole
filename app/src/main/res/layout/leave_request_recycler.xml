@@ -53,13 +53,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginStart="@dimen/_30dp"
+                android:layout_marginStart="@dimen/_20dp"
+                android:maxLines="1"
                 android:layout_marginTop="@dimen/_15"
                 android:layout_marginEnd="@dimen/_30dp"
                 android:background="@drawable/cardview_border"
                 android:gravity="center"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:text="Casual Leave"
                 android:textColor="@color/greyforText"
                 android:textSize="14sp" />
@@ -231,7 +232,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Manager Status :"
+                    android:text="Manager Status :            "
                     android:textColor="@color/greyforText"
                     android:textSize="14sp" />
 
@@ -265,11 +266,11 @@
 
                 <TextView
                     android:id="@+id/Reason"
-
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:maxLength="100"
                     android:layout_marginLeft="@dimen/_10"
-                    android:maxLines="10"
+                    android:maxLines="2"
                     android:padding="2dp"
                     android:text="    -----   "
                     android:textColor="@color/white"

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.investmango.hrconsole.model.Authority;
 import com.investmango.hrconsole.model.User;
+import com.investmango.hrconsole.service.Constant;
 import com.investmango.hrconsole.service.LoginActivity;
 
 import org.json.JSONException;
@@ -39,10 +40,10 @@ public class ApiClient extends Application {
 //     public static final String BASE_URL = "http://api.imconsole.in:8080/";
 
     // Local
-//    public static final String BASE_URL = "http://192.168.29.202:8080/";
-    public static final String BASE_URL = "http://13.232.141.90:8080/";
+    public static final String BASE_URL = "http://52.66.208.137:8282/";
+//    public static final String BASE_URL = "https://api.gopropify.in/"  ;
 
-    //        public static final String BASE_URL = "http://192.168.1.80:8080";
+//            public static final String BASE_URL = "http://192.168.29.202:8080/";
     private final ApiInterface apiInterface;
     private final Context context;
     private Context appcontext;
@@ -204,15 +205,22 @@ public class ApiClient extends Application {
                         List<Authority> authorities = user.getAuthorities();
                         if (authorities != null && !authorities.isEmpty()) {
                             String authority = authorities.get(0).getAuthority();
-
+                            Log.e("authority", "onResponse: "+authority );
                             if (authority.equals("ADMIN")) {
                                 callback.onAdminLoggedIn(authority);
+
+                                preferences.edit().putString("Authority", Constant.ADMIN).apply();
+
                                 System.out.println("Authority: " + authority);
                             } else if (authority.equals("USER")) {
                                 callback.onUserLoggedIn(authority);
+                                preferences.edit().putString("Authority", Constant.USER).apply();
+
                                 System.out.println("Authority: " + authority);
                             } else if (authority.equals("MANAGER")) {
                                 callback.onManagerLoggedIn(authority);
+                                preferences.edit().putString("Authority", Constant.MANAGER).apply();
+
                                 System.out.println("Authority: " + authority);
                             } else {
                                 callback.onLoginFailure("Unknown user authority");

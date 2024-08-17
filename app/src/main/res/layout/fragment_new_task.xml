@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@android:color/black"
+    android:clickable="true"
+    android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/black"
-        android:clickable="true"
+
         android:orientation="vertical"
         android:padding="@dimen/_10dp"
         tools:context=".manager.activity.fragment.NewTaskFragment">
@@ -24,8 +29,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="25dp"
-                android:visibility="gone"
-                android:src="@drawable/backbutton" />
+                android:src="@drawable/backbutton"
+                android:visibility="gone" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -43,26 +48,68 @@
             android:text="Task Description"
             android:textColor="@color/greyforText"
             android:textSize="22sp" />
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_margin="5dp"
-    android:fillViewport="true"
-    android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/taskDescription"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:fillViewport="true">
+
+            <EditText
+                android:id="@+id/taskDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:background="@drawable/grey_bg_rounded"
+                android:gravity="top"
+                android:inputType="textMultiLine"
+                android:isScrollContainer="true"
+                android:lines="10"
+                android:padding="10dp"
+                android:textColor="@color/white" />
+        </ScrollView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Deadline"
             android:textColor="@color/white"
-            android:isScrollContainer="true"
-            android:inputType="textMultiLine"
-
-            android:background="@drawable/grey_bg_rounded"
-            android:lines="10"
-            android:padding="10dp" />
-</ScrollView>
-
+            android:textSize="18dp" />
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10"
+            android:gravity="start"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+
+            <ImageView
+                android:id="@+id/calender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5dp"
+                android:background="@drawable/blue_bg"
+                android:padding="@dimen/_10"
+                android:src="@drawable/baseline_calendar_month_24" />
+
+            <TextView
+                android:id="@+id/deadline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5dp"
+                android:layout_marginStart="@dimen/_10dp"
+                android:background="@drawable/grey_bg_rounded"
+                android:gravity="center"
+                android:maxLines="5"
+                android:padding="@dimen/_10"
+                android:text="  Select Date  "
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+ <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10"
@@ -88,6 +135,7 @@
                 android:background="@drawable/grey_bg_rounded"
                 android:padding="@dimen/_5dp"
                 android:src="@drawable/uploadwhite" />
+
             <TextView
                 android:id="@+id/uploadDocname"
                 android:layout_width="wrap_content"
@@ -95,14 +143,13 @@
                 android:layout_gravity="end"
                 android:layout_margin="@dimen/_5dp"
                 android:layout_weight="1"
-                android:paddingTop="@dimen/_20dp"
-                android:visibility="gone"
                 android:drawableEnd="@drawable/baseline_close_24"
                 android:gravity="center"
+                android:paddingTop="@dimen/_20dp"
                 android:src="@drawable/uploadwhite"
                 android:text="naskdn"
                 android:textColor="@color/white"
-              />
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -144,4 +191,6 @@
 
         </LinearLayout>
     </LinearLayout>
+</ScrollView>
+
 </layout>

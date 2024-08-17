@@ -76,7 +76,7 @@ data class LeaveItem(
 	val userEmail: String? = null,
 
 	@field:SerializedName("approvedByName")
-	val approvedByName: Any? = null,
+	val approvedByName: String? = null,
 
 	@field:SerializedName("id")
 	val id: Long? = null,

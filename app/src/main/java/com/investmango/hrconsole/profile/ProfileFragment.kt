@@ -13,18 +13,19 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
 import com.bumptech.glide.Glide
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
 import com.investmango.hrconsole.api.ApiInterface
 import com.investmango.hrconsole.databinding.FragmentProfile2Binding
+import com.investmango.hrconsole.manager.activity.AttendanceFragment
 import com.investmango.hrconsole.manager.activity.ManagerActivity
 import com.investmango.hrconsole.model.User
 import com.investmango.hrconsole.newHomePage.ChangePaasword
 import com.investmango.hrconsole.service.DateAndTimeUtility
 import com.investmango.hrconsole.service.LoginActivity
 import com.investmango.hrconsole.service.SharedUtils
-import com.investmango.hrconsole.user.fragment.UserAttendanceFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -38,12 +39,19 @@ class ProfileFragment : Fragment() {
     var token: String = ""
     var ViewOf: String? = ""
     private var userId: Long = 0
+    lateinit var progressDialog: AwesomeProgressDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         var preferences = context?.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         token = preferences?.getString("token", "0").toString()
+
+        progressDialog = AwesomeProgressDialog(context)
+        progressDialog.addTitle("Loading...") // add your title here.
+        progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
+
 
         if (arguments != null) {
             if (arguments!!.containsKey("childUserid")) {
@@ -68,6 +76,7 @@ class ProfileFragment : Fragment() {
 
         if (ViewOf.equals("child")) {
             binding.signOut.visibility = View.GONE
+            binding.saveChanges.visibility = View.GONE
             binding.changePassword.visibility = View.GONE
             binding.userDocument.visibility = View.GONE
             binding.firstLay.visibility = View.GONE
@@ -95,23 +104,29 @@ class ProfileFragment : Fragment() {
     fun getCurrentUser(token: String) {
         val apiClient = ApiClient(context)
         apiInterface = apiClient.apiInterface
+        progressDialog.showDialog()
         val call: Call<User> = apiInterface.getCurrentUser(token)
         call.enqueue(object : Callback<User?> {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(call: Call<User?>, response: Response<User?>) {
                 if (response.isSuccessful) {
+
                     user = response.body()!!
                     setupData()
+                    progressDialog.dismissDialog()
                 } else {
-                    Toast.makeText(
-                        context,
-                        "Something went wrong.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    progressDialog.dismissDialog()
+                    if (isAdded)
+                        Toast.makeText(
+                            context,
+                            "Something went wrong.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                 }
             }
 
             override fun onFailure(call: Call<User?>, t: Throwable) {
+                progressDialog.dismissDialog()
                 val errorMessage = "Error: " + t.message
                 Log.e("LoginError", errorMessage)
             }
@@ -121,27 +136,35 @@ class ProfileFragment : Fragment() {
     fun getChildUser(userID: Long) {
         val apiClient = ApiClient(context)
         apiInterface = apiClient.apiInterface
+        progressDialog.showDialog()
         val call: Call<User> = apiInterface.getChildUser(userId)
         call.enqueue(object : Callback<User?> {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(call: Call<User?>, response: Response<User?>) {
                 if (response.isSuccessful) {
-                    Log.e("userResponse", "onResponse: "+ response.body() + userId)
-                    if (response.body()!=null) {
+                    progressDialog.dismissDialog()
+
+                    Log.e("userResponse", "onResponse: " + response.body() + userId)
+                    if (response.body() != null) {
+
                         user = response.body()!!
                         setupData()
                     }
                 } else {
-                    Toast.makeText(
-                        context,
-                        "Something went wrong.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    progressDialog.dismissDialog()
+                    if (isAdded)
+                        Toast.makeText(
+                            context,
+                            "Something went wrong.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                 }
             }
 
             override fun onFailure(call: Call<User?>, t: Throwable) {
                 val errorMessage = "Error: " + t.message
+                progressDialog.dismissDialog()
+
                 Log.e("LoginError", errorMessage)
             }
         })
@@ -157,14 +180,14 @@ class ProfileFragment : Fragment() {
         binding.email.setText(user.email)
         binding.gender.setText(user.gender)
 
-        if (requireContext()!=null) {
+        if (isAdded) {
             try {
                 Glide.with(requireContext()).load(user.profileImage).into(binding.profilePhoto)
             } catch (e: Exception) {
                 Log.e("TAG", "setupData: " + e)
             }
         }
-        Log.e("lastLogin", "setupData: "+user.lastLogin )
+        Log.e("lastLogin", "setupData: " + user.lastLogin)
 
 //        binding.lastlogin.setText(
 //            DateAndTimeUtility.getDateFromLong(user.lastLogin).toString() + " " + "hours ago"
@@ -196,8 +219,13 @@ class ProfileFragment : Fragment() {
 
         preferences.set(sharedUtils.getSharedPreferencesContext())
         preferences.get()?.edit()?.clear()?.apply()
-        UserAttendanceFragment.stopLocationUpdate()
+
+        val attendanceFragment =
+            parentFragmentManager.findFragmentByTag("ATTENDANCE") as? AttendanceFragment
+        (attendanceFragment)?.stopLocationUpdate()
+        (activity as (ManagerActivity)).stoploactionService()
         (activity as (ManagerActivity)).finish()
+
         val i = Intent(context, LoginActivity::class.java)
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY)
         // on below line calling a method to start the activity

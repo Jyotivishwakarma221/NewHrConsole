@@ -39,6 +39,7 @@ import com.investmango.hrconsole.api.ApiInterface;
 import com.investmango.hrconsole.cloudinary.CloudinaryConfig;
 import com.investmango.hrconsole.model.AddEvent;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -222,6 +223,7 @@ public class AddEventFragment extends Fragment implements ImageDeleteListener,  
         int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
         cursor.moveToFirst();
         long fileSize = cursor.getLong(sizeIndex);
+
         cursor.close();
         return fileSize;
     }

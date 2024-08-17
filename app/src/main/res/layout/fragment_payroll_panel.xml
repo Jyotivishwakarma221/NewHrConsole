@@ -295,7 +295,7 @@
                     android:background="@drawable/black_button"
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
-                    android:text="121"
+                    android:text=" "
                     android:textColor="@color/greyforText"
                     android:textSize="@dimen/_15" />
 
@@ -308,7 +308,7 @@
                     android:background="@drawable/black_button"
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
-                    android:text="Aman Verma"
+                    android:text=" "
                     android:textColor="@color/greyforText"
                     android:textSize="@dimen/_15" />
 

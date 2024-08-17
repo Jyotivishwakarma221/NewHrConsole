@@ -55,17 +55,21 @@
                         android:visibility="gone" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.anton46.stepsview.StepsView
-                    android:id="@+id/stepsView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/timelinetxt"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/grey_bg_rounded"
-                    android:backgroundTint="@color/lightGreycolor"
-                    android:fitsSystemWindows="true"
-                    android:paddingTop="-10dp"
-                    android:paddingBottom="@dimen/_20dp" />
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <com.anton46.stepsview.StepsView
+                        android:id="@+id/stepsView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/grey_bg_rounded"
+                        android:backgroundTint="@color/lightGreycolor"
+                        android:paddingTop="-10dp"
+                        android:scrollbarAlwaysDrawVerticalTrack="true"
+                        android:paddingBottom="@dimen/_20dp" />
+                </ScrollView>
             </RelativeLayout>
 
             <LinearLayout
@@ -163,7 +167,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="@dimen/_15"
                                 android:padding="5dp"
-                                android:text="40"
+                                android:text="  "
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_15"
                                 android:textStyle="bold" />
@@ -205,7 +209,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="@dimen/_15"
                                 android:padding="5dp"
-                                android:text="40"
+                                android:text="  "
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_15"
                                 android:textStyle="bold" />
@@ -246,7 +250,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="@dimen/_15"
                                 android:padding="5dp"
-                                android:text="40"
+                                android:text="  "
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/_15"
                                 android:textStyle="bold" />
@@ -299,7 +303,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="@dimen/_15"
                                 android:padding="5dp"
-                                android:text="30"
+                                android:text=""
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/_15"
                                 android:textStyle="bold" />
@@ -345,7 +349,7 @@
                                 android:layout_below="@+id/Done"
                                 android:layout_marginBottom="@dimen/_15"
                                 android:padding="5dp"
-                                android:text="40"
+                                android:text=" "
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/_15"
                                 android:textStyle="bold" />
@@ -390,7 +394,7 @@
                                 android:layout_below="@+id/Assigned"
                                 android:layout_marginBottom="@dimen/_15"
                                 android:padding="5dp"
-                                android:text="40"
+                                android:text=" "
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/_15"
                                 android:textStyle="bold" />
@@ -427,7 +431,7 @@
                         android:layout_weight="1"
                         android:maxLength="4"
                         android:padding="5dp"
-                        android:text="95%"
+                        android:text=" %"
                         android:textColor="@color/light_green"
                         android:textSize="16dp"
                         android:textStyle="bold" />
@@ -498,7 +502,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5dp"
-                        android:text="9"
+                        android:text=" "
                         android:textColor="@color/white" />
 
                     <ImageView
@@ -520,7 +524,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5dp"
-                        android:text="7"
+                        android:text=" "
                         android:textColor="@color/white" />
 
                     <ImageView
@@ -542,7 +546,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5dp"
-                        android:text="9"
+                        android:text=" "
                         android:textColor="@color/white" />
 
 
@@ -580,7 +584,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/total"
-                    android:text="12 Meetings"
+                    android:text="     "
                     android:textColor="@color/white" />
 
                 <com.github.mikephil.charting.charts.PieChart
@@ -619,7 +623,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5dp"
                         android:layout_weight="2"
-                        android:text="8"
+                        android:text=" "
 
                         android:textColor="@color/white" />
 
@@ -643,7 +647,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5dp"
                         android:layout_weight="1"
-                        android:text="4"
+                        android:text=" "
                         android:textColor="@color/white" />
 
 
@@ -658,7 +662,7 @@
                 android:layout_marginTop="@dimen/_10"
                 android:layout_weight="2"
                 android:padding="5dp"
-                android:text="QoQ Growth Rate"
+                android:text="MoM Growth Rate"
                 android:textColor="@color/greyforText"
                 android:textSize="18dp" />
 

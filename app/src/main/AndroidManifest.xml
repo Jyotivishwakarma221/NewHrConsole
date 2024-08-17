@@ -7,7 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/>
+        <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="33" />
     <uses-permission
@@ -96,7 +97,12 @@
         <service
             android:name=".service.MyBackgroundLocationService"
             android:enabled="true"
-            android:exported="false" />
+            android:foregroundServiceType="location"
+            android:exported="false">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN"/>-->
+<!--            </intent-filter>-->
+        </service>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
