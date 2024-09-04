@@ -65,6 +65,9 @@ data class TaskItems(
 	@field:SerializedName("updatedDate")
 	val updatedDate: Long? = null,
 
+	@field:SerializedName("deadLine")
+	val deadLine: Long? = null,
+
 	@field:SerializedName("userName")
 	val userName: String? = null,
 

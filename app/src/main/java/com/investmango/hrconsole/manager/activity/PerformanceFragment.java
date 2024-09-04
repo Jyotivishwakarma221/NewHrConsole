@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -37,12 +38,14 @@ import com.investmango.hrconsole.api.ApiClient;
 import com.investmango.hrconsole.api.ApiInterface;
 import com.investmango.hrconsole.databinding.FragmentPerformanceBinding;
 import com.investmango.hrconsole.model.MonthlyPerformanceResp;
+import com.investmango.hrconsole.service.DateAndTimeUtility;
 
 import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -59,7 +62,6 @@ public class PerformanceFragment extends Fragment {
 
     private String token;
     String month, ViewOf;
-    String[] descriptionData = {"C", "C++", "Java", "DSA"};
 
     private SharedPreferences preferences;
 
@@ -116,11 +118,10 @@ public class PerformanceFragment extends Fragment {
             }
         });
 
-        stepBar();
-        lineGraph();
+        stepBar(new String[]{"","","",""});
     }
 
-    private void stepBar() {
+    private void stepBar(String[] descriptionData) {
         binding.stepsView.setLabels(descriptionData);
         binding.stepsView.setBarColorIndicator(Color.BLACK);
         binding.stepsView.setProgressColorIndicator(getResources().getColor(R.color.greyOfEye));
@@ -130,21 +131,27 @@ public class PerformanceFragment extends Fragment {
         binding.stepsView.setCompletedPosition(2);
     }
 
-    private void populatePieChart(long totalPresent, long totalAbsent, int total, long halfDay, PieChart pieChart) {
+    private void populatePieChart(long totalPresent, long halfDay, long totalAbsent,long totaldays, long total, PieChart pieChart) {
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
-        pieEntries.add(new PieEntry(totalPresent, "llll"));
-        pieEntries.add(new PieEntry(totalAbsent, "kkkkkk"));
-        pieEntries.add(new PieEntry(halfDay, "mmm"));
+        pieEntries.add(new PieEntry(totalPresent, "present"));
+        pieEntries.add(new PieEntry(totalAbsent, "absent"));
+        pieEntries.add(new PieEntry(halfDay, "halfDay"));
+//        pieEntries.add(new PieEntry(total, "total"));
+if (totaldays!=0){
+    pieEntries.add(new PieEntry(totaldays, "futureDate"));
 
+}
         PieDataSet pieDataSet = new PieDataSet(pieEntries, "Employee Attendance");
         // on below line we are setting icons.
         pieDataSet.setDrawIcons(false);
 
         pieDataSet.setColors(
                 ContextCompat.getColor(requireContext(), R.color.darkBlue),
+                ContextCompat.getColor(requireContext(), R.color.strokeBlack),
                 ContextCompat.getColor(requireContext(), R.color.yellow),
-                ContextCompat.getColor(requireContext(), R.color.strokeBlack)
-        );
+                ContextCompat.getColor(requireContext(), R.color.greyOfEye)
+
+                );
 
         //draw value are the text that come on the pie slice
         pieDataSet.setDrawValues(false);
@@ -172,6 +179,8 @@ public class PerformanceFragment extends Fragment {
 
         // on below line we are setting center text
         pieChart.setDrawCenterText(true);
+        Log.e("piechart", "setUpData: "+ total );
+
         pieChart.setCenterText("Total \n " + total + "  ");
         pieChart.setCenterTextColor(Color.WHITE);
         pieChart.setDrawEntryLabels(false);
@@ -192,13 +201,16 @@ public class PerformanceFragment extends Fragment {
     }
 
     @SuppressLint("ResourceType")
-    private void lineGraph() {
+    private void lineGraph(  List<Integer> month,List<Float> score) {
         ArrayList<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(0, 2));
-        entries.add(new Entry(1, 4));
-        entries.add(new Entry(2, 1));
-        entries.add(new Entry(3, 3));
-        entries.add(new Entry(4, 5));
+for (int i=0;i<month.size();i++){
+    entries.add( new Entry(month.get(i),score.get(i)));
+}
+//        entries.add(new Entry(0, 2));
+//        entries.add(new Entry(1, 4));
+//        entries.add(new Entry(2, 1));
+//        entries.add(new Entry(3, 3));
+//        entries.add(new Entry(4, 5));
 
         LineDataSet lineDataSet = new LineDataSet(entries, "This Month");
         lineDataSet.setColor(Color.BLUE); // Line color
@@ -254,7 +266,9 @@ public class PerformanceFragment extends Fragment {
         xAxis.setTextColor(Color.WHITE);
 
         YAxis leftAxis = binding.lineChart.getAxisLeft();
+        YAxis rightYAxis = binding.lineChart.getAxisRight();
         leftAxis.setTextColor(Color.WHITE);
+        rightYAxis.setTextColor(Color.WHITE);
 
         Legend legend = binding.lineChart.getLegend();
         legend.setTextColor(Color.WHITE);
@@ -278,19 +292,54 @@ public class PerformanceFragment extends Fragment {
     private void fetchPerformanceReport() {
         ApiClient apiClient = new ApiClient(getContext());
         apiInterface = apiClient.getApiInterface();
+        Log.e("performance", "onResponse: 1 " );
 
         Call<MonthlyPerformanceResp> call = apiInterface.getMonthPerformance(userId, month.toString().toLowerCase());
         call.enqueue(new Callback<MonthlyPerformanceResp>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(@NonNull Call<MonthlyPerformanceResp> call, @NonNull Response<MonthlyPerformanceResp> response) {
                 if (response.isSuccessful()) {
                     empPerformanceList = response.body();
-                    setUpData();
-                    Log.e("performance", "onResponse: " + empPerformanceList);
+
+                    if (empPerformanceList != null && empPerformanceList.getTimeline() != null) {
+                        int size = empPerformanceList.getTimeline().size();
+                        Log.e("performance", "onResponse: " + size);
+
+                        if (size > 0) {
+                            String[] descriptionData = new String[size];
+                            for (int i = 0; i < size; i++) {
+                                descriptionData[i] = empPerformanceList.getTimeline().get(i).getAchievement();
+                                Log.e("performance", "onResponse: " + descriptionData[i]);
+                            }
+                            try {
+                                stepBar(descriptionData);
+                                setUpData();
+                            } catch (IndexOutOfBoundsException e) {
+                                Log.e("performance", "IndexOutOfBoundsException caught: " + e.getMessage());
+                                e.printStackTrace();
+                            }
+                        } else {
+                            Log.e("performance", "Timeline data is empty");
+                        }
+                    }
+                    if (empPerformanceList!=null && empPerformanceList.getMom()!=null){
+                        List<Integer> months= new ArrayList<>();
+                        List<Float> score=new ArrayList<>();
+
+                        for (int i =0; i<empPerformanceList.getMom().size(); i++) {
+                            months.add(DateAndTimeUtility.getMonthNumber(empPerformanceList.getMom().get(i).getMonth()));
+
+                            String formattedNumber = String.format("%.2f", empPerformanceList.getMom().get(i).getScore());
+                           score.add(Float.parseFloat(formattedNumber));
+
+                        }
+                        lineGraph(months,score);
+
+                        Log.e("StepsView", months.get(0)+"  "+ score.get(0));
+                    }
                 } else {
                     Toast.makeText(getContext(), getErrorMessage(response), Toast.LENGTH_SHORT).show();
-
-
                 }
             }
 
@@ -313,7 +362,7 @@ public class PerformanceFragment extends Fragment {
 
         binding.Attendanceday.setText(empPerformanceList.getPresentDays().toString());
         binding.Halfday.setText(empPerformanceList.getHalfDay().toString());
-        binding.Absentday.setText(empPerformanceList.getAbsentDays().toString());
+        binding.Absentday.setText(empPerformanceList.getAbsent().toString());
         binding.MeetingAbsent.setText(empPerformanceList.getAbsentMeetings().toString());
         binding.MeetingPresence.setText(empPerformanceList.getPresentMeetings().toString());
         binding.MeetingPresence.setText(empPerformanceList.getPresentMeetings().toString());
@@ -321,8 +370,11 @@ public class PerformanceFragment extends Fragment {
 
 
         binding.completionRate.setText(empPerformanceList.getTaskCompletionRatio().toString());
-        populatePieChart(empPerformanceList.getPresentDays(), empPerformanceList.getHalfDay(), empPerformanceList.getAbsentDays(), empPerformanceList.getTotalWorkingDays(), binding.pieChart);
-        populatePieChart(empPerformanceList.getPresentMeetings(), empPerformanceList.getAbsentMeetings(), empPerformanceList.getTotalMeetings(), empPerformanceList.getTotalMeetings(), binding.pieChart2);
+        Log.e("piechart", "setUpData: "+ empPerformanceList.getTotalWorkingDays() );
+
+        populatePieChart(empPerformanceList.getPresentDays(), empPerformanceList.getHalfDay(), empPerformanceList.getAbsent(),empPerformanceList.getTotalWorkingDays(),empPerformanceList.getAbsentDays(), binding.pieChart);
+        populatePieChart(empPerformanceList.getPresentMeetings(), empPerformanceList.getAbsentMeetings(), empPerformanceList.getTotalMeetings(), 0,empPerformanceList.getTotalMeetings(), binding.pieChart2);
+
 
     }
 

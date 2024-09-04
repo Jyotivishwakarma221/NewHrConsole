@@ -2,16 +2,21 @@ package com.investmango.hrconsole.manager.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
+import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +26,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -39,7 +45,6 @@ import com.investmango.hrconsole.databinding.FragmentAttendanceBinding
 import com.investmango.hrconsole.model.Attendance
 import com.investmango.hrconsole.model.LocationModel
 import com.investmango.hrconsole.model.TodayAttendnce
-import com.investmango.hrconsole.service.CommonUtils
 import com.investmango.hrconsole.service.DateAndTimeUtility
 import com.investmango.hrconsole.service.SharedUtils
 import com.zerobranch.layout.SwipeLayout
@@ -61,7 +66,7 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
     lateinit var binding: FragmentAttendanceBinding
     lateinit var apiInterface: ApiInterface
     private var mLocationCallback: LocationCallback? = null
-    private var mLocationClient: FusedLocationProviderClient? = null
+    var mLocationClient: FusedLocationProviderClient? = null
     private var mMap: GoogleMap? = null
     var longitude: Double = 0.0
     private val MAX_RETRIES = 5
@@ -73,40 +78,53 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
     var latitude = 0.0
     lateinit var geocoder: Geocoder
     private val MY_PERMISSIONS_REQUEST = 1001
+      var gpsEnable:Boolean = false
+    lateinit var progressDialog: AwesomeProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        mLocationClient = LocationServices.getFusedLocationProviderClient(context!!)
+        mLocationCallbackInitialization()
+        geocoder = Geocoder(requireContext())
 
         val time = Calendar.getInstance().time
         val formatter = SimpleDateFormat("HH:mm")
         current = formatter.format(time)
 
-        geocoder = Geocoder(requireContext())
-//        CommonUtils.isGpsEnabled(activity)
 
-//        val simpleCallback: ItemTouchHelper.SimpleCallback = object :
-//            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-//            override fun onMove(
-//                recyclerView: RecyclerView,
-//                viewHolder: RecyclerView.ViewHolder,
-//                target: RecyclerView.ViewHolder,
-//            ): Boolean {
-//                return false
-//            }
-//
-//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//                val position = viewHolder.adapterPosition
-//
-//                when (direction) {
-//                    ItemTouchHelper.LEFT -> {
-//                        Log.e("touchEvent", "onSwiped: ", )
-//                    }
-//                }
-//            }
-//        }
-//        val itemTouchHelper = ItemTouchHelper(simpleCallback)
-//       itemTouchHelper.attachToRecyclerView(recyclerView)
+        progressDialog = AwesomeProgressDialog(context)
+        progressDialog.addTitle("Loading...") // add your title here.
+        progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
+        progressDialog.showDialog();
 
+        gpsEnable= isGpsEnabled()
+
+
+
+
+    }
+
+    private fun isGpsEnabled(): Boolean {
+        val locationManager =
+            context!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val providerEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        if (providerEnabled) {
+            return true
+        } else {
+            val builder = AlertDialog.Builder(context)
+            builder.setMessage("Your Location seems to be disabled. Do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes") { dialog: DialogInterface?, id: Int ->
+                    context!!.startActivity(
+                        Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                    )
+                }
+            val alert = builder.create()
+            alert.show()
+        }
+        return false
     }
 
     override fun onCreateView(
@@ -125,16 +143,13 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
         userId = preferences.getLong("userId", 0)
         token = preferences.getString("token", "0").toString()
 
-        mLocationClient =
-            LocationServices.getFusedLocationProviderClient(context!!)
+
         binding.liveMapOfUser.onCreate(null)
         binding.liveMapOfUser.onResume()
         binding.liveMapOfUser.getMapAsync(this);
-        geocoder = Geocoder(requireContext())
 
 //        getCoordinate(userId)
 
-        mLocationCallbackInitialization()
         getLocationUpdates()
 
         getTodayAttendance()
@@ -145,11 +160,16 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onOpen(direction: Int, isContinuous: Boolean) {
 
-                if (latitude == 0.0 && longitude == 0.0) {
-                    binding.swipeLayout.isEnabledSwipe = false
-                    Toast.makeText(context, "Turn On your location.", Toast.LENGTH_SHORT).show()
-
-                } else {
+//                if (latitude == 0.0 && longitude == 0.0) {
+//                    binding.swipeLayout.isEnabledSwipe = false
+//
+//                    if (isAdded) {
+//                        Toast.makeText(context, "Turn On your location.", Toast.LENGTH_SHORT).show()
+//
+//                        mLocationCallbackInitialization()
+//                        tryToAddMarkerAndZoom(requireContext(), latitude, longitude, MAX_RETRIES)
+//                    }
+//                } else {
                     if (direction == SwipeLayout.RIGHT) {
 //                    val animationZoomIn = AnimationUtils.loadAnimation(context, R.anim.move)
 //                    binding.someswipe.startAnimation(animationZoomIn)
@@ -172,9 +192,10 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
 
                     }
                 }
-            }
+//            }
 
             override fun onClose() {
+
             }
 
         })
@@ -205,7 +226,7 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
         val epochMillis = now.toEpochMilli()
 //        val localDateTime = LocalDateTime.parse(dateTimeString, formatter)
         val latLng = "$latitude,$longitude"
-//
+        progressDialog.showDialog();
         attendance.inLatLong = latLng
         attendance.inTime = epochMillis
 //            attendance?.inTime=current.toLong()
@@ -220,6 +241,7 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
                     response: Response<ResponseBody?>,
                 ) {
                     if (response.code() == 200) {
+                        progressDialog.dismissDialog();
                         try {
                             val resp = Objects.requireNonNull(response.body())?.string()
 
@@ -229,13 +251,11 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
                                 Toast.LENGTH_SHORT
                             ).show()
                             if (resp?.equals("You are already in.") == true) {
-                                binding.inTime.setText(
-                                    DateAndTimeUtility.getTimeInHourFromLong(
-                                        inTime
-                                    )
+                                binding.inTime.text = DateAndTimeUtility.getTimeInHourFromLong(
+                                    inTime
                                 )
                             } else
-                                binding.inTime.setText(current)
+                                binding.inTime.text = current
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
@@ -244,6 +264,7 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
                         )
 
                     } else {
+                        progressDialog.dismissDialog()
                         Toast.makeText(
                             activity,
                             "Server error " + response.message(),
@@ -254,12 +275,17 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
                 }
 
                 override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                    progressDialog.dismissDialog()
                     Toast.makeText(activity, "Server error " + t.message, Toast.LENGTH_SHORT).show()
                     Objects.requireNonNull(t.message)?.let { Log.e("Failure", it) }
                 }
             })
         } else {
-            Toast.makeText(context, "Turn on your location.", Toast.LENGTH_SHORT).show()
+            if (isAdded) {
+                mLocationCallbackInitialization()
+                tryToAddMarkerAndZoom(requireContext(), latitude, longitude, MAX_RETRIES)
+                Toast.makeText(context, "Please check your internet and Try again .", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -276,10 +302,11 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
         attendance.id = outId.toLong()
         attendance.outLatLong = latLng
         attendance.outTime = epochMillis
+        progressDialog.showDialog();
 //            attendance?.outTime=epochMillis
         if (latitude != 0.0 && longitude != 0.0) {
 
-            Log.e("AttendanceFrag", "saveUserInTimeAndLocation: " + attendance.outLatLong)
+                Log.e("AttendanceFrag", "saveUserInTimeAndLocation: " + attendance.outLatLong)
             val apiClient = ApiClient(requireContext())
             apiInterface = apiClient.apiInterface
             val call: Call<ResponseBody> =
@@ -290,6 +317,7 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
                     response: Response<ResponseBody?>,
                 ) {
                     if (response.code() == 200) {
+                        progressDialog.dismissDialog()
                         try {
                             val resp = Objects.requireNonNull(response.body())?.string()
 
@@ -315,6 +343,7 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
                         )
 
                     } else {
+                        progressDialog.dismissDialog()
                         Toast.makeText(
                             activity,
                             "Server error " + response.message(),
@@ -325,12 +354,18 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
                 }
 
                 override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                    progressDialog.dismissDialog()
                     Toast.makeText(activity, "Server error " + t.message, Toast.LENGTH_SHORT).show()
                     Objects.requireNonNull(t.message)?.let { Log.e("Failure", it) }
                 }
             })
         } else {
-            Toast.makeText(context, "Turn on your location.", Toast.LENGTH_SHORT).show()
+
+            if (isAdded) {
+                Toast.makeText(context, "Please check your internet and Try again .", Toast.LENGTH_SHORT).show()
+                mLocationCallbackInitialization()
+                tryToAddMarkerAndZoom(requireContext(), latitude, longitude, MAX_RETRIES)
+            }
         }
 
     }
@@ -429,14 +464,31 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
         }
         val handlerThread = HandlerThread("LocationThread")
         handlerThread.start()
+
+
         mLocationClient?.requestLocationUpdates(
             locationRequest,
             mLocationCallback!!,
             handlerThread.looper
         )
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            mLocationClient?.lastLocation
+                ?.addOnSuccessListener { location : Location? ->
+                    // Got last known location. In some rare situations this can be null.
+                    if (location!=null)
+                        userLocationResult(Objects.requireNonNull<Location?>(location))
+                }
+        }, 300)
+
+
     }
 
-
+    fun stopLocationUpdate() {
+        if (mLocationClient != null) {
+            mLocationClient?.removeLocationUpdates(mLocationCallback!!)
+        }
+    }
 //    override fun onMapReady(p0: GoogleMap) {
 //        mMap = p0
 //        p0.mapType = GoogleMap.MAP_TYPE_TERRAIN
@@ -501,7 +553,8 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        tryToAddMarkerAndZoom(requireContext(), latitude, longitude, MAX_RETRIES)
+        if (isAdded)
+            tryToAddMarkerAndZoom(requireContext(), latitude, longitude, MAX_RETRIES)
     }
 
     private fun tryToAddMarkerAndZoom(
@@ -511,11 +564,12 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
         retries: Int,
     ) {
         if (retries <= 0) {
-            Toast.makeText(
-                context,
-                "Unable to get address after multiple attempts.",
-                Toast.LENGTH_LONG
-            ).show()
+            if (isAdded)
+                Toast.makeText(
+                    context,
+                    "Unable to get address after multiple attempts.",
+                    Toast.LENGTH_LONG
+                ).show()
             return
         }
 
@@ -529,8 +583,10 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
                     addressList = geocoder.getFromLocation(latitudee, longitudee, 1)!!
 
                     if (!addressList.isNullOrEmpty()) {
-                        latitude=latitudee
-                        longitude=longitudee
+                        latitude = latitudee
+                        longitude = longitudee
+
+                        progressDialog.dismissDialog();
 
                         val address = addressList[0]
                         val marker = mMap?.addMarker(
@@ -543,6 +599,8 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
                         mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(inLatLng, 14f))
                         marker?.position = inLatLng
                         checkRange10km(latitudee, longitudee)
+                        progressDialog.dismissDialog();
+
                     } else {
                         // Retry fetching address if addressList is empty
                         Log.d("Geocoder", "Address list is empty. Retrying...")
@@ -556,7 +614,7 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
                     tryToAddMarkerAndZoom(context, latitude, longitude, retries - 1)
                 }
             }
-        }, 200)
+        }, 10)
     }
 
     fun checkRange10km(latitudee: Double, longitudee: Double) {

@@ -6,7 +6,6 @@ import android.app.DownloadManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +16,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -39,6 +39,7 @@ import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.investmango.hrconsole.EmployeeAction.AssignTask;
@@ -65,6 +66,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -76,7 +78,9 @@ public class TasksFragment extends Fragment {
     private List<TaskItems> tasks;
     private long userId;
     private String from;
+
     List<String> employeList;
+    private boolean isUserInitiated = false;
     private ApiInterface apiInterface;
     List<TotalEmpResponseItem> allActiveUsers;
     private String currentFileName = "";
@@ -85,12 +89,12 @@ public class TasksFragment extends Fragment {
     List<?> list;
     private static final String CHANNEL_ID = "download_notification_channel";
 
-    int count = 0;
+    int count = 0, isFirstSelection = 0;
     String status = "";
     long startingDate, endingDate, childuserId;
     ;
     String authority;
-    private ProgressDialog progressDialog;
+    AwesomeProgressDialog progressDialog;
 
 
     @Override
@@ -106,9 +110,10 @@ public class TasksFragment extends Fragment {
         userId = preferences.getLong("userId", 0);
         authority = preferences.getString("Authority", "");
 
-        progressDialog = new ProgressDialog(getActivity(), R.style.CustomProgressDialog);
-        progressDialog.setMessage("Please wait");
-        progressDialog.setCancelable(false);
+        progressDialog = new AwesomeProgressDialog(getContext());
+        progressDialog.addTitle("Loading..."); // add your title here.
+        progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS);
+        progressDialog.isCancelable(false);
 
         if (authority.equals(Constant.MANAGER)) {
             employeList = getChildActiveuser();
@@ -118,8 +123,24 @@ public class TasksFragment extends Fragment {
         getbundle();
 
 
+        binding.showImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                progressDialog.showDialog();
+                if (tasks.get(0).getFileUrl() != null) {
+                    Intent urlIntent = new Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(tasks.get(0).getFileUrl())
+                    );
+                    startActivity(urlIntent);
+//                    progressDialog.dismissDialog();
+                }
+            }
+        });
+
         binding.numberPicker.setMaxValue(20);
         binding.numberPicker.setOrientation(LinearLayout.VERTICAL);
+
         binding.numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -139,11 +160,17 @@ public class TasksFragment extends Fragment {
                     } else {
                         if (from.equals("Own")) {
                             getTaskList(status);
-                        } else memberTaskOFManager();
+                        } else {
+                            if (authority.equals(Constant.MANAGER))
+                                memberTaskOFManager();
+                            else if (authority.equals(Constant.ADMIN))
+                                AdmingetAllTask();
+                        }
                     }
                 }
             }
         });
+
         binding.nextPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,7 +181,12 @@ public class TasksFragment extends Fragment {
                 } else {
                     if (from.equals("Own")) {
                         getTaskList(status);
-                    } else memberTaskOFManager();
+                    } else {
+                        if (authority.equals(Constant.MANAGER))
+                            memberTaskOFManager();
+                        else if (authority.equals(Constant.ADMIN))
+                            AdmingetAllTask();
+                    }
                 }
 
             }
@@ -180,27 +212,34 @@ public class TasksFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         binding.status.setAdapter(adapter);
+
+
         binding.status.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    Log.e("onitemClick", "onViewCreated: 1  " + position);
-                    UpdateTaskStatus.Status selectedStatus = null;
 
-                    if (position == 0) {
+                if (isUserInitiated) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        Log.e("onitemClick", "onItemSelected: Position = " + position);
+                        UpdateTaskStatus.Status selectedStatus = null;
 
-                    } else if (position == 1) {
-                        selectedStatus = UpdateTaskStatus.Status.PENDING;
-                    } else if (position == 2) {
-                        selectedStatus = UpdateTaskStatus.Status.DONE;
+                        if (position != 0) {
+                            if (position == 1) {
+                                selectedStatus = UpdateTaskStatus.Status.PENDING;
+                            } else if (position == 2) {
+                                selectedStatus = UpdateTaskStatus.Status.DONE;
+                            }
 
+                            UpdateTaskStatus requestBody = new UpdateTaskStatus();
+                            if (tasks != null && !tasks.isEmpty()) {
+                                requestBody.setId(tasks.get(0).getId());
+                            }
+                            requestBody.setStatus(selectedStatus);
+                            ChangeTaskStatus(requestBody);
+                        }
                     }
-                    UpdateTaskStatus requestBody = new UpdateTaskStatus();
-                    if (tasks != null && !tasks.isEmpty())
-                        requestBody.setId(tasks.get(0).getId());
-                    requestBody.setStatus(selectedStatus);
-                    ChangeTaskStatus(requestBody);
                 }
+                // Reset the flag after handling user interaction
             }
 
             @Override
@@ -208,6 +247,18 @@ public class TasksFragment extends Fragment {
 
             }
         });
+        binding.status.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Set flag to true on user touch
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    isUserInitiated = true;
+                }
+                return false; // Return false to allow the spinner to handle the touch event
+            }
+        });
+
+
 //        binding.status.setOnItemClickListener((parent, view1, position, id) -> {
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //                Log.e("onitemClick", "onViewCreated: 1  " + position);
@@ -242,16 +293,18 @@ public class TasksFragment extends Fragment {
         binding.taskComments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NewTaskFragment fragment = new NewTaskFragment();
-                Bundle bb = new Bundle();
-                ArrayList<TaskItems> task = new ArrayList<>();
-                if (tasks != null && !tasks.isEmpty()) {
-                    task.add(tasks.get(0));
-                }
+                if (from.equals("Own")) {
+                    NewTaskFragment fragment = new NewTaskFragment();
+                    Bundle bb = new Bundle();
+                    ArrayList<TaskItems> task = new ArrayList<>();
+                    if (tasks != null && !tasks.isEmpty()) {
+                        task.add(tasks.get(0));
+                    }
 
-                bb.putSerializable("editTask", task);
-                fragment.setArguments(bb);
-                ((ManagerActivity) getContext()).replaceFragment(fragment);
+                    bb.putSerializable("editTask", task);
+                    fragment.setArguments(bb);
+                    ((ManagerActivity) getContext()).replaceFragment(fragment);
+                }
             }
         });
     }
@@ -263,7 +316,12 @@ public class TasksFragment extends Fragment {
             getTaskList("");
             binding.taskreport.setVisibility(View.VISIBLE);
         } else {
-            memberTaskOFManager();
+
+            if (authority.equals(Constant.MANAGER))
+                memberTaskOFManager();
+            else if (authority.equals(Constant.ADMIN))
+                AdmingetAllTask();
+
             binding.Addcomments.setVisibility(View.VISIBLE);
             binding.myteamTask.setVisibility(View.VISIBLE);
 
@@ -271,14 +329,17 @@ public class TasksFragment extends Fragment {
     }
 
     private void ChangeTaskStatus(UpdateTaskStatus requestBody) {
+        progressDialog.showDialog();
         Call<ResponseBody> call = apiInterface.updateUserTaskStatus(requestBody, userId);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-//                    Toast.makeText(getContext(), "Status updated successfully!", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismissDialog();
+                    if (isAdded())
+                        Toast.makeText(getContext(), "Status updated successfully!", Toast.LENGTH_SHORT).show();
                 } else {
-//                    Toast.makeText(getContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismissDialog();
                     handleErrorResponse(response);
                 }
             }
@@ -286,6 +347,7 @@ public class TasksFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 Log.e("TaskAdapter", "Error updating task status", t);
+                progressDialog.dismissDialog();
                 Toast.makeText(getContext(), "Failed to update task status. Please try again later.", Toast.LENGTH_SHORT).show();
             }
         });
@@ -296,6 +358,8 @@ public class TasksFragment extends Fragment {
             String errorResponse = response.errorBody().string();
             JSONObject errorObject = new JSONObject(errorResponse);
             String errorMessage = errorObject.optString("message", "Unknown Error");
+            if (isAdded())
+                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
             Log.e("taskfragemnet", "handleErrorResponse: " + errorMessage);
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -384,14 +448,15 @@ public class TasksFragment extends Fragment {
 //                    else getFiltered("", startdate, enddate);
 //
 //                } else {
-                if (childuserId != 0) {
-                    if (!statusSpin.getSelectedItem().toString().equals("--"))
+                if (startdate == 0L && enddate == 0L && statusSpin.getSelectedItem().toString().trim().equals("--"))
+                    Toast.makeText(context, "Select Date or status", Toast.LENGTH_SHORT).show();
+                else {
+                    if (childuserId != 0) {
+
                         getFilteredFromManger(statusSpin.getSelectedItem().toString(), startdate, enddate, childuserId);
-                    else
-                        getFilteredFromManger("", startdate, enddate, childuserId);
-//                }
+                        dialog1.dismiss();
+                    }
                 }
-                dialog1.dismiss();
             }
         });
         dialog1.show();
@@ -493,14 +558,15 @@ public class TasksFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 long startdate = DateAndTimeUtility.dateToEpoch(startDate.getText().toString());
-                Log.e("startdate", "showFilterBox: " + startdate);
+                Log.e("startdate", "showFilterBox: " + statusSpin.getSelectedItem().toString().trim());
 
                 long enddate = DateAndTimeUtility.dateToEpoch(endDate.getText().toString());
-                if (!statusSpin.getSelectedItem().toString().equals("--"))
+                if (startdate == 0L && enddate == 0L && statusSpin.getSelectedItem().toString().trim().equals("--"))
+                    Toast.makeText(context, "Select Date or status", Toast.LENGTH_SHORT).show();
+                else {
                     getFiltered(statusSpin.getSelectedItem().toString(), startdate, enddate);
-                else
-                    getFiltered("", startdate, enddate);
-                dialog1.dismiss();
+                    dialog1.dismiss();
+                }
             }
         });
         dialog1.show();
@@ -584,7 +650,7 @@ public class TasksFragment extends Fragment {
 
     private void downloadUserTaskPdf(long userId, long startDateee, long endDatee) {
 
-        progressDialog.show();
+        progressDialog.showDialog();
         String title = "PDF Download";
         final String[] message = {"Downloading PDF..."};
 
@@ -595,7 +661,7 @@ public class TasksFragment extends Fragment {
             call.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                    progressDialog.dismiss();
+                    progressDialog.dismissDialog();
                     if (response.isSuccessful()) {
                         String timeStamp = String.valueOf(System.currentTimeMillis());
                         currentFileName = "UserTask" + timeStamp + ".pdf";
@@ -613,7 +679,7 @@ public class TasksFragment extends Fragment {
 
                 @Override
                 public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                    progressDialog.dismiss();
+                    progressDialog.dismissDialog();
                     message[0] = "Network Error. Please try again.";
                     updateNotificationMessage(title, message[0], currentFileName);
                 }
@@ -624,7 +690,7 @@ public class TasksFragment extends Fragment {
             call.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                    progressDialog.dismiss();
+                    progressDialog.dismissDialog();
                     if (response.isSuccessful()) {
                         String timeStamp = String.valueOf(System.currentTimeMillis());
                         currentFileName = "UserTask" + timeStamp + ".pdf";
@@ -642,7 +708,7 @@ public class TasksFragment extends Fragment {
 
                 @Override
                 public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                    progressDialog.dismiss();
+                    progressDialog.dismissDialog();
                     Log.e("SalaryTaskFragment", "Server error while downloading PDF", t);
                     message[0] = "Network Error. Please try again.";
                     updateNotificationMessage(title, message[0], currentFileName);
@@ -768,6 +834,7 @@ public class TasksFragment extends Fragment {
         alertDialog.show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void setAdapt() {
         try {
             if (tasks.get(0).getComments() != null)
@@ -775,11 +842,24 @@ public class TasksFragment extends Fragment {
             else binding.taskComments.setText(tasks.get(0).getSubject());
             binding.date.setText(DateAndTimeUtility.getDateAndTimeFromLong(tasks.get(0).getCreatedTime()));
 
+            if (tasks.get(0).getDeadLine() != null && tasks.get(0).getDeadLine()!=0) {
+                binding.deadline.setText(DateAndTimeUtility.getDateeFromLong(tasks.get(0).getDeadLine()));
+            } else binding.deadline.setText(" -- ");
+
             binding.id.setText(tasks.get(0).getUserId().toString());
             Integer position = list.indexOf(tasks.get(0).getStatus());
 
             binding.status.setSelection(position);
+            isUserInitiated = false; // Set the flag to ignore this programmatic change
+
+            isFirstSelection = 1;
             binding.name.setText(tasks.get(0).getUserName().toString());
+
+            if (!Objects.requireNonNull(tasks.get(0).getFileUrl()).isEmpty())
+                binding.showImg.setVisibility(View.VISIBLE);
+            else binding.showImg.setVisibility(View.GONE);
+
+
 //            binding.recyclerView.adapter = CommonAdapter(this)
 //            binding.recyclerView.layoutManager =
 //                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -793,10 +873,13 @@ public class TasksFragment extends Fragment {
     private void getTaskList(String status) {
         ApiClient apiClient = new ApiClient(getContext());
         apiInterface = apiClient.getApiInterface();
+        progressDialog.showDialog();
         Call<TaskResponse> call = apiInterface.getAllTaskwithpage(userId, count, status, 1);
         call.enqueue(new Callback<TaskResponse>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
+                progressDialog.dismissDialog();
                 if (response.isSuccessful()) {
                     tasks = response.body().getContent();
                     Log.e("performance", "onResponse: " + tasks);
@@ -812,6 +895,7 @@ public class TasksFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
+                progressDialog.dismissDialog();
                 Log.e("EmployeePerformance", "Server error", t);
             }
         });
@@ -822,18 +906,24 @@ public class TasksFragment extends Fragment {
         apiInterface = apiClient.getApiInterface();
         Call<TaskResponse> call = apiInterface.memberTaskOFManager(userId, count, 1);
         Log.e("TaskFragment", "onResponse: " + userId);
+        progressDialog.showDialog();
 
         call.enqueue(new Callback<TaskResponse>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
 
                 if (response.isSuccessful()) {
+                    progressDialog.dismissDialog();
+
                     tasks = response.body().getContent();
                     Log.e("TaskFragment", "onResponse: " + tasks);
                     setAdapt();
                     binding.pagenumber.setText(String.valueOf(count + " /" + response.body().getTotalElements()));
 
                 } else {
+                    progressDialog.dismissDialog();
+
                     try {
                         JSONObject errorObject = new JSONObject(response.errorBody().toString());
                         Log.e("TaskFragment", "onResponse: " + errorObject.optString("message"));
@@ -843,12 +933,60 @@ public class TasksFragment extends Fragment {
 //                        throw new RuntimeException(e);
 
                     }
-                    Toast.makeText(getContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
+                    if (isAdded())
+                        Toast.makeText(getContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
+                progressDialog.dismissDialog();
+
+                Log.e("EmployeePerformance", "Server error", t);
+            }
+        });
+    }
+
+    private void AdmingetAllTask() {
+        ApiClient apiClient = new ApiClient(getContext());
+        apiInterface = apiClient.getApiInterface();
+        Call<TaskResponse> call = apiInterface.AdmingetAllTask(count, 1);
+        Log.e("TaskFragment", "onResponse: " + userId);
+        progressDialog.showDialog();
+
+        call.enqueue(new Callback<TaskResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
+
+                if (response.isSuccessful()) {
+                    progressDialog.dismissDialog();
+
+                    tasks = response.body().getContent();
+                    Log.e("TaskFragment", "onResponse: " + tasks);
+                    setAdapt();
+                    binding.pagenumber.setText(String.valueOf(count + " /" + response.body().getTotalElements()));
+
+                } else {
+                    progressDialog.dismissDialog();
+
+                    try {
+                        JSONObject errorObject = new JSONObject(response.errorBody().toString());
+                        Log.e("TaskFragment", "onResponse: " + errorObject.optString("message"));
+
+                    } catch (JSONException e) {
+                        Log.e("TaskFragment", "onResponse: " + e);
+//                        throw new RuntimeException(e);
+
+                    }
+                    if (isAdded())
+                        Toast.makeText(getContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
+                progressDialog.dismissDialog();
+
                 Log.e("EmployeePerformance", "Server error", t);
             }
         });
@@ -857,12 +995,16 @@ public class TasksFragment extends Fragment {
     private void getFiltered(String statuss, long startDate, long endDate) {
         ApiClient apiClient = new ApiClient(getContext());
         apiInterface = apiClient.getApiInterface();
-        if (startDate == 0 || endDate == 0) {
+        progressDialog.showDialog();
+
+        //with status only
+        if (startDate == 0L && endDate == 0L && !statuss.trim().equals("--")) {
             Call<TaskResponse> call = apiInterface.getFilterTaskwithpageWithoutDate(userId, count, statuss, 1);
             call.enqueue(new Callback<TaskResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
                     if (response.isSuccessful()) {
+                        progressDialog.dismissDialog();
                         tasks = response.body().getContent();
                         Log.e("performance", "onResponse: " + tasks);
                         setAdapt();
@@ -875,22 +1017,30 @@ public class TasksFragment extends Fragment {
                         binding.pagenumber.setText(count + " /" + response.body().getTotalElements());
 
                     } else {
-                        if (requireContext()!=null)
-                        Toast.makeText(requireContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismissDialog();
+
+                        if (isAdded())
+                            Toast.makeText(requireContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
                     Log.e("EmployeePerformance", "Server error", t);
+                    progressDialog.dismissDialog();
+
                 }
             });
-        } else {
+        }
+        //with all three
+        if (startDate != 0L && endDate != 0L && !statuss.trim().equals("--")) {
             Call<TaskResponse> call = apiInterface.getFilterTaskwithpage(userId, count, statuss, startDate, endDate, 1);
             call.enqueue(new Callback<TaskResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
                     if (response.isSuccessful()) {
+                        progressDialog.dismissDialog();
+
                         tasks = response.body().getContent();
                         Log.e("performance", "onResponse: " + tasks);
                         setAdapt();
@@ -903,12 +1053,197 @@ public class TasksFragment extends Fragment {
                         binding.pagenumber.setText(count + " /" + response.body().getTotalElements());
 
                     } else {
-                        Toast.makeText(getContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismissDialog();
+                        if (isAdded())
+                            Toast.makeText(getContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
+                    progressDialog.dismissDialog();
+
+                    Log.e("EmployeePerformance", "Server error", t);
+                }
+            });
+        }
+        //with start and end date
+        if (statuss.trim().equals("--") && startDate != 0L && endDate != 0L) {
+            Call<TaskResponse> call = apiInterface.getFilteredLeaveWithoutStatus(userId, count, startDate, endDate, 1);
+            call.enqueue(new Callback<TaskResponse>() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
+                    if (response.isSuccessful()) {
+                        progressDialog.dismissDialog();
+
+                        tasks = response.body().getContent();
+                        Log.e("performance", "onResponse: " + tasks);
+                        setAdapt();
+                        isFiltered = true;
+
+                        status = statuss;
+                        startingDate = startDate;
+                        endingDate = endDate;
+
+                        binding.pagenumber.setText(count + " /" + response.body().getTotalElements());
+
+                    } else {
+                        progressDialog.dismissDialog();
+
+                        if (isAdded())
+                            Toast.makeText(getContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
+                    progressDialog.dismissDialog();
+
+                    Log.e("EmployeePerformance", "Server error", t);
+                }
+            });
+        }
+
+        //with status and end date
+        if (!statuss.trim().equals("--") && startDate == 0L && endDate != 0L) {
+            Call<TaskResponse> call = apiInterface.getFilteredLeaveWithoutStartDate(userId, count, statuss, endDate, 1);
+            call.enqueue(new Callback<TaskResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
+                    if (response.isSuccessful()) {
+                        progressDialog.dismissDialog();
+
+                        tasks = response.body().getContent();
+                        Log.e("performance", "onResponse: " + tasks);
+                        setAdapt();
+                        isFiltered = true;
+
+                        status = statuss;
+                        startingDate = startDate;
+                        endingDate = endDate;
+
+                        binding.pagenumber.setText(count + " /" + response.body().getTotalElements());
+
+                    } else {
+                        progressDialog.dismissDialog();
+                        if (isAdded())
+                            Toast.makeText(getContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
+                    progressDialog.dismissDialog();
+
+                    Log.e("EmployeePerformance", "Server error", t);
+                }
+            });
+        }
+
+        //With start date only.
+        if (statuss.trim().equals("--") && startDate != 0L && endDate == 0L) {
+            Call<TaskResponse> call = apiInterface.getFilterTaskwithStartDate(userId, count, startDate, 1);
+            call.enqueue(new Callback<TaskResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
+                    if (response.isSuccessful()) {
+                        progressDialog.dismissDialog();
+
+                        tasks = response.body().getContent();
+                        Log.e("performance", "onResponse: " + tasks);
+                        setAdapt();
+                        isFiltered = true;
+
+                        status = statuss;
+                        startingDate = startDate;
+                        endingDate = endDate;
+
+                        binding.pagenumber.setText(count + " /" + response.body().getTotalElements());
+
+                    } else {
+                        progressDialog.dismissDialog();
+                        if (isAdded())
+                            Toast.makeText(getContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
+                    progressDialog.dismissDialog();
+
+                    Log.e("EmployeePerformance", "Server error", t);
+                }
+            });
+        }
+
+        //With End date Only
+        if (statuss.trim().equals("--") && startDate == 0L && endDate != 0L) {
+            Call<TaskResponse> call = apiInterface.getFilterTaskwithEndDate(userId, count, endDate, 1);
+            call.enqueue(new Callback<TaskResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
+                    if (response.isSuccessful()) {
+                        progressDialog.dismissDialog();
+
+                        tasks = response.body().getContent();
+                        Log.e("performance", "onResponse: " + tasks);
+                        setAdapt();
+                        isFiltered = true;
+
+                        status = statuss;
+                        startingDate = startDate;
+                        endingDate = endDate;
+
+                        binding.pagenumber.setText(count + " /" + response.body().getTotalElements());
+
+                    } else {
+                        progressDialog.dismissDialog();
+                        if (isAdded())
+                            Toast.makeText(getContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
+                    Log.e("EmployeePerformance", "Server error", t);
+                    progressDialog.dismissDialog();
+
+                }
+            });
+        }
+
+        //with status and startdate
+        if (!statuss.trim().equals("--") && startDate != 0L && endDate == 0L) {
+            Call<TaskResponse> call = apiInterface.getFilterTaskwithoutEndDate(userId, count, statuss, startDate, 1);
+            call.enqueue(new Callback<TaskResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
+                    if (response.isSuccessful()) {
+                        progressDialog.dismissDialog();
+
+                        tasks = response.body().getContent();
+                        Log.e("performance", "onResponse: " + tasks);
+                        setAdapt();
+                        isFiltered = true;
+
+                        status = statuss;
+                        startingDate = startDate;
+                        endingDate = endDate;
+
+                        binding.pagenumber.setText(count + " /" + response.body().getTotalElements());
+
+                    } else {
+                        progressDialog.dismissDialog();
+                        if (isAdded())
+                            Toast.makeText(getContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
+                    progressDialog.dismissDialog();
+
                     Log.e("EmployeePerformance", "Server error", t);
                 }
             });
@@ -919,12 +1254,15 @@ public class TasksFragment extends Fragment {
         ApiClient apiClient = new ApiClient(getContext());
         apiInterface = apiClient.getApiInterface();
 
-        if (startDate == 0 || endDate == 0) {
+        //with status only
+        if (startDate == 0L && endDate == 0L && !statuss.trim().equals("--")) {
             Call<TaskResponse> call = apiInterface.getFilterTaskwithpageWithoutDate(childId, count, statuss, 1);
             call.enqueue(new Callback<TaskResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
                     if (response.isSuccessful()) {
+                        progressDialog.dismissDialog();
+
                         tasks = response.body().getContent();
                         Log.e("performance", "onResponse: " + tasks);
                         setAdapt();
@@ -937,21 +1275,29 @@ public class TasksFragment extends Fragment {
                         binding.pagenumber.setText(String.valueOf(count + " /" + response.body().getTotalElements()));
 
                     } else {
-                        Toast.makeText(getContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismissDialog();
+                        if (isAdded())
+                            Toast.makeText(getContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
                     Log.e("EmployeePerformance", "Server error", t);
+                    progressDialog.dismissDialog();
+
                 }
             });
-        } else {
+        }
+        //with all three
+        if (startDate != 0L && endDate != 0L && !statuss.trim().equals("--")) {
             Call<TaskResponse> call = apiInterface.getFilterTaskwithpage(childId, count, statuss, startDate, endDate, 1);
             call.enqueue(new Callback<TaskResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
                     if (response.isSuccessful()) {
+                        progressDialog.dismissDialog();
+
                         tasks = response.body().getContent();
                         Log.e("performance", "onResponse: " + tasks);
                         setAdapt();
@@ -961,20 +1307,214 @@ public class TasksFragment extends Fragment {
                         startingDate = startDate;
                         endingDate = endDate;
 
-                        binding.pagenumber.setText(String.valueOf(count + " /" + response.body().getTotalElements()));
+                        binding.pagenumber.setText(count + " /" + response.body().getTotalElements());
 
                     } else {
-                        Toast.makeText(getContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismissDialog();
+                        if (isAdded())
+                            Toast.makeText(getContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
                     Log.e("EmployeePerformance", "Server error", t);
+                    progressDialog.dismissDialog();
+
+                }
+            });
+        }
+        //with start and end date
+        if (statuss.trim().equals("--") && startDate != 0L && endDate != 0L) {
+            Call<TaskResponse> call = apiInterface.getFilteredLeaveWithoutStatus(childId, count, startDate, endDate, 1);
+            call.enqueue(new Callback<TaskResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
+                    if (response.isSuccessful()) {
+                        progressDialog.dismissDialog();
+
+                        tasks = response.body().getContent();
+                        Log.e("performance", "onResponse: " + tasks);
+                        setAdapt();
+                        isFiltered = true;
+
+                        status = statuss;
+                        startingDate = startDate;
+                        endingDate = endDate;
+
+                        binding.pagenumber.setText(count + " /" + response.body().getTotalElements());
+
+                    } else {
+                        progressDialog.dismissDialog();
+                        if (isAdded())
+                            Toast.makeText(getContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
+                    Log.e("EmployeePerformance", "Server error", t);
+                    progressDialog.dismissDialog();
+
+                }
+            });
+        }
+
+        //with status and end date
+        if (!statuss.trim().equals("--") && startDate == 0L && endDate != 0L) {
+            Call<TaskResponse> call = apiInterface.getFilteredLeaveWithoutStartDate(childId, count, statuss, endDate, 1);
+            call.enqueue(new Callback<TaskResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
+                    if (response.isSuccessful()) {
+                        progressDialog.dismissDialog();
+
+                        tasks = response.body().getContent();
+                        Log.e("performance", "onResponse: " + tasks);
+                        setAdapt();
+                        isFiltered = true;
+
+                        status = statuss;
+                        startingDate = startDate;
+                        endingDate = endDate;
+
+                        binding.pagenumber.setText(count + " /" + response.body().getTotalElements());
+
+                    } else {
+                        progressDialog.dismissDialog();
+                        if (isAdded())
+                            Toast.makeText(getContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
+                    Log.e("EmployeePerformance", "Server error", t);
+                    progressDialog.dismissDialog();
+
+                }
+            });
+        }
+
+        //With start date only.
+        if (statuss.trim().equals("--") && startDate != 0L && endDate == 0L) {
+            Call<TaskResponse> call = apiInterface.getFilterTaskwithStartDate(childId, count, startDate, 1);
+            call.enqueue(new Callback<TaskResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
+                    if (response.isSuccessful()) {
+                        progressDialog.dismissDialog();
+
+                        tasks = response.body().getContent();
+                        Log.e("performance", "onResponse: " + tasks);
+                        setAdapt();
+                        isFiltered = true;
+
+                        status = statuss;
+                        startingDate = startDate;
+                        endingDate = endDate;
+
+                        binding.pagenumber.setText(count + " /" + response.body().getTotalElements());
+
+                    } else {
+                        progressDialog.dismissDialog();
+                        if (isAdded())
+                            Toast.makeText(getContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
+                    Log.e("EmployeePerformance", "Server error", t);
+                    progressDialog.dismissDialog();
+
+                }
+            });
+        }
+
+        //With End date Only
+        if (statuss.trim().equals("--") && startDate == 0L && endDate != 0L) {
+            Call<TaskResponse> call = apiInterface.getFilterTaskwithEndDate(childId, count, endDate, 1);
+            call.enqueue(new Callback<TaskResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
+                    if (response.isSuccessful()) {
+                        progressDialog.dismissDialog();
+
+                        tasks = response.body().getContent();
+                        Log.e("performance", "onResponse: " + tasks);
+                        setAdapt();
+                        isFiltered = true;
+
+                        status = statuss;
+                        startingDate = startDate;
+                        endingDate = endDate;
+
+                        binding.pagenumber.setText(count + " /" + response.body().getTotalElements());
+
+                    } else {
+                        progressDialog.dismissDialog();
+                        if (isAdded())
+                            Toast.makeText(getContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
+                    Log.e("EmployeePerformance", "Server error", t);
+                    progressDialog.dismissDialog();
+
+                }
+            });
+        }
+
+        //with status and startdate
+        if (!statuss.trim().equals("--") && startDate != 0L && endDate == 0L) {
+            Call<TaskResponse> call = apiInterface.getFilterTaskwithoutEndDate(childId, count, statuss, startDate, 1);
+            call.enqueue(new Callback<TaskResponse>() {
+                @Override
+                public void onResponse(@NonNull Call<TaskResponse> call, @NonNull Response<TaskResponse> response) {
+                    if (response.isSuccessful()) {
+                        progressDialog.dismissDialog();
+
+                        tasks = response.body().getContent();
+                        Log.e("performance", "onResponse: " + tasks);
+                        setAdapt();
+                        isFiltered = true;
+
+                        status = statuss;
+                        startingDate = startDate;
+                        endingDate = endDate;
+
+                        binding.pagenumber.setText(count + " /" + response.body().getTotalElements());
+
+                    } else {
+                        progressDialog.dismissDialog();
+                        if (isAdded())
+                            Toast.makeText(getContext(), "Failed to fetch Task list.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<TaskResponse> call, @NonNull Throwable t) {
+                    Log.e("EmployeePerformance", "Server error", t);
+                    progressDialog.dismissDialog();
+
                 }
             });
         }
     }
 
+//    void showImage() {
+//        // Create an alert builder
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//        builder.setCancelable(true);
+//        final Dialog dialog = new Dialog(getContext());
+//        // set the custom layout
+//        dialog.setContentView(R.layout.showImage);
+//        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        dialog.setCancelable(false);
+//        dialog.getWindow().getAttributes().windowAnimations = R.style.animation;
+//    }
 
 }

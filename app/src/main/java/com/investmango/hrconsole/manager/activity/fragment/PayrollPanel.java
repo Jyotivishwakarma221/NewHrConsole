@@ -75,6 +75,7 @@ public class PayrollPanel extends Fragment {
             @Override
             public void onFailure(@NonNull Call<List<Salary>> call, @NonNull Throwable t) {
                 Log.e("SalaryFragment", "Network error: " + t.getMessage());
+                if (isAdded())
                 Toast.makeText(getContext(), "No payroll found .", Toast.LENGTH_SHORT).show();
             }
         });

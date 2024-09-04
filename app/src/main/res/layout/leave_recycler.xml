@@ -149,7 +149,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/laylinear"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="@dimen/_25dp"
+            android:layout_marginTop="@dimen/_50dp"
             android:background="@drawable/light_grey_bg"
             android:orientation="horizontal">
 

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="@dimen/_5dp"
+    android:background="@drawable/cardview_border"
+    android:padding="10dp">
+
+    <ImageView
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="@dimen/_5dp"
+        android:src="@drawable/baseline_insert_drive_file_24" />
+
+    <TextView
+        android:id="@+id/textName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_5dp"
+        android:fontFamily="@font/dm_sans"
+        android:text=" "
+        android:textColor="@color/white" />
+</LinearLayout>
+
+    <!--    <?xml version="1.0" encoding="utf-8"?>-->
+    <!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:padding="5dp"-->
+    <!--android:layout_margin="5dp">-->
+
+    <!--<ImageView-->
+    <!--    android:layout_width="15dp"-->
+    <!--    android:layout_height="15dp"-->
+    <!--    android:src="@drawable/baseline_rectangle_24" />-->
+
+    <!--<TextView-->
+    <!--    android:id="@+id/textName"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:fontFamily="@font/dm_sans"-->
+    <!--    android:text=" "-->
+    <!--    android:layout_marginStart="@dimen/_5dp"-->
+    <!--    android:textColor="@color/white" />-->
+    <!--</LinearLayout>-->

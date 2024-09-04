@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.HrConsole.tv.official.console.premium.CommonAdapter
 import com.HrConsole.tv.official.console.premium.RecyclerViewInterface
+import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
@@ -50,7 +51,7 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
     private var currentPage = 0
     private var list: ArrayList<attendanceDay> = arrayListOf()
     var isFiltered: Boolean = false
-    private var progressDialog: ProgressDialog? = null
+    lateinit var progressDialog: AwesomeProgressDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,9 +60,10 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
         token = preferences.getString("token", "0").toString()
         userId = preferences.getLong("userId", 0)
 
-        progressDialog = ProgressDialog(activity, R.style.CustomProgressDialog)
-        progressDialog!!.setMessage("Loading attendance...")
-        progressDialog!!.setCancelable(false)
+        progressDialog = AwesomeProgressDialog(context)
+        progressDialog.addTitle("Loading...") // add your title here.
+        progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
 
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
@@ -110,7 +112,7 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
                 this@AttendanceListFragment.isLoading = true
                 currentPage++
                 if (!isFiltered)
-                loadMoreData(currentPage)
+                    loadMoreData(currentPage)
             }
         })
 
@@ -129,7 +131,7 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
 
     fun attendanceList(page: Int) {
         try {
-
+            progressDialog.showDialog()
             val apiClient = ApiClient(requireContext())
             apiInterface = apiClient.apiInterface
             val call = apiInterface.getAttendance(userId, page)
@@ -139,14 +141,14 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
                     response: Response<AttendanceResponse>,
                 ) {
                     if (response.isSuccessful && response.body() != null && progressDialog != null) {
-                        progressDialog?.dismiss()
+                        progressDialog?.dismissDialog()
 
                         val size = response.body()?.content?.size!!
-                        Log.e("attendance", "onResponse: " + size)
                         if (size > 0) {
                             for (i in 0..size - 1) {
                                 response.body()?.content?.get(i)?.let { list?.add(it) }
                             }
+                            Log.e("attendance", "onResponse: " + list)
 
                             binding.recycler.adapter?.notifyItemInserted(list.size)
 
@@ -170,7 +172,7 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
                             }
                         }
                     } else {
-                        progressDialog?.dismiss()
+                        progressDialog.dismissDialog()
                         if (isAdded)
                             Toast.makeText(
                                 requireContext(),
@@ -181,7 +183,7 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
                 }
 
                 override fun onFailure(call: Call<AttendanceResponse>, t: Throwable) {
-                    progressDialog?.dismiss()
+                    progressDialog?.dismissDialog()
                     Log.e("attendance", "onFailure: ")
                     Toast.makeText(
                         context,
@@ -199,14 +201,15 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
     fun getUsernewAttendancebyMonth(startDate: Long, endDate: Long) {
         val apiClient = ApiClient(requireContext())
         apiInterface = apiClient.apiInterface
-        val call = apiInterface.getUsernewAttendancebyMonth(userId, startDate, endDate,30)
+        progressDialog.showDialog()
+        val call = apiInterface.getUsernewAttendancebyMonth(userId, startDate, endDate, 30)
         call.enqueue(object : Callback<AttendanceResponse> {
             override fun onResponse(
                 call: Call<AttendanceResponse>,
                 response: Response<AttendanceResponse>,
             ) {
 
-                progressDialog?.dismiss()
+                progressDialog?.dismissDialog()
                 if (response.isSuccessful && response.body() != null) {
                     isFiltered = true
                     val size = response.body()?.content?.size!!
@@ -218,13 +221,14 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
                         for (i in 0..size - 1) {
                             response.body()?.content?.get(i)?.let { list?.add(it) }
                         }
-                        binding.recycler.adapter= CommonAdapter(this@AttendanceListFragment)
+                        binding.recycler.adapter = CommonAdapter(this@AttendanceListFragment)
                     } else {
                         binding.noDataFound.visibility = View.VISIBLE
                         binding.recycler.visibility = View.GONE
                     }
 
                 } else {
+                    progressDialog.dismissDialog()
                     try {
                         val errorMessage = response.errorBody()!!.string()
                         Log.e(
@@ -247,7 +251,7 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
             }
 
             override fun onFailure(call: Call<AttendanceResponse>, t: Throwable) {
-                progressDialog?.dismiss()
+                progressDialog?.dismissDialog()
                 Log.e("attendance", "onFailure: ")
                 Toast.makeText(
                     context,
@@ -291,7 +295,7 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
                     resources.getStringArray(R.array.Months)
                         .get(monthOfYear) + " " + year
                 )
-                val monthSelectedd=monthOfYear+1
+                val monthSelectedd = monthOfYear + 1
 
                 val yearMonth: YearMonth = YearMonth.of(year, monthSelectedd)
                 val endOfMonth: LocalDate = yearMonth.atEndOfMonth()
@@ -299,7 +303,7 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
                 val formattedDate = endOfMonth.format(formatter)
                 try {
 
-                    val date = "1/" + monthSelectedd  + "/" + year
+                    val date = "1/" + monthSelectedd + "/" + year
 //                    val startDate = DateAndTimeUtility.monthYearToEpoch(monthOfYear, year)
                     val startDate = DateAndTimeUtility.dateToEpoch(date)
 
@@ -307,7 +311,7 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
                     val endDate = DateAndTimeUtility.convertToEpochMillis(formattedDate)
                     Log.e(
                         "startDate",
-                        "showMonths: " + startDate + "  " + endDate + " "+ formattedDate
+                        "showMonths: " + startDate + "  " + endDate + " " + formattedDate
                     )
                     getUsernewAttendancebyMonth(startDate, endDate)
                 } catch (e: Exception) {
@@ -329,7 +333,6 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun bindView(viewBind: AttendanceListRecycBinding, position: Int) {
-        viewBind.date.text = list.get(position).date.toString()
 
         if (list.get(position).late != null) {
             if (list.get(position).late == true) {
@@ -338,23 +341,48 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
         }
 
         if (list.get(position).inTime != null) {
-
+            Log.e(
+                "intime",
+                "bindView: 1 " + list.get(position).inTime + " " + list.get(position).date.toString() + " " + list.get(
+                    position
+                ).dayType
+            )
+            viewBind.date.text = list.get(position).date.toString()
+            viewBind.Absent.visibility = View.GONE
+            viewBind.present.visibility = View.VISIBLE
             val intime = DateAndTimeUtility.getTimeInHourFromLong(list.get(position).inTime!!)
             if (list.get(position).outTime != 0L) {
                 val outtime = DateAndTimeUtility.getTimeInHourFromLong(list.get(position).outTime)
                 viewBind.outTime.text = outtime
                 Log.e("intime", "bindView: out" + outtime)
 
+
             }
-            Log.e("intime", "bindView: " + intime)
             viewBind.inTime.text = intime
-        } else {
+            if (list.get(position).leaveType!=null){
+                viewBind.leavetypehalfDay.visibility = View.VISIBLE
+                viewBind.Absent.visibility = View.GONE
+                viewBind.leavetypehalfDay.text = "  " + list.get(position).leaveType
+            }else{
+                viewBind.leavetypehalfDay.visibility = View.GONE
+                viewBind.Absent.visibility = View.GONE
+            }
+
+        } else if (list.get(position).inTime == null && list.get(position).outTime == null) {
+            viewBind.date.text = list.get(position).date.toString()
+            Log.e(
+                "intime",
+                "bindView: 2 " + list.get(position).inTime + " " + list.get(position).date.toString() + " " + list.get(
+                    position
+                ).dayType
+            )
+
             if (list.get(position).dayType != null) {
                 viewBind.present.visibility = View.GONE
                 viewBind.Absent.visibility = View.VISIBLE
                 viewBind.leavetypehalfDay.visibility = View.GONE
-
                 viewBind.Absent.setText(list.get(position).dayType)
+
             } else if (list.get(position).leaveType != null) {
                 viewBind.leavetypehalfDay.visibility = View.VISIBLE
                 viewBind.Absent.visibility = View.GONE

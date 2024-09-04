@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog;
 import com.bumptech.glide.Glide;
 import com.investmango.hrconsole.EmployeeAction.ViewPagerAdap;
 import com.investmango.hrconsole.R;
@@ -41,6 +42,7 @@ public class MyPerformance extends Fragment {
     Month month;
     private SharedPreferences preferences;
     private FragmentMyPerformanceBinding binding;
+    AwesomeProgressDialog progressDialog;
     static MonthlyPerformanceResp empPerformanceList;
 
     @Override
@@ -49,6 +51,11 @@ public class MyPerformance extends Fragment {
         preferences = requireActivity().getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
         token = preferences.getString("token", "0");
         userId = preferences.getLong("userId", 0);
+
+        progressDialog = new AwesomeProgressDialog(getContext());
+        progressDialog.addTitle("Loading..."); // add your title here.
+        progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS);
+        progressDialog.isCancelable(false);
 
     }
 
@@ -69,21 +76,25 @@ public class MyPerformance extends Fragment {
     private void fetchPerformanceReport() {
         ApiClient apiClient = new ApiClient(getContext());
         apiInterface = apiClient.getApiInterface();
+        progressDialog.showDialog();
         Call<MonthlyPerformanceResp> call = apiInterface.getMonthPerformance(userId);
         call.enqueue(new Callback<MonthlyPerformanceResp>() {
             @Override
             public void onResponse(@NonNull Call<MonthlyPerformanceResp> call, @NonNull Response<MonthlyPerformanceResp> response) {
                 if (response.isSuccessful()) {
+                    progressDialog.dismissDialog();
                     empPerformanceList = response.body();
                     setUpData();
                     Log.e("performance", "onResponse: " + empPerformanceList);
                 } else {
+                    progressDialog.dismissDialog();
                     Toast.makeText(getContext(), getErrorMessage(response), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<MonthlyPerformanceResp> call, @NonNull Throwable t) {
+                progressDialog.dismissDialog();
                 Log.e("EmployeePerformance", "Server error", t);
             }
         });

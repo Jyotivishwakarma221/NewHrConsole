@@ -86,8 +86,8 @@
                 android:layout_marginEnd="@dimen/_20dp"
                 android:layout_marginBottom="@dimen/_20dp"
                 android:gravity="start"
-                android:maxLength="400"
-                android:maxLines="5"
+                android:maxLength="10000"
+                android:maxLines="10"
                 android:padding="@dimen/_5dp"
                 android:text="Prepare a progress report for app development
 and Design Implementations. Feedback require

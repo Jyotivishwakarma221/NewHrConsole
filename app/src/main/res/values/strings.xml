@@ -147,10 +147,16 @@
     <string-array name="listLeaveType">
         <item>Absent</item>
         <item>Half Day</item>
-        <item>Short Leave</item>
+        <item>Late </item>
         <item>Paid Leave</item>
     </string-array>
     <string-array name="statusType">
+        <item>PENDING</item>
+        <item>APPROVED</item>
+        <item>REJECTED</item>
+    </string-array>
+    <string-array name="statusType2">
+        <item> -- </item>
         <item>PENDING</item>
         <item>APPROVED</item>
         <item>REJECTED</item>
@@ -165,10 +171,18 @@
         <item>DONE</item>
     </string-array>
     <string-array name="MeetingType">
+        <item> -- </item>
         <item>SCHEDULED</item>
         <item>PENDING</item>
         <item>POSTPONED</item>
         <item>DONE</item>
+    </string-array>
+    <string-array name="StatusOfSubTask">
+        <item>ASSIGNED</item>
+        <item>PENDING</item>
+        <item>DONE</item>
+        <item>NOT_USED</item>
+        <item>INPROGRESS</item>
     </string-array>
 
     <string-array name="Months">

@@ -51,6 +51,7 @@
                         android:textStyle="bold" />
 
                     <ImageView
+                        android:id="@+id/ManageBtn"
                         style="@style/CustomButton"
                         android:layout_width="120dp"
                         android:layout_height="40dp"
@@ -87,6 +88,7 @@
                         android:textStyle="bold" />
 
                     <ImageView
+                        android:id="@+id/taskBtn"
                         android:layout_width="120dp"
                         android:layout_height="40dp"
                         android:layout_gravity="end"
@@ -121,6 +123,7 @@
                         android:textStyle="bold" />
 
                     <ImageView
+                        android:id="@+id/ProjectBtn"
                         android:layout_width="120dp"
                         android:layout_height="40dp"
                         android:layout_gravity="end"
@@ -155,6 +158,7 @@
                         android:textStyle="bold" />
 
                     <ImageView
+                        android:id="@+id/MeetingBtn"
                         android:layout_width="120dp"
                         android:layout_height="40dp"
                         android:layout_gravity="end"
@@ -188,6 +192,7 @@
                         android:textStyle="bold" />
 
                     <ImageView
+                        android:id="@+id/LeaveBtn"
                         android:layout_width="120dp"
                         android:layout_height="40dp"
                         android:layout_gravity="end"

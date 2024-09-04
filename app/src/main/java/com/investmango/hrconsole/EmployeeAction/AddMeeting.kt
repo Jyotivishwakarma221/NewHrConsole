@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.HrConsole.tv.official.console.premium.CommonAdapter
 import com.HrConsole.tv.official.console.premium.RecyclerViewInterface
+import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.investmango.hrconsole.EmployeeAction.EmplyDetail.AdapterForTimeSlot
@@ -56,21 +57,35 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
     lateinit var startDate: TextView
     lateinit var endDate: TextView
     var childuserId: Long = 0
+     var ViewOf:String=""
     var employeList: ArrayList<String>? = arrayListOf()
     var authority: String = ""
+    lateinit var progressDialog: AwesomeProgressDialog
     var allActiveUsers: List<TotalEmpResponseItem?>? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         var preferences = context!!.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+
         authority = preferences.getString("Authority", "0").toString()
 
+        progressDialog = AwesomeProgressDialog(context)
+        progressDialog.addTitle("Loading...") // add your title here.
+        progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
+        progressDialog.showDialog()
+
+        if (arguments!=null)
+        ViewOf= arguments?.getString("ViewOf").toString()
+
         generateTimeSlots()
+
         if (authority.equals(Constant.MANAGER))
             getChildActiveUser()
         else if (authority.equals(Constant.ADMIN))
             getAllActiveUser()
+
     }
 
     override fun onCreateView(
@@ -97,7 +112,14 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
 
         binding.Filter.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                showManagerOrAdminFilter(context!!)
+                if (ViewOf.equals("Own")) {
+                    showFilterBox(context!!)
+                } else {
+                    if (authority.equals(Constant.USER))
+                        showFilterBox(context!!)
+                    else
+                    showManagerOrAdminFilter(context!!)
+                }
             }
         }
 
@@ -185,18 +207,80 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
 
             val enddate = DateAndTimeUtility.dateToEpoch(endDate.text.toString())
 
-            val fragment = FilteredMeetingFragment()
-            val bundle = Bundle()
-            bundle.putLong("startdate", startdate)
-            bundle.putLong("enddate", enddate)
-            bundle.putLong("childId", childuserId)
-            bundle.putString("ViewOf", "child")
-            bundle.putString("status", statusSpin.getSelectedItem().toString())
-            fragment.arguments = bundle
+            if (startdate == 0L && enddate == 0L && statusSpin!!.selectedItem.toString()
+                    .trim { it <= ' ' } == "--"
+            ) Toast.makeText(context, "Select Date or status", Toast.LENGTH_SHORT).show()
+            else {
 
-            (activity as ManagerActivity?)!!.replaceFragment(fragment)
+                val fragment = FilteredMeetingFragment()
+                val bundle = Bundle()
+                bundle.putLong("startdate", startdate)
+                bundle.putLong("enddate", enddate)
+                bundle.putLong("childId", childuserId)
+                bundle.putString("ViewOf", "child")
+                bundle.putString("status", statusSpin.getSelectedItem().toString())
+                fragment.arguments = bundle
 
-            dialog1.dismiss()
+                (activity as ManagerActivity?)!!.replaceFragment(fragment)
+
+                dialog1.dismiss()
+            }
+        }
+        dialog1.show()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun showFilterBox(context: Context) {
+        val dialog1 = BottomSheetDialog(context, R.style.BottomSheetDialog)
+        dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog1.setCancelable(true)
+        dialog1.setCanceledOnTouchOutside(true)
+        dialog1.setContentView(R.layout.filter_layput)
+        val window = dialog1.window!!
+        window!!.setLayout(
+            ConstraintLayout.LayoutParams.MATCH_PARENT,
+            ConstraintLayout.LayoutParams.WRAP_CONTENT
+        )
+
+
+        val statusSpin = dialog1.findViewById<Spinner>(R.id.status)
+        val showResult = dialog1.findViewById<TextView>(R.id.showresult)
+        val list2 = resources.getStringArray(R.array.MeetingType)
+
+        val arrayAdapter =
+            ArrayAdapter<Any?>(requireContext(), R.layout.color_spinner_layout, list2)
+        arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout)
+        assert(statusSpin != null)
+        statusSpin!!.adapter = arrayAdapter
+
+        startDate = dialog1.findViewById(R.id.startDate)!!!!
+        endDate = dialog1.findViewById(R.id.endDate)!!!!
+
+        startDate.setOnClickListener { openDatePicker("start") }
+        endDate.setOnClickListener { openDatePicker("") }
+
+        showResult!!.setOnClickListener {
+            val startdate = DateAndTimeUtility.dateToEpoch(startDate.text.toString())
+            Log.e(
+                "startdate",
+                "showFilterBox: " + statusSpin!!.selectedItem.toString().trim { it <= ' ' })
+
+            val enddate = DateAndTimeUtility.dateToEpoch(endDate.text.toString())
+            if (startdate == 0L && enddate == 0L && statusSpin!!.selectedItem.toString()
+                    .trim { it <= ' ' } == "--"
+            ) Toast.makeText(context, "Select Date or status", Toast.LENGTH_SHORT).show()
+            else {
+                val fragment = FilteredMeetingFragment()
+                val bundle = Bundle()
+                bundle.putLong("startdate", startdate)
+                bundle.putLong("enddate", enddate)
+                bundle.putString("ViewOf", "own")
+                bundle.putString("status", statusSpin.getSelectedItem().toString())
+                fragment.arguments = bundle
+
+                (activity as ManagerActivity?)!!.replaceFragment(fragment)
+                dialog1.dismiss()
+            }
         }
         dialog1.show()
     }
@@ -204,7 +288,6 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
     private fun getAllActiveUser() {
         val apiClient = ApiClient(context)
         apiInterface = apiClient.apiInterface
-
 
         val call = apiInterface.getAllEmployee(true)
         call.enqueue(object : Callback<List<TotalEmpResponseItem?>> {
@@ -292,7 +375,7 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
                 if (response.body() != null && response.isSuccessful()) {
                     meetingLis = response.body()!!.content!!
                     if (isAdded)
-                    setAdapt()
+                        setAdapt()
                     Log.e("getmeetings", "onResponse: " + response.body())
                 } else {
                     Log.e("getmeetings", "onResponse: " + response.body().toString())
@@ -311,15 +394,17 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
     fun setAdapt() {
         binding.recyclerForCalender.adapter = CommonAdapter(this)
         if (isAdded)
-        binding.recyclerForCalender.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            binding.recyclerForCalender.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     }
 
     fun setAdapter2() {
-        binding.recyclerFortime.adapter = AdapterForTimeSlot(this,timeSlots, meetingList3!!)
+        binding.recyclerFortime.adapter = AdapterForTimeSlot(this, timeSlots, meetingList3!!)
+        progressDialog.dismissDialog()
+
         if (isAdded)
-        binding.recyclerFortime.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            binding.recyclerFortime.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 
     override fun getViewBinding(viewGroup: ViewGroup, viewType: Int): CalenderHolderBinding {
@@ -362,6 +447,7 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
 
 
         viewBind.layout.setOnClickListener {
+            progressDialog.showDialog()
             date = list.get(position).date
             setAdapt()
             setAdapter2()
@@ -379,11 +465,11 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
         return timeSlots
     }
 
-    fun EditMeeting(item:MeetingItem){
-        val  frag=CreateNewFragment()
-        val  bundle=Bundle()
-        bundle.putSerializable("meeting",item)
-        frag.arguments=bundle
+    fun EditMeeting(item: MeetingItem) {
+        val frag = CreateNewFragment()
+        val bundle = Bundle()
+        bundle.putSerializable("meeting", item)
+        frag.arguments = bundle
         (activity as ManagerActivity?)!!.replaceFragment(frag)
 
     }

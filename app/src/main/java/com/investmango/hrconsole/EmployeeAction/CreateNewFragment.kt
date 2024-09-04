@@ -236,6 +236,7 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
                 response: Response<AssignMeeting?>,
             ) {
                 if (response.isSuccessful) {
+                    progressBar.dismiss()
                     // Redirect to MeetingFragment
                     delete()
                     if (context != null)
@@ -244,12 +245,16 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
                     activity?.onBackPressed()
                 } else {
                     if (response.code() == 500) {
+
+                        if (isAdded)
                         Toast.makeText(
                             context,
                             "A meeting already exists for this date",
                             Toast.LENGTH_LONG
                         ).show()
                     } else {
+
+                        if (isAdded)
                         Toast.makeText(
                             context,
                             "Failed to assign meeting. Error code: " + response.code(),
@@ -262,6 +267,7 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
             }
 
             override fun onFailure(call: Call<AssignMeeting?>, t: Throwable) {
+                if (isAdded)
                 Toast.makeText(context, "Something Went Wrong.", Toast.LENGTH_LONG).show()
                 Log.e("meetingAssigned", "onFailure: " + t.message)
                 progressBar.dismiss()
@@ -282,6 +288,8 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
             ) {
                 Log.e("isSuccessful", "onResponse: "+assignMeeting.userIds+ " "+ userId )
                 if (response.isSuccessful) {
+                    progressBar.dismiss()
+
                     // Redirect to MeetingFragment
                     delete()
                     if (context != null)
@@ -308,6 +316,7 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
             }
 
             override fun onFailure(call: Call<AssignMeeting?>, t: Throwable) {
+                if (isAdded)
                 Toast.makeText(context, "Something Went Wrong.", Toast.LENGTH_LONG).show()
                 Log.e("meetingAssigned", "onFailure: " + t.message)
                 progressBar.dismiss()
@@ -354,6 +363,7 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
             }
 
             override fun onFailure(call: Call<AssignMeeting?>, t: Throwable) {
+                if (isAdded)
                 Toast.makeText(context, "Something Went Wrong.", Toast.LENGTH_LONG).show()
                 Log.e("meetingAssigned", "onFailure: " + t.message)
                 progressBar.dismiss()
@@ -378,6 +388,7 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
             }
         }
     }
+
 
     fun setDatePicker() {
         val builder = MaterialDatePicker.Builder.datePicker()

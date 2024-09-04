@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@drawable/cardview_border"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/notee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/description"
+        android:layout_margin="@dimen/_10"
+        android:background="@drawable/black_button"
+        android:fontFamily="@font/dm_sans"
+        android:gravity="start"
+        android:text=" kdfnakfnaifni "
+        android:textColor="#999999"
+        android:textSize="15sp" />
+
+</LinearLayout>
+

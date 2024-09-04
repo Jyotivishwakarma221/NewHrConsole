@@ -44,7 +44,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/profilePhoto"
                             android:fontFamily="@font/dm_sans"
-                            android:text="Akash"
+                            android:text="   "
                             android:textColor="@color/white"
                             android:textSize="14dp" />
 
@@ -54,7 +54,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/profilePhoto"
                             android:fontFamily="@font/dm_sans"
-                            android:text="Creative Content"
+                            android:text=""
                             android:textColor="#989898"
                             android:textSize="14dp" />
 
@@ -76,7 +76,7 @@
                                 android:id="@+id/lastlogin"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="12 Hours ago"
+                                android:text="  "
                                 android:textColor="@color/white"
                                 android:textSize="12dp" />
                         </LinearLayout>
@@ -131,7 +131,7 @@
                                 android:fontFamily="@font/dm_sans"
                                 android:gravity="start"
                                 android:padding="@dimen/_15"
-                                android:text="8574994847"
+                                android:text="      "
                                 android:textColor="#989898"
                                 android:textSize="14dp" />
 
@@ -167,7 +167,7 @@
                                 android:fontFamily="@font/dm_sans"
                                 android:gravity="start"
                                 android:padding="@dimen/_15"
-                                android:text="+91 98775 98775"
+                                android:text="  "
                                 android:textColor="#989898"
                                 android:textSize="14dp" />
 
@@ -298,7 +298,7 @@
                                 android:fontFamily="@font/dm_sans"
                                 android:gravity="start"
                                 android:padding="@dimen/_15"
-                                android:text="UserA@Investmango.com"
+                                android:text="  "
                                 android:textColor="#989898"
                                 android:textSize="14dp" />
 
@@ -334,7 +334,7 @@
                                 android:fontFamily="@font/dm_sans"
                                 android:gravity="start"
                                 android:padding="@dimen/_15"
-                                android:text="Sec - 73 Noida, 201304"
+                                android:text="     "
                                 android:textColor="#989898"
                                 android:textSize="14dp" />
 
@@ -389,7 +389,7 @@
                                 android:fontFamily="@font/dm_sans"
                                 android:gravity="start"
                                 android:padding="@dimen/_15"
-                                android:text="23 April 2023"
+                                android:text="   "
                                 android:textColor="#989898"
                                 android:textSize="14dp" />
 
@@ -426,7 +426,7 @@
                                 android:fontFamily="@font/dm_sans"
                                 android:gravity="start"
                                 android:padding="@dimen/_15"
-                                android:text="Marketing "
+                                android:text="   "
                                 android:textColor="#989898"
                                 android:textSize="14dp" />
 
@@ -462,7 +462,7 @@
                                 android:fontFamily="@font/dm_sans"
                                 android:gravity="start"
                                 android:padding="@dimen/_15"
-                                android:text="Creative Content and Graphic Designer"
+                                android:text=" "
                                 android:textColor="#989898"
                                 android:textSize="14dp" />
 

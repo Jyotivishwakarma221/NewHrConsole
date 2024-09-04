@@ -14,6 +14,7 @@ import android.widget.Toast.makeText
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
@@ -37,7 +38,7 @@ class ApplyNewLeaveFragment : Fragment() {
     private var userId: Long = 0
     var token: String = ""
     var selectedDates: ArrayList<String> = arrayListOf()
-    private var progressDialog: ProgressDialog? = null
+    lateinit var progressDialog: AwesomeProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,9 +47,9 @@ class ApplyNewLeaveFragment : Fragment() {
         token = preferences.getString("token", "0").toString()
         userId = preferences.getLong("userId", 0)
 
-        progressDialog = ProgressDialog(activity, R.style.CustomProgressDialog)
-        progressDialog!!.setMessage("Please wait ...")
-        progressDialog!!.setCancelable(false)
+        progressDialog = AwesomeProgressDialog(context)
+        progressDialog.addTitle("Loading...") // add your title here.
+        progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
     }
 
     override fun onCreateView(
@@ -98,7 +99,7 @@ class ApplyNewLeaveFragment : Fragment() {
                 // Convert selected date range to list of dates
                 // Convert selected date range to list of dates
 
-                binding.datelayout.visibility=View.VISIBLE
+                binding.datelayout.visibility = View.VISIBLE
 
                 val start = Calendar.getInstance()
                 start.timeInMillis = it.first
@@ -144,7 +145,7 @@ class ApplyNewLeaveFragment : Fragment() {
             ).show()
             return
         }
-        progressDialog?.show()
+        progressDialog?.showDialog()
         // Convert leaveType string to enum
         val leaveType =
             SaveUserLeave.LeaveType.fromString(binding.leaveType.selectedItem.toString())
@@ -172,7 +173,7 @@ class ApplyNewLeaveFragment : Fragment() {
                     response: Response<SaveUserLeave?>,
                 ) {
                     if (response.isSuccessful) {
-                        progressDialog?.dismiss()
+                        progressDialog?.dismissDialog()
                         makeText(
                             requireContext(),
                             "Leave request send successfully",
@@ -180,18 +181,21 @@ class ApplyNewLeaveFragment : Fragment() {
                         ).show()
                         fragmentManager?.fragments?.remove(this@ApplyNewLeaveFragment)
                     } else {
-                        progressDialog?.dismiss()
-                        makeText(context, getErrorMessage(response), LENGTH_SHORT).show()
+                        progressDialog?.dismissDialog()
+                        if (isAdded)
+                            makeText(context, getErrorMessage(response), LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<SaveUserLeave?>, t: Throwable) {
-                    progressDialog?.dismiss()
-                    makeText(requireContext(), "Something went wrong.", LENGTH_SHORT).show()
+                    progressDialog?.dismissDialog()
+                    if (isAdded)
+                        makeText(requireContext(), "Something went wrong.", LENGTH_SHORT).show()
                     Log.e("failure", "onFailure: " + t.message)
                 }
             })
         } catch (e: JSONException) {
+            progressDialog?.dismissDialog()
             e.printStackTrace()
         }
     }
@@ -206,4 +210,5 @@ class ApplyNewLeaveFragment : Fragment() {
         }
         return errorMessage
     }
+
 }

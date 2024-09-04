@@ -4,6 +4,8 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
+        android:background="@color/black"
+        android:clickable="true"
         android:layout_height="match_parent">
 
         <LinearLayout
@@ -59,7 +61,7 @@
                         android:paddingStart="@dimen/_20dp"
                         android:paddingTop="@dimen/_5dp"
                         android:paddingBottom="@dimen/_5dp"
-                        android:text="Meena (HR)"
+                        android:text="      "
                         android:textColor="#CCCCCC" />
 
                     <TextView
@@ -73,7 +75,7 @@
                         android:paddingTop="@dimen/_5dp"
                         android:paddingEnd="@dimen/_20dp"
                         android:paddingBottom="@dimen/_5dp"
-                        android:text="April 1 at 8:41 AM"
+                        android:text="        "
                         android:textColor="#666666"
                         android:textSize="14dp" />
                 </LinearLayout>
@@ -93,9 +95,7 @@
                     android:maxLength="400"
                     android:maxLines="5"
                     android:padding="@dimen/_15"
-                    android:text="Appreciate the enhancements
-                    you've made in your work. Keep up the good work;
-                     eagerly anticipating your well-deserved salary increase."
+                    android:text="                 "
                     android:textColor="#CCCCCC" />
             </LinearLayout>
 

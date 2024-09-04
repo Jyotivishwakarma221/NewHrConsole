@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black"
+    android:gravity="center"
+    android:orientation="vertical">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/cardview_border"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingLeft="20dp"
+        android:paddingBottom="@dimen/_20dp"
+        android:paddingTop="@dimen/_20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10"
+            android:fontFamily="@font/dm_sans"
+            android:text=" Edit SubTask "
+            android:textStyle="bold"
+            android:padding="@dimen/_10"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_20dp" />
+        <EditText
+            android:id="@+id/subject"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="@dimen/_10"
+            android:fontFamily="@font/dm_sans"
+            android:padding="@dimen/_10"
+            android:maxLines="20"
+            android:background="@drawable/grey_bg_rounded"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15" />
+
+        <EditText
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_margin="@dimen/_10"
+            android:fontFamily="@font/dm_sans"
+            android:padding="@dimen/_10"
+            android:maxLines="200"
+            android:background="@drawable/grey_bg_rounded"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15" />
+
+        <TextView
+            android:id="@+id/ok_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:paddingStart="@dimen/_30dp"
+            android:paddingEnd="@dimen/_30dp"
+            android:paddingTop="@dimen/_5dp"
+            android:paddingBottom="@dimen/_5dp"
+            android:background="@drawable/blue_bg"
+            android:text="Ok" />
+    </LinearLayout>
+</LinearLayout>
