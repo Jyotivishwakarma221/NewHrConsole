@@ -3,16 +3,15 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:background="@drawable/cardview_border"
-    android:padding="10dp">
+    android:background="@drawable/dark_grey_bg"
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/notee"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/description"
-        android:layout_margin="@dimen/_10"
-        android:background="@drawable/black_button"
+        android:layout_margin="5dp"
         android:fontFamily="@font/dm_sans"
         android:gravity="start"
         android:text=" kdfnakfnaifni "

@@ -196,7 +196,7 @@ class ProfileFragment : Fragment() {
             DateAndTimeUtility.getRelativeTime(user.lastLogin).toString()
         )
         binding.Dob.setText(user.dob)
-        binding.joiningDate.setText(user.createdDate.toString())
+        binding.joiningDate.setText(DateAndTimeUtility.getDATEFromLong(user.createdDate))
         binding.Department.setText(user.department)
 
         if (user.managerName != null)

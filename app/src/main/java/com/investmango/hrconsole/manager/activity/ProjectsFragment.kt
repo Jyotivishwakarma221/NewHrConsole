@@ -67,6 +67,8 @@ class ProjectsFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding> 
         progressDialog = AwesomeProgressDialog(context)
         progressDialog.addTitle("Loading...") // add your title here.
         progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
+
     }
 
     override fun onCreateView(
@@ -126,10 +128,12 @@ class ProjectsFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding> 
                     progressDialog.dismissDialog()
 
                     stages = response.body()?.content!!
-                    binding.stageRecycler.adapter = StagesAdapter(stages)
+                    if (stages.isNotEmpty() ) {
+                        binding.stageRecycler.adapter = StagesAdapter(stages, context!!)
                     if (isAdded)
                         binding.stageRecycler.layoutManager =
                             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+                }
                 } else {
                     Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG).show()
                 }
@@ -160,14 +164,13 @@ class ProjectsFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding> 
 
         val dialog = builder.create()
         okBtn.setOnClickListener {
-            if (!reasonTxt.text.toString().isEmpty()){
+            if (!reasonTxt.text.toString().isEmpty()) {
                 progressDialog.showDialog()
 
                 updateStory(reasonTxt.text.toString())
                 dialog.dismiss()
 
-            }
-            else Toast.makeText(context, "Add something.", Toast.LENGTH_SHORT).show()
+            } else Toast.makeText(context, "Add something.", Toast.LENGTH_SHORT).show()
 
         }
         dialog.show()
@@ -272,7 +275,7 @@ class ProjectsFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding> 
                     .load(assignment.users?.get(0)?.assignToProfile)
                     .into(binding.photo1)
 
-                if (assignment.users?.get(1) != null) {
+                if (assignment.users?.size!! >= 2) {
                     // Load and display the image using Glide
                     Glide.with(requireContext())
                         .load(assignment.users?.get(1)?.assignToProfile)

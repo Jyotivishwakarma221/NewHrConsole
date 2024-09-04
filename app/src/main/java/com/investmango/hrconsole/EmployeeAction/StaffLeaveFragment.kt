@@ -58,6 +58,7 @@ class StaffLeaveFragment : Fragment(), RecyclerViewInterface<LeaveRequestRecycle
         progressDialog = AwesomeProgressDialog(context)
         progressDialog.addTitle("Loading...") // add your title here.
         progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
 
     }
 

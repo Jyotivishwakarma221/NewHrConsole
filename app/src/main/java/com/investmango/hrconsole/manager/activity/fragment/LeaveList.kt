@@ -69,6 +69,7 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
         progressDialog = AwesomeProgressDialog(context)
         progressDialog.addTitle("Loading...") // add your title here.
         progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
 
     }
 
@@ -263,11 +264,12 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
             }
 
             val size = leavelist?.get(position)?.leaveDates?.size
+            Log.e("leaveSize", "bindView: "+leavelist?.get(position)?.leaveDates?.size+" "+  size )
 
-            if (size!! > 0)
+            if (size!! <= 1)
                 viewBind.date.setText(leavelist?.get(position)?.leaveDates?.get(0))
             else viewBind.date.setText(
-                leavelist?.get(position)?.leaveDates?.get(0) + " -" + leavelist?.get(
+                leavelist?.get(position)?.leaveDates?.get(0) + " - " + leavelist?.get(
                     position
                 )?.leaveDates?.get(size - 1)
             )
@@ -332,7 +334,9 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
             }
 
             val size = filterredList.get(position)?.leaveDates?.size
-            if (size!! > 0)
+            Log.e("leaveSize", "bindView: "+filterredList.get(position)?.leaveDates?.size+" "+  size )
+
+            if (size!! <= 1)
                 viewBind.date.setText(filterredList?.get(position)?.leaveDates?.get(0))
             else viewBind.date.setText(
                 filterredList?.get(position)?.leaveDates?.get(0) + " -" + filterredList?.get(

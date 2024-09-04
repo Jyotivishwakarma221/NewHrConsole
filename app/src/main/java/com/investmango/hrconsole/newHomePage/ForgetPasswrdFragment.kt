@@ -18,6 +18,7 @@ import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
 import com.investmango.hrconsole.api.ApiInterface
 import com.investmango.hrconsole.databinding.FragmentForgetPasswrdBinding
+import com.investmango.hrconsole.model.AssignMeeting
 import okhttp3.ResponseBody
 import org.json.JSONException
 import org.json.JSONObject
@@ -41,6 +42,7 @@ class ForgetPasswrdFragment : Fragment() {
         progressDialog = AwesomeProgressDialog(context)
         progressDialog.addTitle("Loading...") // add your title here.
         progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
 
 
 
@@ -155,12 +157,13 @@ class ForgetPasswrdFragment : Fragment() {
                         ).show()
                     }
                 } else {
-                    // Handle the case where the response body is null
+//                    // Handle the case where the response body is null
                     Toast.makeText(
                         context,
-                        "Something went wrong.",
+                        response.errorBody().toString(),
                         Toast.LENGTH_SHORT
                     ).show()
+//                    handleErrorResponse(response.errorBody());
                     Log.e("forgetPass", "onResponse: " + response.errorBody())
                 }
             }
@@ -186,4 +189,21 @@ class ForgetPasswrdFragment : Fragment() {
 
     }
 
+//    private fun handleErrorResponse(response: ResponseBody?) {
+//        var errorMessage = "Failed to connect internet"
+//        if (response() != null) {
+//            try {
+//                val jsonObject = org.json.JSONObject(response.errorBody()!!.string())
+//                val message = jsonObject.optString("message")
+//                if (!message.isEmpty()) {
+//                    errorMessage = message
+//                    Log.e("errorMessage", "handleErrorResponse: " + errorMessage)
+//                }
+//            } catch (e: IOException) {
+//                e.printStackTrace()
+//            } catch (e: JSONException) {
+//                e.printStackTrace()
+//            }
+//        }
+//    }
 }

@@ -5,7 +5,17 @@ public class UpdateTaskStatus {
     private Date dateTime;
     private String subject;
     private String comments;
+    private long deadLine;
     private Status status;
+
+    public long getDeadLine() {
+        return deadLine;
+    }
+
+    public void setDeadLine(long deadLine) {
+        this.deadLine = deadLine;
+    }
+
     private String fileUrl;
 
     public long getId() {

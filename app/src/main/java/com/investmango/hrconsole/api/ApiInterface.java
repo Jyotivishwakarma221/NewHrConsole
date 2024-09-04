@@ -61,6 +61,7 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -234,7 +235,7 @@ public interface ApiInterface {
     @Multipart
     @POST("/user/s3/upload/folder/docs")
     Call<String> saveImage(
-            @Part MultipartBody.Part image ,
+            @Part MultipartBody.Part requestBody,
             @Query("folderName") String folderName);
 
     @PUT("update/user/attendance/{user_id}")
@@ -292,6 +293,11 @@ public interface ApiInterface {
     Call<List<MeetingDetails>> getAllTodayMeeting(
             @Header("Authorization") String token,
             @Path("user_id") Long id
+    );
+    @PATCH("/update/presence/by/user/{meetingId}")
+    Call<String> AcceptMeet(
+            @Path("meetingId") int meetingId,
+            @Query("isUserPresent") boolean isUserPresent
     );
 
     @GET("get/meeting/by/attendees/by/user/id/{user_id}")
@@ -423,6 +429,12 @@ public interface ApiInterface {
     Call<List<Task>> getAllTask(
             @Header("Authorization") String token,
             @Path("user_id") Long id
+
+    );
+
+    @DELETE("/user/s3/delete/folder/docs")
+    Call<String> deleteDocument(
+           @Query("file") String file
 
     );
 

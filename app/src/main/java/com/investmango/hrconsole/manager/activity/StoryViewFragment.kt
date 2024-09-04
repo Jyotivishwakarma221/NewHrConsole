@@ -51,7 +51,7 @@ class StoryViewFragment : Fragment(), RecyclerViewInterface<ViewStoryBinding> {
     private var subTaskId: Int = 0
     private var assignmnetId: Int = 0
     private lateinit var storyResponse: StoryResponse
-    var stories:ArrayList<String> = arrayListOf()
+    var stories: ArrayList<String> = arrayListOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,7 +96,7 @@ class StoryViewFragment : Fragment(), RecyclerViewInterface<ViewStoryBinding> {
                     Intent.ACTION_VIEW,
                     Uri.parse(storyResponse.fileUrl)
                 )
-                startActivity(urlIntent)
+                activity!!.startActivity(urlIntent)
             } catch (e: Exception) {
                 Log.e("TAG", "onViewCreated: " + e)
             }
@@ -158,13 +158,16 @@ class StoryViewFragment : Fragment(), RecyclerViewInterface<ViewStoryBinding> {
 
 
         if (storyResponse.deadline != 0L)
-            binding.DeadlineDate.text = " "+DateAndTimeUtility.getDATEFromLong(storyResponse.deadline)
+            binding.DeadlineDate.text =
+                " " + DateAndTimeUtility.getDATEFromLong(storyResponse.deadline)
 
         if (storyResponse.createdTime != 0L)
-            binding.createdDate.text = " " +DateAndTimeUtility.getDATEFromLong(storyResponse.createdTime)
+            binding.createdDate.text =
+                " " + DateAndTimeUtility.getDATEFromLong(storyResponse.createdTime)
 
         if (storyResponse.updatedTime != 0L)
-            binding.updateDate.text = " "+DateAndTimeUtility.getDATEFromLong(storyResponse.updatedTime)
+            binding.updateDate.text =
+                " " + DateAndTimeUtility.getDATEFromLong(storyResponse.updatedTime)
 
         binding.assignedBY.text = storyResponse.assignedByName
 
@@ -175,7 +178,7 @@ class StoryViewFragment : Fragment(), RecyclerViewInterface<ViewStoryBinding> {
             binding.storyRecycler.adapter = CommonAdapter(this)
             if (isAdded)
                 binding.storyRecycler.layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         }
 
     }
@@ -217,10 +220,11 @@ class StoryViewFragment : Fragment(), RecyclerViewInterface<ViewStoryBinding> {
 
         val dialog = builder.create()
         okBtn.setOnClickListener {
-            progressDialog.showDialog()
-            updateStory(reasonTxt.text.toString())
-            dialog.dismiss()
-
+            if (!reasonTxt.text.toString().equals("")) {
+                progressDialog.showDialog()
+                updateStory(reasonTxt.text.toString())
+                dialog.dismiss()
+            }
         }
         dialog.show()
     }
@@ -250,12 +254,13 @@ class StoryViewFragment : Fragment(), RecyclerViewInterface<ViewStoryBinding> {
         val dialog = builder.create()
         okBtn.setOnClickListener {
             progressDialog.showDialog()
-            updateSubtask("","",statusSpin.getSelectedItem().toString())
+            updateSubtask("", "", statusSpin.getSelectedItem().toString())
             dialog.dismiss()
 
         }
         dialog.show()
     }
+
     @SuppressLint("MissingInflatedId")
     fun showEditAlert() {
         // Create an alert builder
@@ -276,21 +281,24 @@ class StoryViewFragment : Fragment(), RecyclerViewInterface<ViewStoryBinding> {
 
         val dialog = builder.create()
         okBtn.setOnClickListener {
-            progressDialog.showDialog()
-            updateSubtask(Description.text.toString(),subject.text.toString(),"")
-            dialog.dismiss()
+            if (Description.text.toString() != "" || subject.text.toString() != "") {
+                progressDialog.showDialog()
+                updateSubtask(Description.text.toString(), subject.text.toString(), "")
+                dialog.dismiss()
+            }
 
         }
         dialog.show()
     }
-    private fun updateStory(storyText:String) {
+
+    private fun updateStory(storyText: String) {
         stories.clear()
         stories.add(storyText)
 
-        var request=StoryRequest(stories)
-        request.story=stories
-        
-        val call = apiInterface.updateStory(request,subTaskId,assignmnetId)
+        var request = StoryRequest(stories)
+        request.story = stories
+
+        val call = apiInterface.updateStory(request, subTaskId, assignmnetId)
         call.enqueue(object : Callback<String?> {
             override fun onResponse(
                 call: Call<String?>,
@@ -306,7 +314,7 @@ class StoryViewFragment : Fragment(), RecyclerViewInterface<ViewStoryBinding> {
 
                 } else {
                     stories.clear()
-                    Log.e("failure", "onResponse: " + response.message() + " "+ request)
+                    Log.e("failure", "onResponse: " + response.message() + " " + request)
                     Toast.makeText(
                         activity,
                         "Server error " + response.message(),
@@ -324,33 +332,33 @@ class StoryViewFragment : Fragment(), RecyclerViewInterface<ViewStoryBinding> {
         })
     }
 
-    private fun updateSubtask(description: String, subject: String,status: String) {
+    private fun updateSubtask(description: String, subject: String, status: String) {
         val jsonObject = JSONObject()
-        subject?.let {
+        subject.let {
             if (it.isNotEmpty()) {
                 jsonObject.put("subtaskName", it)
             }
         }
-        status?.let {
+        status.let {
             if (it.isNotEmpty()) {
                 jsonObject.put("subtaskStatus", it)
             }
         }
 
-        description?.let {
+        description.let {
             if (it.isNotEmpty()) {
                 jsonObject.put("subtaskDescription", it)
             }
         }
         val jsonString = jsonObject.toString()
-        val requestBody= jsonString.toRequestBody("application/json".toMediaTypeOrNull())
+        val requestBody = jsonString.toRequestBody("application/json".toMediaTypeOrNull())
 
-        Log.e("subTask", "updateSubtask: " + requestBody )
+        Log.e("subTask", "updateSubtask: " + requestBody)
         val call = apiInterface.update_Sub_Descrip(requestBody, subTaskId, assignmnetId)
         call.enqueue(object : Callback<String?> {
             override fun onResponse(
                 call: Call<String?>,
-                response: Response<String?>
+                response: Response<String?>,
             ) {
                 progressDialog.dismissDialog()
 
@@ -359,7 +367,11 @@ class StoryViewFragment : Fragment(), RecyclerViewInterface<ViewStoryBinding> {
                     getStoryBySubTaskId()
                 } else {
                     Log.e("failure", "onResponse: " + response.message())
-                    Toast.makeText(activity, "Server error " + response.message(), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        activity,
+                        "Server error " + response.message(),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
@@ -372,14 +384,15 @@ class StoryViewFragment : Fragment(), RecyclerViewInterface<ViewStoryBinding> {
     }
 
 }
+
 data class SubtaskRequestBody(
     val subtaskName: String? = null,
-    val subtaskDescription: String? = null
+    val subtaskDescription: String? = null,
 ) : Serializable
 
 fun createSubtaskRequestBody(
     subtaskName: String?,
-    subtaskDescription: String?
+    subtaskDescription: String?,
 ): Map<String, Any> {
     val requestBody = mutableMapOf<String, Any>()
 

@@ -9,7 +9,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/cardview_border"
+        android:background="@drawable/dark_grey_bg"
         android:orientation="vertical"
         android:gravity="center"
         android:paddingLeft="20dp"
@@ -34,7 +34,7 @@
             android:fontFamily="@font/dm_sans"
             android:padding="@dimen/_10"
             android:maxLines="20"
-            android:background="@drawable/grey_bg_rounded"
+            android:background="@drawable/light_grey_bg"
             android:textColor="@color/white"
             android:textSize="@dimen/_15" />
 
@@ -46,7 +46,7 @@
             android:fontFamily="@font/dm_sans"
             android:padding="@dimen/_10"
             android:maxLines="200"
-            android:background="@drawable/grey_bg_rounded"
+            android:background="@drawable/light_grey_bg"
             android:textColor="@color/white"
             android:textSize="@dimen/_15" />
 

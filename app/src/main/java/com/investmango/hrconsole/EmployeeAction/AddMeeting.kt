@@ -57,7 +57,7 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
     lateinit var startDate: TextView
     lateinit var endDate: TextView
     var childuserId: Long = 0
-     var ViewOf:String=""
+    var ViewOf: String = ""
     var employeList: ArrayList<String>? = arrayListOf()
     var authority: String = ""
     lateinit var progressDialog: AwesomeProgressDialog
@@ -76,8 +76,8 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
         progressDialog.isCancelable(false)
         progressDialog.showDialog()
 
-        if (arguments!=null)
-        ViewOf= arguments?.getString("ViewOf").toString()
+        if (arguments != null)
+            ViewOf = arguments?.getString("ViewOf").toString()
 
         generateTimeSlots()
 
@@ -104,6 +104,13 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
         getMeetings()
         if (authority.equals(Constant.USER))
             binding.createMeeting.visibility = View.GONE
+        else {
+            binding.createMeeting.visibility = View.VISIBLE
+
+        }
+        if (ViewOf.equals("Own")) {
+            binding.createMeeting.visibility = View.GONE
+        } else binding.createMeeting.visibility = View.VISIBLE
 
 
         binding.createMeeting.setOnClickListener {
@@ -118,7 +125,7 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
                     if (authority.equals(Constant.USER))
                         showFilterBox(context!!)
                     else
-                    showManagerOrAdminFilter(context!!)
+                        showManagerOrAdminFilter(context!!)
                 }
             }
         }
@@ -310,6 +317,28 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
         })
     }
 
+    fun AcceptMeet(meetId: Int) {
+        val apiClient = ApiClient(context)
+        apiInterface = apiClient.apiInterface
+
+        val call = apiInterface.AcceptMeet(meetId, true)
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(
+                call: Call<String>,
+                response: Response<String>,
+            ) {
+                if (response.isSuccessful) {
+                    Toast.makeText(context, "Meeting Accepted .", Toast.LENGTH_SHORT).show()
+
+                } else Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG).show()
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.e("onFailure", "onFailure: " + t.message)
+            }
+        })
+    }
+
     private fun getChildActiveUser() {
         val apiClient = ApiClient(context)
         apiInterface = apiClient.apiInterface
@@ -434,7 +463,7 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
             binding.recyclerForCalender.requestFocus()
             viewBind.layout.setBackgroundResource(R.drawable.blue_bg)
             if (!meetingLis.isEmpty()) {
-                meetingList3 = meetingLis?.filter {
+                meetingList3 = meetingLis.filter {
                     DateAndTimeUtility.getDateFromLong(it?.meetingTime).toString() == list.get(
                         position
                     ).date

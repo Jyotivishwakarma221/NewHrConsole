@@ -143,7 +143,7 @@ class SubTaskFragment : Fragment(), RecyclerViewInterface<OneSubtaskBinding> {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun bindView(viewBind: OneSubtaskBinding, position: Int) {
-        viewBind.heading.text = subTask[position]?.assignmentSubject
+        viewBind.heading.text = subTask[position]?.name
         viewBind.details.text = subTask[position]?.description
         viewBind.nameOfMember.text = subTask[position]?.assignedByName
         viewBind.id.text = subTask[position]?.id.toString()

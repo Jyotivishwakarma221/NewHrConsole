@@ -128,7 +128,10 @@ public class PerformanceFragment extends Fragment {
         binding.stepsView.setLabelColorIndicator(getResources().getColor(R.color.orange));
         binding.stepsView.setCompletedPosition(0);
         binding.stepsView.drawView();
-        binding.stepsView.setCompletedPosition(2);
+        if (descriptionData.length!=1)
+        binding.stepsView.setCompletedPosition(descriptionData.length-1);
+        else  binding.stepsView.setCompletedPosition(0);
+
     }
 
     private void populatePieChart(long totalPresent, long halfDay, long totalAbsent,long totaldays, long total, PieChart pieChart) {
@@ -336,7 +339,7 @@ for (int i=0;i<month.size();i++){
                         }
                         lineGraph(months,score);
 
-                        Log.e("StepsView", months.get(0)+"  "+ score.get(0));
+//                        Log.e("StepsView", months.get(0)+"  "+ score.get(0));
                     }
                 } else {
                     Toast.makeText(getContext(), getErrorMessage(response), Toast.LENGTH_SHORT).show();

@@ -71,6 +71,7 @@ public class AchievementFragment extends Fragment {
         progressDialog = new AwesomeProgressDialog(getContext());
         progressDialog.addTitle("Loading...");// add your title here.
         progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS);
+        progressDialog.isCancelable(false);
 
         assert getArguments() != null;
         if (getArguments().containsKey("childUserid")) {

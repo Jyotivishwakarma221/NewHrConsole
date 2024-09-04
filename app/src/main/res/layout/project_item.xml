@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_200dp"
-        android:layout_margin="8dp"
-        android:background="@drawable/cardview_border"
-        android:elevation="@dimen/_10">
+        android:layout_height="220dp"
+        android:layout_margin="@dimen/_5dp"
+        app:cardCornerRadius="@dimen/_15"
+        app:cardBackgroundColor="#111111"
+        android:elevation="@dimen/_5dp">
 
         <RelativeLayout
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/bg_img"
-            android:padding="5dp">
+            android:background="@drawable/project_bg"
+            android:padding="16dp">
 
 
             <TextView
@@ -39,6 +39,7 @@
                 android:layout_marginTop="@dimen/_10"
                 android:gravity="start"
                 android:text="    "
+                android:textStyle="bold"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
@@ -146,6 +147,6 @@
 
 
         </RelativeLayout>
-    </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
 </layout>

@@ -75,6 +75,7 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
         progressDialog = AwesomeProgressDialog(context)
         progressDialog.addTitle("Loading...") // add your title here.
         progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
 
         if (authority.equals(Constant.MANAGER))
             getChildActiveUser()
@@ -453,6 +454,8 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
 
 
             var size = list.get(position)?.leaveDates?.size!! - 1
+            Log.e("leaveSize", "bindView: "+list.get(position)?.leaveDates?.size+" "+  size )
+
             if (size > 1)
                 viewBind.duration.text =
                     list.get(position)?.leaveDates?.get(0) + " - " + list.get(position)?.leaveDates?.get(
@@ -479,6 +482,7 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
 
 
             var size = Filteredlist.get(position)?.leaveDates?.size!! - 1
+            Log.e("leaveSize", "bindView: "+Filteredlist.get(position)?.leaveDates?.size+" "+  size )
             if (size > 1)
                 viewBind.duration.text =
                     Filteredlist.get(position)?.leaveDates?.get(0) + " - " + list.get(position)?.leaveDates?.get(

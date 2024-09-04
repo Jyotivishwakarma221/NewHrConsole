@@ -41,7 +41,7 @@ public class ApiClient extends Application {
 
     // Local
     public static final String BASE_URL = "http://52.66.208.137:8282/";
-//    public static final String BASE_URL = "https://api.gopropify.in/"  ;
+//    public static final String BASE_URL = "https://api.gopropify.in/";
 
 //            public static final String BASE_URL = "http://192.168.29.202:8080/";
     private final ApiInterface apiInterface;

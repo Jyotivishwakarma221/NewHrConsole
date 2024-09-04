@@ -71,8 +71,7 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
-
+    ): View {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_attendance_list, container, false)
         return binding.root

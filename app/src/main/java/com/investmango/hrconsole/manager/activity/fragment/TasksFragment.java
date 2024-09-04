@@ -128,11 +128,17 @@ public class TasksFragment extends Fragment {
             public void onClick(View v) {
 //                progressDialog.showDialog();
                 if (tasks.get(0).getFileUrl() != null) {
-                    Intent urlIntent = new Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(tasks.get(0).getFileUrl())
-                    );
-                    startActivity(urlIntent);
+                    try {
+
+                        Intent urlIntent = new Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse(tasks.get(0).getFileUrl())
+                        );
+                        startActivity(urlIntent);
+                    } catch (Exception e) {
+                        Toast.makeText(getContext(), "Try again Later.", Toast.LENGTH_SHORT).show();
+                        Log.e("Exception", "onClick: " + e);
+                    }
 //                    progressDialog.dismissDialog();
                 }
             }
@@ -842,7 +848,7 @@ public class TasksFragment extends Fragment {
             else binding.taskComments.setText(tasks.get(0).getSubject());
             binding.date.setText(DateAndTimeUtility.getDateAndTimeFromLong(tasks.get(0).getCreatedTime()));
 
-            if (tasks.get(0).getDeadLine() != null && tasks.get(0).getDeadLine()!=0) {
+            if (tasks.get(0).getDeadLine() != null && tasks.get(0).getDeadLine() != 0) {
                 binding.deadline.setText(DateAndTimeUtility.getDateeFromLong(tasks.get(0).getDeadLine()));
             } else binding.deadline.setText(" -- ");
 

@@ -25,6 +25,7 @@ import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.investmango.hrconsole.AwsUpload.UploadFileAws
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.admin.fragment.AdminTaskFragment
 import com.investmango.hrconsole.api.ApiClient
@@ -35,13 +36,18 @@ import com.investmango.hrconsole.model.AllActiveUsers
 import com.investmango.hrconsole.model.AssignTask
 import com.investmango.hrconsole.model.TotalEmpResponseItem
 import com.investmango.hrconsole.service.Constant
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Objects
 
 class AssignTask : Fragment() {
     private lateinit var binding: FragmentAssignTask2Binding
@@ -58,11 +64,12 @@ class AssignTask : Fragment() {
     var uriStr = ""
     lateinit var nameIndex: String
     lateinit var launcher: ActivityResultLauncher<Intent>
+    lateinit var file1: File
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        CloudinaryConfig.initCloudinary(requireContext())
+//        CloudinaryConfig.initCloudinary(requireContext())
 
         val preferences =
             requireActivity().getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
@@ -74,6 +81,8 @@ class AssignTask : Fragment() {
         progressDialog = AwesomeProgressDialog(context)
         progressDialog.addTitle("Loading...") // add your title here.
         progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
+
 
 
         launcher = registerForActivityResult(
@@ -98,8 +107,32 @@ class AssignTask : Fragment() {
                     Log.e("launcherrrr", "onCreate: " + sizeIndex)
 
                     cursor.moveToFirst()
+
+                    cursor.moveToFirst()
+                    file1 = File(
+                        Objects.requireNonNull<String>(
+                            UploadFileAws().getRealPathFromUri(
+                                uri!!,
+                                context!!
+                            )
+                        )
+                    )
+                    if (isAdded)
+                        CoroutineScope(Dispatchers.Main).launch {
+                             uriStr = UploadFileAws().uploadFile(file1, "taskDocs", context!!).toString()
+                            if (uriStr != "") {
+                                // Handle the success case here
+                                Log.e("uploadimg", "onCreate: "+uriStr )
+                                binding.uploadDocname.visibility = View.VISIBLE
+                                binding.uploadDoc.visibility = View.GONE
+                            } else {
+                                // Handle the failure case here
+                                Toast.makeText(context,"Some error in uploading .",Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
+
                 }
-                uploadImageToCloud(uri)
             }
 
         };
@@ -137,7 +170,7 @@ class AssignTask : Fragment() {
         }
         binding.uploadDocname.setOnClickListener {
 
-            uri = Uri.parse("")
+            uriStr=""
             binding.uploadDocname.text = ""
             binding.uploadDoc.visibility = View.VISIBLE
             binding.uploadDocname.visibility = View.INVISIBLE
@@ -179,55 +212,55 @@ class AssignTask : Fragment() {
         launcher.launch(galleryIntent)
     }
 
-    private fun uploadImageToCloud(imageUri: Uri?) {
-//        val fileSize: Long = getFileSize(imageUri)
-        if (sizeIndex > 300 * 1024) {
-            Toast.makeText(
-                requireContext(),
-                "File size exceeds 300 KB limit. Please upload a file smaller than 300 KB",
-                Toast.LENGTH_SHORT
-            ).show()
-            return
-        }
-        val progressDialog = ProgressDialog.show(requireContext(), "", "Uploading image...", true)
-        val folderName = "taskfiles"
-        val publicId = folderName + "/" + System.currentTimeMillis()
-        // Configure the Cloudinary upload options
-        MediaManager.get().upload(imageUri)
-            .option("public_id", publicId) // Specify the folder name
-            .callback(object : UploadCallback {
-                override fun onStart(requestId: String) {}
-
-                override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {}
-
-                override fun onSuccess(requestId: String, resultData: Map<*, *>) {
-                    progressDialog.dismiss()
-                    uriStr = uri?.toString()!!
-                    uriStr = (resultData["url"] as String?).toString()
-                    Toast.makeText(
-                        requireContext(),
-                        "Image uploaded successfully",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    // Dismiss progress dialog when upload is successful
-                    progressDialog.dismiss()
-                    binding.uploadDocname.visibility = View.VISIBLE
-                    binding.uploadDocname.text = nameIndex
-                    binding.uploadDoc.visibility = View.INVISIBLE
-                }
-
-                override fun onError(requestId: String, error: ErrorInfo) {
-                    progressDialog.dismiss()
-                    Toast.makeText(
-                        requireContext(),
-                        "Upload failed: " + error.description,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                override fun onReschedule(requestId: String, error: ErrorInfo) {}
-            }).dispatch()
-    }
+//    private fun uploadImageToCloud(imageUri: Uri?) {
+////        val fileSize: Long = getFileSize(imageUri)
+//        if (sizeIndex > 300 * 1024) {
+//            Toast.makeText(
+//                requireContext(),
+//                "File size exceeds 300 KB limit. Please upload a file smaller than 300 KB",
+//                Toast.LENGTH_SHORT
+//            ).show()
+//            return
+//        }
+//        val progressDialog = ProgressDialog.show(requireContext(), "", "Uploading image...", true)
+//        val folderName = "taskfiles"
+//        val publicId = folderName + "/" + System.currentTimeMillis()
+//        // Configure the Cloudinary upload options
+//        MediaManager.get().upload(imageUri)
+//            .option("public_id", publicId) // Specify the folder name
+//            .callback(object : UploadCallback {
+//                override fun onStart(requestId: String) {}
+//
+//                override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {}
+//
+//                override fun onSuccess(requestId: String, resultData: Map<*, *>) {
+//                    progressDialog.dismiss()
+//                    uriStr = uri?.toString()!!
+//                    uriStr = (resultData["url"] as String?).toString()
+//                    Toast.makeText(
+//                        requireContext(),
+//                        "Image uploaded successfully",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    // Dismiss progress dialog when upload is successful
+//                    progressDialog.dismiss()
+//                    binding.uploadDocname.visibility = View.VISIBLE
+//                    binding.uploadDocname.text = nameIndex
+//                    binding.uploadDoc.visibility = View.INVISIBLE
+//                }
+//
+//                override fun onError(requestId: String, error: ErrorInfo) {
+//                    progressDialog.dismiss()
+//                    Toast.makeText(
+//                        requireContext(),
+//                        "Upload failed: " + error.description,
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                }
+//
+//                override fun onReschedule(requestId: String, error: ErrorInfo) {}
+//            }).dispatch()
+//    }
 
     private fun getAllActiveUser() {
         val apiClient = ApiClient(requireContext())
@@ -304,7 +337,7 @@ class AssignTask : Fragment() {
     }
 
     private fun sendTaskWithImage(imageUrl: String) {
-
+        Log.e("uploadimg", "sendTaskWithImage: "+ uriStr)
         if (selectedId.toInt() == 0) {
             Toast.makeText(context, "Please select a user.", Toast.LENGTH_SHORT).show()
             return
