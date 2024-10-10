@@ -140,17 +140,20 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
                     response: Response<AttendanceResponse>,
                 ) {
                     if (response.isSuccessful && response.body() != null && progressDialog != null) {
-                        progressDialog?.dismissDialog()
+                        progressDialog.dismissDialog()
 
                         val size = response.body()?.content?.size!!
-                        if (size > 0) {
-                            for (i in 0..size - 1) {
-                                response.body()?.content?.get(i)?.let { list?.add(it) }
-                            }
-                            Log.e("attendance", "onResponse: " + list)
-
-                            binding.recycler.adapter?.notifyItemInserted(list.size)
-
+                        val content = response.body()?.content?.filterNotNull() ?: emptyList()
+                        if (content.isNotEmpty()) {
+                            list.addAll(content)  // Add all new items to the list
+                            binding.recycler.adapter?.notifyDataSetChanged()  // Notify adapter of data change
+//                            for (i in 0..size - 1) {
+//                                response.body()?.content?.get(i)?.let { list?.add(it) }
+//                            }
+//                            Log.e("attendance", "onResponse: " + list)
+//
+////                            binding.recycler.adapter?.notifyItemInserted(list.size)
+//                            binding.recycler.adapter?.notifyDataSetChanged()
                         } else {
                             try {
                                 val errorMessage = response.errorBody()!!.string()
@@ -332,60 +335,61 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun bindView(viewBind: AttendanceListRecycBinding, position: Int) {
-
-        if (list.get(position).late != null) {
-            if (list.get(position).late == true) {
+       val attendanceDay =list.get(position)
+        if (attendanceDay.late != null) {
+            if (attendanceDay.late == true) {
                 viewBind.blueBg.setBackgroundResource(R.drawable.red_one_sde)
             } else viewBind.blueBg.setBackgroundResource(R.drawable.blue_one_side)
         }
 
-        if (list.get(position).inTime != null) {
+        if (attendanceDay.inTime != null && attendanceDay.inTime!=0L ) {
             Log.e(
                 "intime",
-                "bindView: 1 " + list.get(position).inTime + " " + list.get(position).date.toString() + " " + list.get(
-                    position
-                ).dayType
+                "bindView: 1 " + attendanceDay.inTime + " " + attendanceDay.date.toString() + " " + attendanceDay.dayType
             )
-            viewBind.date.text = list.get(position).date.toString()
+
+            viewBind.date.text = attendanceDay.date.toString()
             viewBind.Absent.visibility = View.GONE
             viewBind.present.visibility = View.VISIBLE
-            val intime = DateAndTimeUtility.getTimeInHourFromLong(list.get(position).inTime!!)
-            if (list.get(position).outTime != 0L) {
-                val outtime = DateAndTimeUtility.getTimeInHourFromLong(list.get(position).outTime)
-                viewBind.outTime.text = outtime
-                Log.e("intime", "bindView: out" + outtime)
-
-
-            }
+            val intime = DateAndTimeUtility.getTimeInHourFromLong(attendanceDay.inTime)
             viewBind.inTime.text = intime
-            if (list.get(position).leaveType!=null){
+
+            if (attendanceDay.outTime != 0L) {
+                val outtime = DateAndTimeUtility.getTimeInHourFromLong(attendanceDay.outTime)
+                viewBind.outTime.text = outtime
+                Log.e("inTime", "bindView: out" + outtime)
+            }else{
+                viewBind.outTime.text=" "
+            }
+            if (attendanceDay.leaveType != null) {
                 viewBind.leavetypehalfDay.visibility = View.VISIBLE
                 viewBind.Absent.visibility = View.GONE
-                viewBind.leavetypehalfDay.text = "  " + list.get(position).leaveType
-            }else{
+                viewBind.leavetypehalfDay.text = "  " + attendanceDay.leaveType
+            } else {
                 viewBind.leavetypehalfDay.visibility = View.GONE
                 viewBind.Absent.visibility = View.GONE
             }
 
-        } else if (list.get(position).inTime == null && list.get(position).outTime == null) {
-            viewBind.date.text = list.get(position).date.toString()
+        } else if (attendanceDay.inTime == null && attendanceDay.outTime == null) {
+            viewBind.date.text = attendanceDay.date.toString()
+            viewBind.present.visibility = View.GONE
+
             Log.e(
                 "intime",
-                "bindView: 2 " + list.get(position).inTime + " " + list.get(position).date.toString() + " " + list.get(
-                    position
-                ).dayType
+                "bindView: 2 " + attendanceDay.inTime + " " + list[position].date.toString() + " " + attendanceDay.dayType
             )
 
-            if (list.get(position).dayType != null) {
+            if (attendanceDay.dayType != null) {
                 viewBind.present.visibility = View.GONE
                 viewBind.Absent.visibility = View.VISIBLE
                 viewBind.leavetypehalfDay.visibility = View.GONE
-                viewBind.Absent.setText(list.get(position).dayType)
+                viewBind.Absent.text = attendanceDay.dayType
 
-            } else if (list.get(position).leaveType != null) {
+            }
+            else if (attendanceDay.leaveType != null) {
                 viewBind.leavetypehalfDay.visibility = View.VISIBLE
                 viewBind.Absent.visibility = View.GONE
-                viewBind.leavetypehalfDay.text = "  " + list.get(position).leaveType
+                viewBind.leavetypehalfDay.text = "  " + attendanceDay.leaveType
             }
         }
     }

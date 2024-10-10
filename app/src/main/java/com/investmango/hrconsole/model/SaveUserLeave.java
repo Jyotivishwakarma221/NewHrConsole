@@ -33,6 +33,7 @@ public class SaveUserLeave implements Serializable {
         ABSENT("Absent"),
         HALF_DAY("Half Day"),
         PAID_LEAVE("Paid Leave"),
+       WFH("WFH"),
         LATE("Late");
 
         private final String label;

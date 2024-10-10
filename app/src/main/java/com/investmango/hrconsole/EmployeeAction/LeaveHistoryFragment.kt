@@ -1,9 +1,10 @@
 package com.investmango.hrconsole.EmployeeAction
 
-import android.app.ProgressDialog
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -53,13 +54,16 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
     var isfiltered = false
     lateinit var startDate: TextView
     lateinit var endDate: TextView
+    var startdate: Long = 0
+    var enddate: Long = 0
+    var status: String = "--"
     var employeList: ArrayList<String>? = arrayListOf()
     var allActiveUsers: List<TotalEmpResponseItem?>? = null
     private var isLastPage = false
     lateinit var progressDialog: AwesomeProgressDialog
     private var currentPage = 0
     var list: ArrayList<ContentItem?> = arrayListOf()
-    var Filteredlist: List<LeaveItem?> = arrayListOf()
+    var Filteredlist: ArrayList<LeaveItem?> = arrayListOf()
     lateinit var layoutManager: LinearLayoutManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -128,7 +132,9 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
                 this@LeaveHistoryFragment.isLoading = true
                 currentPage++
                 if (!isfiltered)
-                loadMoreData(currentPage)
+                    loadMoreData(currentPage)
+                else leaveHistory(startdate, enddate, currentPage, status)
+
             }
         })
 
@@ -155,7 +161,7 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
         apiInterface = apiClient.apiInterface
         progressDialog?.showDialog()
         val call: Call<LeaveReqResponse> =
-            apiInterface.getPendingLeaves(token, userId, true, "APPROVED", page, 10)
+            apiInterface.getLeaves(userId, true, page, 10)
         call?.enqueue(object : Callback<LeaveReqResponse> {
             override fun onResponse(
                 call: Call<LeaveReqResponse>,
@@ -201,7 +207,7 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
         apiInterface = apiClient.apiInterface
         progressDialog?.showDialog()
         val call: Call<LeaveReqResponse> =
-            apiInterface.getFilteredLeave("APPROVED", page, 10)
+            apiInterface.getFilteredLeave(page, 10)
         call?.enqueue(object : Callback<LeaveReqResponse> {
             override fun onResponse(
                 call: Call<LeaveReqResponse>,
@@ -245,12 +251,59 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
     private fun leaveHistory(startDate: Long, enddate: Long, page: Int, status: String) {
         val apiClient = ApiClient(requireContext())
         apiInterface = apiClient.apiInterface
-        progressDialog?.showDialog()
+        progressDialog.showDialog()
+
+        //with status Only
+        if (startDate == 0L && enddate == 0L && status.trim() != "--") {
+            val call: Call<AllLeaveResponse>? =
+                apiInterface.getFilteredLeaveWithoutDate(childuserId, status, page)
+            call?.enqueue(object : Callback<AllLeaveResponse> {
+                override fun onResponse(
+                    call: Call<AllLeaveResponse>,
+                    response: Response<AllLeaveResponse>,
+                ) {
+                    if (response.body() != null && response.isSuccessful()) {
+                        progressDialog.dismissDialog()
+
+                        Log.e("getLeaves", "onResponse: " + response.body()?.content?.size)
+                        isfiltered = true
+
+                        val Filteredlist2 = response.body()!!.content!!
+                        for (i in 0..Filteredlist2.size - 1) {
+                            Filteredlist.add(Filteredlist2.get(i))
+                        }
+                        list.clear()
+                        if (Filteredlist.isEmpty()) {
+                            binding.noDataFound.visibility = View.VISIBLE
+                            binding.leaverequest.visibility = View.GONE
+                        } else {
+                            binding.noDataFound.visibility = View.GONE
+                            binding.leaverequest.visibility = View.VISIBLE
+                            binding.leaverequest.adapter = CommonAdapter(this@LeaveHistoryFragment)
+                        }
+                    } else {
+                        progressDialog.dismissDialog()
+
+                        Log.e("getmeetings", "onResponse: " + response.body().toString())
+                        if (isAdded)
+                            Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<AllLeaveResponse>, t: Throwable) {
+                    if (isAdded)
+                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                    progressDialog.dismissDialog()
+
+                    Log.e("khushi123", "onFailure: " + t.message)
+                }
+            })
+        }
 
         //with only CHILD
-        if (startDate == 0L && enddate == 0L && childuserId != 0L) {
+        if (startDate == 0L && enddate == 0L && status.trim() == "--") {
             val call: Call<AllLeaveResponse>? =
-                apiInterface.getFilteredLeaveWithoutDate(childuserId, "APPROVED")
+                apiInterface.getFilteredLeaveWithChild(childuserId, page)
             call?.enqueue(object : Callback<AllLeaveResponse> {
                 override fun onResponse(
                     call: Call<AllLeaveResponse>,
@@ -262,7 +315,10 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
                         Log.e("getLeaves", "onResponse: " + response.body()?.content?.size)
                         isfiltered = true
 
-                        Filteredlist = response.body()!!.content!!
+                        val Filteredlist2 = response.body()!!.content!!
+                        for (i in 0..Filteredlist2.size - 1) {
+                            Filteredlist.add(Filteredlist2.get(i))
+                        }
                         list.clear()
                         if (Filteredlist.isEmpty()) {
                             binding.noDataFound.visibility = View.VISIBLE
@@ -273,7 +329,7 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
                             binding.leaverequest.adapter = CommonAdapter(this@LeaveHistoryFragment)
                         }
                     } else {
-                        progressDialog?.dismissDialog()
+                        progressDialog.dismissDialog()
 
                         Log.e("getmeetings", "onResponse: " + response.body().toString())
                         if (isAdded)
@@ -292,9 +348,9 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
         }
 
         //with all three
-        if (startDate != 0L && enddate != 0L && childuserId != 0L) {
+        if (startDate != 0L && enddate != 0L && status.trim() != "--") {
             val call: Call<AllLeaveResponse>? =
-                apiInterface.getFilteredLeave(childuserId, startDate, enddate, "APPROVED")
+                apiInterface.getFilteredLeave(childuserId, startDate, enddate, status, page)
             call?.enqueue(object : Callback<AllLeaveResponse> {
                 override fun onResponse(
                     call: Call<AllLeaveResponse>,
@@ -307,7 +363,10 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
 
                         Log.e("getLeaves", "onResponse: " + response.body()?.content?.size)
 
-                        Filteredlist = response.body()!!.content!!
+                        val Filteredlist2 = response.body()!!.content!!
+                        for (i in 0..Filteredlist2.size - 1) {
+                            Filteredlist.add(Filteredlist2.get(i))
+                        }
                         list.clear()
                         if (Filteredlist.isEmpty()) {
                             binding.noDataFound.visibility = View.VISIBLE
@@ -334,10 +393,10 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
             })
         }
 
-        //with end date
-        if (startDate == 0L && enddate != 0L && childuserId != 0L) {
+        //with status and end date
+        if (status.trim() != "--" && startDate == 0L && enddate != 0L) {
             val call: Call<AllLeaveResponse>? =
-                apiInterface.getFilteredLeaveWithOutStartDate(childuserId, "APPROVED", enddate)
+                apiInterface.getFilteredLeaveWithOutStartDate(childuserId, status, enddate, page)
             call?.enqueue(object : Callback<AllLeaveResponse> {
                 override fun onResponse(
                     call: Call<AllLeaveResponse>,
@@ -348,8 +407,11 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
                         progressDialog?.dismissDialog()
                         isfiltered = true
 
-                        Filteredlist = response.body()!!.content!!
-                        list.clear()
+                        val Filteredlist2 = response.body()!!.content!!
+                        for (i in 0..Filteredlist2.size - 1) {
+                            Filteredlist.add(Filteredlist2[i])
+                        }
+                        list.clear ()
                         if (Filteredlist.isEmpty()) {
                             binding.noDataFound.visibility = View.VISIBLE
                             binding.leaverequest.visibility = View.GONE
@@ -376,10 +438,10 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
             })
         }
 
-        //with start date
-        if (startDate != 0L && enddate == 0L && childuserId != 0L) {
+        //with status and start date
+        if (status.trim() != "--" && startDate != 0L && enddate == 0L) {
             val call: Call<AllLeaveResponse>? =
-                apiInterface.getFilteredLeaveWithOutEndDate(childuserId, "APPROVED", startDate)
+                apiInterface.getFilteredLeaveWithOutEndDate(childuserId, status, startDate, page)
             call?.enqueue(object : Callback<AllLeaveResponse> {
                 override fun onResponse(
                     call: Call<AllLeaveResponse>,
@@ -391,7 +453,148 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
 
                         Log.e("getLeaves", "onResponse: " + childuserId)
 
-                        Filteredlist = response.body()!!.content!!
+                        val Filteredlist2 = response.body()!!.content!!
+                        for (i in 0..Filteredlist2.size - 1) {
+                            Filteredlist.add(Filteredlist2.get(i))
+                        }
+                        list.clear()
+                        if (Filteredlist.isEmpty()) {
+                            binding.noDataFound.visibility = View.VISIBLE
+                            binding.leaverequest.visibility = View.GONE
+                        } else {
+                            binding.noDataFound.visibility = View.GONE
+                            binding.leaverequest.visibility = View.VISIBLE
+                            binding.leaverequest.adapter = CommonAdapter(this@LeaveHistoryFragment)
+                        }
+                    } else {
+                        Log.e("getmeetings", "onResponse: " + response.body().toString())
+                        progressDialog?.dismissDialog()
+                        if (isAdded)
+                            Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<AllLeaveResponse>, t: Throwable) {
+                    progressDialog?.dismissDialog()
+                    if (isAdded)
+                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                    Log.e("khushi123", "onFailure: " + t.message)
+                }
+            })
+
+        }
+
+        //with start and end date
+        if (status.trim() == "--" && startDate != 0L && enddate != 0L) {
+            val call: Call<AllLeaveResponse>? =
+                apiInterface.getFilteredLeaveWithoutStatus(childuserId, startDate, enddate, page)
+            call?.enqueue(object : Callback<AllLeaveResponse> {
+                override fun onResponse(
+                    call: Call<AllLeaveResponse>,
+                    response: Response<AllLeaveResponse>,
+                ) {
+                    if (response.body() != null && response.isSuccessful()) {
+                        progressDialog?.dismissDialog()
+                        isfiltered = true
+
+                        Log.e("getLeaves", "onResponse: " + childuserId)
+
+                        val Filteredlist2 = response.body()!!.content!!
+                        for (i in 0..Filteredlist2.size - 1) {
+                            Filteredlist.add(Filteredlist2.get(i))
+                        }
+                        list.clear()
+                        if (Filteredlist.isEmpty()) {
+                            binding.noDataFound.visibility = View.VISIBLE
+                            binding.leaverequest.visibility = View.GONE
+                        } else {
+                            binding.noDataFound.visibility = View.GONE
+                            binding.leaverequest.visibility = View.VISIBLE
+                            binding.leaverequest.adapter = CommonAdapter(this@LeaveHistoryFragment)
+                        }
+                    } else {
+                        Log.e("getmeetings", "onResponse: " + response.body().toString())
+                        progressDialog?.dismissDialog()
+                        if (isAdded)
+                            Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<AllLeaveResponse>, t: Throwable) {
+                    progressDialog?.dismissDialog()
+                    if (isAdded)
+                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                    Log.e("khushi123", "onFailure: " + t.message)
+                }
+            })
+
+        }
+
+        //with startDate
+        if (status.trim() == "--" && startDate != 0L && enddate == 0L) {
+            val call: Call<AllLeaveResponse>? =
+                apiInterface.getFilteredLeaveWithStartDate(childuserId, startDate, page)
+            call?.enqueue(object : Callback<AllLeaveResponse> {
+                override fun onResponse(
+                    call: Call<AllLeaveResponse>,
+                    response: Response<AllLeaveResponse>,
+                ) {
+                    if (response.body() != null && response.isSuccessful()) {
+                        progressDialog?.dismissDialog()
+                        isfiltered = true
+
+                        Log.e("getLeaves", "onResponse: " + childuserId)
+
+                        val Filteredlist2 = response.body()!!.content!!
+                        for (i in 0..Filteredlist2.size - 1) {
+                            Filteredlist.add(Filteredlist2.get(i))
+                        }
+                        list.clear()
+                        if (Filteredlist.isEmpty()) {
+                            binding.noDataFound.visibility = View.VISIBLE
+                            binding.leaverequest.visibility = View.GONE
+                        } else {
+                            binding.noDataFound.visibility = View.GONE
+                            binding.leaverequest.visibility = View.VISIBLE
+                            binding.leaverequest.adapter = CommonAdapter(this@LeaveHistoryFragment)
+                        }
+                    } else {
+                        Log.e("getmeetings", "onResponse: " + response.body().toString())
+                        progressDialog?.dismissDialog()
+                        if (isAdded)
+                            Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<AllLeaveResponse>, t: Throwable) {
+                    progressDialog?.dismissDialog()
+                    if (isAdded)
+                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                    Log.e("khushi123", "onFailure: " + t.message)
+                }
+            })
+
+        }
+
+        //with endDate
+        if (status.trim() == "--" && startDate == 0L && enddate != 0L) {
+            val call: Call<AllLeaveResponse>? =
+                apiInterface.getFilteredLeaveWithEndDate(childuserId, enddate, page)
+            call?.enqueue(object : Callback<AllLeaveResponse> {
+                override fun onResponse(
+                    call: Call<AllLeaveResponse>,
+                    response: Response<AllLeaveResponse>,
+                ) {
+                    if (response.body() != null && response.isSuccessful()) {
+                        progressDialog?.dismissDialog()
+                        isfiltered = true
+
+                        Log.e("getLeaves", "onResponse: " + childuserId)
+
+                        val Filteredlist2 = response.body()!!.content!!
+                        for (i in 0..Filteredlist2.size - 1) {
+                            Filteredlist.add(Filteredlist2.get(i))
+                        }
                         list.clear()
                         if (Filteredlist.isEmpty()) {
                             binding.noDataFound.visibility = View.VISIBLE
@@ -454,7 +657,7 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
 
 
             var size = list.get(position)?.leaveDates?.size!! - 1
-            Log.e("leaveSize", "bindView: "+list.get(position)?.leaveDates?.size+" "+  size )
+            Log.e("leaveSize", "bindView: " + list.get(position)?.leaveDates?.size + " " + size)
 
             if (size > 1)
                 viewBind.duration.text =
@@ -462,6 +665,10 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
                         size
                     ).toString()
             else viewBind.duration.text = list.get(position)?.leaveDates?.get(0)
+
+            viewBind.Reason.setOnClickListener {
+                showReasonAlert(list.get(position)?.reason!!)
+            }
         } else if (Filteredlist.isNotEmpty()) {
             viewBind.comment.text = Filteredlist.get(position)?.leaveType.toString()
             viewBind.name.text = Filteredlist.get(position)?.userName
@@ -481,14 +688,25 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
             }
 
 
-            var size = Filteredlist.get(position)?.leaveDates?.size!! - 1
-            Log.e("leaveSize", "bindView: "+Filteredlist.get(position)?.leaveDates?.size+" "+  size )
-            if (size > 1)
+            var size = Filteredlist.get(position)?.leaveDates?.size!!
+            Log.e(
+                "leaveSize",
+                "  leave bindView: " + Filteredlist.get(position)?.leaveDates?.size + " " + size
+            )
+            if (size <= 1) {
+                viewBind.duration.text = Filteredlist.get(position)?.leaveDates?.get(0)
+                Log.e("leaveSize", "  leave  " + Filteredlist.get(position)?.leaveDates?.get(0))
+
+            } else {
                 viewBind.duration.text =
-                    Filteredlist.get(position)?.leaveDates?.get(0) + " - " + list.get(position)?.leaveDates?.get(
-                        size
-                    ).toString()
-            else viewBind.duration.text = Filteredlist.get(position)?.leaveDates?.get(0)
+                    Filteredlist.get(position)?.leaveDates?.get(0) + " - " + Filteredlist.get(
+                        position
+                    )?.leaveDates?.get(size - 1)
+            }
+
+            viewBind.Reason.setOnClickListener {
+                showReasonAlert(Filteredlist.get(position)?.reason!!)
+            }
         }
     }
 
@@ -506,6 +724,7 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
             ConstraintLayout.LayoutParams.WRAP_CONTENT
         )
         val statusSpin = dialog1.findViewById<Spinner>(R.id.status)
+        val statusText = dialog1.findViewById<TextView>(R.id.statusText)
         val childSpinner = dialog1.findViewById<Spinner>(R.id.personal)
         val showResult = dialog1.findViewById<TextView>(R.id.showresult)
 
@@ -518,7 +737,7 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
         assert(statusSpin != null)
         statusSpin!!.adapter = arrayAdapter
 
-        statusSpin.visibility = View.GONE
+//        statusSpin.visibility = View.GONE
 
         val arrayAdapter2 = ArrayAdapter(
             requireContext(),
@@ -555,15 +774,16 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
         endDate.setOnClickListener { openDatePicker("") }
 
         showResult!!.setOnClickListener {
-            val startdate = DateAndTimeUtility.dateToEpoch(startDate.text.toString())
+            startdate = DateAndTimeUtility.dateToEpoch(startDate.text.toString())
             Log.e("startdate", "showFilterBox: $childuserId")
-
-            val enddate = DateAndTimeUtility.dateToEpoch(endDate.text.toString())
+            status = statusSpin.selectedItem.toString()
+            enddate = DateAndTimeUtility.dateToEpoch(endDate.text.toString())
 
 //            if (startdate == 0L && enddate == 0L)
 //                Toast.makeText(context, "Select Date or status", Toast.LENGTH_SHORT).show()
 //            else {
-            leaveHistory(startdate, enddate, 0, statusSpin.selectedItem.toString())
+            Filteredlist.clear()
+            leaveHistory(startdate, enddate, 0, status)
             dialog1.dismiss()
 //            }
         }
@@ -643,6 +863,26 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
                 Log.e("onFailure", "onFailure: " + t.message)
             }
         })
+    }
+    fun showReasonAlert(rsn: String) {
+        // Create an alert builder
+        val builder = AlertDialog.Builder(context)
+        builder.setCancelable(true)
+
+        // set the custom layout
+        val customLayout: View = layoutInflater.inflate(R.layout.custom_progress2, null)
+        builder.setView(customLayout)
+
+        val reasonTxt = customLayout.findViewById<TextView>(R.id.Reason)
+        val okBtn = customLayout.findViewById<TextView>(R.id.ok_btn)
+        reasonTxt.setText(rsn)
+        reasonTxt.movementMethod = ScrollingMovementMethod()
+
+        val dialog = builder.create()
+        okBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 
 

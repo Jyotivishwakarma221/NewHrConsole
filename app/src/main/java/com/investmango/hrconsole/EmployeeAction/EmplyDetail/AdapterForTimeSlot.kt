@@ -15,7 +15,12 @@ import com.investmango.hrconsole.service.DateAndTimeUtility
 import java.security.AccessController.getContext
 
 
-class AdapterForTimeSlot(val fragment: AddMeeting,val timeslots: List<String>, val meetings: List<MeetingItem?>) :
+class AdapterForTimeSlot(
+    val fragment: AddMeeting,
+    val timeslots: List<String>,
+    val meetings: List<MeetingItem?>,
+    val userId: Long,
+) :
     RecyclerView.Adapter<TimeSlotViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeSlotViewHolder {
@@ -43,19 +48,33 @@ class AdapterForTimeSlot(val fragment: AddMeeting,val timeslots: List<String>, v
 
             is TimeSlotViewHolder.Meeting -> {
                 holder.timeTextView.text = timeslots[position]
+                Log.e("meetings time", "getItemViewType: 1" + timeslots[position])
 
                 for (i in 0..meetings.size - 1) {
-                    Log.e(
-                        "meetings time",
-                        "getItemViewType: " + DateAndTimeUtility.convertEpochToTime(meetings[i]?.meetingTime)
-                    )
-                    Log.e("meetings time", "getItemViewType: " + timeslots[position])
+//                    Log.e(
+//                        "meetings time",
+//                        "getItemViewType : " + DateAndTimeUtility.convertEpochToTime(meetings[i]?.meetingTime)
+//                    )
+
+                    Log.e("meetings time", "getItemViewType: 2" + timeslots[position])
                     if (DateAndTimeUtility.convertEpochToTime(meetings[i]?.meetingTime)
                             .equals(timeslots[position])
                     ) {
+
+                        for (j in 0..(meetings[i]?.assignedUsers?.size?.minus(1) ?: 0)) {
+                            if (meetings[i]?.assignedUsers?.get(j)?.assignToId == userId) {
+                                if (meetings[i]?.assignedUsers?.get(j)?.isUserPresent?.equals(false)!!)
+                                    holder.acceptMeet.visibility = View.VISIBLE
+                                else holder.acceptMeet.visibility = View.GONE
+                            }
+                        }
+
                         holder.details.setText(meetings[i]?.purpose)
                         holder.details.setOnClickListener {
                             fragment.EditMeeting(meetings[i]!!)
+                        }
+                        holder.acceptMeet.setOnClickListener {
+                            fragment.AcceptMeet(meetings[i]?.id!!)
                         }
                     }
                 }
@@ -66,29 +85,20 @@ class AdapterForTimeSlot(val fragment: AddMeeting,val timeslots: List<String>, v
     }
 
     override fun getItemViewType(position: Int): Int {
-        var viewType = 0
-        if (meetings != null && !meetings.isEmpty()) {
-
-
-            for (i in 0..meetings.size - 1) {
-                Log.e(
-                    "meetings time",
-                    "getItemViewType: " + DateAndTimeUtility.convertEpochToTime(meetings[i]?.meetingTime)
-                )
-//                Log.e("meetings time", "getItemViewType: "+ timeslots[position] )
-                if (DateAndTimeUtility.convertEpochToTime(meetings[i]?.meetingTime)
+        if (meetings != null && meetings.isNotEmpty()) {
+            for (meeting in meetings) {
+                if (DateAndTimeUtility.convertEpochToTime(meeting?.meetingTime)
                         .equals(timeslots[position])
                 ) {
-                    viewType = 0
-
-                } else {
-
-                    viewType = 1
+                    Log.e(
+                        "meetings time",
+                        DateAndTimeUtility.convertEpochToTime(meeting?.meetingTime) + "  " + timeslots[position]
+                    )
+                    return 0 // Meeting found
                 }
             }
-        } else viewType = 1
-
-        return viewType
+        }
+        return 1
     }
 
 

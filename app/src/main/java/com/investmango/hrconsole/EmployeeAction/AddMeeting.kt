@@ -60,6 +60,7 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
     var ViewOf: String = ""
     var employeList: ArrayList<String>? = arrayListOf()
     var authority: String = ""
+    var userId: Long = 0
     lateinit var progressDialog: AwesomeProgressDialog
     var allActiveUsers: List<TotalEmpResponseItem?>? = null
 
@@ -69,6 +70,7 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
         var preferences = context!!.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
 
         authority = preferences.getString("Authority", "0").toString()
+        userId = preferences.getLong("userId", 0)
 
         progressDialog = AwesomeProgressDialog(context)
         progressDialog.addTitle("Loading...") // add your title here.
@@ -330,6 +332,7 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
                 if (response.isSuccessful) {
                     Toast.makeText(context, "Meeting Accepted .", Toast.LENGTH_SHORT).show()
 
+                    getMeetings()
                 } else Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG).show()
             }
 
@@ -428,7 +431,8 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
     }
 
     fun setAdapter2() {
-        binding.recyclerFortime.adapter = AdapterForTimeSlot(this, timeSlots, meetingList3!!)
+        binding.recyclerFortime.adapter =
+            AdapterForTimeSlot(this, timeSlots, meetingList3!!, userId)
         progressDialog.dismissDialog()
 
         if (isAdded)

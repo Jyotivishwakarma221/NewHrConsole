@@ -228,9 +228,16 @@ class ProjectsFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding> 
         binding.projectName.text = assignment.subject
         binding.projectName.text = assignment.subject
 
-        binding.deadlineDate.text = "   " + DateAndTimeUtility.getDATEFromLong(assignment.deadLine)
-        binding.duedate.text = "  " + DateAndTimeUtility.getDATEFromLong(assignment.deadLine)
-
+        if (assignment.deadLine!=0L) {
+            binding.deadlineDate.text =
+                "   " + DateAndTimeUtility.getDATEFromLong(assignment.deadLine) + " " + DateAndTimeUtility.getTimeInHourFromLong(
+                    assignment.deadLine
+                )
+            binding.duedate.text = "  " + DateAndTimeUtility.getDATEFromLong(assignment.deadLine)
+        }else{
+            binding.deadlineDate.text =" -- "
+            binding.duedate.text =" -- "
+        }
         if (assignment.stages != null)
             binding.stageName.text = assignment.stages.toString()
 

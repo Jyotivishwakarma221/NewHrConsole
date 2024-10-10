@@ -241,7 +241,7 @@ public class UpdateProfileFragment extends Fragment {
 
     private void uploadFile(Long userId, String imageUrl) {
         // Pass the imageUrl directly instead of a RequestBody
-        Call<ResponseBody> call = apiInterface.uploadFile(token, userId, imageUrl);
+        Call<ResponseBody> call = apiInterface.uploadFile( userId, imageUrl);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override

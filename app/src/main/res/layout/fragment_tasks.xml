@@ -362,21 +362,25 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="5dp"
+                android:background="@color/greyBackground"
                 android:clickable="false"
                 android:orientation="horizontal"
                 android:padding="@dimen/_5dp"
-                android:visibility="invisible">
+                android:visibility="gone"
+              >
 
                 <ImageView
                     android:id="@+id/profilephoto"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:src="@drawable/profile"
+                    android:layout_margin="5dp"
                     android:textColor="@color/white" />
 
                 <EditText
+                    android:id="@+id/comment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -384,15 +388,16 @@
                     android:clickable="true"
                     android:gravity="center"
                     android:hint="Write a comment"
-                    android:padding="5dp"
+                    android:padding="10dp"
                     android:textColor="@color/greyforText"
                     android:textColorHint="@color/white"
                     android:textSize="14dp" />
 
                 <ImageView
                     android:id="@+id/sendComment"
-                    android:layout_width="30dp"
+                    android:layout_width="50dp"
                     android:layout_height="30dp"
+                    android:layout_margin="@dimen/_5dp"
                     android:clickable="true"
                     android:src="@drawable/baseline_arrow_circle_right_24" />
 

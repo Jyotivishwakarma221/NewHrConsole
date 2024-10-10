@@ -1,7 +1,6 @@
 package com.investmango.hrconsole.manager.activity.fragment
 
 import android.app.Activity
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -14,6 +13,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TimePicker
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,21 +22,18 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
 import com.cloudinary.Cloudinary
-import com.cloudinary.android.MediaManager
-import com.cloudinary.android.callback.ErrorInfo
-import com.cloudinary.android.callback.UploadCallback
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.investmango.hrconsole.AwsUpload.UploadFileAws
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
 import com.investmango.hrconsole.api.ApiInterface
-import com.investmango.hrconsole.cloudinary.CloudinaryConfig
 import com.investmango.hrconsole.databinding.FragmentNewTaskBinding
 import com.investmango.hrconsole.model.AddTask
 import com.investmango.hrconsole.model.TaskItems
 import com.investmango.hrconsole.model.UpdateTaskStatus
 import com.investmango.hrconsole.model.UpdateTaskStatus.Status
 import com.investmango.hrconsole.service.DateAndTimeUtility
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -139,7 +136,7 @@ class NewTaskFragment : Fragment() {
                                     ).show()
                                 }
                             }
-                        }else{
+                        } else {
                             Log.e("TAG", "onCreate: ")
                         }
 
@@ -155,32 +152,32 @@ class NewTaskFragment : Fragment() {
 //                                        it,
 //                                        context!!
 //                                    )
-                                }
-                                CoroutineScope(Dispatchers.Main).launch {
-                                    uriStr =
-                                        UploadFileAws().uploadFile(file1, "taskDocs", context!!)
-                                            .toString()
-                                    if (uriStr != "") {
-                                        // Handle the success case here
-                                        Log.e("uploadimg", "onCreate: " + uriStr)
-                                        binding.uploadDocname.visibility = View.VISIBLE
-                                        binding.uploadDoc.visibility = View.GONE
-                                    } else {
-                                        // Handle the failure case here
-                                        Toast.makeText(
-                                            context,
-                                            "Some error in uploading .",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    }
-                                }
-//                                deleteImageFromCloudinary(arrOfStr?.get(6).toString())
-//                                uploadImageToCloud(uri)
+                        }
+                        CoroutineScope(Dispatchers.Main).launch {
+                            uriStr =
+                                UploadFileAws().uploadFile(file1, "taskDocs", context!!)
+                                    .toString()
+                            if (uriStr != "") {
+                                // Handle the success case here
+                                Log.e("uploadimg", "onCreate: " + uriStr)
+                                binding.uploadDocname.visibility = View.VISIBLE
+                                binding.uploadDoc.visibility = View.GONE
+                            } else {
+                                // Handle the failure case here
+                                Toast.makeText(
+                                    context,
+                                    "Some error in uploading .",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
+//                                deleteImageFromCloudinary(arrOfStr?.get(6).toString())
+//                                uploadImageToCloud(uri)
                     }
                 }
             }
+        }
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setData() {
@@ -197,8 +194,12 @@ class NewTaskFragment : Fragment() {
             } else if (task.get(0).subject != null) binding.taskDescription.setText(task.get(0).subject)
             else if (task.get(0).comments != null) binding.taskDescription.setText(task.get(0).comments)
 
-            if (task.get(0).deadLine != null && task.get(0).deadLine != 0L)
+
+
+            if (task.get(0).deadLine != null && task.get(0).deadLine != 0L) {
                 binding.deadline.setText(DateAndTimeUtility.getDATEFromLong(task.get(0).deadLine))
+                binding.selectedTime.setText(DateAndTimeUtility.getTimeInHourFromLong(task.get(0).deadLine))
+            }
             else binding.deadline.setText("  Select Date ")
 
             if (task[0].fileUrl != "") {
@@ -235,27 +236,31 @@ class NewTaskFragment : Fragment() {
 //            Log.e("getExtras", "onCreate: " + task.get(0).id)
         }
 
-        binding.deadline.setOnClickListener {
+        binding.calender.setOnClickListener {
             setDatePicker()
+        }
+        binding.time.setOnClickListener {
+            setClock()
         }
         binding.uploadDoc.setOnClickListener {
             UploadFileAws().openGallery(launcher)
         }
+
         binding.deleteUploadedImg.setOnClickListener {
-            Toast.makeText(context,"clicked",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "clicked", Toast.LENGTH_SHORT).show()
             progressDialog.showDialog()
-                if (task.isNotEmpty()) {
-                    if (task[0].fileUrl != "") {
-                        CoroutineScope(Dispatchers.Main).launch {
-                            task[0].fileUrl?.let { UploadFileAws().deleteFile(it, context!!) }
-                            progressDialog.dismissDialog()
+            if (task.isNotEmpty()) {
+                if (task[0].fileUrl != "") {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        task[0].fileUrl?.let { UploadFileAws().deleteFile(it, context!!) }
+                        progressDialog.dismissDialog()
 
-                            binding.uploadDocname.visibility = View.GONE
-                            binding.uploadDoc.visibility = View.VISIBLE
+                        binding.uploadDocname.visibility = View.GONE
+                        binding.uploadDoc.visibility = View.VISIBLE
 
-                        }
                     }
                 }
+            }
         }
 
         binding.delete.setOnClickListener {
@@ -491,7 +496,10 @@ class NewTaskFragment : Fragment() {
         )
 
         taskObj.deadline =
-            DateAndTimeUtility.convertToEpochMillis(binding.deadline.text.toString())
+            DateAndTimeUtility.convertToEpochMillis(
+                binding.deadline.text.toString(),
+                binding.selectedTime.text.toString()
+            )
         val call = apiInterface.addTask(token, taskObj, userId)
         call.enqueue(object : Callback<AddTask?> {
             override fun onResponse(call: Call<AddTask?>, response: Response<AddTask?>) {
@@ -510,6 +518,7 @@ class NewTaskFragment : Fragment() {
                     uri = null
                     uriStr = ""
                     binding.deadline.setText("Select Date ")
+                    binding.selectedTime.setText("Select Time ")
                     binding.uploadDocname.visibility = View.GONE
 
 
@@ -533,6 +542,34 @@ class NewTaskFragment : Fragment() {
                 Log.e("failure", "onFailure: " + t.message)
             }
         })
+    }
+
+    fun setClock() {
+        val c = Calendar.getInstance()
+
+        // on below line we are getting our hour, minute.
+        val hour = c.get(Calendar.HOUR_OF_DAY)
+        val minute = c.get(Calendar.MINUTE)
+
+        // on below line we are initializing
+        // our Time Picker Dialog
+        val timePickerDialog = android.app.TimePickerDialog(
+            context,
+            { view, hourOfDay, minute ->
+                // on below line we are setting selected
+                // time in our text view.
+                val formattedTime = java.lang.String.format("%02d:%02d", hourOfDay, minute)
+
+                binding.selectedTime.setText(formattedTime)
+            },
+            hour,
+            minute,
+            false
+        )
+        // at last we are calling show to
+        // display our time picker dialog.
+        timePickerDialog.show()
+
     }
 
     fun setDatePicker() {

@@ -48,6 +48,9 @@ data class LeaveItem(
 	@field:SerializedName("userPhone")
 	val userPhone: String? = null,
 
+	@field:SerializedName("fileUrl")
+	val fileUrl: String? = null,
+
 	@field:SerializedName("userName")
 	val userName: String? = null,
 

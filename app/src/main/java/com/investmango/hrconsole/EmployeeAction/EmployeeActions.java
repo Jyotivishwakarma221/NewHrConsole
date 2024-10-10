@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -108,9 +107,11 @@ public class EmployeeActions extends Fragment {
         binding.ProjectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Comming soon..", Toast.LENGTH_SHORT).show();
-//                ((ManagerActivity) getActivity()).replaceFragment(new ManageAssignFragment());
-
+                AllProjectsFragment fragment = new AllProjectsFragment();
+                Bundle bb = new Bundle();
+                bb.putString("ViewOf", "Childs");
+                fragment.setArguments(bb);
+                ((ManagerActivity) getActivity()).replaceFragment(fragment);
             }
         });
         binding.StaffLeaves.setOnClickListener(new View.OnClickListener() {

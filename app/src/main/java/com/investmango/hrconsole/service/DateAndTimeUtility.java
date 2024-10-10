@@ -337,17 +337,19 @@ public class DateAndTimeUtility {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static String getDATEFromLong(Long milliseconds) {
-        Instant instant = Instant.ofEpochMilli(milliseconds);
+        if (milliseconds!=0) {
+            Instant instant = Instant.ofEpochMilli(milliseconds);
 
-        // Convert the Instant to a ZonedDateTime
-        ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
+            // Convert the Instant to a ZonedDateTime
+            ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
 
-        // Define the desired date format
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            // Define the desired date format
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
-        // Format the ZonedDateTime
-        String formattedDate = zdt.format(formatter);
-        return formattedDate;
+            // Format the ZonedDateTime
+            String formattedDate = zdt.format(formatter);
+            return formattedDate;
+        }else return "--";
     }
 
 

@@ -150,7 +150,7 @@ class SubTaskFragment : Fragment(), RecyclerViewInterface<OneSubtaskBinding> {
 
         if (subTask[position]?.updatedTime != 0L)
             viewBind.updateDate.text =
-                DateAndTimeUtility.getDATEFromLong(subTask.get(position)?.updatedTime)
+                DateAndTimeUtility.getDATEFromLong(subTask[position]?.updatedTime)
         else viewBind.updateDate.text =
             DateAndTimeUtility.getDATEFromLong(subTask.get(position)!!.createdTime)
 

@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black"
@@ -89,6 +93,69 @@
                 android:textColor="@color/greyforText"
                 android:textColorHint="@color/white"
                 android:textSize="14sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10"
+                android:gravity="center"
+                android:padding="@dimen/_10"
+                android:layout_marginStart="@dimen/_10dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Upload File"
+                    android:textColor="@color/white"
+                    android:textSize="18dp" />
+
+                <ImageView
+                    android:id="@+id/uploadDoc"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="end"
+                    android:layout_margin="@dimen/_5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/grey_bg_rounded"
+                    android:padding="@dimen/_5dp"
+                    android:src="@drawable/uploadwhite" />
+
+                <LinearLayout
+                    android:id="@+id/uploadDocname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/grey_bg_rounded"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5dp"
+                        android:src="@drawable/uploadwhite"
+                        android:text="File "
+                        android:padding="@dimen/_10dp"
+                        android:textColor="@color/white"
+                        android:visibility="visible" />
+
+                    <ImageView
+                        android:id="@+id/deleteUploadedImg"
+                        android:layout_width="45dp"
+                        android:layout_height="50dp"
+                        android:padding="@dimen/_10dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:src="@drawable/baseline_close_24" />
+                </LinearLayout>
+
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/submit"
@@ -124,4 +191,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10" />
     </LinearLayout>
+</ScrollView>
+
 </layout>

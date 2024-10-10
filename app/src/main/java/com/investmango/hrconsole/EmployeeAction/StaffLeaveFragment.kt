@@ -94,7 +94,7 @@ class StaffLeaveFragment : Fragment(), RecyclerViewInterface<LeaveRequestRecycle
             apiInterface = apiClient.apiInterface
 
             val call: Call<LeaveReqResponse> =
-                apiInterface.getPendingLeaves(token, userId, true, "PENDING", 0, 10)
+                apiInterface.getPendingLeaves( userId, true, "PENDING", 0, 10)
             call?.enqueue(object : Callback<LeaveReqResponse> {
                 override fun onResponse(
                     call: Call<LeaveReqResponse>,
@@ -103,10 +103,7 @@ class StaffLeaveFragment : Fragment(), RecyclerViewInterface<LeaveRequestRecycle
                     if (response.body() != null && response.isSuccessful()) {
                         progressDialog?.dismissDialog()
 
-                        Log.e(
-                            "getLeaves",
-                            "onResponse: 1" + response.body()?.content?.size + " " + authority
-                        )
+                        Log.e("getLeaves", "onResponse: 1" + response.body()?.content?.size + " " + authority)
 
                         list = response.body()!!.content!!
 

@@ -231,6 +231,7 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
         progressBar.show()
 
         call.enqueue(object : Callback<AssignMeeting?> {
+            @SuppressLint("SuspiciousIndentation")
             override fun onResponse(
                 call: Call<AssignMeeting?>,
                 response: Response<AssignMeeting?>,

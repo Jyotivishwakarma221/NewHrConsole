@@ -34,6 +34,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -148,13 +150,33 @@ public class LoginActivity extends AppCompatActivity {
                 progressDialog.showDialog();
                 RequestBody requestBody = RequestBody.create(jsonBody.toString(), MediaType.parse("application/json; charset=utf-8"));
                 apiClient.loginUser(requestBody, new ApiClient.LoginCallback() {
-                    @Override
-                    public void onLoginSuccess() {
-                        Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
+                            @Override
+                            public void onLoginSuccess() {
+                                Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
+                                preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+                                token = preferences.getString("token", "0");
+                                try {
+                                    progressDialog.dismissDialog();
 
-                        preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
-                        token = preferences.getString("token", "0");
-                        progressDialog.dismissDialog();
+                                }catch (Exception e){
+                                    Log.e("Exception", "onLoginSuccess: "+e );
+                                }
+
+                                ExecutorService executor = Executors.newSingleThreadExecutor();
+                                // Submit a task to the ExecutorService
+                                executor.execute(() -> {
+                                    try {
+                                        AccessToken accessToken = new AccessToken();
+                                        String data = accessToken.getAccessToken();
+                                        // Logging the access token
+                                        Log.e("AccessToken", "AccessToken is: " + data);
+                                    } catch (Exception e) {
+                                        Log.e("AccessTokenExecp", "Error fetching access token", e);
+                                    }
+                                });
+
+                                // Shutdown the executor when done, if necessary
+                                executor.shutdown();
 
                         apiClient.getCurrentUser(token, new ApiClient.CurrentUserCallback()
                         {

@@ -159,7 +159,7 @@ class StoryViewFragment : Fragment(), RecyclerViewInterface<ViewStoryBinding> {
 
         if (storyResponse.deadline != 0L)
             binding.DeadlineDate.text =
-                " " + DateAndTimeUtility.getDATEFromLong(storyResponse.deadline)
+                " " + DateAndTimeUtility.getDATEFromLong(storyResponse.deadline) +" "+DateAndTimeUtility.getTimeInHourFromLong(storyResponse.deadline)
 
         if (storyResponse.createdTime != 0L)
             binding.createdDate.text =

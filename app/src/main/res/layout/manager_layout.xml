@@ -48,6 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/textViewSeeAll"
             android:padding="5dp"
+            android:scrollbars="none"
             android:layout_marginTop="@dimen/_10"
             android:id="@+id/meetingRecycle"/>
 
@@ -55,6 +56,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:scrollbars="none"
             android:layout_below="@id/console"
             android:layout_marginTop="20dp">
 

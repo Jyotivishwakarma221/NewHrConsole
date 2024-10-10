@@ -2,8 +2,9 @@ package com.investmango.hrconsole.manager.activity.fragment
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -253,10 +254,25 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
 
     override fun bindView(viewBind: LeaveRecyclerBinding, position: Int) {
         if (leaveType == "All") {
+
+           if( leavelist?.get(position)?.fileUrl!="" && leavelist?.get(position)?.fileUrl!=null){
+               viewBind.showImg.visibility=View.VISIBLE
+           }else{
+               viewBind.showImg.visibility=View.GONE
+           }
+
+            viewBind.showImg.setOnClickListener {
+                openImg(leavelist?.get(position)?.fileUrl!!)
+            }
+
             if (leavelist?.get(position)?.leaveType == "HALF_DAY") {
                 viewBind.id.text = "Half Day "
                 viewBind.approovedType.text = "   Half Day "
                 viewBind.leavetypeReject.text = "   Half Day "
+            }else if (leavelist?.get(position)?.leaveType == "WFH") {
+                viewBind.id.text = "Half Day "
+                viewBind.approovedType.text = "   WFH "
+                viewBind.leavetypeReject.text = "   WFH "
             } else {
                 viewBind.id.text = "Absent "
                 viewBind.approovedType.text = " Absent "
@@ -300,9 +316,19 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
 
             }
 
-            Log.e("TAGForlEAVE", "bindView: " + leavelist?.get(position)?.leaveType)
+            Log.e("TAGForLEAVE", "bindView: " + leavelist?.get(position)?.leaveType)
 
         } else {
+
+            viewBind.showImg.setOnClickListener {
+                openImg(filterredList.get(position)?.fileUrl!!)
+            }
+            if( filterredList.get(position)?.fileUrl!="" && filterredList.get(position)?.fileUrl!=null){
+                viewBind.showImg.visibility=View.VISIBLE
+            }else{
+                viewBind.showImg.visibility=View.GONE
+            }
+
             if (filterredList.get(position)?.status == "APPROVED") {
                 viewBind.approved.visibility = View.VISIBLE
                 viewBind.approovedType.visibility = View.VISIBLE
@@ -326,6 +352,10 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
                 viewBind.id.text = "Half Day "
                 viewBind.approovedType.text = "   Half Day "
                 viewBind.leavetypeReject.text = "   Half Day "
+            }else if (filterredList.get(position)?.leaveType == "WFH") {
+                viewBind.id.text = "WFH "
+                viewBind.approovedType.text = "   WFH "
+                viewBind.leavetypeReject.text = "   WFH "
             } else {
                 viewBind.id.text = "Absent "
                 viewBind.approovedType.text = " Absent "
@@ -358,6 +388,18 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
         }
     }
 
+    fun openImg(uri :String){
+        try {
+            val urlIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(uri)
+            )
+            startActivity(urlIntent)
+        } catch (e: java.lang.Exception) {
+            Toast.makeText(context, "Try again Later.", Toast.LENGTH_SHORT).show()
+            Log.e("Exception", "onClick: $e")
+        }
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun showMonths() {
@@ -393,7 +435,7 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
                     "startDate",
                     "showMonths: " + startDate + "  " + Instant.now().toEpochMilli()
                 )
-                getFilterLeave(startDate, endDate, "")
+                getFilterLeave(startDate, endDate, "",0)
             } catch (e: Exception) {
                 if (isAdded)
                     Toast.makeText(context, "something went wrong.", Toast.LENGTH_LONG).show()
@@ -402,7 +444,7 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
         }
     }
 
-    private fun getFilterLeave(startDate: Long, endDate: Long, status: String) {
+    private fun getFilterLeave(startDate: Long, endDate: Long, status: String,  page: Int) {
         val apiClient = ApiClient(requireContext())
         apiInterface = apiClient.apiInterface
         progressDialog?.showDialog()
@@ -410,7 +452,7 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
         //with only status
         if (startDate == 0L && endDate == 0L && status.trim() != "--") {
 
-            val call = apiInterface.getFilteredLeaveWithoutDate(userId, status)
+            val call = apiInterface.getFilteredLeaveWithoutDate(userId, status,page)
 
             Log.e("allLeaves", "fetchAllLeaves: " + userId + "  " + startDate)
             call.enqueue(object : Callback<AllLeaveResponse> {
@@ -491,7 +533,7 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
         }
         //with all three
         if (startDate != 0L && endDate != 0L && status.trim() != "--") {
-            val call = apiInterface.getFilteredLeave(userId, startDate, endDate, status)
+            val call = apiInterface.getFilteredLeave(userId, startDate, endDate, status,page)
             Log.e("allLeaves", "fetchAllLeaves: " + userId + "  " + startDate)
             call.enqueue(object : Callback<AllLeaveResponse> {
                 override fun onResponse(
@@ -566,7 +608,7 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
         }
         //with start and end date
         if (status.trim() == "--" && startDate != 0L && endDate != 0L) {
-            val call = apiInterface.getFilteredLeaveWithoutStatus(userId, startDate, endDate)
+            val call = apiInterface.getFilteredLeaveWithoutStatus(userId, startDate, endDate,page)
             Log.e("allLeaves", "fetchAllLeaves: " + userId + "  " + startDate)
             call.enqueue(object : Callback<AllLeaveResponse> {
                 override fun onResponse(
@@ -641,7 +683,7 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
         }
         //with status and end date
         if (status.trim() != "--" && startDate == 0L && endDate != 0L) {
-            val call = apiInterface.getFilteredLeaveWithOutStartDate(userId, status, endDate)
+            val call = apiInterface.getFilteredLeaveWithOutStartDate(userId, status, endDate,page)
             Log.e("allLeaves", "fetchAllLeaves: " + userId + "  " + startDate)
             call.enqueue(object : Callback<AllLeaveResponse> {
                 override fun onResponse(
@@ -715,7 +757,7 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
         }
         //With start date only.
         if (status.trim() == "--" && startDate != 0L && endDate == 0L) {
-            val call = apiInterface.getFilteredLeaveWithStartDate(userId, startDate)
+            val call = apiInterface.getFilteredLeaveWithStartDate(userId, startDate,page)
             Log.e("allLeaves", "fetchAllLeaves: " + userId + "  " + startDate)
             call.enqueue(object : Callback<AllLeaveResponse> {
                 override fun onResponse(
@@ -789,7 +831,7 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
         }
         //With End date Only
         if (status.trim() == "--" && startDate == 0L && endDate != 0L) {
-            val call = apiInterface.getFilteredLeaveWithEndDate(userId, endDate)
+            val call = apiInterface.getFilteredLeaveWithEndDate(userId, endDate,page)
             Log.e("allLeaves", "fetchAllLeaves: " + userId + "  " + startDate)
             call.enqueue(object : Callback<AllLeaveResponse> {
                 @SuppressLint("SuspiciousIndentation")
@@ -863,7 +905,7 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
         }
         //with status and startdate
         if (status.trim() != "--" && startDate != 0L && endDate == 0L) {
-            val call = apiInterface.getFilteredLeaveWithOutEndDate(userId, status, startDate)
+            val call = apiInterface.getFilteredLeaveWithOutEndDate(userId, status, startDate,page)
             Log.e("allLeaves", "fetchAllLeaves: " + userId + "  " + startDate)
             call.enqueue(object : Callback<AllLeaveResponse> {
                 override fun onResponse(
@@ -978,7 +1020,7 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
             if (startdate == 0L && enddate == 0L && status.selectedItem.toString().trim() == "--")
                 Toast.makeText(context, "Select Date or status", Toast.LENGTH_SHORT).show()
             else {
-                getFilterLeave(startdate, enddate, status.selectedItem.toString())
+                getFilterLeave(startdate, enddate, status.selectedItem.toString(),0)
                 dialog1.dismiss()
             }
 

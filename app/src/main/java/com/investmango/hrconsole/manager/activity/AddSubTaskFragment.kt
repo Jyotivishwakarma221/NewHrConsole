@@ -197,7 +197,9 @@ class AddSubTaskFragment : Fragment() {
         binding.deadline.setOnClickListener {
             setDatePicker()
         }
-
+        binding.time.setOnClickListener {
+            setClock()
+        }
         binding.uploadDoc.setOnClickListener {
             openGallery()
         }
@@ -376,7 +378,10 @@ class AddSubTaskFragment : Fragment() {
         )
 
         taskObj.taskDeadline =
-            DateAndTimeUtility.convertToEpochMillis(binding.deadline.text.toString())
+            DateAndTimeUtility.convertToEpochMillis(
+                binding.deadline.text.toString(),
+                binding.selectedTime.text.toString()
+            )
         val call = apiInterface.addSubTask(projectId, taskObj)
         call.enqueue(object : Callback<String?> {
             override fun onResponse(call: Call<String?>, response: Response<String?>) {
@@ -394,6 +399,7 @@ class AddSubTaskFragment : Fragment() {
                     uri = null
                     uriStr = ""
                     binding.deadline.text = "Select Date "
+                    binding.selectedTime.text = "Select Time "
                     binding.uploadDocname.visibility = View.GONE
                     binding.taskname.setText("")
                     selectedId = 0
@@ -489,6 +495,33 @@ class AddSubTaskFragment : Fragment() {
 
                 override fun onReschedule(requestId: String, error: ErrorInfo) {}
             }).dispatch()
+    }
+    fun setClock() {
+        val c = Calendar.getInstance()
+
+        // on below line we are getting our hour, minute.
+        val hour = c.get(Calendar.HOUR_OF_DAY)
+        val minute = c.get(Calendar.MINUTE)
+
+        // on below line we are initializing
+        // our Time Picker Dialog
+        val timePickerDialog = android.app.TimePickerDialog(
+            context,
+            { view, hourOfDay, minute ->
+                // on below line we are setting selected
+                // time in our text view.
+                val formattedTime = java.lang.String.format("%02d:%02d", hourOfDay, minute)
+
+                binding.selectedTime.setText(formattedTime)
+            },
+            hour,
+            minute,
+            false
+        )
+        // at last we are calling show to
+        // display our time picker dialog.
+        timePickerDialog.show()
+
     }
 
     fun setDatePicker() {
