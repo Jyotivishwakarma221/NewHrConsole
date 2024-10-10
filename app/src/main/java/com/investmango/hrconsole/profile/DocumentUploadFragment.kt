@@ -17,9 +17,11 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
+import com.investmango.hrconsole.AwsUpload.UploadFileAws
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
 import com.investmango.hrconsole.api.ApiInterface
@@ -29,12 +31,20 @@ import com.investmango.hrconsole.manager.activity.ManagerActivity
 import com.investmango.hrconsole.model.DocumentModel
 import com.investmango.hrconsole.model.DocumentResponse
 import com.investmango.hrconsole.model.UrlsItem
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.io.IOException
+import java.util.Objects
 
 class DocumentUploadFragment : Fragment() {
     private lateinit var binding: FragmentDocumentUploadBinding
@@ -45,21 +55,27 @@ class DocumentUploadFragment : Fragment() {
     lateinit var documents: List<UrlsItem?>
     var documentsToUpload: ArrayList<UrlsItem?> = arrayListOf()
     var cloudinaryUrls: ArrayList<String> = ArrayList()
+    var uriStr = ""
+    lateinit var file1: File
     lateinit var launcher: ActivityResultLauncher<Intent>
     var uri: Uri? = null
-    lateinit var progressDialog: ProgressDialog
+    lateinit var image: MultipartBody.Part
     private var documentTypeUriMap: HashMap<String, Uri> = HashMap()
+    lateinit var progressDialog: AwesomeProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        CloudinaryConfig.initCloudinary(requireContext())
+//        CloudinaryConfig.initCloudinary(requireContext())
 
         val preferences =
             requireActivity().getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         userId = preferences.getLong("userId", 0)
 
-
+        progressDialog = AwesomeProgressDialog(context)
+        progressDialog.addTitle("Loading...") // add your title here.
+        progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
 
         launcher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
@@ -76,15 +92,42 @@ class DocumentUploadFragment : Fragment() {
 //                     * move to the first row in the Cursor, get the data,
 //                     * and display it.
 //                     */
-                    var nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME).toString()
+                  var nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME).toString()
                     val size = cursor.getColumnIndex(OpenableColumns.SIZE)
                     cursor.moveToFirst()
-                    var sizeIndex = cursor.getLong(size)
+                  val  sizeIndex = cursor.getLong(size)
                     Log.e("launcherrrr", "onCreate: " + sizeIndex)
 
                     cursor.moveToFirst()
-                }
-                uploadImageToCloud(uri)
+
+                    file1= File(Objects.requireNonNull<String>(UploadFileAws().getRealPathFromUri(uri!!,context!!)))
+                    val requestBody1 = RequestBody.create("image/*".toMediaTypeOrNull(), file1)
+                    image = MultipartBody.Part.createFormData("image", file1.name, requestBody1)
+                    Log.e("khushi1111", "onClick: " + image)
+
+                    if (isAdded)
+                        CoroutineScope(Dispatchers.Main).launch {
+                            uriStr = UploadFileAws().uploadFile(file1, "userDocuments", context!!).toString()
+                            if (uriStr != "") {
+                                // Handle the success case here
+                                successfulUploadCount++
+                                documentsToUpload.add(UrlsItem(uriStr,categoryyy))
+                                if (successfulUploadCount == documentsToUpload.size) {
+                                    progressDialog.showDialog()
+                                    saveUserDoc(documentsToUpload)
+                                }
+                            }
+                            } else {
+                                // Handle the failure case here
+                                Toast.makeText(
+                                    context,
+                                    "Some error in uploading .",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+//                }
+//                uploadImageToCloud(uri)
             }
 
         }
@@ -125,6 +168,7 @@ class DocumentUploadFragment : Fragment() {
         val apiClient = ApiClient(requireContext())
         apiInterface = apiClient.apiInterface
         val call: Call<DocumentResponse>? = apiInterface.getdocument(userId)
+        Log.e("getDoc", "getAlldocument: "+userId )
         call?.enqueue(object : Callback<DocumentResponse?> {
             override fun onResponse(
                 call: Call<DocumentResponse?>,
@@ -133,23 +177,21 @@ class DocumentUploadFragment : Fragment() {
                 if (response.body() != null && response.isSuccessful()) {
                     if (response.body()!!.urls?.get(0)?.imageUrl != null) {
                         documents = response.body()?.urls!!
-                        Log.e("getmeetings", "onResponse: " + response.body())
+                        Log.e("getDoc", "onResponse: " + response.body())
                         chekDocuments()
                     }
                 } else {
-                    Log.e("getmeetings", "onResponse: " + response.errorBody())
-
-                    Toast.makeText(context, getErrorMessage(response), Toast.LENGTH_SHORT).show()
+                    Log.e("getDoc", "onerr:" + getErrorMessage(response))
+                    Toast.makeText(context,getErrorMessage(response), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<DocumentResponse?>, t: Throwable) {
                 Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
-                Log.e("khushi123", "onFailure: " + t.message)
+                Log.e("getDoc", "onFailure: " + t.message)
             }
         })
     }
-
     private fun getErrorMessage(response: Response<DocumentResponse?>): String {
         var errorMessage = "Unknown error"
         try {
@@ -167,6 +209,9 @@ class DocumentUploadFragment : Fragment() {
                 documents.get(i)?.category!!,
                 Uri.parse(documents.get(i)?.imageUrl)
             )
+
+            Log.e("chkDocument", "chekDocuments: " + documentTypeUriMap)
+
             when (documents.get(i)?.category) {
                 "graduation" -> {
                     binding.editPostGraduation.visibility = View.VISIBLE
@@ -297,51 +342,50 @@ class DocumentUploadFragment : Fragment() {
         categoryyy = category
     }
 
-    private fun uploadImageToCloud(imageUri: Uri?) {
-//        val fileSize: Long = getFileSize(imageUri)
-        progressDialog = ProgressDialog.show(requireContext(), "", "Uploading image...", true)
-        val folderName = "document"
-        val publicId = folderName + "/" + System.currentTimeMillis()
-        // Configure the Cloudinary upload options
-        MediaManager.get().upload(imageUri)
-            .option("public_id", publicId) // Specify the folder name
-            .callback(object : UploadCallback {
-                override fun onStart(requestId: String) {}
-
-                override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {}
-
-                override fun onSuccess(requestId: String, resultData: Map<*, *>) {
-                    progressDialog.dismiss()
-                    var uriStr = uri?.toString()
-                    uriStr = resultData["url"] as String?
-                    if (resultData.containsKey("secure_url")) {
-                        val cloudinaryUrl = resultData["secure_url"] as String?
-                        if (cloudinaryUrl != null) {
-                            successfulUploadCount++
-                            documentsToUpload.add(UrlsItem(categoryyy, cloudinaryUrl))
-                            if (successfulUploadCount == documentsToUpload.size)
-                                saveUserDoc(documentsToUpload)
-                        }
-                    }
-
-
-                }
-
-                override fun onError(requestId: String, error: ErrorInfo) {
-                    progressDialog.dismiss()
-                    Toast.makeText(
-                        requireContext(),
-                        "Upload failed: " + error.description,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                override fun onReschedule(requestId: String, error: ErrorInfo) {}
-            }).dispatch()
-    }
+//    private fun uploadImageToCloud(imageUri: Uri?) {
+////        val fileSize: Long = getFileSize(imageUri)
+//        progressDialog = ProgressDialog.show(requireContext(), "", "Uploading image...", true)
+//        val folderName = "document"
+//        val publicId = folderName + "/" + System.currentTimeMillis()
+//        // Configure the Cloudinary upload options
+//        MediaManager.get().upload(imageUri)
+//            .option("public_id", publicId) // Specify the folder name
+//            .callback(object : UploadCallback {
+//                override fun onStart(requestId: String) {}
+//
+//                override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {}
+//
+//                override fun onSuccess(requestId: String, resultData: Map<*, *>) {
+//                    progressDialog.dismiss()
+//                    var uriStr = uri?.toString()
+//                    uriStr = resultData["url"] as String?
+//                    if (resultData.containsKey("secure_url")) {
+//                        val cloudinaryUrl = resultData["secure_url"] as String?
+//                        if (cloudinaryUrl != null) {
+//                            successfulUploadCount++
+//                            documentsToUpload.add(UrlsItem(categoryyy, cloudinaryUrl))
+//                            if (successfulUploadCount == documentsToUpload.size)
+//                                saveUserDoc(documentsToUpload)
+//                        }
+//                    }
+//                }
+//
+//                override fun onError(requestId: String, error: ErrorInfo) {
+//                    progressDialog.dismiss()
+//                    Toast.makeText(
+//                        requireContext(),
+//                        "Upload failed: " + error.description,
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                }
+//
+//                override fun onReschedule(requestId: String, error: ErrorInfo) {}
+//            }).dispatch()
+//    }
 
     private fun saveUserDoc(cloudinaryUrls: ArrayList<UrlsItem?>) {
         val documentModel = DocumentResponse(cloudinaryUrls)
+        Log.e("chkDocument", "saveUserDoc: "+ documentModel)
         val call = apiInterface.saveDocument(documentModel, userId)
         call.enqueue(object : Callback<String?> {
             override fun onResponse(
@@ -357,7 +401,7 @@ class DocumentUploadFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                     // Dismiss progress dialog when upload is successful
-                    progressDialog.dismiss()
+                    progressDialog.dismissDialog()
                 } else {
                     try {
                         val errorMessage = response.errorBody()!!.string()
@@ -376,11 +420,15 @@ class DocumentUploadFragment : Fragment() {
                         e.printStackTrace()
                         Log.e("SaveDocumentError", "Error parsing error response: " + e.message)
                     }
+                    progressDialog.dismissDialog()
+
                 }
             }
 
             override fun onFailure(call: Call<String?>, t: Throwable) {
                 // Handle API call failure
+                progressDialog.dismissDialog()
+
                 val failureMessage = "API call failed: " + t.message
                 Log.e("SaveDocumentError", failureMessage)
                 Toast.makeText(

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -104,7 +105,8 @@
                     android:gravity="start"
                     android:text="       "
                     android:textColor="@color/white"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -175,32 +177,35 @@
                         android:textSize="10sp" />
 
 
-                    <ImageView
+                    <com.makeramen.roundedimageview.RoundedImageView
                         android:id="@+id/photo1"
                         android:layout_width="@dimen/_20dp"
                         android:layout_height="20dp"
                         android:layout_below="@+id/projctMember"
                         android:layout_marginStart="@dimen/_10"
                         android:layout_marginTop="@dimen/_10"
-                        android:src="@drawable/profilephoto" />
+                        android:src="@drawable/profilephoto"
+                        app:riv_oval="true" />
 
-                    <ImageView
+                    <com.makeramen.roundedimageview.RoundedImageView
                         android:id="@+id/photo2"
                         android:layout_width="@dimen/_20dp"
                         android:layout_height="20dp"
                         android:layout_below="@+id/projctMember"
                         android:layout_marginTop="@dimen/_10"
                         android:layout_toEndOf="@+id/photo1"
-                        android:src="@drawable/profilephoto" />
+                        android:src="@drawable/profilephoto"
+                        app:riv_oval="true" />
 
-                    <ImageView
+                    <com.makeramen.roundedimageview.RoundedImageView
                         android:id="@+id/photo3"
                         android:layout_width="@dimen/_20dp"
                         android:layout_height="20dp"
                         android:layout_below="@+id/projctMember"
                         android:layout_marginTop="@dimen/_10"
                         android:layout_toEndOf="@+id/photo2"
-                        android:src="@drawable/profilephoto" />
+                        android:src="@drawable/profilephoto"
+                        app:riv_oval="true" />
                 </RelativeLayout>
 
 
@@ -231,7 +236,8 @@
                     android:gravity="start"
                     android:text="  Hr Console UI"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/priorityy"
@@ -255,7 +261,7 @@
                     android:layout_marginTop="@dimen/_10"
                     android:gravity="start"
                     android:text="  Due Date "
-                    android:textColor="#E2E2E2"
+                    android:textColor="@color/lightWhite"
                     android:textSize="15sp" />
 
                 <TextView
@@ -270,7 +276,7 @@
                     android:gravity="start"
                     android:paddingStart="5dp"
                     android:text="  24 May 2024 "
-                    android:textColor="#D3D3D3"
+                    android:textColor="@color/lightWhite"
                     android:textSize="15sp" />
 
                 <TextView
@@ -282,7 +288,7 @@
                     android:layout_marginTop="@dimen/_15"
                     android:gravity="start"
                     android:text="  Assigned to: "
-                    android:textColor="#E2E2E2"
+                    android:textColor="@color/lightWhite"
                     android:textSize="15sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -319,7 +325,7 @@
                     android:layout_marginTop="@dimen/_10"
                     android:gravity="start"
                     android:text="  Project Stages : "
-                    android:textColor="#E2E2E2"
+                    android:textColor="@color/lightWhite"
                     android:textSize="15sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -337,7 +343,7 @@
                     android:layout_marginTop="@dimen/_10"
                     android:gravity="start"
                     android:text="  Project files: "
-                    android:textColor="#E2E2E2"
+                    android:textColor="@color/lightWhite"
                     android:textSize="15sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -381,7 +387,7 @@
                     android:layout_marginTop="@dimen/_15"
                     android:gravity="start"
                     android:text="  Description : "
-                    android:textColor="#CECECE"
+                    android:textColor="@color/lightWhite"
                     android:textSize="15sp" />
 
                 <TextView
@@ -414,8 +420,8 @@
                     android:layout_marginStart="@dimen/_20dp"
                     android:layout_marginTop="@dimen/_15"
                     android:layout_marginEnd="@dimen/_20dp"
-                    android:gravity="start"
                     android:drawableEnd="@drawable/plus"
+                    android:gravity="start"
                     android:padding="@dimen/_10"
                     android:text="  Notes : "
                     android:textColor="#56555C"

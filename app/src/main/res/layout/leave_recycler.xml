@@ -15,7 +15,7 @@
 
         <LinearLayout
             android:id="@+id/laylinear"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_5dp"
             android:orientation="vertical"
@@ -41,7 +41,25 @@
                 android:textColor="@color/greyforText"
                 android:textSize="11dp" />
         </LinearLayout>
-
+        <TextView
+            android:id="@+id/showImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/laylinear"
+            android:gravity="center"
+            android:text="Show Image"
+            android:layout_marginTop="@dimen/_10dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:paddingStart="@dimen/_30dp"
+            android:paddingEnd="@dimen/_30dp"
+            android:paddingTop="@dimen/_5dp"
+            android:paddingBottom="@dimen/_5dp"
+            android:background="@drawable/blue_bg"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15"
+            android:textStyle="bold" />
         <TextView
             android:id="@+id/leavetypehalfDayReject"
             android:layout_width="wrap_content"

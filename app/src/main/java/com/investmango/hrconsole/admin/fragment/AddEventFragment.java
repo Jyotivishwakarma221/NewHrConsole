@@ -39,7 +39,6 @@ import com.investmango.hrconsole.api.ApiInterface;
 import com.investmango.hrconsole.cloudinary.CloudinaryConfig;
 import com.investmango.hrconsole.model.AddEvent;
 
-import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

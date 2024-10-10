@@ -143,14 +143,14 @@ class SubTaskFragment : Fragment(), RecyclerViewInterface<OneSubtaskBinding> {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun bindView(viewBind: OneSubtaskBinding, position: Int) {
-        viewBind.heading.text = subTask[position]?.assignmentSubject
+        viewBind.heading.text = subTask[position]?.name
         viewBind.details.text = subTask[position]?.description
         viewBind.nameOfMember.text = subTask[position]?.assignedByName
         viewBind.id.text = subTask[position]?.id.toString()
 
         if (subTask[position]?.updatedTime != 0L)
             viewBind.updateDate.text =
-                DateAndTimeUtility.getDATEFromLong(subTask.get(position)?.updatedTime)
+                DateAndTimeUtility.getDATEFromLong(subTask[position]?.updatedTime)
         else viewBind.updateDate.text =
             DateAndTimeUtility.getDATEFromLong(subTask.get(position)!!.createdTime)
 

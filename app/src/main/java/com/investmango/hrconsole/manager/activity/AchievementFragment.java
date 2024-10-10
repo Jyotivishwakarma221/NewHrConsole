@@ -71,6 +71,7 @@ public class AchievementFragment extends Fragment {
         progressDialog = new AwesomeProgressDialog(getContext());
         progressDialog.addTitle("Loading...");// add your title here.
         progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS);
+        progressDialog.isCancelable(false);
 
         assert getArguments() != null;
         if (getArguments().containsKey("childUserid")) {
@@ -147,10 +148,16 @@ public class AchievementFragment extends Fragment {
         }
     }
 
-    private void populatePieChart(long totalPresent, long totalAbsent, PieChart pieChart) {
+    private void populatePieChart(long total, long obtained, PieChart pieChart) {
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
-        pieEntries.add(new PieEntry(totalPresent, "llll"));
-        pieEntries.add(new PieEntry(totalAbsent, "llll"));
+
+        float resultPercentage = ((float) obtained / total) * 100;
+        float remainingPercentage = 100 - resultPercentage;
+
+
+
+        pieEntries.add(new PieEntry(resultPercentage, "Absent"));
+        pieEntries.add(new PieEntry(remainingPercentage,"llll"));
 
 
         PieDataSet pieDataSet = new PieDataSet(pieEntries, "Employee Attendance");
@@ -188,7 +195,7 @@ public class AchievementFragment extends Fragment {
 
         // on below line we are setting center text
         pieChart.setDrawCenterText(true);
-        pieChart.setCenterText("Obtained score\n" + totalPresent);
+        pieChart.setCenterText("Obtained score\n" + resultPercentage);
         pieChart.setCenterTextColor(Color.WHITE);
         pieChart.setDrawEntryLabels(false);
         pieChart.setUsePercentValues(false);
@@ -326,7 +333,7 @@ public class AchievementFragment extends Fragment {
         });
     }
 
-    private void getEmployeePerformanceList(String token, long userId) {
+    private void getEmployeePerformanceList(String token, long userId)  {
         ApiClient apiClient = new ApiClient(getContext());
         apiInterface = apiClient.getApiInterface();
         progressDialog.showDialog();
@@ -358,16 +365,17 @@ public class AchievementFragment extends Fragment {
     }
 
     private long getPercentage(float value) {
-        return (long) (value / 5 * 100);
+        return (long) value;
     }
 
     private void setUpData() {
         Log.e("percentage", "setUpData: " + getPercentage(3));
-        binding.attendanceProg.setProgress((int) getPercentage(empPerformanceList.get(0).getAttendance()));
+        binding.attendanceProg.setProgress(Math.toIntExact(empPerformanceList.get(0).getAttendance()));
         binding.generalProg.setProgress((int) getPercentage(empPerformanceList.get(0).getGeneralConduct()));
         binding.jobKnowProg.setProgress((int) getPercentage(empPerformanceList.get(0).getJobKnowledge()));
         binding.teamWorkprog.setProgress((int) getPercentage(empPerformanceList.get(0).getTeamWork()));
         binding.skillProg.setProgress((int) getPercentage(empPerformanceList.get(0).getSkills()));
+        binding.workQualityProg.setProgress((int) getPercentage(empPerformanceList.get(0).getWorkQuality()));
 
 
         binding.attendanceIncDec.setMiddleText(empPerformanceList.get(0).getAttendance().toString());

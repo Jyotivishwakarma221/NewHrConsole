@@ -36,6 +36,8 @@
                             android:layout_height="@dimen/_100dp"
                             android:scaleType="centerCrop"
                             app:riv_oval="true"
+                            android:padding="@dimen/_5dp"
+                            android:background="@drawable/grey_bg_rounded"
                             android:layout_gravity="center" />
 
                         <TextView

@@ -125,11 +125,31 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10"
-                android:gravity="start"
-                android:orientation="horizontal"
-                android:weightSum="2">
+                android:layout_marginTop="@dimen/_10">
 
+                <ImageView
+                    android:id="@+id/time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:background="@drawable/blue_bg"
+                    android:padding="@dimen/_10"
+                    android:src="@drawable/clock_white" />
+
+                <TextView
+                    android:id="@+id/selectedTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:layout_marginStart="@dimen/_10dp"
+                    android:background="@drawable/grey_bg_rounded"
+                    android:gravity="center"
+                    android:maxLines="5"
+                    android:padding="@dimen/_10"
+                    android:text="  Select Time  "
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="14sp" />
 
                 <ImageView
                     android:id="@+id/calender"
@@ -193,7 +213,7 @@
                     android:gravity="center"
                     android:paddingTop="@dimen/_20dp"
                     android:src="@drawable/uploadwhite"
-                    android:text="naskdn"
+                    android:text="File "
                     android:textColor="@color/white"
                     android:visibility="gone" />
             </LinearLayout>

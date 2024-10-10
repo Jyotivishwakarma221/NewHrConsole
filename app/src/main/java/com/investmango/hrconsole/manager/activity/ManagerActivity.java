@@ -89,6 +89,7 @@ public class ManagerActivity extends AppCompatActivity {
         intent = new Intent(this, MyBackgroundLocationService.class);
         runConnectionCheckThread(this);
         ContextCompat.startForegroundService(this, intent);
+//        mService.doForegroundThings();
 
         if (authority.equals(Constant.USER)){
             addFragment(new ManagerFragment());

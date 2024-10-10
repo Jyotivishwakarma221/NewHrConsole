@@ -1,20 +1,26 @@
 package com.investmango.hrconsole.profile
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
 import com.bumptech.glide.Glide
+import com.investmango.hrconsole.AwsUpload.UploadFileAws
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
 import com.investmango.hrconsole.api.ApiInterface
@@ -26,9 +32,15 @@ import com.investmango.hrconsole.newHomePage.ChangePaasword
 import com.investmango.hrconsole.service.DateAndTimeUtility
 import com.investmango.hrconsole.service.LoginActivity
 import com.investmango.hrconsole.service.SharedUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
+import java.util.Objects
 import java.util.concurrent.atomic.AtomicReference
 
 
@@ -40,6 +52,12 @@ class ProfileFragment : Fragment() {
     var ViewOf: String? = ""
     private var userId: Long = 0
     lateinit var progressDialog: AwesomeProgressDialog
+    lateinit var launcher: ActivityResultLauncher<Intent>
+    var uri: Uri? = Uri.parse("")
+    lateinit var nameIndex: String
+    var sizeIndex: Long = 0
+    lateinit var file1: File
+    var uriStr = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +78,95 @@ class ProfileFragment : Fragment() {
                 Log.e("Achievements", "onCreate: $userId")
             }
         }
+
+        launcher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+                uri = result.data!!.data!!
+                Log.e("launcherrrr", "onCreate: " + uri)
+
+                result.data?.let { returnUri ->
+                    context?.contentResolver?.query(uri!!, null, null, null, null)
+                }?.use { cursor ->
+                    /*
+                     * Get the column indexes of the data in the Cursor,
+                     * move to the first row in the Cursor, get the data,
+                     * and display it.
+                     */
+                    nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME).toString()
+                    val size = cursor.getColumnIndex(OpenableColumns.SIZE)
+                    cursor.moveToFirst()
+                    sizeIndex = cursor.getLong(size)
+                    Log.e("launcherrrr", "onCreate: " + sizeIndex)
+
+                    cursor.moveToFirst()
+                    file1 = File(
+                        Objects.requireNonNull<String>(
+                            UploadFileAws().getRealPathFromUri(
+                                uri!!,
+                                context!!
+                            )
+                        )
+                    )
+
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        uriStr =
+                            UploadFileAws().uploadFile(file1, "profilePhotos", context!!)
+                                .toString()
+                        if (uriStr != "") {
+                            uploadFile(uriStr)
+                        } else {
+                            // Handle the failure case here
+                            Toast.makeText(
+                                context,
+                                "Some error in uploading .",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+//                                deleteImageFromCloudinary(arrOfStr?.get(6).toString())
+//                                uploadImageToCloud(uri)
+                }
+            }
+        }
     }
+
+    private fun uploadFile(uri: String) {
+        val apiClient = ApiClient(context)
+        apiInterface = apiClient.apiInterface
+        progressDialog.showDialog()
+        val call: Call<ResponseBody> = apiInterface.uploadFile(user.id, uri)
+        call.enqueue(object : Callback<ResponseBody> {
+            @RequiresApi(Build.VERSION_CODES.O)
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+//                    progressDialog.dismissDialog()
+                    if (isAdded)
+                        Toast.makeText(context, "Profile Updated Successfully.", Toast.LENGTH_SHORT)
+                            .show()
+                        getCurrentUser(token)
+
+                }else{
+                    progressDialog.dismissDialog()
+                    if (isAdded)
+                        Toast.makeText(
+                            context,
+                            "Something went wrong.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                progressDialog.dismissDialog()
+                val errorMessage = "Error: " + t.message
+                Log.e("LoginError", errorMessage)
+            }
+        })
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -98,6 +204,11 @@ class ProfileFragment : Fragment() {
                     ChangePaasword()
                 )
             }
+        }
+
+
+        binding.profilePhoto.setOnClickListener {
+            UploadFileAws().openGallery(launcher)
         }
     }
 
@@ -196,7 +307,7 @@ class ProfileFragment : Fragment() {
             DateAndTimeUtility.getRelativeTime(user.lastLogin).toString()
         )
         binding.Dob.setText(user.dob)
-        binding.joiningDate.setText(user.createdDate.toString())
+        binding.joiningDate.setText(DateAndTimeUtility.getDATEFromLong(user.createdDate))
         binding.Department.setText(user.department)
 
         if (user.managerName != null)

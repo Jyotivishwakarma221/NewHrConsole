@@ -17,15 +17,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="@dimen/_20dp"
                 android:layout_marginBottom="@dimen/_20dp">
 
-                <ImageView
-                    android:id="@+id/backBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:src="@drawable/backbutton" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/backBtn"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="25dp"-->
+<!--                    android:src="@drawable/backbutton" />-->
 
                 <TextView
                     android:layout_width="match_parent"

@@ -30,7 +30,7 @@
     <ImageView
         android:id="@+id/delete"
         android:layout_width="@dimen/_20dp"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:layout_height="@dimen/_20dp"
         android:layout_marginStart="@dimen/_10"
         android:src="@drawable/small_cross" />

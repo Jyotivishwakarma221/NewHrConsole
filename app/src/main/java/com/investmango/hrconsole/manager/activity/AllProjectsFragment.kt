@@ -84,7 +84,6 @@ class AllProjectsFragment : Fragment(), RecyclerViewInterface<ProjectItemBinding
         if (from != "Own") {
             if (authority.equals(Constant.ADMIN))
                 getAllAssignment()
-
         }
     }
 
@@ -111,6 +110,7 @@ class AllProjectsFragment : Fragment(), RecyclerViewInterface<ProjectItemBinding
 
                         for (i in assignment.indices) {
                             val assignmentId = assignment[i]!!.id!!
+                            if (isAdded)
                             CommonUtils.getProgress(
                                 assignmentId,
                                 context,
@@ -215,7 +215,7 @@ class AllProjectsFragment : Fragment(), RecyclerViewInterface<ProjectItemBinding
         Log.e("allproject", "setData: ")
         progressDialog.showDialog()
         binding.recyclerProject.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.recyclerProject.adapter = CommonAdapter(this)
         progressDialog.dismissDialog()
 
@@ -267,7 +267,7 @@ class AllProjectsFragment : Fragment(), RecyclerViewInterface<ProjectItemBinding
                         .load(assignment.get(position)?.users?.get(0)?.assignToProfile)
                         .into(viewBind.photo1)
 
-                if (assignment.get(position)?.users?.get(1) != null) {
+                if (assignment.get(position)?.users?.size!! >= 2 ) {
                     // Load and display the image using Glide
                     Glide.with(requireContext())
                         .load(assignment.get(position)?.users?.get(1)!!.assignToProfile)

@@ -80,7 +80,7 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
     private val MY_PERMISSIONS_REQUEST = 1001
       var gpsEnable:Boolean = false
     lateinit var progressDialog: AwesomeProgressDialog
-
+      var isWithin10km:Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -188,7 +188,9 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
                         binding.swipeOut.visibility = View.GONE
                         binding.swipeIn.visibility = View.VISIBLE
                         binding.someswipe.visibility = View.GONE
+//                        if (isWithin10km)
                         saveUserInTimeAndLocation("In")
+//                        else Toast.makeText(context,"Not in Range",Toast.LENGTH_SHORT).show()
 
                     }
                 }
@@ -586,7 +588,7 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
                         latitude = latitudee
                         longitude = longitudee
 
-                        progressDialog.dismissDialog();
+                        progressDialog.dismissDialog()
 
                         val address = addressList[0]
                         val marker = mMap?.addMarker(
@@ -611,6 +613,7 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
                 } catch (e: IOException) {
                     Log.e("Geocoder", "IOException: ${e.message}")
                     // Retry on IOException
+                    progressDialog.dismissDialog()
                     tryToAddMarkerAndZoom(context, latitude, longitude, retries - 1)
                 }
             }
@@ -628,7 +631,7 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
                 results
             )
             val distanceInMeters = results[0]
-            val isWithin10km = distanceInMeters < 10000
+             isWithin10km = distanceInMeters < 1000
             Log.e(
                 "isWithin10km",
                 "onViewCreated: " + isWithin10km + " " + latitudee + " " + longitudee

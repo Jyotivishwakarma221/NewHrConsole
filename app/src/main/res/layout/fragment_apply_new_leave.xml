@@ -128,7 +128,7 @@
                 android:layout_marginStart="@dimen/_10dp"
                 android:layout_marginTop="@dimen/_20dp"
                 android:padding="@dimen/_15"
-                android:visibility="invisible">
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="@dimen/_20dp"
@@ -152,6 +152,50 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10"
                     android:src="@drawable/baseline_close_24_red" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5dp"
+                android:layout_marginTop="@dimen/_10"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Upload File"
+                    android:textColor="@color/white"
+                    android:textSize="18dp" />
+
+                <ImageView
+                    android:id="@+id/uploadDoc"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="end"
+                    android:layout_margin="@dimen/_5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/grey_bg_rounded"
+                    android:padding="@dimen/_5dp"
+                    android:src="@drawable/uploadwhite" />
+
+                <TextView
+                    android:id="@+id/uploadDocname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_margin="@dimen/_5dp"
+                    android:layout_weight="1"
+                    android:drawableEnd="@drawable/baseline_close_24"
+                    android:gravity="center"
+                    android:padding="@dimen/_5dp"
+                    android:src="@drawable/uploadwhite"
+                    android:text="File "
+                    android:textColor="@color/white"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout

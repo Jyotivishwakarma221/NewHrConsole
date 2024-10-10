@@ -8,6 +8,7 @@ import com.investmango.hrconsole.model.AddTask;
 import com.investmango.hrconsole.model.AdminSalaryDetails;
 import com.investmango.hrconsole.model.AdminTask;
 import com.investmango.hrconsole.model.AllActiveUsers;
+import com.investmango.hrconsole.model.AllFeedResponse;
 import com.investmango.hrconsole.model.AllLeaveResponse;
 import com.investmango.hrconsole.model.AllSalaryDetail;
 import com.investmango.hrconsole.model.ApprovedLeaves;
@@ -61,6 +62,7 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -84,7 +86,7 @@ public interface ApiInterface {
     @GET("current-user")
     Call<User> getCurrentUser(@Header("Authorization") String token);
 
-   @GET("user/get/user/by/{user_id}")
+    @GET("user/get/user/by/{user_id}")
     Call<User> getChildUser(@Path("user_id") long user_id);
 
     // Sign Up
@@ -95,66 +97,73 @@ public interface ApiInterface {
     @POST("save/device/token/by/id/{user_id}")
     Call<String> saveDeviceToken(@Header("Authorization") String token, @Body RequestBody deviceToken, @Path("user_id") Long id);
 
-   @GET("get/meeting/by/meeting/id/{id}")
+    @GET("get/meeting/by/meeting/id/{id}")
     Call<MeetingResponse> getmeetings(@Header("Authorization") String token, @Path("id") Long id);
 
-   @GET("get/message/by/user/id/{user_id}")
+    @GET("get/message/by/user/id/{user_id}")
     Call<List<MessageResponse>> getMessages(@Header("Authorization") String token, @Path("user_id") Long user_id);
 
-   @GET("get/leaves/of/user/by/userId/{user_id}")
+    @GET("get/leaves/of/user/by/userId/{user_id}")
     Call<AllLeaveResponse>
     getAllLeaves(@Path("user_id") Long user_id, @Query("page") int page, @Query("size") int size);
 
-   @GET("get/leaves/of/user/by/userId/{user_id}")
+    @GET("get/leaves/of/user/by/userId/{user_id}")
     Call<AllLeaveResponse>
-    getFilteredLeave(@Path("user_id") Long user_id, @Query("startDate") Long startDate, @Query("endDate") Long endDate, @Query("status") String status);
+    getFilteredLeave(@Path("user_id") Long user_id, @Query("startDate") Long startDate, @Query("endDate") Long endDate, @Query("status") String status, @Query("page") int page);
 
-   @GET("get/leaves/of/user/by/userId/{user_id}")
+    @GET("get/leaves/of/user/by/userId/{user_id}")
     Call<AllLeaveResponse>
-    getFilteredLeaveWithoutStatus(@Path("user_id") Long user_id, @Query("startDate") Long startDate, @Query("endDate") Long endDate);
+    getFilteredLeaveWithoutStatus(@Path("user_id") Long user_id, @Query("startDate") Long startDate, @Query("endDate") Long endDate, @Query("page") int page);
 
-   @GET("get/leaves/of/user/by/userId/{user_id}")
+    @GET("get/leaves/of/user/by/userId/{user_id}")
     Call<AllLeaveResponse>
-    getFilteredLeaveWithOutStartDate(@Path("user_id") Long user_id, @Query("status") String status, @Query("endDate") Long endDate);
+    getFilteredLeaveWithOutStartDate(@Path("user_id") Long user_id, @Query("status") String status, @Query("endDate") Long endDate, @Query("page") int page);
 
-   @GET("get/leaves/of/user/by/userId/{user_id}")
+    @GET("get/leaves/of/user/by/userId/{user_id}")
     Call<AllLeaveResponse>
-    getFilteredLeaveWithOutEndDate(@Path("user_id") Long user_id, @Query("status") String status, @Query("startDate") Long startDate);
+    getFilteredLeaveWithOutEndDate(@Path("user_id") Long user_id, @Query("status") String status, @Query("startDate") Long startDate, @Query("page") int page);
 
-   @GET("get/leaves/of/user/by/userId/{user_id}")
+    @GET("get/leaves/of/user/by/userId/{user_id}")
     Call<AllLeaveResponse>
-    getFilteredLeaveWithStartDate(@Path("user_id") Long user_id, @Query("startDate") Long startDate);
+    getFilteredLeaveWithStartDate(@Path("user_id") Long user_id, @Query("startDate") Long startDate, @Query("page") int page);
 
-   @GET("get/leaves/of/user/by/userId/{user_id}")
+    @GET("get/leaves/of/user/by/userId/{user_id}")
     Call<AllLeaveResponse>
-    getFilteredLeaveWithEndDate(@Path("user_id") Long user_id, @Query("endDate") Long endDate);
+    getFilteredLeaveWithEndDate(@Path("user_id") Long user_id, @Query("endDate") Long endDate, @Query("page") int page);
 
-   @GET("get/leaves/of/user/by/userId/{user_id}")
+    @GET("get/leaves/of/user/by/userId/{user_id}")
     Call<AllLeaveResponse>
-    getFilteredLeaveWithoutDate(@Path("user_id") Long user_id, @Query("status") String status);
+    getFilteredLeaveWithoutDate(@Path("user_id") Long user_id, @Query("status") String status, @Query("page") int page);
+ @GET("get/leaves/of/user/by/userId/{user_id}")
+    Call<AllLeaveResponse>
+    getFilteredLeaveWithChild(@Path("user_id") Long user_id, @Query("page") int page);
 
-   @GET("manager/get/all/members/list/by/id/{managerId}")
+    @GET("manager/get/all/members/list/by/id/{managerId}")
     Call<List<TotalEmpResponseItem>> getTotalEmp(@Path("managerId") Long managerId, @Query("subChild") Boolean subChild);
 
-   @GET("user/get/all/user/list")
+    @GET("user/get/all/user/list")
     Call<List<TotalEmpResponseItem>> getAllEmployee(@Query("isEnabled") Boolean isEnabled);
 
-   @GET("user/get/all/department/list")
+    @GET("user/get/all/department/list")
     Call<Departments> getDepartments();
 
 
-   @GET("monthly/performance/record/by/user/id/{userId}")
+    @GET("monthly/performance/record/by/user/id/{userId}")
     Call<MonthlyPerformanceResp> getMonthPerformance(@Path("userId") Long userId, @Query("month") String month);
 
-   @GET("monthly/performance/record/by/user/id/{userId}")
+    @GET("monthly/performance/record/by/user/id/{userId}")
     Call<MonthlyPerformanceResp> getMonthPerformance(@Path("userId") Long userId);
 
-   @GET("manager/get/all/members/leaves/by/id/{managerId}")
-    Call<LeaveReqResponse> getPendingLeaves(@Header("Authorization") String token, @Path("managerId") Long managerId, @Query("subChild") Boolean subChild
+    @GET("manager/get/all/members/leaves/by/id/{managerId}")
+    Call<LeaveReqResponse> getPendingLeaves( @Path("managerId") Long managerId, @Query("subChild") Boolean subChild
             , @Query("managerStatus") String status, @Query("page") int page, @Query("size") int size);
 
+ @GET("manager/get/all/members/leaves/by/id/{managerId}")
+    Call<LeaveReqResponse> getLeaves( @Path("managerId") Long managerId, @Query("subChild") Boolean subChild
+            , @Query("page") int page, @Query("size") int size);
+
     @GET("get/all/leaves")
-    Call<LeaveReqResponse> getFilteredLeave(@Query("status") String status, @Query("page") int page, @Query("size") int size);
+    Call<LeaveReqResponse> getFilteredLeave( @Query("page") int page, @Query("size") int size);
 
     @GET("get/all/leaves")
     Call<LeaveReqResponse> getFilteredLeavewithStartDate(@Query("userId") Long userId, @Query("startDate") Long startDate);
@@ -175,7 +184,7 @@ public interface ApiInterface {
     Call<LeaveReqResponse> getFilteredLeaveWithoutDate(@Query("userId") Long userId, @Query("status") String status, @Query("page") int page, @Query("size") int size);
 
 
-   @GET("manager/get/all/members/attendance/by/id/{managerId}")
+    @GET("manager/get/all/members/attendance/by/id/{managerId}")
     Call<PresentEmpRes> PresentEmployee(@Header("Authorization") String token, @Path("managerId") Long managerId, @Query("subChild") Boolean subChild, @Query("size") int page);
 
     @GET("manager/get/all/members/tasks/by/id/{managerId}")
@@ -184,7 +193,7 @@ public interface ApiInterface {
 //   @GET("get/all/tasks")
 //    Call<TaskResponse> AdmingetAllTask();
 
-   @GET("get/todays/task/of/all/user")
+    @GET("get/todays/task/of/all/user")
     Call<TaskResponse> AdmingetAllTask(@Query("page") int page, @Query("size") int size);
 
     // Send OTP on registered email id.
@@ -209,21 +218,22 @@ public interface ApiInterface {
             @Query("password") String password
     );
 
-   @GET("get/assignment/by/user/id/{userId}")
+    @GET("get/assignment/by/user/id/{userId}")
     Call<AssignmentsResponse> getuserAssigments(@Path("userId") long userId);
-@GET("get/assignment/by/id/{Id}")
+
+    @GET("get/assignment/by/id/{Id}")
     Call<AssignmentItem> getAssigmentById(@Path("Id") int Id);
 
-   @GET("get/all/assignments")
+    @GET("get/all/assignments")
     Call<AssignmentsResponse> getAllAssigments();
 
-   @GET("get/subtask/by/id/{subtaskId}")
+    @GET("get/subtask/by/id/{subtaskId}")
     Call<StoryResponse> getSubTaskById(@Path("subtaskId") int subtaskId);
 
-   @GET("get/all/assignment/stages")
+    @GET("get/all/assignment/stages")
     Call<StagesResponse> getStageById(@Query("assignmentId") int assignmentId);
 
- @GET("get/subtask/by/assignment/id{assignmentId}")
+    @GET("get/subtask/by/assignment/id{assignmentId}")
     Call<SubTaskResponse> getSubtask(@Path("assignmentId") int assignmentId, @Query("assignToId") Long assignToId);
 
     // Attendance
@@ -231,24 +241,28 @@ public interface ApiInterface {
     Call<ResponseBody> saveAttendance(
             @Body Attendance attendance,
             @Path("user_id") Long id);
+
     @Multipart
     @POST("/user/s3/upload/folder/docs")
     Call<String> saveImage(
-            @Part MultipartBody.Part image ,
+            @Part MultipartBody.Part requestBody,
             @Query("folderName") String folderName);
 
     @PUT("update/user/attendance/{user_id}")
     Call<String> updateAttendance(@Body Attendance attendance,
                                   @Path("user_id") Long id);
+
     @PUT("/update/subtask/by/subtask/id/and/assignment/id/{subtaskId}")
     Call<String> updateStory(@Body StoryRequest storyResponse,
-                                  @Path("subtaskId") int subtaskId, @Query("assignmentId") int assignmentId);
- @PUT("/update/subtask/by/subtask/id/and/assignment/id/{subtaskId}")
+                             @Path("subtaskId") int subtaskId, @Query("assignmentId") int assignmentId);
+
+    @PUT("/update/subtask/by/subtask/id/and/assignment/id/{subtaskId}")
     Call<String> update_Sub_Descrip(@Body RequestBody body,
                                     @Path("subtaskId") int subtaskId, @Query("assignmentId") int assignmentId);
-  @PUT("/update/assignment/by/id/{Id}")
+
+    @PUT("/update/assignment/by/id/{Id}")
     Call<String> updateNotes(@Body ProjectsFragment.NotesRequest notesResponse,
-                                  @Path("Id") int Id);
+                             @Path("Id") int Id);
 
     @PUT("update/new/performance/by/user/id/{user_id}")
     Call<EmpPerformance> updatePerformance(@Body EmpPerformance performance,
@@ -292,6 +306,12 @@ public interface ApiInterface {
     Call<List<MeetingDetails>> getAllTodayMeeting(
             @Header("Authorization") String token,
             @Path("user_id") Long id
+    );
+
+    @PATCH("/update/presence/by/user/{meetingId}")
+    Call<String> AcceptMeet(
+            @Path("meetingId") int meetingId,
+            @Query("isUserPresent") boolean isUserPresent
     );
 
     @GET("get/meeting/by/attendees/by/user/id/{user_id}")
@@ -426,6 +446,12 @@ public interface ApiInterface {
 
     );
 
+    @DELETE("/user/s3/delete/folder/docs")
+    Call<String> deleteDocument(
+            @Query("file") String file
+
+    );
+
     @GET("get/task/by/user/id/{user_id}")
     Call<TaskResponse> getAllTaskwithpage(
             @Path("user_id") Long id,
@@ -450,6 +476,13 @@ public interface ApiInterface {
             @Query("page") int page,
             @Query("taskStatus") String taskStatus,
             @Query("startDate") long startDate,
+            @Query("size") int size
+    );
+
+  @GET("get/task/by/user/id/{user_id}")
+    Call<TaskResponse> getFilterTaskwithId(
+            @Path("user_id") Long id,
+            @Query("page") int page,
             @Query("size") int size
     );
 
@@ -508,9 +541,10 @@ public interface ApiInterface {
             @Header("Authorization") String token,
             @Body AddTask task, @Path("user_id") Long id
     );
+
     @POST("add/subtask/for/assignment/{assignmentId}")
     Call<String> addSubTask(
-            @Path("assignmentId")int id,
+            @Path("assignmentId") int id,
             @Body AddSubTask task
     );
 
@@ -620,10 +654,8 @@ public interface ApiInterface {
     // Update Profile
     @PATCH("user/update/image/on/cloud/by/{user_id}")
     Call<ResponseBody> uploadFile(
-            @Header("Authorization") String token,
             @Path("user_id") long userId,
-            @Query("file") String file
-    );
+            @Query("file") String file);
 
 
     @PATCH("user/save/user/doc/by/{user_id}")
@@ -665,6 +697,9 @@ public interface ApiInterface {
 
     @GET("get/feedback/by/user/id/{userId}")
     Call<List<FeedbackResponseItem>> getfeedBack(@Path("userId") long userId);
+
+    @GET("/get/all/feedbacks")
+    Call<AllFeedResponse> getAllfeedBack();
 
     // Feedback
     @POST("save/new/feedback/by/user/id/{userId}")

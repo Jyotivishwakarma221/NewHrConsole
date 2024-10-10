@@ -54,6 +54,7 @@ class TotalMemberFragment : Fragment(), RecyclerViewInterface<ActiveMemberRecycl
         progressDialog = AwesomeProgressDialog(context)
         progressDialog.addTitle("Loading...") // add your title here.
         progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
 
     }
 
@@ -74,9 +75,9 @@ class TotalMemberFragment : Fragment(), RecyclerViewInterface<ActiveMemberRecycl
             if (requireContext() != null) {
                 if (authority.equals(Constant.MANAGER)) {
                     Log.e("arguments", "onViewCreated: " + getString("Emp"))
-                    if (getString("Emp").equals("Present Employees")) {
+                    if (getString("Emp").equals("Present Members")) {
                         PresentEmpRes()
-                    } else if (getString("Emp").equals("Total Employees")) {
+                    } else if (getString("Emp").equals("Total Members")) {
                         TotalEmpResponse()
                     }
                 } else if (authority.equals(Constant.ADMIN)) {

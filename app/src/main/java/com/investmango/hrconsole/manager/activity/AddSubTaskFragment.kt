@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.database.Observable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -26,6 +27,7 @@ import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.investmango.hrconsole.AwsUpload.UploadFileAws
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
 import com.investmango.hrconsole.api.ApiInterface
@@ -43,6 +45,7 @@ import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -66,6 +69,7 @@ class AddSubTaskFragment : Fragment() {
     lateinit var nameIndex: String
     var sizeIndex: Long = 0
     var uriStr = ""
+    lateinit var file1:File
     private var allActiveUsers: List<UsersItem?>? = null
     var selectedId: Long = 0
     var projectId: Int = 0
@@ -75,12 +79,12 @@ class AddSubTaskFragment : Fragment() {
     private val apiSecret = "4URnjaut9IehzWDZZ8_AVH8pKoQ"
     var publicId = ""
     private var from: String? = null
-    lateinit var image:MultipartBody.Part
+    lateinit var image: MultipartBody.Part
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        CloudinaryConfig.initCloudinary(requireContext())
+//        CloudinaryConfig.initCloudinary(requireContext())
         val preferences =
             requireActivity().getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         token = preferences.getString("token", "0")!!
@@ -90,6 +94,7 @@ class AddSubTaskFragment : Fragment() {
         progressDialog = AwesomeProgressDialog(context)
         progressDialog.addTitle("Loading...") // add your title here.
         progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
 
         if (arguments != null) {
             from = arguments!!.getString("ViewOf")
@@ -121,14 +126,28 @@ class AddSubTaskFragment : Fragment() {
 
                     cursor.moveToFirst()
 
-                    val file1 = File(Objects.requireNonNull<String>(getRealPathFromUri(uri!!)))
-                    val requestBody1 = RequestBody.create("image/*".toMediaTypeOrNull(), file1)
-                   image  = MultipartBody.Part.createFormData("image", file1.name, requestBody1)
-                    Log.e("khushi1111", "onClick: " + image)
+                     file1= File(Objects.requireNonNull<String>(UploadFileAws().getRealPathFromUri(uri!!,context!!)))
+                     val requestBody1 = RequestBody.create("image/*".toMediaTypeOrNull(), file1)
+                     image = MultipartBody.Part.createFormData("image", file1.name, requestBody1)
+                     Log.e("khushi1111", "onClick: " + image)
 
-//                    uploadImage(uri.toString())
-
-                    uploadImageToCloud(uri)
+                    if (isAdded)
+                        CoroutineScope(Dispatchers.Main).launch {
+                            uriStr = UploadFileAws().uploadFile(file1, "subtasksDocs", context!!).toString()
+                            if (uriStr != "") {
+                                // Handle the success case here
+                                Log.e("uploadimg", "onCreate: "+uriStr )
+                                binding.uploadDocname.visibility = View.VISIBLE
+                                binding.uploadDoc.visibility = View.GONE
+                            } else {
+                                // Handle the failure case here
+                                Toast.makeText(
+                                    context,
+                                    "Some error in uploading .",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
 
                 }
             }
@@ -178,7 +197,9 @@ class AddSubTaskFragment : Fragment() {
         binding.deadline.setOnClickListener {
             setDatePicker()
         }
-
+        binding.time.setOnClickListener {
+            setClock()
+        }
         binding.uploadDoc.setOnClickListener {
             openGallery()
         }
@@ -223,42 +244,74 @@ class AddSubTaskFragment : Fragment() {
 
     }
 
-    private fun uploadImage(filename:String) {
+    //    private fun uploadImage(filename:String) {
+//        val apiClient = ApiClient(requireContext())
+//        apiInterface = apiClient.apiInterface
+//
+//        val jsonObject = JSONObject()
+//        filename?.let {
+//            if (it.isNotEmpty()) {
+//                jsonObject.put("file", it)
+//            }
+//        }
+//
+//        val jsonString = jsonObject.toString()
+//        val requestBody= jsonString.toRequestBody("application/json".toMediaTypeOrNull())
+//
+//        Log.e("UPLOADimg", "uploadImage: "+ image + " "+ jsonString)
+//        val call: Call<String>? = apiInterface.saveImage(requestBody,"subtasksDocs")
+//        call?.enqueue(object : Callback<String> {
+//            override fun onResponse(
+//                call: Call<String?>,
+//                response: Response<String?>,
+//            ) {
+//                if (response.body() != null && response.isSuccessful()) {
+//                    Log.e("UPLOADimg", "onResponse: "+ response.message())
+//
+//                } else {
+//                    Log.e("UPLOADimg", "onResponse: " + response.body().toString())
+//                    if (isAdded)
+//                        Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<String?>, t: Throwable) {
+//                if (isAdded)
+//                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+//                Log.e("UPLOADimg", "onFailure: " + t.message)
+//            }
+//        })
+//    }
+    fun uploadFile(file: File, folderName: String) {
         val apiClient = ApiClient(requireContext())
         apiInterface = apiClient.apiInterface
+//
+        // Create RequestBody instance from file
+        val requestFile = file.asRequestBody("application/octet-stream".toMediaTypeOrNull())
 
-        val jsonObject = JSONObject()
-        filename?.let {
-            if (it.isNotEmpty()) {
-                jsonObject.put("file", it)
-            }
-        }
+        // MultipartBody.Part is used to send the actual file
+        val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
 
-        val jsonString = jsonObject.toString()
-        val requestBody= jsonString.toRequestBody("application/json".toMediaTypeOrNull())
+        // Call the API
+        val call = apiInterface.saveImage(body, folderName)
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                if (response.isSuccessful) {
+                    val resp = response.body().toString()
+                    val json =JSONObject(resp)
+                    uriStr=json.optString("message")
 
-        Log.e("UPLOADimg", "uploadImage: "+ image + " "+ jsonString)
-        val call: Call<String>? = apiInterface.saveImage(image,"subtasksDocs")
-        call?.enqueue(object : Callback<String> {
-            override fun onResponse(
-                call: Call<String?>,
-                response: Response<String?>,
-            ) {
-                if (response.body() != null && response.isSuccessful()) {
-                    Log.e("UPLOADimg", "onResponse: "+ response.message())
+                    Log.e("uploadimg", "onResponse: " + response.body())
 
                 } else {
-                    Log.e("UPLOADimg", "onResponse: " + response.body().toString())
-                    if (isAdded)
-                        Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+                    Log.e("uploadimg", "onResponse: " + response.errorBody())
                 }
             }
 
-            override fun onFailure(call: Call<String?>, t: Throwable) {
-                if (isAdded)
-                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
-                Log.e("UPLOADimg", "onFailure: " + t.message)
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.e("uploadimg", "onResponse: " + t)
             }
+
         })
     }
 
@@ -305,6 +358,7 @@ class AddSubTaskFragment : Fragment() {
         val apiClient = ApiClient(requireContext())
         apiInterface = apiClient.apiInterface
 
+        Log.e("imageUrl", "sendTask: "+ imageUrl )
         progressDialog.showDialog()
 
         val taskObj = AddSubTask()
@@ -316,7 +370,6 @@ class AddSubTaskFragment : Fragment() {
         else
             taskObj.assignToId = userId
 
-
         taskObj.fileUrl = imageUrl
         taskObj.subtaskName = binding.taskname.text.toString()
         Log.e(
@@ -325,7 +378,10 @@ class AddSubTaskFragment : Fragment() {
         )
 
         taskObj.taskDeadline =
-            DateAndTimeUtility.convertToEpochMillis(binding.deadline.text.toString())
+            DateAndTimeUtility.convertToEpochMillis(
+                binding.deadline.text.toString(),
+                binding.selectedTime.text.toString()
+            )
         val call = apiInterface.addSubTask(projectId, taskObj)
         call.enqueue(object : Callback<String?> {
             override fun onResponse(call: Call<String?>, response: Response<String?>) {
@@ -343,6 +399,7 @@ class AddSubTaskFragment : Fragment() {
                     uri = null
                     uriStr = ""
                     binding.deadline.text = "Select Date "
+                    binding.selectedTime.text = "Select Time "
                     binding.uploadDocname.visibility = View.GONE
                     binding.taskname.setText("")
                     selectedId = 0
@@ -438,6 +495,33 @@ class AddSubTaskFragment : Fragment() {
 
                 override fun onReschedule(requestId: String, error: ErrorInfo) {}
             }).dispatch()
+    }
+    fun setClock() {
+        val c = Calendar.getInstance()
+
+        // on below line we are getting our hour, minute.
+        val hour = c.get(Calendar.HOUR_OF_DAY)
+        val minute = c.get(Calendar.MINUTE)
+
+        // on below line we are initializing
+        // our Time Picker Dialog
+        val timePickerDialog = android.app.TimePickerDialog(
+            context,
+            { view, hourOfDay, minute ->
+                // on below line we are setting selected
+                // time in our text view.
+                val formattedTime = java.lang.String.format("%02d:%02d", hourOfDay, minute)
+
+                binding.selectedTime.setText(formattedTime)
+            },
+            hour,
+            minute,
+            false
+        )
+        // at last we are calling show to
+        // display our time picker dialog.
+        timePickerDialog.show()
+
     }
 
     fun setDatePicker() {

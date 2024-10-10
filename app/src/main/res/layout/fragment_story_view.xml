@@ -57,7 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5dp"
-                android:background="@drawable/grey_bg_rounded"
+                android:background="@drawable/dark_grey_bg"
                 android:padding="@dimen/_10">
 
                 <TextView
