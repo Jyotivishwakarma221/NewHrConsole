@@ -109,7 +109,7 @@ class StaffLeaveFragment : Fragment(), RecyclerViewInterface<LeaveRequestRecycle
 
                         binding.leaverequest.adapter = CommonAdapter(this@StaffLeaveFragment)
                         binding.leaverequest.layoutManager =
-                            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+                            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                     } else {
                         Log.e("getmeetings", "onResponse: " + response.body().toString())
                         progressDialog?.dismissDialog()
@@ -135,7 +135,7 @@ class StaffLeaveFragment : Fragment(), RecyclerViewInterface<LeaveRequestRecycle
         apiInterface = apiClient.apiInterface
         progressDialog?.showDialog()
         val call: Call<LeaveReqResponse> =
-            apiInterface.newgetAllPendingLeave(token)
+            apiInterface.newgetAllPendingLeave()
         call?.enqueue(object : Callback<LeaveReqResponse> {
             override fun onResponse(
                 call: Call<LeaveReqResponse>,
@@ -154,6 +154,8 @@ class StaffLeaveFragment : Fragment(), RecyclerViewInterface<LeaveRequestRecycle
                     binding.leaverequest.adapter = CommonAdapter(this@StaffLeaveFragment)
                     binding.leaverequest.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+
                 } else {
                     Log.e("getmeetings", "onResponse: " + response.body().toString())
                     progressDialog?.dismissDialog()
@@ -194,7 +196,7 @@ class StaffLeaveFragment : Fragment(), RecyclerViewInterface<LeaveRequestRecycle
                 "onResponse:  " + requestBody.id + " " + requestBody.managerStatus + " " + userid.toLong()
             )
 
-            val call = apiInterface.ApproveLeaves(token, requestBody, userid.toLong())
+            val call = apiInterface.ApproveLeaves(requestBody, userid.toLong())
             Log.e("API Error", "Error in API response: " + userid)
 
 

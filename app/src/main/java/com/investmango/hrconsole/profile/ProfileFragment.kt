@@ -216,7 +216,7 @@ class ProfileFragment : Fragment() {
         val apiClient = ApiClient(context)
         apiInterface = apiClient.apiInterface
         progressDialog.showDialog()
-        val call: Call<User> = apiInterface.getCurrentUser(token)
+        val call: Call<User> = apiInterface.getCurrentUser()
         call.enqueue(object : Callback<User?> {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onResponse(call: Call<User?>, response: Response<User?>) {

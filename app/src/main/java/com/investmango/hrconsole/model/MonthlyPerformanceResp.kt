@@ -41,7 +41,7 @@ data class MonthlyPerformanceResp(
 	val profilePhoto: String? = null,
 
 	@field:SerializedName("onTimeTasks")
-	val onTimeTasks: Int? = null,
+	val onTimeTasks: Float? = null,
 
 	@field:SerializedName("absent")
 	val absent: Int? = null,

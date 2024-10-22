@@ -336,7 +336,7 @@ public class UserHomeActivity extends AppCompatActivity {
 
         // Monthly present count of User
         {
-            Call<Integer> adminAttendanceCountCall = apiInterface.getUserMonthlyAttendanceCount(token, userId);
+            Call<Integer> adminAttendanceCountCall = apiInterface.getUserMonthlyAttendanceCount( userId);
             adminAttendanceCountCall.enqueue(new Callback<Integer>() {
                 @Override
                 public void onResponse(@NonNull Call<Integer> call, @NonNull Response<Integer> response) {
@@ -736,7 +736,7 @@ public class UserHomeActivity extends AppCompatActivity {
     private void fetchMessageAndOpenFragment() {
         ApiClient apiClient = new ApiClient(UserHomeActivity.this);
         apiInterface = apiClient.getApiInterface();
-        Call<List<Message>> call = apiInterface.getCustomMessage(token, userId);
+        Call<List<Message>> call = apiInterface.getCustomMessage(userId);
         call.enqueue(new Callback<List<Message>>() {
             @Override
             public void onResponse(@NonNull Call<List<Message>> call, @NonNull Response<List<Message>> response) {
@@ -824,7 +824,7 @@ public class UserHomeActivity extends AppCompatActivity {
     private void fetchSalaryAndOpenFragment() {
         ApiClient apiClient = new ApiClient(UserHomeActivity.this);
         apiInterface = apiClient.getApiInterface();
-        Call<List<Salary>> call = apiInterface.userSalary(token, userId);
+        Call<List<Salary>> call = apiInterface.userSalary(userId);
         call.enqueue(new Callback<List<Salary>>() {
             @Override
             public void onResponse(@NonNull Call<List<Salary>> call, @NonNull Response<List<Salary>> response) {
@@ -882,7 +882,7 @@ public class UserHomeActivity extends AppCompatActivity {
     private void fetchEmployeePerformanceAndOpenFragment() {
         ApiClient apiClient = new ApiClient(UserHomeActivity.this);
         apiInterface = apiClient.getApiInterface();
-        Call<List<EmpPerformance>> call = apiInterface.getSingleEmployeeAllPerformanceByEmpId(token, userId);
+        Call<List<EmpPerformance>> call = apiInterface.getSingleEmployeeAllPerformanceByEmpId(userId);
         call.enqueue(new Callback<List<EmpPerformance>>() {
             @Override
             public void onResponse(@NonNull Call<List<EmpPerformance>> call, @NonNull Response<List<EmpPerformance>> response) {
@@ -909,7 +909,7 @@ public class UserHomeActivity extends AppCompatActivity {
     private void fetchUserDocs() {
         ApiClient apiClient = new ApiClient(UserHomeActivity.this);
         apiInterface = apiClient.getApiInterface();
-        Call<ResponseBody> call = apiInterface.getDoc(token, userId);
+        Call<ResponseBody> call = apiInterface.getDoc( userId);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -942,7 +942,7 @@ public class UserHomeActivity extends AppCompatActivity {
     private void fetchUserDocsAndOpenFragment() {
         ApiClient apiClient = new ApiClient(UserHomeActivity.this);
         apiInterface = apiClient.getApiInterface();
-        Call<DocsModel> call = apiInterface.getDocs(token, userId);
+        Call<DocsModel> call = apiInterface.getDocs(userId);
         call.enqueue(new Callback<DocsModel>() {
                          @Override
                          public void onResponse(@NonNull Call<DocsModel> call, @NonNull Response<DocsModel> response) {

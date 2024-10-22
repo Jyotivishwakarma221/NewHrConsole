@@ -99,7 +99,7 @@ class TotalMemberFragment : Fragment(), RecyclerViewInterface<ActiveMemberRecycl
         apiInterface = apiClient.apiInterface
         progressDialog.showDialog()
 
-        val call: Call<PresentEmpRes>? = apiInterface.PresentEmployee(token, userId, true, 100)
+        val call: Call<PresentEmpRes>? = apiInterface.PresentEmployee( userId, true, 100)
         call?.enqueue(object : Callback<PresentEmpRes?> {
             override fun onResponse(
                 call: Call<PresentEmpRes?>,

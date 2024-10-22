@@ -13,7 +13,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TimePicker
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -33,7 +32,6 @@ import com.investmango.hrconsole.model.TaskItems
 import com.investmango.hrconsole.model.UpdateTaskStatus
 import com.investmango.hrconsole.model.UpdateTaskStatus.Status
 import com.investmango.hrconsole.service.DateAndTimeUtility
-import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,8 +46,11 @@ import java.io.IOException
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.LocalTime
+import java.time.format.DateTimeParseException
 import java.util.Calendar
 import java.util.Objects
+import java.util.regex.Pattern
 
 
 class NewTaskFragment : Fragment() {
@@ -67,6 +68,8 @@ class NewTaskFragment : Fragment() {
     private val apiSecret = "4URnjaut9IehzWDZZ8_AVH8pKoQ"
     var publicId = ""
     lateinit var file1: File
+    private val TIME_PATTERN
+            : Pattern = Pattern.compile("^([0-1][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$")
 
     var task: ArrayList<TaskItems> = arrayListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -199,8 +202,7 @@ class NewTaskFragment : Fragment() {
             if (task.get(0).deadLine != null && task.get(0).deadLine != 0L) {
                 binding.deadline.setText(DateAndTimeUtility.getDATEFromLong(task.get(0).deadLine))
                 binding.selectedTime.setText(DateAndTimeUtility.getTimeInHourFromLong(task.get(0).deadLine))
-            }
-            else binding.deadline.setText("  Select Date ")
+            } else binding.deadline.setText("  Select Date ")
 
             if (task[0].fileUrl != "") {
                 binding.uploadDocname.visibility = View.VISIBLE
@@ -299,7 +301,12 @@ class NewTaskFragment : Fragment() {
             } else {
                 if (!task.isEmpty()) {
                     try {
-                        UpdateTask(task[0].id?.toLong()!!, task[0].status!!, uriStr)
+                        Log.e("isValidTine", "onViewCreated: "+(binding.deadline.text.toString()+ binding.selectedTime.text.toString()))
+                        if (isValid(binding.deadline.text.toString()) && isValidTine(binding.selectedTime.text.toString()))
+                            UpdateTask(task[0].id?.toLong()!!, task[0].status!!, uriStr)
+                        else{
+                            Log.e("isValidTine", "onViewCreated: "+ isValid(binding.deadline.text.toString()))
+                        }
                     } catch (e: Exception) {
                         Log.e("Exception", "onViewCreated: " + e.message)
                     }
@@ -307,7 +314,12 @@ class NewTaskFragment : Fragment() {
 
                     try {
 
-                        if (isValid(binding.deadline.text.toString()))
+                        Log.e(
+                            "selectedTime",
+                            "onViewCreated: " + binding.selectedTime.text.toString()
+                        )
+
+                        if (isValid(binding.deadline.text.toString()) && isValidTine(binding.selectedTime.text.toString()))
                             sendTask(uriStr)
                         else Toast.makeText(
                             context,
@@ -332,6 +344,16 @@ class NewTaskFragment : Fragment() {
             return false
         }
         return true
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun isValidTine(timeStr: String?): Boolean {
+        return try {
+            LocalTime.parse(timeStr)
+            true
+        } catch (e: DateTimeParseException) {
+            false
+        }
     }
 
     fun deleteImageFromCloudinary(publicId: String) {
@@ -428,10 +450,14 @@ class NewTaskFragment : Fragment() {
             taskObj.status = Status.ASSIGNED
         }
 
-        val deadlineText = binding.deadline.text.toString()
-        if (isValid(deadlineText) && deadlineText.isNotEmpty()) {
-            taskObj.deadLine = DateAndTimeUtility.convertToEpochMillis(deadlineText)
-        }
+
+        taskObj.deadLine =
+            DateAndTimeUtility.convertToEpochMillis(
+                binding.deadline.text.toString(),
+                binding.selectedTime.text.toString()
+            )
+//        taskObj.deadLine = DateAndTimeUtility.convertToEpochMillis(deadlineText)
+
 
         val taskDescription = binding.taskDescription.text.toString()
         if (taskDescription.isNotEmpty()) {
@@ -500,7 +526,7 @@ class NewTaskFragment : Fragment() {
                 binding.deadline.text.toString(),
                 binding.selectedTime.text.toString()
             )
-        val call = apiInterface.addTask(token, taskObj, userId)
+        val call = apiInterface.addTask( taskObj, userId)
         call.enqueue(object : Callback<AddTask?> {
             override fun onResponse(call: Call<AddTask?>, response: Response<AddTask?>) {
                 progressDialog.dismissDialog()

@@ -101,7 +101,7 @@ public class DocFragment extends Fragment implements DocAdapter.OnItemClickListe
 
     private void getDocs() {
         swipeRefreshLayout.setRefreshing(false);
-        Call<DocsModel> call = apiInterface.getDocs(token, userId);
+        Call<DocsModel> call = apiInterface.getDocs(userId);
         call.enqueue(new Callback<DocsModel>() {
             @Override
             public void onResponse(@NonNull Call<DocsModel> call, @NonNull Response<DocsModel> response) {

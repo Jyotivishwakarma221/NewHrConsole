@@ -36,18 +36,20 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class ApiClient extends Application {
 
+    //development
+//         public static final String BASE_URL = "http://api.imconsole.in:8080/";
+
     // Live
-//     public static final String BASE_URL = "http://api.imconsole.in:8080/";
+    public static final String BASE_URL = "https://api.virtualintelligence.co.in/";
+
 //     public static final String BASE_URL = "https://api.gopropify.in/";
 
     // Local
-    public static final String BASE_URL = "http://13.233.32.30:8282/";
+//    public static final String BASE_URL = "http://13.233.32.30:8282/";
 //    public static final String BASE_URL = "https://api.gopropify.in/";
 
 
-
-
-//            public static final String BASE_URL = "http://192.168.29.202:8080/";
+    //            public static final String BASE_URL = "http://192.168.29.202:8080/";
     private final ApiInterface apiInterface;
     private final Context context;
     private Context appcontext;
@@ -184,7 +186,7 @@ public class ApiClient extends Application {
 
 
     public void getCurrentUser(String token, final CurrentUserCallback callback) {
-        Call<User> call = apiInterface.getCurrentUser(token);
+        Call<User> call = apiInterface.getCurrentUser();
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
@@ -209,7 +211,7 @@ public class ApiClient extends Application {
                         List<Authority> authorities = user.getAuthorities();
                         if (authorities != null && !authorities.isEmpty()) {
                             String authority = authorities.get(0).getAuthority();
-                            Log.e("authority", "onResponse: "+authority );
+                            Log.e("authority", "onResponse: " + authority);
                             if (authority.equals("ADMIN")) {
                                 callback.onAdminLoggedIn(authority);
 

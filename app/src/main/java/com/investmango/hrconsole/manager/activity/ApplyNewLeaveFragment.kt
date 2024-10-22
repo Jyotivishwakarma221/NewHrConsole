@@ -258,7 +258,7 @@ class ApplyNewLeaveFragment : Fragment() {
             val apiClient = ApiClient(requireContext())
             apiInterface = apiClient.apiInterface
 
-            val call = apiInterface.saveUserLeave(token, requestBody, userId)
+            val call = apiInterface.saveUserLeave(requestBody, userId)
             call.enqueue(object : retrofit2.Callback<SaveUserLeave?> {
                 override fun onResponse(
                     call: Call<SaveUserLeave?>,

@@ -119,15 +119,21 @@ public class AchievementFragment extends Fragment {
                 } else {
                     EmpPerformance performance = new EmpPerformance();
 
-                    performance.setId(empPerformanceList
-                            .get(0).getId());
-                    performance.setAttendance(binding.attendanceIncDec.getCurrentValue());
-                    performance.setWorkQuality(binding.workQualityIncDec.getCurrentValue());
-                    performance.setJobKnowledge(binding.jobKnowledIncDec.getCurrentValue());
-                    performance.setTeamWork(binding.teamIncDec.getCurrentValue());
-                    performance.setGeneralConduct(binding.generalIncDec.getCurrentValue());
-                    binding.generalIncDec.setValue(5);
-                    saveUserPerformance(performance);
+                    try {
+
+                        performance.setId(empPerformanceList
+                                .get(0).getId());
+                        performance.setAttendance(binding.attendanceIncDec.getCurrentValue());
+                        performance.setWorkQuality(binding.workQualityIncDec.getCurrentValue());
+                        performance.setJobKnowledge(binding.jobKnowledIncDec.getCurrentValue());
+                        performance.setTeamWork(binding.teamIncDec.getCurrentValue());
+                        performance.setGeneralConduct(binding.generalIncDec.getCurrentValue());
+                        binding.generalIncDec.setValue(5);
+                        saveUserPerformance(performance);
+                    }catch (Exception e){
+                        Log.e("TAG", "onClick: "+e );
+                        Toast.makeText(requireContext(),"Something went wrong.",Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -337,7 +343,7 @@ public class AchievementFragment extends Fragment {
         ApiClient apiClient = new ApiClient(getContext());
         apiInterface = apiClient.getApiInterface();
         progressDialog.showDialog();
-        Call<List<EmpPerformance>> call = apiInterface.getSingleEmployeeAllPerformanceByEmpId(token, userId);
+        Call<List<EmpPerformance>> call = apiInterface.getSingleEmployeeAllPerformanceByEmpId(userId);
         call.enqueue(new Callback<List<EmpPerformance>>() {
             @Override
             public void onResponse(@NonNull Call<List<EmpPerformance>> call, @NonNull Response<List<EmpPerformance>> response) {

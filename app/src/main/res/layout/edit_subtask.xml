@@ -34,6 +34,7 @@
             android:fontFamily="@font/dm_sans"
             android:padding="@dimen/_10"
             android:maxLines="20"
+            android:gravity="top"
             android:background="@drawable/light_grey_bg"
             android:textColor="@color/white"
             android:textSize="@dimen/_15" />
@@ -48,6 +49,7 @@
             android:maxLines="200"
             android:background="@drawable/light_grey_bg"
             android:textColor="@color/white"
+            android:gravity="top"
             android:textSize="@dimen/_15" />
 
         <TextView

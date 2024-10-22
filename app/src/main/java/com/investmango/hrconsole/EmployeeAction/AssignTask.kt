@@ -350,7 +350,7 @@ class AssignTask : Fragment() {
 
         taskObj.fileUrl = imageUrl
 
-        val call = apiInterface.assignTaskUser(token, selectedId, taskObj)
+        val call = apiInterface.assignTaskUser(selectedId, taskObj)
         call.enqueue(object : Callback<AssignTask?> {
             override fun onResponse(call: Call<AssignTask?>, response: Response<AssignTask?>) {
                 if (response.isSuccessful) {

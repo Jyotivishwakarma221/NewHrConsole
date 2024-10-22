@@ -298,7 +298,7 @@ public void addFragment(Fragment fragment) {
     private void fetchUpcomingEvents(String token) {
 
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<Event>> call = apiInterface.upcomingEvents(token);
+        Call<List<Event>> call = apiInterface.upcomingEvents();
         call.enqueue(new Callback<List<Event>>() {
             @SuppressLint("SuspiciousIndentation")
             @RequiresApi(api = Build.VERSION_CODES.O)

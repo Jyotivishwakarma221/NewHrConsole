@@ -148,7 +148,7 @@ public class PerformanceFragment extends Fragment {
     }
 
     private void getEmployeePerformanceList(String token, long userId) {
-        Call<List<EmpPerformance>> call = apiInterface.getSingleEmployeeAllPerformanceByEmpId(token, userId);
+        Call<List<EmpPerformance>> call = apiInterface.getSingleEmployeeAllPerformanceByEmpId( userId);
         call.enqueue(new Callback<List<EmpPerformance>>() {
             @Override
             public void onResponse(@NonNull Call<List<EmpPerformance>> call, @NonNull Response<List<EmpPerformance>> response) {

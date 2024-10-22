@@ -56,7 +56,7 @@ public class PayrollPanel extends Fragment {
     private void fetchSalaryAndOpenFragment() {
         ApiClient apiClient = new ApiClient(getContext());
         apiInterface = apiClient.getApiInterface();
-        Call<List<Salary>> call = apiInterface.userSalary(token, userId);
+        Call<List<Salary>> call = apiInterface.userSalary( userId);
         call.enqueue(new Callback<List<Salary>>() {
             @Override
             public void onResponse(@NonNull Call<List<Salary>> call, @NonNull Response<List<Salary>> response) {

@@ -111,23 +111,23 @@ class AllProjectsFragment : Fragment(), RecyclerViewInterface<ProjectItemBinding
                         for (i in assignment.indices) {
                             val assignmentId = assignment[i]!!.id!!
                             if (isAdded)
-                            CommonUtils.getProgress(
-                                assignmentId,
-                                context,
-                                object : CommonUtils.ProgressCallback {
-                                    override fun onProgressCalculated(progressValue: Int) {
-                                        progress.add(Pair(progressValue, assignmentId))
-                                        Log.e("getProgress", "Updated Progress List: $progress")
+                                CommonUtils.getProgress(
+                                    assignmentId,
+                                    context,
+                                    object : CommonUtils.ProgressCallback {
+                                        override fun onProgressCalculated(progressValue: Int) {
+                                            progress.add(Pair(progressValue, assignmentId))
+                                            Log.e("getProgress", "Updated Progress List: $progress")
 
-                                        // Only call setData when all progress values are collected
-                                        if (progress.size == assignment.size) {
-                                            progressDialog.showDialog()
-                                            Handler(Looper.getMainLooper()).postDelayed({
-                                                setData()
-                                            }, 200)
+                                            // Only call setData when all progress values are collected
+                                            if (progress.size == assignment.size) {
+                                                progressDialog.showDialog()
+                                                Handler(Looper.getMainLooper()).postDelayed({
+                                                    setData()
+                                                }, 200)
+                                            }
                                         }
-                                    }
-                                })
+                                    })
                         }
                     } else {
                         binding.noDataFound.visibility = View.VISIBLE
@@ -234,13 +234,13 @@ class AllProjectsFragment : Fragment(), RecyclerViewInterface<ProjectItemBinding
     @SuppressLint("SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun bindView(viewBind: ProjectItemBinding, position: Int) {
-        viewBind.projectName.text = assignment[position]?.subject
+        viewBind.projectName.text = assignment[position]?.subject?.toUpperCase()
         viewBind.deadlineDate.text =
             DateAndTimeUtility.getDATEFromLong(assignment[position]?.deadLine)
-
+        viewBind.createdOn.text =   DateAndTimeUtility.getDATEFromLong(assignment[position]?.createdDate)
         if (assignment[position]?.priorityLevel != null) {
             viewBind.priority.visibility = View.VISIBLE
-            viewBind.priority.text = "  " + assignment.get(position)!!.priorityLevel + " Priority"
+            viewBind.priority.text = "  " + assignment.get(position)!!.priorityLevel + " PRIORITY"
         } else {
             viewBind.priority.visibility = View.GONE
         }
@@ -267,7 +267,7 @@ class AllProjectsFragment : Fragment(), RecyclerViewInterface<ProjectItemBinding
                         .load(assignment.get(position)?.users?.get(0)?.assignToProfile)
                         .into(viewBind.photo1)
 
-                if (assignment.get(position)?.users?.size!! >= 2 ) {
+                if (assignment.get(position)?.users?.size!! >= 2) {
                     // Load and display the image using Glide
                     Glide.with(requireContext())
                         .load(assignment.get(position)?.users?.get(1)!!.assignToProfile)

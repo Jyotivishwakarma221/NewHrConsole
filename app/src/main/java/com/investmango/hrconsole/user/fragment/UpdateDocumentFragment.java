@@ -276,7 +276,7 @@ public class UpdateDocumentFragment extends Fragment {
     private void saveUserDoc(List<String> cloudinaryUrls) {
         DocumentModel documentModel = new DocumentModel(cloudinaryUrls);
 
-        Call<DocumentModel> call = apiInterface.updateEmpDocument(token, documentModel, userId);
+        Call<DocumentModel> call = apiInterface.updateEmpDocument( documentModel, userId);
         call.enqueue(new Callback<DocumentModel>() {
             @Override
             public void onResponse(@NonNull Call<DocumentModel> call, @NonNull Response<DocumentModel> response) {

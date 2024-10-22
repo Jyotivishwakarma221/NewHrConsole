@@ -263,7 +263,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     // Call the sendOtp API
                     if (isNetworkAvailable(LoginActivity.this)) {
-                        Call<ResponseBody> call = apiInterface.sendOtp( token,email);
+                        Call<ResponseBody> call = apiInterface.sendOtp(email);
                         call.enqueue(new Callback<ResponseBody>() {
                             @Override
                             public void onResponse(Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {

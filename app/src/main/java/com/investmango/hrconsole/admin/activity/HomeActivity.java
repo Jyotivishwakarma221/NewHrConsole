@@ -287,7 +287,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         // Monthly present count of Admin
-        {Call<Integer> adminAttendanceCountCall = apiInterface.getUserMonthlyAttendanceCount(token, userId);
+        {Call<Integer> adminAttendanceCountCall = apiInterface.getUserMonthlyAttendanceCount( userId);
             adminAttendanceCountCall.enqueue(new Callback<Integer>() {
                 @Override
                 public void onResponse(@NonNull Call<Integer> call, @NonNull Response<Integer> response) {
@@ -854,7 +854,7 @@ public class HomeActivity extends AppCompatActivity {
     private void fetchPerformanceReportAndOpenFragment() {
         ApiClient apiClient = new ApiClient(HomeActivity.this);
         apiInterface = apiClient.getApiInterface();
-        Call<List<EmpPerformance>> call = apiInterface.getSingleEmployeeAllPerformanceByEmpId(token, userId);
+        Call<List<EmpPerformance>> call = apiInterface.getSingleEmployeeAllPerformanceByEmpId(userId);
         call.enqueue(new Callback<List<EmpPerformance>>() {
             @Override
             public void onResponse(@NonNull Call<List<EmpPerformance>> call, @NonNull Response<List<EmpPerformance>> response) {

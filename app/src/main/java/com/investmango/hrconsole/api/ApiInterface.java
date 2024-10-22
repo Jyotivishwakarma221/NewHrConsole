@@ -85,6 +85,9 @@ public interface ApiInterface {
     // Current User
     @GET("current-user")
     Call<User> getCurrentUser(@Header("Authorization") String token);
+  // Current User
+    @GET("current-user")
+    Call<User> getCurrentUser();
 
     @GET("user/get/user/by/{user_id}")
     Call<User> getChildUser(@Path("user_id") long user_id);
@@ -185,7 +188,7 @@ public interface ApiInterface {
 
 
     @GET("manager/get/all/members/attendance/by/id/{managerId}")
-    Call<PresentEmpRes> PresentEmployee(@Header("Authorization") String token, @Path("managerId") Long managerId, @Query("subChild") Boolean subChild, @Query("size") int page);
+    Call<PresentEmpRes> PresentEmployee(@Path("managerId") Long managerId, @Query("subChild") Boolean subChild, @Query("size") int page);
 
     @GET("manager/get/all/members/tasks/by/id/{managerId}")
     Call<TaskResponse> memberTaskOFManager(@Path("managerId") Long managerId, @Query("page") int page, @Query("size") int size);
@@ -198,7 +201,7 @@ public interface ApiInterface {
 
     // Send OTP on registered email id.
     @POST("forget/send-otp")
-    Call<ResponseBody> sendOtp(@Header("Authorization") String token, @Query("email") String email);
+    Call<ResponseBody> sendOtp( @Query("email") String email);
 
     @POST("forget/send-otp")
     Call<String> NewsendOtp(@Query("email") String email);
@@ -282,13 +285,11 @@ public interface ApiInterface {
 
     @PUT("update/user/attendance/{user_id}")
     Call<ResponseBody> updateUserAttendance(
-            @Header("Authorization") String token,
             @Body Attendance attendance,
             @Path("user_id") Long id);
 
     @GET("get/user/monthly/attendance/count/by/{userId}")
     Call<Integer> getUserMonthlyAttendanceCount(
-            @Header("Authorization") String token,
             @Path("userId")
             long userId);
 
@@ -418,7 +419,6 @@ public interface ApiInterface {
     // Salary
     @GET("get/salary/by/user/id/{user_id}")
     Call<List<Salary>> userSalary(
-            @Header("Authorization") String token,
             @Path("user_id") Long userId
     );
 
@@ -538,7 +538,6 @@ public interface ApiInterface {
 
     @POST("save/tasks/by/user/id/{user_id}")
     Call<AddTask> addTask(
-            @Header("Authorization") String token,
             @Body AddTask task, @Path("user_id") Long id
     );
 
@@ -550,7 +549,6 @@ public interface ApiInterface {
 
     @POST("assign/task/to/employee/by/id")
     Call<AssignTask> assignTaskUser(
-            @Header("Authorization") String token,
             @Query("user_id") long selectedUserId,
             @Body AssignTask assignTask
     );
@@ -575,7 +573,6 @@ public interface ApiInterface {
     // Leave
     @POST("save/leave/by/user/id/{user_id}")
     Call<SaveUserLeave> saveUserLeave(
-            @Header("Authorization") String token,
             @Body RequestBody requestBody,
             @Path("user_id") Long id
     );
@@ -595,7 +592,6 @@ public interface ApiInterface {
 
     @PATCH("update/leave/status/by/user/id/{user_id}")
     Call<Void> ApproveLeaves(
-            @Header("Authorization") String token,
             @Body LeaveRequestUpdateStatus requestBody,
             @Path("user_id") long userId
     );
@@ -605,9 +601,7 @@ public interface ApiInterface {
             @Header("Authorization") String token);
 
     @GET("get/all/pending/leaves")
-    Call<LeaveReqResponse> newgetAllPendingLeave(
-            @Header("Authorization") String token);
-
+    Call<LeaveReqResponse> newgetAllPendingLeave();
     @GET("get/all/approved/leaves")
     Call<List<ApprovedLeaves>> getApprovedLeaves(
             @Header("Authorization") String token);
@@ -643,7 +637,7 @@ public interface ApiInterface {
     Call<Void> downloadExcel();
 
     @GET("generate/get/user/salary/pdf/{user_id}")
-    Call<Void> getUserSalaryPdf(@Header("Authorization") String token, @Path("user_id") long userId);
+    Call<Void> getUserSalaryPdf(@Path("user_id") long userId);
 
     @GET("generate/get/user/task/pdf/{user_id}")
     Call<Void> getTask(@Path("user_id") long userId);
@@ -660,7 +654,6 @@ public interface ApiInterface {
 
     @PATCH("user/save/user/doc/by/{user_id}")
     Call<DocumentModel> saveDocByUserId(
-            @Header("Authorization") String token,
             @Body DocumentModel documentModel,
             @Path("user_id") Long userId
     );
@@ -673,24 +666,22 @@ public interface ApiInterface {
 
     @PATCH("verify/user/doc/by/{employeeId}")
     Call<ResponseBody> verifyEmpDocument(
-            @Header("Authorization") String token,
             @Path("employeeId") long employeeId,
             @Query("isverified") boolean isverified
     );
 
     @PATCH("update/user/doc/by/{user_id}")
     Call<DocumentModel> updateEmpDocument(
-            @Header("Authorization") String token,
             @Body DocumentModel documentModel,
             @Path("user_id") Long userId
     );
 
 
     @GET("get/user/doc/by/{user_id}")
-    Call<DocsModel> getDocs(@Header("Authorization") String token, @Path("user_id") long userId);
+    Call<DocsModel> getDocs( @Path("user_id") long userId);
 
     @GET("get/user/doc/by/{user_id}")
-    Call<ResponseBody> getDoc(@Header("Authorization") String token, @Path("user_id") long userId);
+    Call<ResponseBody> getDoc( @Path("user_id") long userId);
 
     @GET("get/user/doc/by/{user_id}")
     Call<DocumentResponse> getdocument(@Path("user_id") long userId);
@@ -710,17 +701,17 @@ public interface ApiInterface {
 
     // Performance
     @GET("get/performace/of/employee/by/employee/id/{user_id}")
-    Call<List<EmpPerformance>> getSingleEmployeeAllPerformanceByEmpId(@Header("Authorization") String token, @Path("user_id") long userId);
+    Call<List<EmpPerformance>> getSingleEmployeeAllPerformanceByEmpId(@Path("user_id") long userId);
 
     // Event
     @POST("save/new/announcement")
-    Call<AddEvent> saveNewAnnouncement(@Header("Authorization") String token, @Body AddEvent addEvent);
+    Call<AddEvent> saveNewAnnouncement( @Body AddEvent addEvent);
 
     @GET("get/upcoming/events")
-    Call<List<Event>> upcomingEvents(@Header("Authorization") String token);
+    Call<List<Event>> upcomingEvents();
 
     @GET("custom-chat/get/by/user/id/{userId}")
-    Call<List<Message>> getCustomMessage(@Header("Authorization") String token, @Path("userId") long userId);
+    Call<List<Message>> getCustomMessage( @Path("userId") long userId);
 
     @GET("custom-chat/get/by/user/id/{userId}")
     Call<MessageResponse> getNewCustomMessage(@Path("userId") long userId, @Query("page") int page);

@@ -59,7 +59,7 @@ public class MessageFragment extends Fragment {
     }
 
     private void fetchCustomMessages() {
-        Call<List<Message>> call = apiInterface.getCustomMessage(token, userId);
+        Call<List<Message>> call = apiInterface.getCustomMessage( userId);
         call.enqueue(new Callback<List<Message>>() {
             @Override
             public void onResponse(@NonNull Call<List<Message>> call, @NonNull Response<List<Message>> response) {

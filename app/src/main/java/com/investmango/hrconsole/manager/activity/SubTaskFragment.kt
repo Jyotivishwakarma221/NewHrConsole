@@ -147,6 +147,13 @@ class SubTaskFragment : Fragment(), RecyclerViewInterface<OneSubtaskBinding> {
         viewBind.details.text = subTask[position]?.description
         viewBind.nameOfMember.text = subTask[position]?.assignedByName
         viewBind.id.text = subTask[position]?.id.toString()
+        if (subTask[position]?.status!="DONE"){
+            viewBind.notdone.visibility=View.VISIBLE
+            viewBind.done.visibility=View.GONE
+        }else{
+            viewBind.notdone.visibility=View.GONE
+            viewBind.done.visibility=View.VISIBLE
+        }
 
         if (subTask[position]?.updatedTime != 0L)
             viewBind.updateDate.text =

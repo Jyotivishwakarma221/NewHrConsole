@@ -344,7 +344,7 @@ public class DateAndTimeUtility {
             ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
 
             // Define the desired date format
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
             // Format the ZonedDateTime
             String formattedDate = zdt.format(formatter);

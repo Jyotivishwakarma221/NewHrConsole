@@ -254,8 +254,8 @@ class ProjectsFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding> 
             binding.priority.visibility = View.VISIBLE
             binding.priorityy.visibility = View.VISIBLE
 
-            binding.priority.text = " " + assignment.priorityLevel + " Priority"
-            binding.priorityy.text = "  " + assignment.priorityLevel + " Priority"
+            binding.priority.text = " " + assignment.priorityLevel + " PRIORITY"
+            binding.priorityy.text = "  " + assignment.priorityLevel + " PRIORITY"
         } else {
             binding.priority.visibility = View.GONE
             binding.priorityy.visibility = View.GONE

@@ -31,10 +31,20 @@
             android:padding="@dimen/_5dp">
 
             <TextView
+                android:id="@+id/notdone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="10dp"
-                android:text="ID :"
+                android:drawableStart="@drawable/red_dot"
+                android:text="  ID :"
+                android:textColor="@color/greyforText" />
+            <TextView
+                android:id="@+id/done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:drawableStart="@drawable/green_dot"
+                android:text="  ID :"
                 android:textColor="@color/greyforText" />
 
             <TextView

@@ -130,7 +130,7 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding =
             DataBindingUtil.inflate(layoutInflater, R.layout.fragment_attendance, container, false)
         return binding.root
@@ -197,7 +197,6 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
 //            }
 
             override fun onClose() {
-
             }
 
         })
@@ -312,7 +311,7 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
             val apiClient = ApiClient(requireContext())
             apiInterface = apiClient.apiInterface
             val call: Call<ResponseBody> =
-                apiInterface.updateUserAttendance(token, attendance, userId)
+                apiInterface.updateUserAttendance( attendance, userId)
             call.enqueue(object : Callback<ResponseBody?> {
                 override fun onResponse(
                     call: Call<ResponseBody?>,

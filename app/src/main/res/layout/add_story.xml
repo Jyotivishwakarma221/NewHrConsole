@@ -36,6 +36,7 @@
             android:fontFamily="@font/dm_sans"
             android:padding="@dimen/_10"
             android:maxLines="200"
+            android:gravity="top"
             android:background="@drawable/black_button"
             android:textColor="@color/white"
             android:textSize="@dimen/_15" />

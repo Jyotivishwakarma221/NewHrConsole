@@ -124,7 +124,7 @@ class ForgetPasswrdFragment : Fragment() {
         val preferences = context!!.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val token = preferences.getString("token", "0").toString()
 
-        val call = apiInterface.sendOtp(token, binding.emailId.text.toString())
+        val call = apiInterface.sendOtp( binding.emailId.text.toString())
         call.enqueue(object : Callback<ResponseBody?> {
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                 if (response.isSuccessful) {

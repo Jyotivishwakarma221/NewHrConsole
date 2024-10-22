@@ -5,22 +5,37 @@
         android:layout_width="match_parent"
         android:layout_height="220dp"
         android:layout_margin="@dimen/_10dp"
-        app:cardCornerRadius="@dimen/_15"
+        android:elevation="@dimen/_5dp"
         app:cardBackgroundColor="#000000"
-        android:elevation="@dimen/_5dp">
+        app:cardCornerRadius="@dimen/_15">
+
+        <!--            android:background="@drawable/bg_img"-->
 
         <RelativeLayout
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_img"
+            android:background="@drawable/dark_grey_bg"
             android:padding="16dp">
 
+
+            <TextView
+                android:id="@+id/createdOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10"
+                android:layout_marginTop="@dimen/_20dp"
+                android:background="@drawable/dark_grey_bg"
+                android:padding="@dimen/_10"
+                android:text="     "
+                android:textColor="@color/greyforText"
+                android:textSize="@dimen/_10" />
 
             <TextView
                 android:id="@+id/priority"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_marginStart="@dimen/_10"
                 android:layout_marginTop="@dimen/_20dp"
                 android:background="@drawable/dark_grey_bg"
@@ -37,11 +52,13 @@
                 android:layout_below="@+id/priority"
                 android:layout_marginStart="@dimen/_10"
                 android:layout_marginTop="@dimen/_10"
+                android:capitalize="characters"
                 android:gravity="start"
+                android:padding="@dimen/_5dp"
                 android:text="    "
-                android:textStyle="bold"
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/prog"
@@ -78,16 +95,15 @@
                 android:textSize="10sp" />
 
 
-
             <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/photo1"
                 android:layout_width="@dimen/_30dp"
                 android:layout_height="30dp"
-                app:riv_oval="true"
                 android:layout_below="@+id/projctMember"
                 android:layout_marginStart="@dimen/_10"
                 android:layout_marginTop="@dimen/_10"
-                android:src="@drawable/profilephoto" />
+                android:src="@drawable/profilephoto"
+                app:riv_oval="true" />
 
 
             <com.makeramen.roundedimageview.RoundedImageView
@@ -96,9 +112,9 @@
                 android:layout_height="30dp"
                 android:layout_below="@+id/projctMember"
                 android:layout_marginTop="@dimen/_10"
-                app:riv_oval="true"
                 android:layout_toEndOf="@+id/photo1"
-                android:src="@drawable/profilephoto" />
+                android:src="@drawable/profilephoto"
+                app:riv_oval="true" />
 
 
             <com.makeramen.roundedimageview.RoundedImageView
@@ -107,9 +123,9 @@
                 android:layout_height="30dp"
                 android:layout_below="@+id/projctMember"
                 android:layout_marginTop="@dimen/_10"
-                app:riv_oval="true"
                 android:layout_toEndOf="@+id/photo2"
-                android:src="@drawable/profilephoto" />
+                android:src="@drawable/profilephoto"
+                app:riv_oval="true" />
 
             <TextView
                 android:id="@+id/dead"
@@ -134,7 +150,6 @@
                 android:layout_marginStart="@dimen/_10"
                 android:layout_marginTop="@dimen/_10"
                 android:layout_marginEnd="@dimen/_30dp"
-
                 android:background="@drawable/light_grey_bg"
                 android:gravity="start"
                 android:paddingStart="@dimen/_20dp"
