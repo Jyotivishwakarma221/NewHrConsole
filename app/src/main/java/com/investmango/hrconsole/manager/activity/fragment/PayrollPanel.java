@@ -56,7 +56,7 @@ public class PayrollPanel extends Fragment {
     private void fetchSalaryAndOpenFragment() {
         ApiClient apiClient = new ApiClient(getContext());
         apiInterface = apiClient.getApiInterface();
-        Call<List<Salary>> call = apiInterface.userSalary(token, userId);
+        Call<List<Salary>> call = apiInterface.userSalary( userId);
         call.enqueue(new Callback<List<Salary>>() {
             @Override
             public void onResponse(@NonNull Call<List<Salary>> call, @NonNull Response<List<Salary>> response) {
@@ -75,6 +75,7 @@ public class PayrollPanel extends Fragment {
             @Override
             public void onFailure(@NonNull Call<List<Salary>> call, @NonNull Throwable t) {
                 Log.e("SalaryFragment", "Network error: " + t.getMessage());
+                if (isAdded())
                 Toast.makeText(getContext(), "No payroll found .", Toast.LENGTH_SHORT).show();
             }
         });

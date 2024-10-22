@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ScrollView xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:clickable="true"
+        android:focusable="true">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/_10"
+            tools:context=".manager.activity.SubTaskFragment">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_10"
+                android:gravity="center"
+                android:text=" Project Tasks "
+                android:textColor="@color/greyforText"
+                android:textSize="22sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5dp"
+                android:background="@drawable/dark_grey_bg"
+                android:orientation="vertical"
+                android:padding="@dimen/_10">
+
+                <TextView
+                    android:id="@+id/addStory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:drawableEnd="@drawable/plus"
+                    android:padding="@dimen/_5dp"
+                    android:paddingEnd="@dimen/_20dp"
+                    android:text=" Task Story "
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/storyRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_20dp"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:background="@drawable/grey_bg_rounded" />
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5dp"
+                android:background="@drawable/dark_grey_bg"
+                android:padding="@dimen/_10">
+
+                <TextView
+                    android:id="@+id/task"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5dp"
+                    android:padding="@dimen/_5dp"
+                    android:text=" Task "
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_15" />
+
+                <TextView
+                    android:id="@+id/heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/task"
+                    android:layout_margin="@dimen/_5dp"
+                    android:padding="@dimen/_5dp"
+                    android:text="Thumbnail Created"
+                    android:textColor="@color/Blue" />
+
+                <LinearLayout
+                    android:id="@+id/firstlay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="@dimen/_5dp"
+                    android:layout_marginStart="@dimen/_20dp"
+                    android:layout_weight=".5"
+                    android:background="@drawable/black_button"
+                    android:padding="@dimen/_5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="10dp"
+                        android:text="ID :"
+                        android:textColor="@color/greyforText" />
+
+                    <TextView
+                        android:id="@+id/id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/_10"
+                        android:paddingEnd="@dimen/_10"
+                        android:text="****"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/heading"
+                    android:layout_margin="@dimen/_10dp"
+                    android:text="Lorem ipsum dolor sit amet, consectetur adipi elit.
+                    Ut id dui   mi. Fusce varius bibendum ante, non lacinia. Fall "
+                    android:textColor="@color/greyforText" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5dp"
+                android:background="@drawable/dark_grey_bg"
+                android:padding="@dimen/_10">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10"
+                    android:layout_marginTop="@dimen/_10"
+                    android:gravity="start"
+                    android:text="  Task Details"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/priorityy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="@dimen/_20dp"
+                    android:background="@drawable/dark_grey_bg"
+                    android:drawableStart="@drawable/red_dot"
+                    android:padding="@dimen/_10"
+                    android:text="  High Priority  "
+                    android:textColor="@color/greyforText"
+                    android:textSize="@dimen/_10" />
+
+                <LinearLayout
+                    android:id="@+id/assignedDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/priorityy"
+                    android:layout_margin="@dimen/_10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_20dp"
+                        android:layout_marginTop="@dimen/_10"
+                        android:gravity="start"
+                        android:text=" Assigned Date "
+                        android:textColor="#E2E2E2"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/createdDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/priorityy"
+                        android:layout_marginStart="@dimen/_30dp"
+                        android:layout_marginTop="@dimen/_10"
+                        android:layout_toEndOf="@+id/due"
+                        android:background="@drawable/dark_grey_bg"
+                        android:drawableStart="@drawable/calender2"
+                        android:gravity="start"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="    "
+                        android:textColor="#D3D3D3"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/deadlineDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/assignedDetail"
+                    android:layout_margin="@dimen/_10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_20dp"
+                        android:layout_marginTop="@dimen/_10"
+                        android:gravity="start"
+                        android:text=" Deadline Date "
+                        android:textColor="#E2E2E2"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/DeadlineDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/priorityy"
+                        android:layout_marginStart="@dimen/_30dp"
+                        android:layout_marginTop="@dimen/_10"
+                        android:layout_toEndOf="@+id/due"
+                        android:background="@drawable/dark_grey_bg"
+                        android:drawableStart="@drawable/calender2"
+                        android:gravity="start"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="  "
+                        android:textColor="#D3D3D3"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/memberdetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/deadlineDetails"
+                    android:layout_margin="@dimen/_10"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_20dp"
+                        android:layout_marginTop="@dimen/_10"
+                        android:gravity="start"
+                        android:text=" Assigned by :"
+                        android:textColor="#E2E2E2"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:id="@+id/memberLay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5dp"
+                        android:background="@drawable/dark_grey_bg"
+                        android:padding="@dimen/_10dp">
+
+                        <com.makeramen.roundedimageview.RoundedImageView
+                            android:id="@+id/profilephoto"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/profilephoto"
+                            app:riv_oval="true" />
+
+                        <TextView
+                            android:id="@+id/assignedBY"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_5dp"
+                            android:fontFamily="@font/dm_sans"
+                            android:paddingStart="@dimen/_10"
+                            android:text="Shakshi"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_15" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/file"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/memberdetail"
+                    android:layout_marginStart="@dimen/_10dp"
+                    android:layout_marginTop="@dimen/_10"
+                    android:gravity="start"
+                    android:text="  Project files: "
+                    android:textColor="#E2E2E2"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:id="@+id/fileView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/file"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:background="@drawable/dark_grey_bg"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginStart="@dimen/_5dp"
+                        android:src="@drawable/baseline_insert_drive_file_24" />
+
+                    <TextView
+                        android:id="@+id/textName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5dp"
+                        android:fontFamily="@font/dm_sans"
+                        android:text=" File 1"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/statusDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fileView"
+                    android:layout_margin="@dimen/_10"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_20dp"
+                        android:layout_marginTop="@dimen/_10"
+                        android:gravity="start"
+                        android:text=" Task Status :"
+                        android:textColor="#E2E2E2"
+                        android:textSize="15sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/_5dp"
+                        android:layout_marginStart="@dimen/_20dp"
+                        android:layout_weight=".5"
+                        android:background="@drawable/black_button"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/_20dp"
+                        android:paddingTop="@dimen/_5dp"
+                        android:paddingEnd="@dimen/_30dp"
+                        android:paddingBottom="@dimen/_5dp">
+
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="15dp"
+                            android:layout_marginStart="@dimen/_5dp"
+                            android:src="@drawable/green_dot" />
+
+                        <TextView
+                            android:id="@+id/status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="10dp"
+                            android:text="In Progress"
+                            android:textColor="@color/greyforText" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/statusDetail"
+                    android:layout_margin="@dimen/_10"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_20dp"
+                        android:layout_marginTop="@dimen/_10"
+                        android:gravity="start"
+                        android:text=" Task Last Update  "
+                        android:textColor="#E2E2E2"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/updateDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/priorityy"
+                        android:layout_marginStart="@dimen/_30dp"
+                        android:layout_marginTop="@dimen/_10"
+                        android:layout_toEndOf="@+id/due"
+                        android:background="@drawable/dark_grey_bg"
+                        android:drawableStart="@drawable/calender2"
+                        android:gravity="start"
+                        android:paddingStart="10dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="    "
+                        android:textColor="#D3D3D3"
+                        android:textSize="15sp" />
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</layout>

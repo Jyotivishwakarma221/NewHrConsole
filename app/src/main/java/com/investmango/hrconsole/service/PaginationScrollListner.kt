@@ -1,5 +1,6 @@
 package com.investmango.hrconsole.service
 
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -11,6 +12,7 @@ abstract class PaginationScrollListener(private val layoutManager: LinearLayoutM
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
+        Log.e("Pagination", "onScrolled: dx=$dx, dy=$dy")
 
         if (dy > 0) {
             val visibleItemCount = layoutManager.childCount

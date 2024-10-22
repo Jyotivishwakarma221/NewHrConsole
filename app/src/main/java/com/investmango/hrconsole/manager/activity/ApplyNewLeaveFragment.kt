@@ -1,34 +1,52 @@
 package com.investmango.hrconsole.manager.activity
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.provider.OpenableColumns
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import android.widget.Toast.makeText
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.investmango.hrconsole.AwsUpload.UploadFileAws
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
 import com.investmango.hrconsole.api.ApiInterface
 import com.investmango.hrconsole.databinding.FragmentApplyNewLeaveBinding
 import com.investmango.hrconsole.model.SaveUserLeave
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Objects
 
 
 class ApplyNewLeaveFragment : Fragment() {
@@ -37,7 +55,14 @@ class ApplyNewLeaveFragment : Fragment() {
     private var userId: Long = 0
     var token: String = ""
     var selectedDates: ArrayList<String> = arrayListOf()
-    private var progressDialog: ProgressDialog? = null
+    lateinit var progressDialog: AwesomeProgressDialog
+    lateinit var launcher: ActivityResultLauncher<Intent>
+    var uri: Uri? = Uri.parse("")
+    var uriStr = ""
+    lateinit var nameIndex: String
+    var sizeIndex: Long = 0
+    lateinit var file1: File
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,9 +71,64 @@ class ApplyNewLeaveFragment : Fragment() {
         token = preferences.getString("token", "0").toString()
         userId = preferences.getLong("userId", 0)
 
-        progressDialog = ProgressDialog(activity, R.style.CustomProgressDialog)
-        progressDialog!!.setMessage("Please wait ...")
-        progressDialog!!.setCancelable(false)
+        progressDialog = AwesomeProgressDialog(context)
+        progressDialog.addTitle("Loading...") // add your title here.
+        progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
+
+        launcher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+                uri = result.data!!.data!!
+                Log.e("launcherrrr", "onCreate: " + uri)
+
+                result.data?.let { returnUri ->
+                    context?.contentResolver?.query(uri!!, null, null, null, null)
+                }?.use { cursor ->
+                    /*
+                     * Get the column indexes of the data in the Cursor,
+                     * move to the first row in the Cursor, get the data,
+                     * and display it.
+                     */
+                    nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME).toString()
+                    val size = cursor.getColumnIndex(OpenableColumns.SIZE)
+                    cursor.moveToFirst()
+                    sizeIndex = cursor.getLong(size)
+                    Log.e("launcherrrr", "onCreate: " + sizeIndex)
+
+                    cursor.moveToFirst()
+
+                    file1 = File(
+                        Objects.requireNonNull<String>(
+                            UploadFileAws().getRealPathFromUri(
+                                uri!!,
+                                context!!
+                            )
+                        )
+                    )
+                    Log.e("khushi1111", "onClick: " + file1)
+
+//                    uploadImage(filename = file1.name)
+
+                        if (isAdded)
+                            CoroutineScope(Dispatchers.Main).launch {
+                                uriStr = UploadFileAws().uploadFile(file1, "leavesDocs", context!!).toString()
+                                if (uriStr != "") {
+                                    // Handle the success case here
+                                    Log.e("uploadimg", "onCreate: "+uriStr )
+                                    binding.uploadDocname.visibility = View.VISIBLE
+                                    binding.uploadDoc.visibility = View.GONE
+                                } else {
+                                    // Handle the failure case here
+                                    makeText(context,"Some error in uploading .", LENGTH_SHORT).show()
+                                }
+                            }
+
+                }
+            }
+
+        };
     }
 
     override fun onCreateView(
@@ -71,14 +151,24 @@ class ApplyNewLeaveFragment : Fragment() {
         binding.askNow.setOnClickListener {
             saveUserLeave()
         }
+        binding.uploadDoc.setOnClickListener {
+            UploadFileAws().openGallery(launcher)
+        }
+        binding.uploadDocname.setOnClickListener {
 
+            uriStr=""
+            binding.uploadDocname.text = ""
+            binding.uploadDoc.visibility = View.VISIBLE
+            binding.uploadDocname.visibility = View.INVISIBLE
+
+        }
         binding.clear.setOnClickListener {
             binding.reason.setText("")
-            binding.datelayout.visibility = View.INVISIBLE
+            binding.datelayout.visibility = View.GONE
         }
         binding.delete.setOnClickListener {
             selectedDates.clear()
-            binding.datelayout.visibility = View.INVISIBLE
+            binding.datelayout.visibility = View.GONE
         }
 
         binding.calender.setOnClickListener {
@@ -98,7 +188,7 @@ class ApplyNewLeaveFragment : Fragment() {
                 // Convert selected date range to list of dates
                 // Convert selected date range to list of dates
 
-                binding.datelayout.visibility=View.VISIBLE
+                binding.datelayout.visibility = View.VISIBLE
 
                 val start = Calendar.getInstance()
                 start.timeInMillis = it.first
@@ -125,6 +215,7 @@ class ApplyNewLeaveFragment : Fragment() {
 
     }
 
+
     private fun setupLeaveTypeSpinner() {
         val list = resources.getStringArray(R.array.listLeaveType)
 
@@ -144,7 +235,7 @@ class ApplyNewLeaveFragment : Fragment() {
             ).show()
             return
         }
-        progressDialog?.show()
+        progressDialog.showDialog()
         // Convert leaveType string to enum
         val leaveType =
             SaveUserLeave.LeaveType.fromString(binding.leaveType.selectedItem.toString())
@@ -154,6 +245,8 @@ class ApplyNewLeaveFragment : Fragment() {
             jsonBody.put("leaveDates", JSONArray(selectedDates))
             jsonBody.put("leaveType", leaveType.name)
             jsonBody.put("reason", binding.reason.text)
+
+                jsonBody.put("fileUrl", uriStr)
 
             val requestBody = RequestBody.create(
                 "application/json; charset=utf-8".toMediaTypeOrNull(),
@@ -165,33 +258,40 @@ class ApplyNewLeaveFragment : Fragment() {
             val apiClient = ApiClient(requireContext())
             apiInterface = apiClient.apiInterface
 
-            val call = apiInterface.saveUserLeave(token, requestBody, userId)
+            val call = apiInterface.saveUserLeave(requestBody, userId)
             call.enqueue(object : retrofit2.Callback<SaveUserLeave?> {
                 override fun onResponse(
                     call: Call<SaveUserLeave?>,
                     response: Response<SaveUserLeave?>,
                 ) {
                     if (response.isSuccessful) {
-                        progressDialog?.dismiss()
+                        progressDialog.dismissDialog()
                         makeText(
                             requireContext(),
                             "Leave request send successfully",
                             LENGTH_SHORT
                         ).show()
-                        fragmentManager?.fragments?.remove(this@ApplyNewLeaveFragment)
+                        activity?.onBackPressed()
+//                        fragmentManager?.fragments?.remove(this@ApplyNewLeaveFragment)
+//                        fragmentManager?.beginTransaction()?.remove(this@ApplyNewLeaveFragment)
+//                            ?.commit();
+
                     } else {
-                        progressDialog?.dismiss()
-                        makeText(context, getErrorMessage(response), LENGTH_SHORT).show()
+                        progressDialog.dismissDialog()
+                        if (isAdded)
+                            makeText(context, getErrorMessage(response), LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<SaveUserLeave?>, t: Throwable) {
-                    progressDialog?.dismiss()
-                    makeText(requireContext(), "Something went wrong.", LENGTH_SHORT).show()
+                    progressDialog.dismissDialog()
+                    if (isAdded)
+                        makeText(requireContext(), "Something went wrong.", LENGTH_SHORT).show()
                     Log.e("failure", "onFailure: " + t.message)
                 }
             })
         } catch (e: JSONException) {
+            progressDialog?.dismissDialog()
             e.printStackTrace()
         }
     }
@@ -206,4 +306,5 @@ class ApplyNewLeaveFragment : Fragment() {
         }
         return errorMessage
     }
+
 }

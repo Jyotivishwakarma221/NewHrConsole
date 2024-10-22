@@ -84,6 +84,7 @@ class EmplyPerFormanceFragment : Fragment() {
                         setupData()
                     }
                 } else {
+                    if (isAdded)
                     Toast.makeText(
                         context,
                         "Something went wrong.",

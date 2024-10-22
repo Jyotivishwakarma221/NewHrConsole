@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.HrConsole.tv.official.console.premium.CommonAdapter
 import com.HrConsole.tv.official.console.premium.RecyclerViewInterface
+import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
 import com.investmango.hrconsole.EmployeeAction.EmployeeActions
 import com.investmango.hrconsole.EmployeeAction.EmplyPerFormanceFragment
 import com.investmango.hrconsole.R
@@ -36,9 +37,24 @@ class TotalMemberFragment : Fragment(), RecyclerViewInterface<ActiveMemberRecycl
     lateinit var token: String
     lateinit var authority: String
     var userId: Long = 0
+    lateinit var progressDialog: AwesomeProgressDialog
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        var preferences = context!!.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+
+        token = preferences.getString("token", "0").toString()
+        userId = preferences.getLong("userId", 0)
+        authority = preferences.getString("Authority", "user")!!
+
+
+
+        progressDialog = AwesomeProgressDialog(context)
+        progressDialog.addTitle("Loading...") // add your title here.
+        progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
 
     }
 
@@ -54,20 +70,14 @@ class TotalMemberFragment : Fragment(), RecyclerViewInterface<ActiveMemberRecycl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var preferences = context!!.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-
-        token = preferences.getString("token", "0").toString()
-        userId = preferences.getLong("userId", 0)
-        authority = preferences.getString("Authority", "user")!!
-
 
         arguments?.takeIf { it.containsKey("Emp") }?.apply {
             if (requireContext() != null) {
                 if (authority.equals(Constant.MANAGER)) {
                     Log.e("arguments", "onViewCreated: " + getString("Emp"))
-                    if (getString("Emp").equals("Present Employees")) {
+                    if (getString("Emp").equals("Present Members")) {
                         PresentEmpRes()
-                    } else if (getString("Emp").equals("Total Employees")) {
+                    } else if (getString("Emp").equals("Total Members")) {
                         TotalEmpResponse()
                     }
                 } else if (authority.equals(Constant.ADMIN)) {
@@ -87,15 +97,16 @@ class TotalMemberFragment : Fragment(), RecyclerViewInterface<ActiveMemberRecycl
         val apiClient = ApiClient(requireContext())
 
         apiInterface = apiClient.apiInterface
+        progressDialog.showDialog()
 
-
-        val call: Call<PresentEmpRes>? = apiInterface.PresentEmployee(token, userId, true,100)
+        val call: Call<PresentEmpRes>? = apiInterface.PresentEmployee( userId, true, 100)
         call?.enqueue(object : Callback<PresentEmpRes?> {
             override fun onResponse(
                 call: Call<PresentEmpRes?>,
                 response: Response<PresentEmpRes?>,
             ) {
                 if (response.body() != null && response.isSuccessful() && response.body()!!.content.size > 0) {
+                    progressDialog.dismissDialog()
                     Log.e("getmeetings", "onResponse: " + response.body()!!.content.size)
                     listofpresentEmp = response.body()!!.content as ArrayList<Content?>
                     binding.recyclerView.adapter = CommonAdapter(this@TotalMemberFragment)
@@ -103,14 +114,17 @@ class TotalMemberFragment : Fragment(), RecyclerViewInterface<ActiveMemberRecycl
                         LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
                 } else {
+                    progressDialog.dismissDialog()
                     Log.e("getmeetings", "onResponse: " + response.body().toString())
-
-                    Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+                    if (isAdded)
+                        Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<PresentEmpRes?>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                progressDialog.dismissDialog()
+                if (isAdded)
+                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 Log.e("khushi123", "onFailure: " + t.message)
             }
         })
@@ -122,43 +136,48 @@ class TotalMemberFragment : Fragment(), RecyclerViewInterface<ActiveMemberRecycl
         if (!isAdded) return  // Ensure the fragment is attached
 
         val apiClient = ApiClient(requireContext())
-
+        progressDialog.showDialog()
         apiInterface = apiClient.apiInterface
 
         try {
 
-            val call: Call<PresentEmpRes>? = apiInterface.newgetAllTodayAttendance(token,100)
+            val call: Call<PresentEmpRes>? = apiInterface.newgetAllTodayAttendance(token, 100)
             call?.enqueue(object : Callback<PresentEmpRes?> {
                 override fun onResponse(
                     call: Call<PresentEmpRes?>,
                     response: Response<PresentEmpRes?>,
                 ) {
                     if (response.body() != null && response.isSuccessful() && response.body()!!.content.size > 0) {
+                        progressDialog.dismissDialog()
+
                         Log.e("getmeetings", "onResponse: " + response.body()!!.content.size)
                         listofpresentEmp = response.body()!!.content as ArrayList<Content?>
                         binding.recyclerView.adapter = CommonAdapter(this@TotalMemberFragment)
-                        if (requireContext()!=null)
-                        binding.recyclerView.layoutManager =
-                            LinearLayoutManager(
-                                requireContext(),
-                                LinearLayoutManager.VERTICAL,
-                                false
-                            )
+                        if (requireContext() != null)
+                            binding.recyclerView.layoutManager =
+                                LinearLayoutManager(
+                                    requireContext(),
+                                    LinearLayoutManager.VERTICAL,
+                                    false
+                                )
 
                     } else {
                         Log.e("getmeetings", "onResponse: " + response.body().toString())
-
-                        Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+                        progressDialog.dismissDialog()
+                        if (isAdded)
+                            Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<PresentEmpRes?>, t: Throwable) {
-                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                    progressDialog.dismissDialog()
+                    if (isAdded)
+                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                     Log.e("khushi123", "onFailure: " + t.message)
                 }
             })
-        }catch (E:Exception){
-            Log.e("TAG", "AdminPresentEmpRes: "+ E.message)
+        } catch (E: Exception) {
+            Log.e("TAG", "AdminPresentEmpRes: " + E.message)
         }
     }
 
@@ -167,7 +186,7 @@ class TotalMemberFragment : Fragment(), RecyclerViewInterface<ActiveMemberRecycl
         val apiClient = ApiClient(requireContext())
 
         apiInterface = apiClient.apiInterface
-
+        progressDialog.showDialog()
 
         val call: Call<List<TotalEmpResponseItem>>? = apiInterface.getTotalEmp(userId, true)
         call?.enqueue(object : Callback<List<TotalEmpResponseItem>?> {
@@ -176,6 +195,8 @@ class TotalMemberFragment : Fragment(), RecyclerViewInterface<ActiveMemberRecycl
                 response: Response<List<TotalEmpResponseItem>?>,
             ) {
                 if (response.body() != null && response.isSuccessful()) {
+                    progressDialog.dismissDialog()
+
                     Log.e("getmeetings", "onResponse: ")
 //                    listoftotalEmp = (response.body()!!.totalEmpResponse as ArrayList<TotalEmpResponseItem>?)!!
                     binding.recyclerView.adapter = CommonAdapter(this@TotalMemberFragment)
@@ -185,13 +206,16 @@ class TotalMemberFragment : Fragment(), RecyclerViewInterface<ActiveMemberRecycl
 
                 } else {
                     Log.e("getmeetings", "onResponse: " + response.body().toString())
-
-                    Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+                    progressDialog.dismissDialog()
+                    if (isAdded)
+                        Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<List<TotalEmpResponseItem>?>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                progressDialog.dismissDialog()
+                if (isAdded)
+                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 Log.e("khushi123", "onFailure: " + t.message)
             }
         })
@@ -203,7 +227,7 @@ class TotalMemberFragment : Fragment(), RecyclerViewInterface<ActiveMemberRecycl
         if (!isAdded) return  // Ensure the fragment is attached
 
         apiInterface = apiClient.apiInterface
-
+        progressDialog.showDialog()
 
         val call: Call<List<TotalEmpResponseItem>>? = apiInterface.getAllEmployee(true)
         call?.enqueue(object : Callback<List<TotalEmpResponseItem>?> {
@@ -212,23 +236,28 @@ class TotalMemberFragment : Fragment(), RecyclerViewInterface<ActiveMemberRecycl
                 response: Response<List<TotalEmpResponseItem>?>,
             ) {
                 if (response.body() != null && response.isSuccessful()) {
+                    progressDialog.dismissDialog()
+
                     Log.e("getmeetings", "onResponse: ")
 //                    listoftotalEmp = (response.body()!!.totalEmpResponse as ArrayList<TotalEmpResponseItem>?)!!
                     binding.recyclerView.adapter = CommonAdapter(this@TotalMemberFragment)
                     listoftotalEmp = (response.body() as ArrayList<TotalEmpResponseItem>?)!!
                     if (isAdded)
-                    binding.recyclerView.layoutManager =
-                        LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+                        binding.recyclerView.layoutManager =
+                            LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
 
                 } else {
                     Log.e("getmeetings", "onResponse: " + response.body().toString())
-
-                    Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+                    progressDialog.dismissDialog()
+                    if (isAdded)
+                        Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<List<TotalEmpResponseItem>?>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                progressDialog.dismissDialog()
+                if (isAdded)
+                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 Log.e("khushi123", "onFailure: " + t.message)
             }
         })

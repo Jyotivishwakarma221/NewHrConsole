@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/memberLay"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_5dp"
+    android:gravity="center"
+    android:background="@drawable/dark_grey_bg"
+    android:padding="@dimen/_10dp"
+    android:paddingStart="30dp"
+    android:weightSum="3">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/profilephoto"
+        app:riv_oval="true"
+        android:layout_width="30dp"
+        android:layout_weight="1"
+        android:layout_height="30dp"
+        android:src="@drawable/profilephoto" />
+
+    <TextView
+        android:id="@+id/nameOfMember"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5dp"
+        android:fontFamily="@font/dm_sans"
+        android:paddingStart="@dimen/_10"
+        android:layout_weight="1"
+        android:text=" "
+        android:textColor="@color/white"
+        android:textSize="@dimen/_15" />
+
+    <ImageView
+        android:id="@+id/go_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="@dimen/_10"
+        android:src="@drawable/go_arrow" />
+</LinearLayout>

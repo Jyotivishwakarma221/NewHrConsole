@@ -137,8 +137,12 @@ public class DateAndTimeUtility {
     public static long convertToEpochMillis(String dateStr, String time24Hour) {
         DateTimeFormatter[] dateFormatters = {
                 DateTimeFormatter.ofPattern("dd/MM/yyyy"),
+                DateTimeFormatter.ofPattern("dd/M/yyyy"),
                 DateTimeFormatter.ofPattern("d/M/yyyy"),
+                DateTimeFormatter.ofPattern("d/MM/yyyy"),
                 DateTimeFormatter.ofPattern("dd-MM-yyyy"),
+                DateTimeFormatter.ofPattern("dd-M-yyyy"),
+                DateTimeFormatter.ofPattern("d-MM-yyyy"),
                 DateTimeFormatter.ofPattern("d-M-yyyy"),
         };
         DateTimeFormatter[] timeFormatters = {DateTimeFormatter.ofPattern("HH:mm"), DateTimeFormatter.ofPattern("hh:mm a"), DateTimeFormatter.ofPattern("hh:mm a"),};
@@ -178,25 +182,46 @@ public class DateAndTimeUtility {
         // Convert LocalDateTime to epoch milliseconds
         return dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static long convertToEpochMillis(String dateStr) {
-        try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate date = LocalDate.parse(dateStr, formatter);
+        DateTimeFormatter[] dateFormatters = {
+                DateTimeFormatter.ofPattern("dd/MM/yyyy"),
+                DateTimeFormatter.ofPattern("dd/M/yyyy"),
+                DateTimeFormatter.ofPattern("d/MM/yyyy"),
+                DateTimeFormatter.ofPattern("d/M/yyyy"),
+                DateTimeFormatter.ofPattern("dd-MM-yyyy"),
+                DateTimeFormatter.ofPattern("dd-M-yyyy"),
+                DateTimeFormatter.ofPattern("d-MM-yyyy"),
+                DateTimeFormatter.ofPattern("d-M-yyyy"),
+        };
 
-            // Convert LocalDate to LocalDateTime
-            LocalDateTime dateTime = date.atStartOfDay();
+        LocalDate date = null;
+        for (DateTimeFormatter dateFormatter : dateFormatters) {
+            try {
+                date = LocalDate.parse(dateStr, dateFormatter);
+                break; // If parsing is successful, exit the loop
+            } catch (DateTimeParseException e) {
+                // Continue to the next formatter
+                Log.e("expction", "Failed to parse with pattern " + dateFormatter + ": " + e.getMessage());
+            }
+        }
 
-            // Convert LocalDateTime to Instant
-            Instant instant = dateTime.atZone(ZoneId.systemDefault()).toInstant();
-
-            // Convert Instant to epoch milliseconds
-            return instant.toEpochMilli();
-        } catch (DateTimeParseException e) {
-            System.err.println("Invalid date format. Please use dd/MM/yyyy.");
+        if (date == null) {
+            System.err.println("Invalid date format. Please use one of the supported formats.");
             return -1;
         }
+
+        // Convert LocalDate to LocalDateTime
+        LocalDateTime dateTime = date.atStartOfDay();
+
+        // Convert LocalDateTime to Instant
+        Instant instant = dateTime.atZone(ZoneId.systemDefault()).toInstant();
+
+        // Convert Instant to epoch milliseconds
+        return instant.toEpochMilli();
     }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static long getCurrentEpochTime() {
         // Get the current date and time this is not in miliseconds
@@ -265,21 +290,32 @@ public class DateAndTimeUtility {
         long hours = (totalSeconds % (24 * 3600)) / 3600;
         long minutes = (totalSeconds % 3600) / 60;
         long seconds = totalSeconds % 60;
-        String value = "";
-        if (days != 0)
-            value = String.valueOf(days) + " days ago";
-        else if (hours != 0)
-            value = String.valueOf(hours)+ " " + "hours ago";
-        else if (minutes!=0)
-            value = String.valueOf(seconds)+ " " + "mins ago";
 
-        else value = String.valueOf(seconds) +" " + "seconds ago";
-        return value;
+        // Determine the appropriate time unit to display
+        if (days > 0) {
+            return days + " days ago";
+        } else if (hours > 0) {
+            return hours + " hours ago";
+        } else if (minutes > 0) {
+            return minutes + " mins ago";
+        } else {
+            return seconds + " seconds ago";
+        }
     }
 
     public static String getDateMonthFromLong(Long milliseconds) {
         String date = new SimpleDateFormat("dd LLL").format(new Date(milliseconds));
         return date;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static Integer getMonthNumber(Long milliseconds) {
+        LocalDate localDate = Instant.ofEpochMilli(milliseconds)
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+        // Get month (January is 1, February is 2, etc.)
+        int month = localDate.getMonthValue();
+        return month;
     }
 
     public static String convertEpochToTime(Long epoch) {
@@ -288,24 +324,32 @@ public class DateAndTimeUtility {
         return sdf.format(date);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static String getDateeFromLong(Long milliseconds) {
-        String date = new SimpleDateFormat("dd-mm-yyyy").format(new Date(milliseconds));
-        return date;
+        Instant instant = Instant.ofEpochMilli(milliseconds);
+
+        // Convert Instant to ZonedDateTime using the system default time zone
+        ZonedDateTime zonedDateTime = instant.atZone(ZoneId.systemDefault());
+
+        // Extract the LocalDate from ZonedDateTime
+        return String.valueOf(zonedDateTime.toLocalDate());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static String getDATEFromLong(Long milliseconds) {
-        Instant instant = Instant.ofEpochMilli(milliseconds);
+        if (milliseconds!=0) {
+            Instant instant = Instant.ofEpochMilli(milliseconds);
 
-        // Convert the Instant to a ZonedDateTime
-        ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
+            // Convert the Instant to a ZonedDateTime
+            ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
 
-        // Define the desired date format
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            // Define the desired date format
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-        // Format the ZonedDateTime
-        String formattedDate = zdt.format(formatter);
-        return formattedDate;
+            // Format the ZonedDateTime
+            String formattedDate = zdt.format(formatter);
+            return formattedDate;
+        }else return "--";
     }
 
 

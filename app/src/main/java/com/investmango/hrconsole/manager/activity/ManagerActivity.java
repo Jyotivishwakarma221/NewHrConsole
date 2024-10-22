@@ -1,7 +1,10 @@
 package com.investmango.hrconsole.manager.activity;
 
+import static com.investmango.hrconsole.service.ApplicationUtil.runConnectionCheckThread;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -36,6 +40,7 @@ import com.investmango.hrconsole.profile.ProfileFragment;
 import com.investmango.hrconsole.service.CommonUtils;
 import com.investmango.hrconsole.service.Constant;
 import com.investmango.hrconsole.service.DateAndTimeUtility;
+import com.investmango.hrconsole.service.MyBackgroundLocationService;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.json.JSONException;
@@ -43,7 +48,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,9 +58,10 @@ public class ManagerActivity extends AppCompatActivity {
     long userId;
     private long pressedTime;
     TabLayout tabs;
+    Intent intent;
     ViewPager viewPager;
     RelativeLayout eventLay;
-    ImageView cutImageView,poster;
+    ImageView cutImageView, poster;
     TextView subjecttext;
     String posterImageUrl, formattedDate, formattedTime, description, subject;
 
@@ -68,7 +73,7 @@ public class ManagerActivity extends AppCompatActivity {
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
         String token = preferences.getString("token", "0");
         userId = preferences.getLong("userId", 0);
-        authority = preferences.getString("Authority", Constant.USER);
+        authority = preferences.getString("Authority", "");
 
 
         TextView managerName = findViewById(R.id.managerName);
@@ -76,12 +81,18 @@ public class ManagerActivity extends AppCompatActivity {
         eventLay = findViewById(R.id.eventLay);
         RoundedImageView image = findViewById(R.id.managerImageProfile);
         tabs = findViewById(R.id.tabs);
-        cutImageView=findViewById(R.id.cutImageView);
-        poster=findViewById(R.id.poster);
+        cutImageView = findViewById(R.id.cutImageView);
+        poster = findViewById(R.id.poster);
         viewPager = findViewById(R.id.viewPager);
 
-        if (authority == Constant.USER) {
-            replaceFragment(new ManagerFragment());
+
+        intent = new Intent(this, MyBackgroundLocationService.class);
+        runConnectionCheckThread(this);
+        ContextCompat.startForegroundService(this, intent);
+//        mService.doForegroundThings();
+
+        if (authority.equals(Constant.USER)){
+            addFragment(new ManagerFragment());
         } else setAdapter();
 
 
@@ -105,7 +116,7 @@ public class ManagerActivity extends AppCompatActivity {
 //            assignmet.setVisibility(View.GONE);
 //        }
 
-        cutImageView.setOnClickListener(v->{
+        cutImageView.setOnClickListener(v -> {
             eventLay.setVisibility(View.GONE);
         });
         image.setOnClickListener(v -> {
@@ -202,26 +213,26 @@ public class ManagerActivity extends AppCompatActivity {
     public void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();
-        // Find the previous fragment by its tag (if any)
-        List<Fragment> fragments = getSupportFragmentManager().getFragments();
-
-        for (Fragment fragment1 : fragments) {
-            if (fragment1 != null) {
-                Objects.requireNonNull(fragment1.getView()).setClickable(false);
-                fragment1.getView().setEnabled(false);
-                fragment1.getView().setFocusable(false);
-                fragment1.getView().setFocusableInTouchMode(false);
-            }
-        }
-
-//        if (isFragmentPresent(FRAGMENT_TAG)) {
-//            // Handle the back press for the fragment if needed
-//            // For example, pop the back stack if the fragment is present
-//            getSupportFragmentManager().popBackStack();
-//        }
         Log.e("replaceFragment", "replaceFragment: " + fragment.getClass().getSimpleName().toUpperCase());
         transaction.replace(R.id.frameLayout, fragment);
         transaction.addToBackStack(fragment.getClass().getSimpleName().toUpperCase());
+        transaction.commit();
+    }
+    public void replaceFragment2(Fragment fragment,String tag) {
+        FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction();
+        Log.e("replaceFragment", "replaceFragment: " + fragment.getClass().getSimpleName().toUpperCase());
+        transaction.replace(R.id.frameLayout, fragment);
+        transaction.addToBackStack(tag);
+        transaction.commit();
+    }
+
+public void addFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager()
+                .beginTransaction();
+
+        Log.e("replaceFragment", "replaceFragment: " + fragment.getClass().getSimpleName().toUpperCase());
+        transaction.add(R.id.frameLayout, fragment);
         transaction.commit();
 
     }
@@ -284,10 +295,10 @@ public class ManagerActivity extends AppCompatActivity {
         tabs.setupWithViewPager(viewPager);
     }
 
-    private void fetchUpcomingEvents(String token ) {
+    private void fetchUpcomingEvents(String token) {
 
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<Event>> call = apiInterface.upcomingEvents(token);
+        Call<List<Event>> call = apiInterface.upcomingEvents();
         call.enqueue(new Callback<List<Event>>() {
             @SuppressLint("SuspiciousIndentation")
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -305,10 +316,10 @@ public class ManagerActivity extends AppCompatActivity {
                         description = events.get(0).getDescription();
                         subject = events.get(0).getSubject();
 
-                        if (subject!=null)
-                        subjecttext.setText(subject);
-                        if (poster!=null)
-                        Glide.with(getApplicationContext()).load(posterImageUrl).into(poster);
+                        if (subject != null)
+                            subjecttext.setText(subject);
+                        if (poster != null)
+                            Glide.with(getApplicationContext()).load(posterImageUrl).into(poster);
                         eventLay.setVisibility(View.VISIBLE);
                     } else eventLay.setVisibility(View.GONE);
                 } else {
@@ -325,6 +336,7 @@ public class ManagerActivity extends AppCompatActivity {
             }
         });
     }
+
     private void handleApiCallFailure(@Nullable Response<List<Event>> response) {
         if (response != null && response.errorBody() != null) {
             try {
@@ -351,6 +363,9 @@ public class ManagerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         CommonUtils.isGpsEnabled(this);
+    }
 
+    public void stoploactionService() {
+        stopService(intent);
     }
 }

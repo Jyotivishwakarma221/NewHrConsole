@@ -63,6 +63,27 @@
 and Design Implementations. Feedback require
 from Every member"
             android:textColor="#CCCCCC" />
+        <TextView
+            android:id="@+id/showImg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/Addcomments"
+            android:gravity="center"
+            android:text="Show Image"
+            android:layout_marginStart="70dp"
+            android:layout_marginEnd="70dp"
+            android:layout_marginBottom="@dimen/_10"
+            android:layout_centerInParent="true"
+            android:paddingStart="@dimen/_30dp"
+            android:paddingEnd="@dimen/_30dp"
+            android:paddingTop="@dimen/_5dp"
+            android:paddingBottom="@dimen/_5dp"
+            android:background="@drawable/blue_bg"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_15"
+            android:textStyle="bold" />
+
     </LinearLayout>
+
 
 </layout>

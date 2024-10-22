@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/_10"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dark_grey_bg"
+        android:clickable="true"
+        android:padding="@dimen/_10">
+
+        <TextView
+            android:id="@+id/heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5dp"
+            android:padding="@dimen/_5dp"
+            android:text="Thumbnail Created"
+            android:textColor="@color/Blue" />
+
+        <LinearLayout
+            android:id="@+id/firstlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/_5dp"
+            android:layout_marginStart="@dimen/_20dp"
+            android:layout_weight=".5"
+            android:background="@drawable/black_button"
+            android:padding="@dimen/_5dp">
+
+            <TextView
+                android:id="@+id/notdone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:drawableStart="@drawable/red_dot"
+                android:text="  ID :"
+                android:textColor="@color/greyforText" />
+            <TextView
+                android:id="@+id/done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="10dp"
+                android:drawableStart="@drawable/green_dot"
+                android:text="  ID :"
+                android:textColor="@color/greyforText" />
+
+            <TextView
+                android:id="@+id/id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/_10"
+                android:paddingEnd="@dimen/_10"
+                android:text="****"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/heading"
+            android:layout_margin="@dimen/_10dp"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipi elit. Ut id dui mi. Fusce varius bibendum ante, non lacinia. Fall "
+            android:textColor="@color/greyforText" />
+
+        <LinearLayout
+            android:id="@+id/memberLay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/details"
+            android:layout_margin="@dimen/_5dp"
+            android:background="@drawable/dark_grey_bg"
+            android:padding="@dimen/_5dp">
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/profilephoto"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/profilephoto"
+                app:riv_oval="true" />
+
+            <TextView
+                android:id="@+id/nameOfMember"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5dp"
+                android:fontFamily="@font/dm_sans"
+                android:paddingStart="@dimen/_10"
+                android:text="Shakshi"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/updateDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/details"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/_5dp"
+            android:padding="@dimen/_5dp"
+            android:text="May 20, 2020"
+            android:textColor="@color/greyforText" />
+    </RelativeLayout>
+</layout>

@@ -1,31 +1,44 @@
 package com.investmango.hrconsole.manager.activity
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.HrConsole.tv.official.console.premium.CommonAdapter
 import com.HrConsole.tv.official.console.premium.RecyclerViewInterface
+import com.investmango.hrconsole.AwsUpload.UploadFileAws
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
 import com.investmango.hrconsole.api.ApiInterface
 import com.investmango.hrconsole.databinding.FeedBackRecyclerBinding
 import com.investmango.hrconsole.databinding.FragmentNewFeedBackBinding
+import com.investmango.hrconsole.model.AllFeedResponse
 import com.investmango.hrconsole.model.FeedbackRequest
 import com.investmango.hrconsole.model.FeedbackResponseItem
 import com.investmango.hrconsole.service.Constant
 import com.investmango.hrconsole.service.DateAndTimeUtility
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
+import java.util.Objects
 
 class NewFeedBackFragment : Fragment(), RecyclerViewInterface<FeedBackRecyclerBinding> {
 
@@ -34,6 +47,12 @@ class NewFeedBackFragment : Fragment(), RecyclerViewInterface<FeedBackRecyclerBi
     private var userId: Long = 0
     private var authority: String = ""
     var feedItem: List<FeedbackResponseItem>? = arrayListOf()
+    lateinit var launcher: ActivityResultLauncher<Intent>
+    lateinit var nameIndex: String
+    var sizeIndex: Long = 0
+    var uriStr = ""
+    var uri: Uri? = Uri.parse("")
+    lateinit var file1: File
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +61,61 @@ class NewFeedBackFragment : Fragment(), RecyclerViewInterface<FeedBackRecyclerBi
         userId = preferences.getLong("userId", 0)
         authority = preferences.getString("Authority", "").toString()
 
+
+        launcher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+                uri = result.data!!.data!!
+                Log.e("launcherrrr", "onCreate: " + uri)
+
+                result.data?.let { returnUri ->
+                    context?.contentResolver?.query(uri!!, null, null, null, null)
+                }?.use { cursor ->
+                    /*
+                     * Get the column indexes of the data in the Cursor,
+                     * move to the first row in the Cursor, get the data,
+                     * and display it.
+                     */
+                    nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME).toString()
+                    val size = cursor.getColumnIndex(OpenableColumns.SIZE)
+                    cursor.moveToFirst()
+                    sizeIndex = cursor.getLong(size)
+                    Log.e("launcherrrr", "onCreate: " + sizeIndex)
+
+                    cursor.moveToFirst()
+                    file1 = File(
+                        Objects.requireNonNull<String>(
+                            UploadFileAws().getRealPathFromUri(
+                                uri!!,
+                                context!!
+                            )
+                        )
+                    )
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        uriStr =
+                            UploadFileAws().uploadFile(file1, "feedbackDocs", context!!)
+                                .toString()
+                        if (uriStr != "") {
+                            // Handle the success case here
+                            Log.e("uploadimg", "onCreate: " + uriStr)
+                            binding.uploadDocname.visibility = View.VISIBLE
+                            binding.uploadDoc.visibility = View.GONE
+                        } else {
+                            // Handle the failure case here
+                            Toast.makeText(
+                                context,
+                                "Some error in uploading .",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+//                                deleteImageFromCloudinary(arrOfStr?.get(6).toString())
+//                                uploadImageToCloud(uri)
+                }
+            }
+        }
 
     }
 
@@ -63,9 +137,14 @@ class NewFeedBackFragment : Fragment(), RecyclerViewInterface<FeedBackRecyclerBi
         if (authority == Constant.USER) {
             getFeedBacks()
         }
+        if (authority == Constant.ADMIN) {
+            getAllFeedBacks()
+        }
 
-        binding.submit.setOnClickListener { saveFeedback("") }
-
+        binding.submit.setOnClickListener { saveFeedback(uriStr) }
+        binding.uploadDoc.setOnClickListener {
+            UploadFileAws().openGallery(launcher)
+        }
 
     }
 
@@ -73,7 +152,7 @@ class NewFeedBackFragment : Fragment(), RecyclerViewInterface<FeedBackRecyclerBi
         binding.recyclerFeedback.adapter = CommonAdapter(this@NewFeedBackFragment)
 
         binding.recyclerFeedback.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
     }
 
     private fun setupSpinner() {
@@ -92,8 +171,8 @@ class NewFeedBackFragment : Fragment(), RecyclerViewInterface<FeedBackRecyclerBi
     }
 
     private fun saveFeedback(imageUrl: String) {
-        val apiClient=ApiClient(requireContext())
-        apiInterface=apiClient.apiInterface
+        val apiClient = ApiClient(requireContext())
+        apiInterface = apiClient.apiInterface
 
         val feedbackText = binding.feedback.getText().toString()
         val selectedSection: String = binding.feedbackType.getSelectedItem().toString()
@@ -117,6 +196,8 @@ class NewFeedBackFragment : Fragment(), RecyclerViewInterface<FeedBackRecyclerBi
                         ).show()
                         binding.feedbackType.setSelection(0)
                         binding.feedback.setText("")
+                        uriStr = ""
+                        binding.uploadDocname.visibility = View.GONE
                     } else {
                         Toast.makeText(
                             requireContext(),
@@ -165,6 +246,30 @@ class NewFeedBackFragment : Fragment(), RecyclerViewInterface<FeedBackRecyclerBi
             }
         })
     }
+    private fun getAllFeedBacks() {
+        val apiClient = ApiClient(requireContext())
+        apiInterface = apiClient.apiInterface
+        val call: Call<AllFeedResponse>? = apiInterface.getAllfeedBack()
+        call?.enqueue(object : Callback<AllFeedResponse?> {
+            override fun onResponse(
+                call: Call<AllFeedResponse?>,
+                response: Response<AllFeedResponse?>,
+            ) = if (response.body() != null && response.isSuccessful()) {
+                feedItem= response.body()!!.content
+
+                setAdapter()
+            } else {
+                Log.e("getfeedback", "onResponse: " + response.errorBody())
+
+                Toast.makeText(context, "", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onFailure(call: Call<AllFeedResponse?>, t: Throwable) {
+                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                Log.e("khushi123", "onFailure: " + t.message)
+            }
+        })
+    }
 
     private fun getErrorMessage(response: Response<List<FeedbackResponseItem>?>): String {
         var errorMessage = "Unknown error"
@@ -191,6 +296,29 @@ class NewFeedBackFragment : Fragment(), RecyclerViewInterface<FeedBackRecyclerBi
         viewBind.description.text = feedItem?.get(position)?.feedback
         viewBind.dateTime.text =
             DateAndTimeUtility.getDateAndTimeFromLong(feedItem?.get(position)?.createdTime)
+
+        viewBind.showImg.setOnClickListener(View.OnClickListener {
+            //                progressDialog.showDialog();
+            if (feedItem?.get(position)?.fileUrl!=null) {
+                try {
+                    val urlIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(feedItem?.get(position)?.fileUrl)
+                    )
+                    startActivity(urlIntent)
+                } catch (e: java.lang.Exception) {
+                    Toast.makeText(context, "Try again Later.", Toast.LENGTH_SHORT).show()
+                    Log.e("Exception", "onClick: $e")
+                }
+                //                    progressDialog.dismissDialog();
+            }
+        })
+        if (feedItem?.get(position)?.fileUrl!="" && feedItem?.get(position)?.fileUrl!=null) {
+            viewBind.showImg.setVisibility(
+                View.VISIBLE
+            )
+        }
+        else viewBind.showImg.setVisibility(View.GONE)
     }
 
 }

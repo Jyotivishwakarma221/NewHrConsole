@@ -48,6 +48,9 @@ data class LeaveItem(
 	@field:SerializedName("userPhone")
 	val userPhone: String? = null,
 
+	@field:SerializedName("fileUrl")
+	val fileUrl: String? = null,
+
 	@field:SerializedName("userName")
 	val userName: String? = null,
 
@@ -76,7 +79,7 @@ data class LeaveItem(
 	val userEmail: String? = null,
 
 	@field:SerializedName("approvedByName")
-	val approvedByName: Any? = null,
+	val approvedByName: String? = null,
 
 	@field:SerializedName("id")
 	val id: Long? = null,

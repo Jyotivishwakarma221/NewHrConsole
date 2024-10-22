@@ -21,6 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog;
 import com.investmango.hrconsole.R;
 import com.investmango.hrconsole.api.ApiClient;
 import com.investmango.hrconsole.api.ApiInterface;
@@ -33,6 +34,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -52,11 +55,17 @@ public class LoginActivity extends AppCompatActivity {
     private ApiClient apiClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
 //    private TextView signUp;
-
+    AwesomeProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        progressDialog = new AwesomeProgressDialog(this);
+        progressDialog.addTitle("Loading..."); // add your title here.
+        progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS);
+        progressDialog.isCancelable(false);
+
 
         getSupportFragmentManager().addOnBackStackChangedListener(() -> {
             int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
@@ -138,15 +147,36 @@ public class LoginActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
+                progressDialog.showDialog();
                 RequestBody requestBody = RequestBody.create(jsonBody.toString(), MediaType.parse("application/json; charset=utf-8"));
                 apiClient.loginUser(requestBody, new ApiClient.LoginCallback() {
-                    @Override
-                    public void onLoginSuccess() {
-                        Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
+                            @Override
+                            public void onLoginSuccess() {
+                                Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
+                                preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+                                token = preferences.getString("token", "0");
+                                try {
+                                    progressDialog.dismissDialog();
 
-                        preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
-                        token = preferences.getString("token", "0");
+                                }catch (Exception e){
+                                    Log.e("Exception", "onLoginSuccess: "+e );
+                                }
+
+                                ExecutorService executor = Executors.newSingleThreadExecutor();
+                                // Submit a task to the ExecutorService
+                                executor.execute(() -> {
+                                    try {
+                                        AccessToken accessToken = new AccessToken();
+                                        String data = accessToken.getAccessToken();
+                                        // Logging the access token
+                                        Log.e("AccessToken", "AccessToken is: " + data);
+                                    } catch (Exception e) {
+                                        Log.e("AccessTokenExecp", "Error fetching access token", e);
+                                    }
+                                });
+
+                                // Shutdown the executor when done, if necessary
+                                executor.shutdown();
 
                         apiClient.getCurrentUser(token, new ApiClient.CurrentUserCallback()
                         {
@@ -154,7 +184,6 @@ public class LoginActivity extends AppCompatActivity {
                             public void onAdminLoggedIn(String userRole) {
                                 SharedPreferences preferences = getApplicationContext().getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
                                 preferences.edit().putString("Authority", Constant.ADMIN).apply();
-
                                 Intent intent = new Intent(LoginActivity.this, ManagerActivity.class);
                                 System.out.println("Admin Intent : " + intent);
                                 startActivity(intent);
@@ -184,6 +213,8 @@ public class LoginActivity extends AppCompatActivity {
 
                             @Override
                             public void onLoginFailure(String message) {
+                                progressDialog.dismissDialog();
+
                                 if (message.equals("User authority is empty.")) {
                                     Toast.makeText(LoginActivity.this, "Login failed: User authority is empty.", Toast.LENGTH_SHORT).show();
                                 }
@@ -193,12 +224,16 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onLoginFailure(String message) {
+                        progressDialog.dismissDialog();
+
                         if (message.equals("User authority is empty.")) {
                             Toast.makeText(LoginActivity.this, "Login failed: User authority is empty.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
             } else {
+                progressDialog.dismissDialog();
+
                 Toast.makeText(LoginActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
             }
         });
@@ -228,7 +263,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     // Call the sendOtp API
                     if (isNetworkAvailable(LoginActivity.this)) {
-                        Call<ResponseBody> call = apiInterface.sendOtp( token,email);
+                        Call<ResponseBody> call = apiInterface.sendOtp(email);
                         call.enqueue(new Callback<ResponseBody>() {
                             @Override
                             public void onResponse(Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {

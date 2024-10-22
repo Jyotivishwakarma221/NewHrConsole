@@ -94,7 +94,7 @@ public class EmployeeDocFragment extends Fragment implements EmployeeDocAdapter.
             Toast.makeText(requireContext(), "Please select a user first.", Toast.LENGTH_SHORT).show();
             return;
         }
-        Call<ResponseBody> call = apiInterface.verifyEmpDocument(token, selectedUserId, true);
+        Call<ResponseBody> call = apiInterface.verifyEmpDocument(selectedUserId, true);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
@@ -226,7 +226,7 @@ public class EmployeeDocFragment extends Fragment implements EmployeeDocAdapter.
 //    }
 
     private void getDocs() {
-        Call<DocsModel> call = apiInterface.getDocs(token, selectedUserId);
+        Call<DocsModel> call = apiInterface.getDocs( selectedUserId);
         call.enqueue(new Callback<DocsModel>() {
             @Override
             public void onResponse(@NonNull Call<DocsModel> call, @NonNull Response<DocsModel> response) {

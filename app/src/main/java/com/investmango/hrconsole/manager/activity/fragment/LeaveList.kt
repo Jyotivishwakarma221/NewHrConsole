@@ -1,7 +1,10 @@
 package com.investmango.hrconsole.manager.activity.fragment
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -21,6 +24,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.HrConsole.tv.official.console.premium.CommonAdapter
 import com.HrConsole.tv.official.console.premium.RecyclerViewInterface
+import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
 import com.github.dewinjm.monthyearpicker.MonthYearPickerDialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -52,7 +56,9 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
     var leaveType = ""
     private var isLoading = false
     private var isLastPage = false
+    var isfiltered = false
     private var currentPage = 0
+    lateinit var progressDialog: AwesomeProgressDialog
     lateinit var filterredList: List<LeaveItem?>
     lateinit var layoutManager: LinearLayoutManager
 
@@ -60,6 +66,11 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
     lateinit var endDate: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        progressDialog = AwesomeProgressDialog(context)
+        progressDialog.addTitle("Loading...") // add your title here.
+        progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
 
     }
 
@@ -80,10 +91,13 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
         userId = preferences.getLong("userId", 0)
 
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
         try {
             fetchAllLeaves(currentPage)
         } catch (e: Exception) {
-            Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG).show()
+            if (isAdded)
+                Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG).show()
+            Log.e("execption", "loadMoreData: "+e.message )
         }
 
         val calendar = Calendar.getInstance()
@@ -121,7 +135,8 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
             override fun loadMoreItems() {
                 this@LeaveList.isLoading = true
                 currentPage++
-                loadMoreData(currentPage)
+                if (!isfiltered)
+                    loadMoreData(currentPage)
             }
         })
     }
@@ -134,25 +149,31 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
                 fetchAllLeaves(page)
             } catch (e: Exception) {
                 if (isAdded)
-                Toast.makeText(requireContext(), "Something went wrong.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "Something went wrong.", Toast.LENGTH_LONG)
+                        .show()
+                Log.e("execption", "loadMoreData: "+e.message )
             }
             isLoading = false
             isLastPage = leavelist?.isEmpty() == true // Assume no more data if newItems is empty
-        }, 1500)
+        }, 100)
     }
 
     private fun fetchAllLeaves(page: Int) {
         val apiClient = ApiClient(requireContext())
         apiInterface = apiClient.apiInterface
+        progressDialog?.showDialog()
         val call = apiInterface.getAllLeaves(userId, page, 10)
         Log.e("allLeaves", "fetchAllLeaves: " + userId + "  " + page)
         call.enqueue(object : Callback<AllLeaveResponse> {
+            @SuppressLint("SuspiciousIndentation")
             override fun onResponse(
                 call: Call<AllLeaveResponse>,
                 response: Response<AllLeaveResponse>,
             ) {
                 if (response.isSuccessful) {
                     try {
+                        progressDialog.dismissDialog()
+
                         val size = response.body()?.content?.size!!
                         if (size > 0) {
                             for (i in 0..size - 1) {
@@ -169,26 +190,35 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
                         } else if (leaveType.equals("Absent")) {
                             filter("ABSENT")
                         } else {
-                            Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT)
-                                .show()
+                            if (isAdded)
+                                Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT)
+                                    .show()
 
                         }
                     } catch (ex: Exception) {
+                        progressDialog?.dismissDialog()
+
                         Log.e("allLeaves", "onResponse: " + ex)
-                        Toast.makeText(context!!, "Something went wrong.", Toast.LENGTH_SHORT)
-                            .show()
+                        if (isAdded)
+                            Toast.makeText(context!!, "Something went wrong.", Toast.LENGTH_SHORT)
+                                .show()
                     }
                 } else {
+                    progressDialog?.dismissDialog()
+
                     val errorMessage = response.errorBody()!!.string()
                     val errorJson = JSONObject(errorMessage)
                     val message = errorJson.optString("message")
-                    Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG).show()
+                    if (isAdded)
+                        Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG).show()
                     Log.e("allLeaves", "onResponse: " + message)
                 }
             }
 
             override fun onFailure(call: Call<AllLeaveResponse>, t: Throwable) {
                 Log.e("EmployeePerformance", "Server error", t)
+                progressDialog?.dismissDialog()
+
             }
         })
     }
@@ -200,8 +230,10 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
             filterredList = leavelist?.filter { it?.leaveType == leaveType }!!
             Log.e("filteringHalfDay", "filter: " + filterredList?.size)
             setAdapt()
-            if (filterredList.size == 0)
-                Toast.makeText(context, "No Data Found.", Toast.LENGTH_LONG).show()
+            if (filterredList.size == 0) {
+                if (isAdded)
+                    Toast.makeText(context, "No Data Found.", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
@@ -222,10 +254,25 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
 
     override fun bindView(viewBind: LeaveRecyclerBinding, position: Int) {
         if (leaveType == "All") {
+
+           if( leavelist?.get(position)?.fileUrl!="" && leavelist?.get(position)?.fileUrl!=null){
+               viewBind.showImg.visibility=View.VISIBLE
+           }else{
+               viewBind.showImg.visibility=View.GONE
+           }
+
+            viewBind.showImg.setOnClickListener {
+                openImg(leavelist?.get(position)?.fileUrl!!)
+            }
+
             if (leavelist?.get(position)?.leaveType == "HALF_DAY") {
                 viewBind.id.text = "Half Day "
                 viewBind.approovedType.text = "   Half Day "
                 viewBind.leavetypeReject.text = "   Half Day "
+            }else if (leavelist?.get(position)?.leaveType == "WFH") {
+                viewBind.id.text = "Half Day "
+                viewBind.approovedType.text = "   WFH "
+                viewBind.leavetypeReject.text = "   WFH "
             } else {
                 viewBind.id.text = "Absent "
                 viewBind.approovedType.text = " Absent "
@@ -233,11 +280,12 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
             }
 
             val size = leavelist?.get(position)?.leaveDates?.size
+            Log.e("leaveSize", "bindView: "+leavelist?.get(position)?.leaveDates?.size+" "+  size )
 
-            if (size!! > 0)
+            if (size!! <= 1)
                 viewBind.date.setText(leavelist?.get(position)?.leaveDates?.get(0))
             else viewBind.date.setText(
-                leavelist?.get(position)?.leaveDates?.get(0) + " -" + leavelist?.get(
+                leavelist?.get(position)?.leaveDates?.get(0) + " - " + leavelist?.get(
                     position
                 )?.leaveDates?.get(size - 1)
             )
@@ -249,11 +297,17 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
                 viewBind.approvedOrdecline.setText(" Approved by")
                 viewBind.approvedBy.text = leavelist?.get(position)?.approvedByName.toString()
             } else if (leavelist?.get(position)?.status == "REJECTED") {
-
+                viewBind.approved.visibility = View.VISIBLE
                 viewBind.approovedType.visibility = View.GONE
                 viewBind.leavetypeReject.visibility = View.VISIBLE
-                viewBind.approvedOrdecline.setText("Rejected")
-                viewBind.approvedBy.visibility = View.GONE
+                viewBind.approvedOrdecline.setText("Rejected by")
+                Log.e(
+                    "approvedBy",
+                    "bindView: " + leavelist?.get(position)?.leaveDates + "  " + leavelist?.get(
+                        position
+                    )?.approvedByName.toString()
+                )
+                viewBind.approvedBy.text = leavelist?.get(position)?.approvedByName.toString()
             } else {
                 viewBind.approovedType.visibility = View.GONE
                 viewBind.leavetypeReject.visibility = View.VISIBLE
@@ -262,21 +316,31 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
 
             }
 
-            Log.e("TAGForlEAVE", "bindView: " + leavelist?.get(position)?.leaveType)
+            Log.e("TAGForLEAVE", "bindView: " + leavelist?.get(position)?.leaveType)
 
         } else {
+
+            viewBind.showImg.setOnClickListener {
+                openImg(filterredList.get(position)?.fileUrl!!)
+            }
+            if( filterredList.get(position)?.fileUrl!="" && filterredList.get(position)?.fileUrl!=null){
+                viewBind.showImg.visibility=View.VISIBLE
+            }else{
+                viewBind.showImg.visibility=View.GONE
+            }
+
             if (filterredList.get(position)?.status == "APPROVED") {
                 viewBind.approved.visibility = View.VISIBLE
                 viewBind.approovedType.visibility = View.VISIBLE
                 viewBind.leavetypeReject.visibility = View.GONE
                 viewBind.approvedOrdecline.setText(" Approved by")
-                viewBind.approvedBy.text = leavelist?.get(position)?.approvedByName.toString()
+                viewBind.approvedBy.text = filterredList.get(position)?.approvedByName.toString()
 
             } else if (filterredList.get(position)?.status == "REJECTED") {
                 viewBind.approovedType.visibility = View.GONE
                 viewBind.leavetypeReject.visibility = View.VISIBLE
-                viewBind.approvedOrdecline.setText("Rejected")
-                viewBind.approvedBy.visibility = View.GONE
+                viewBind.approvedOrdecline.setText("Rejected by")
+                viewBind.approvedBy.text = filterredList.get(position)?.approvedByName.toString()
             } else {
                 viewBind.approovedType.visibility = View.GONE
                 viewBind.leavetypeReject.visibility = View.VISIBLE
@@ -284,10 +348,14 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
                 viewBind.approvedBy.visibility = View.GONE
 
             }
-            if (filterredList?.get(position)?.leaveType == "HALF_DAY") {
+            if (filterredList.get(position)?.leaveType == "HALF_DAY") {
                 viewBind.id.text = "Half Day "
                 viewBind.approovedType.text = "   Half Day "
                 viewBind.leavetypeReject.text = "   Half Day "
+            }else if (filterredList.get(position)?.leaveType == "WFH") {
+                viewBind.id.text = "WFH "
+                viewBind.approovedType.text = "   WFH "
+                viewBind.leavetypeReject.text = "   WFH "
             } else {
                 viewBind.id.text = "Absent "
                 viewBind.approovedType.text = " Absent "
@@ -296,7 +364,9 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
             }
 
             val size = filterredList.get(position)?.leaveDates?.size
-            if (size!! > 0)
+            Log.e("leaveSize", "bindView: "+filterredList.get(position)?.leaveDates?.size+" "+  size )
+
+            if (size!! <= 1)
                 viewBind.date.setText(filterredList?.get(position)?.leaveDates?.get(0))
             else viewBind.date.setText(
                 filterredList?.get(position)?.leaveDates?.get(0) + " -" + filterredList?.get(
@@ -318,6 +388,18 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
         }
     }
 
+    fun openImg(uri :String){
+        try {
+            val urlIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(uri)
+            )
+            startActivity(urlIntent)
+        } catch (e: java.lang.Exception) {
+            Toast.makeText(context, "Try again Later.", Toast.LENGTH_SHORT).show()
+            Log.e("Exception", "onClick: $e")
+        }
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun showMonths() {
@@ -353,21 +435,25 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
                     "startDate",
                     "showMonths: " + startDate + "  " + Instant.now().toEpochMilli()
                 )
-                getFilterLeave(startDate, endDate, "")
+                getFilterLeave(startDate, endDate, "",0)
             } catch (e: Exception) {
-                Toast.makeText(context, "something went wrong.", Toast.LENGTH_LONG).show()
+                if (isAdded)
+                    Toast.makeText(context, "something went wrong.", Toast.LENGTH_LONG).show()
                 Log.e("showMonths", "showMonths: " + e.message)
             }
         }
     }
 
-    private fun getFilterLeave(startDate: Long, endDate: Long, status: String) {
+    private fun getFilterLeave(startDate: Long, endDate: Long, status: String,  page: Int) {
         val apiClient = ApiClient(requireContext())
         apiInterface = apiClient.apiInterface
+        progressDialog?.showDialog()
 
-        if (startDate == 0L || endDate == 0L) {
+        //with only status
+        if (startDate == 0L && endDate == 0L && status.trim() != "--") {
 
-            val call = apiInterface.getFilteredLeaveWithoutDate(userId, status)
+            val call = apiInterface.getFilteredLeaveWithoutDate(userId, status,page)
+
             Log.e("allLeaves", "fetchAllLeaves: " + userId + "  " + startDate)
             call.enqueue(object : Callback<AllLeaveResponse> {
                 override fun onResponse(
@@ -375,7 +461,10 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
                     response: Response<AllLeaveResponse>,
                 ) {
                     if (response.isSuccessful) {
+                        progressDialog?.dismissDialog()
+
                         try {
+                            isfiltered = true
                             val size = response.body()?.content?.size!!
                             if (size > 0) {
                                 leavelist?.clear()
@@ -390,7 +479,10 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
                             } else {
                                 binding.noDataFound.visibility = View.VISIBLE
                                 binding.recyclerView.visibility = View.GONE
-                                Toast.makeText(context, "No data found.", Toast.LENGTH_LONG).show()
+
+                                if (isAdded)
+                                    Toast.makeText(context, "No data found.", Toast.LENGTH_LONG)
+                                        .show()
                             }
                             Log.e("allLeaves", "onResponse: " + leavelist?.size)
                             if (leaveType.equals("All")) {
@@ -400,30 +492,48 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
                             } else if (leaveType.equals("Absent")) {
                                 filter("ABSENT")
                             } else {
-                                Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT)
-                                    .show()
+                                if (isAdded)
+                                    Toast.makeText(
+                                        context,
+                                        "Something went wrong.",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
 
                             }
                         } catch (ex: Exception) {
                             Log.e("allLeaves", "onResponse: " + ex)
-                            Toast.makeText(context!!, "Something went wrong.", Toast.LENGTH_SHORT)
-                                .show()
+                            if (isAdded)
+                                Toast.makeText(
+                                    context!!,
+                                    "Something went wrong.",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
                         }
                     } else {
+                        progressDialog?.dismissDialog()
+
                         val errorMessage = response.errorBody()!!.string()
                         val errorJson = JSONObject(errorMessage)
                         val message = errorJson.optString("message")
-                        Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG).show()
+                        if (isAdded)
+                            Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG)
+                                .show()
                         Log.e("allLeaves", "onResponse: " + message)
                     }
                 }
 
                 override fun onFailure(call: Call<AllLeaveResponse>, t: Throwable) {
+                    progressDialog?.dismissDialog()
+
                     Log.e("EmployeePerformance", "Server error", t)
                 }
             })
-        } else {
-            val call = apiInterface.getFilteredLeave(userId, startDate, endDate, status)
+        }
+        //with all three
+        if (startDate != 0L && endDate != 0L && status.trim() != "--") {
+            val call = apiInterface.getFilteredLeave(userId, startDate, endDate, status,page)
             Log.e("allLeaves", "fetchAllLeaves: " + userId + "  " + startDate)
             call.enqueue(object : Callback<AllLeaveResponse> {
                 override fun onResponse(
@@ -431,6 +541,10 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
                     response: Response<AllLeaveResponse>,
                 ) {
                     if (response.isSuccessful) {
+                        progressDialog?.dismissDialog()
+
+                        isfiltered = true
+
                         try {
                             val size = response.body()?.content?.size!!
                             if (size > 0) {
@@ -440,9 +554,11 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
                                     leavelist?.add(response.body()?.content!!.get(i))
                                 }
 
-                                binding.recyclerView.adapter?.notifyItemInserted(leavelist?.size!!)
+                                binding.recyclerView.adapter = CommonAdapter(this@LeaveList)
                             } else {
-                                Toast.makeText(context, "No data found.", Toast.LENGTH_LONG).show()
+                                if (isAdded)
+                                    Toast.makeText(context, "No data found.", Toast.LENGTH_LONG)
+                                        .show()
                             }
                             Log.e("allLeaves", "onResponse: " + leavelist?.size)
                             if (leaveType.equals("All")) {
@@ -452,29 +568,416 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
                             } else if (leaveType.equals("Absent")) {
                                 filter("ABSENT")
                             } else {
-                                Toast.makeText(context, "Something went wrong.", Toast.LENGTH_SHORT)
-                                    .show()
+                                if (isAdded)
+                                    Toast.makeText(
+                                        context,
+                                        "Something went wrong.",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
 
                             }
                         } catch (ex: Exception) {
                             Log.e("allLeaves", "onResponse: " + ex)
-                            Toast.makeText(context!!, "Something went wrong.", Toast.LENGTH_SHORT)
-                                .show()
+                            if (isAdded)
+                                Toast.makeText(
+                                    context!!,
+                                    "Something went wrong.",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
                         }
                     } else {
+                        progressDialog?.dismissDialog()
+
                         val errorMessage = response.errorBody()!!.string()
                         val errorJson = JSONObject(errorMessage)
                         val message = errorJson.optString("message")
-                        Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG).show()
+                        if (isAdded)
+                            Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG)
+                                .show()
                         Log.e("allLeaves", "onResponse: " + message)
                     }
                 }
 
                 override fun onFailure(call: Call<AllLeaveResponse>, t: Throwable) {
+                    progressDialog?.dismissDialog()
                     Log.e("EmployeePerformance", "Server error", t)
                 }
             })
         }
+        //with start and end date
+        if (status.trim() == "--" && startDate != 0L && endDate != 0L) {
+            val call = apiInterface.getFilteredLeaveWithoutStatus(userId, startDate, endDate,page)
+            Log.e("allLeaves", "fetchAllLeaves: " + userId + "  " + startDate)
+            call.enqueue(object : Callback<AllLeaveResponse> {
+                override fun onResponse(
+                    call: Call<AllLeaveResponse>,
+                    response: Response<AllLeaveResponse>,
+                ) {
+                    if (response.isSuccessful) {
+                        progressDialog?.dismissDialog()
+
+                        isfiltered = true
+
+                        try {
+                            val size = response.body()?.content?.size!!
+                            if (size > 0) {
+                                leavelist?.clear()
+
+                                for (i in 0..size - 1) {
+                                    leavelist?.add(response.body()?.content!!.get(i))
+                                }
+
+                                binding.recyclerView.adapter = CommonAdapter(this@LeaveList)
+                            } else {
+                                if (isAdded)
+                                    Toast.makeText(context, "No data found.", Toast.LENGTH_LONG)
+                                        .show()
+                            }
+                            Log.e("allLeaves", "onResponse: " + leavelist?.size)
+                            if (leaveType.equals("All")) {
+                                filter("All")
+                            } else if (leaveType.equals("Half")) {
+                                filter("HALF_DAY")
+                            } else if (leaveType.equals("Absent")) {
+                                filter("ABSENT")
+                            } else {
+                                if (isAdded)
+                                    Toast.makeText(
+                                        context,
+                                        "Something went wrong.",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+
+                            }
+                        } catch (ex: Exception) {
+                            Log.e("allLeaves", "onResponse: " + ex)
+                            if (isAdded)
+                                Toast.makeText(
+                                    context!!,
+                                    "Something went wrong.",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                        }
+                    } else {
+                        progressDialog?.dismissDialog()
+
+                        val errorMessage = response.errorBody()!!.string()
+                        val errorJson = JSONObject(errorMessage)
+                        val message = errorJson.optString("message")
+                        if (isAdded)
+                            Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG)
+                                .show()
+                        Log.e("allLeaves", "onResponse: " + message)
+                    }
+                }
+
+                override fun onFailure(call: Call<AllLeaveResponse>, t: Throwable) {
+                    progressDialog?.dismissDialog()
+                    Log.e("EmployeePerformance", "Server error", t)
+                }
+            })
+        }
+        //with status and end date
+        if (status.trim() != "--" && startDate == 0L && endDate != 0L) {
+            val call = apiInterface.getFilteredLeaveWithOutStartDate(userId, status, endDate,page)
+            Log.e("allLeaves", "fetchAllLeaves: " + userId + "  " + startDate)
+            call.enqueue(object : Callback<AllLeaveResponse> {
+                override fun onResponse(
+                    call: Call<AllLeaveResponse>,
+                    response: Response<AllLeaveResponse>,
+                ) {
+                    if (response.isSuccessful) {
+                        progressDialog?.dismissDialog()
+                        isfiltered = true
+
+                        try {
+                            val size = response.body()?.content?.size!!
+                            if (size > 0) {
+                                leavelist?.clear()
+
+                                for (i in 0..size - 1) {
+                                    leavelist?.add(response.body()?.content!!.get(i))
+                                }
+
+                                binding.recyclerView.adapter = CommonAdapter(this@LeaveList)
+                            } else {
+                                if (isAdded)
+                                    Toast.makeText(context, "No data found.", Toast.LENGTH_LONG)
+                                        .show()
+                            }
+                            Log.e("allLeaves", "onResponse: " + leavelist?.size)
+                            if (leaveType.equals("All")) {
+                                filter("All")
+                            } else if (leaveType.equals("Half")) {
+                                filter("HALF_DAY")
+                            } else if (leaveType.equals("Absent")) {
+                                filter("ABSENT")
+                            } else {
+                                if (isAdded)
+                                    Toast.makeText(
+                                        context,
+                                        "Something went wrong.",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+
+                            }
+                        } catch (ex: Exception) {
+                            Log.e("allLeaves", "onResponse: " + ex)
+                            if (isAdded)
+                                Toast.makeText(
+                                    context!!,
+                                    "Something went wrong.",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                        }
+                    } else {
+                        progressDialog?.dismissDialog()
+
+                        val errorMessage = response.errorBody()!!.string()
+                        val errorJson = JSONObject(errorMessage)
+                        val message = errorJson.optString("message")
+                        if (isAdded)
+                            Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG)
+                                .show()
+                        Log.e("allLeaves", "onResponse: " + message)
+                    }
+                }
+
+                override fun onFailure(call: Call<AllLeaveResponse>, t: Throwable) {
+                    progressDialog?.dismissDialog()
+                    Log.e("EmployeePerformance", "Server error", t)
+                }
+            })
+        }
+        //With start date only.
+        if (status.trim() == "--" && startDate != 0L && endDate == 0L) {
+            val call = apiInterface.getFilteredLeaveWithStartDate(userId, startDate,page)
+            Log.e("allLeaves", "fetchAllLeaves: " + userId + "  " + startDate)
+            call.enqueue(object : Callback<AllLeaveResponse> {
+                override fun onResponse(
+                    call: Call<AllLeaveResponse>,
+                    response: Response<AllLeaveResponse>,
+                ) {
+
+                    if (response.isSuccessful) {
+                        progressDialog?.dismissDialog()
+                        isfiltered = true
+
+                        try {
+                            val size = response.body()?.content?.size!!
+                            if (size > 0) {
+                                leavelist?.clear()
+
+                                for (i in 0..size - 1) {
+                                    leavelist?.add(response.body()?.content!!.get(i))
+                                }
+
+                                binding.recyclerView.adapter = CommonAdapter(this@LeaveList)
+                            } else {
+                                if (isAdded)
+                                    Toast.makeText(context, "No data found.", Toast.LENGTH_LONG)
+                                        .show()
+                            }
+                            Log.e("allLeaves", "onResponse: " + leavelist?.size)
+                            if (leaveType.equals("All")) {
+                                filter("All")
+                            } else if (leaveType.equals("Half")) {
+                                filter("HALF_DAY")
+                            } else if (leaveType.equals("Absent")) {
+                                filter("ABSENT")
+                            } else {
+                                if (isAdded)
+                                    Toast.makeText(
+                                        context,
+                                        "Something went wrong.",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+
+                            }
+                        } catch (ex: Exception) {
+                            Log.e("allLeaves", "onResponse: " + ex)
+                            if (isAdded)
+                                Toast.makeText(
+                                    context!!,
+                                    "Something went wrong.",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                        }
+                    } else {
+                        progressDialog?.dismissDialog()
+                        val errorMessage = response.errorBody()!!.string()
+                        val errorJson = JSONObject(errorMessage)
+                        val message = errorJson.optString("message")
+                        if (isAdded)
+                            Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG)
+                                .show()
+                        Log.e("allLeaves", "onResponse: " + message)
+                    }
+                }
+
+                override fun onFailure(call: Call<AllLeaveResponse>, t: Throwable) {
+                    progressDialog?.dismissDialog()
+                    Log.e("EmployeePerformance", "Server error", t)
+                }
+            })
+        }
+        //With End date Only
+        if (status.trim() == "--" && startDate == 0L && endDate != 0L) {
+            val call = apiInterface.getFilteredLeaveWithEndDate(userId, endDate,page)
+            Log.e("allLeaves", "fetchAllLeaves: " + userId + "  " + startDate)
+            call.enqueue(object : Callback<AllLeaveResponse> {
+                @SuppressLint("SuspiciousIndentation")
+                override fun onResponse(
+                    call: Call<AllLeaveResponse>,
+                    response: Response<AllLeaveResponse>,
+                ) {
+                    if (response.isSuccessful) {
+                        progressDialog?.dismissDialog()
+                        try {
+                            isfiltered = true
+
+                            val size = response.body()?.content?.size!!
+                            if (size > 0) {
+                                leavelist?.clear()
+
+                                for (i in 0..size - 1) {
+                                    leavelist?.add(response.body()?.content!!.get(i))
+                                }
+
+                                binding.recyclerView.adapter = CommonAdapter(this@LeaveList)
+                            } else {
+                                if (isAdded)
+                                    Toast.makeText(context, "No data found.", Toast.LENGTH_LONG)
+                                        .show()
+                            }
+                            Log.e("allLeaves", "onResponse: " + leavelist?.size)
+                            if (leaveType.equals("All")) {
+                                filter("All")
+                            } else if (leaveType.equals("Half")) {
+                                filter("HALF_DAY")
+                            } else if (leaveType.equals("Absent")) {
+                                filter("ABSENT")
+                            } else {
+                                if (isAdded)
+                                    Toast.makeText(
+                                        context,
+                                        "Something went wrong.",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+
+                            }
+                        } catch (ex: Exception) {
+                            Log.e("allLeaves", "onResponse: " + ex)
+                            if (isAdded)
+                                Toast.makeText(
+                                    context!!,
+                                    "Something went wrong.",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                        }
+                    } else {
+                        progressDialog?.dismissDialog()
+                        val errorMessage = response.errorBody()!!.string()
+                        val errorJson = JSONObject(errorMessage)
+                        val message = errorJson.optString("message")
+                        if (isAdded)
+                            Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG)
+                                .show()
+                        Log.e("allLeaves", "onResponse: " + message)
+                    }
+                }
+
+                override fun onFailure(call: Call<AllLeaveResponse>, t: Throwable) {
+                    progressDialog?.dismissDialog()
+                    Log.e("EmployeePerformance", "Server error", t)
+                }
+            })
+        }
+        //with status and startdate
+        if (status.trim() != "--" && startDate != 0L && endDate == 0L) {
+            val call = apiInterface.getFilteredLeaveWithOutEndDate(userId, status, startDate,page)
+            Log.e("allLeaves", "fetchAllLeaves: " + userId + "  " + startDate)
+            call.enqueue(object : Callback<AllLeaveResponse> {
+                override fun onResponse(
+                    call: Call<AllLeaveResponse>,
+                    response: Response<AllLeaveResponse>,
+                ) {
+                    if (response.isSuccessful) {
+                        progressDialog?.dismissDialog()
+                        isfiltered = true
+
+                        try {
+                            val size = response.body()?.content?.size!!
+                            if (size > 0) {
+                                leavelist?.clear()
+
+                                for (i in 0..size - 1) {
+                                    leavelist?.add(response.body()?.content!!.get(i))
+                                }
+
+                                binding.recyclerView.adapter = CommonAdapter(this@LeaveList)
+                            } else {
+                                if (isAdded)
+                                    Toast.makeText(context, "No data found.", Toast.LENGTH_LONG)
+                                        .show()
+                            }
+                            Log.e("allLeaves", "onResponse: " + leavelist?.size)
+                            if (leaveType.equals("All")) {
+                                filter("All")
+                            } else if (leaveType.equals("Half")) {
+                                filter("HALF_DAY")
+                            } else if (leaveType.equals("Absent")) {
+                                filter("ABSENT")
+                            } else {
+                                if (isAdded)
+                                    Toast.makeText(
+                                        context,
+                                        "Something went wrong.",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+
+                            }
+                        } catch (ex: Exception) {
+                            Log.e("allLeaves", "onResponse: " + ex)
+                            if (isAdded)
+                                Toast.makeText(
+                                    context!!,
+                                    "Something went wrong.",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                        }
+                    } else {
+                        progressDialog?.dismissDialog()
+
+                        val errorMessage = response.errorBody()!!.string()
+                        val errorJson = JSONObject(errorMessage)
+                        val message = errorJson.optString("message")
+                        if (isAdded)
+                            Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG)
+                                .show()
+                        Log.e("allLeaves", "onResponse: " + message)
+                    }
+                }
+
+                override fun onFailure(call: Call<AllLeaveResponse>, t: Throwable) {
+                    progressDialog?.dismissDialog()
+                    Log.e("EmployeePerformance", "Server error", t)
+                }
+            })
+        }
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -483,7 +986,7 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
         val dialog1 = BottomSheetDialog(context!!, R.style.BottomSheetDialog)
         dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog1.setCancelable(true)
-        dialog1.setCanceledOnTouchOutside(false)
+        dialog1.setCanceledOnTouchOutside(true)
         dialog1.setContentView(R.layout.filter_layput)
         val window = dialog1.window
         window!!.setLayout(
@@ -494,7 +997,7 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
         val status = dialog1.findViewById<Spinner>(R.id.status)
         val showResult = dialog1.findViewById<TextView>(R.id.showresult)
 
-        val list = resources.getStringArray(R.array.statusType)
+        val list = resources.getStringArray(R.array.statusType2)
 
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.color_spinner_layout, list)
         arrayAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout)
@@ -511,11 +1014,16 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
         }
         showResult?.setOnClickListener {
             val startdate = DateAndTimeUtility.dateToEpoch(startDate.text.toString())
-            Log.e("startdate", "showFilterBox: " + startdate)
+            Log.e("startdate", "showFilterBox: " + status.selectedItem.toString())
 
             val enddate = DateAndTimeUtility.dateToEpoch(endDate.text.toString())
-            getFilterLeave(startdate, enddate, status.selectedItem.toString())
-            dialog1.dismiss()
+            if (startdate == 0L && enddate == 0L && status.selectedItem.toString().trim() == "--")
+                Toast.makeText(context, "Select Date or status", Toast.LENGTH_SHORT).show()
+            else {
+                getFilterLeave(startdate, enddate, status.selectedItem.toString(),0)
+                dialog1.dismiss()
+            }
+
         }
         dialog1.show()
     }
@@ -545,4 +1053,8 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
         TODO("Not yet implemented")
     }
 
+    override fun onPause() {
+        super.onPause()
+        leavelist?.clear()
+    }
 }

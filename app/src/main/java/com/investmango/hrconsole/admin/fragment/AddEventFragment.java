@@ -104,7 +104,7 @@ public class AddEventFragment extends Fragment implements ImageDeleteListener,  
 
             AddEvent addEvent = new AddEvent(description, eventDateTime, poster, subject);
 
-            Call<AddEvent> call = apiInterface.saveNewAnnouncement(token, addEvent);
+            Call<AddEvent> call = apiInterface.saveNewAnnouncement( addEvent);
             call.enqueue(new Callback<AddEvent>() {
                 @Override
                 public void onResponse(@NonNull Call<AddEvent> call, @NonNull Response<AddEvent> response) {
@@ -222,6 +222,7 @@ public class AddEventFragment extends Fragment implements ImageDeleteListener,  
         int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
         cursor.moveToFirst();
         long fileSize = cursor.getLong(sizeIndex);
+
         cursor.close();
         return fileSize;
     }

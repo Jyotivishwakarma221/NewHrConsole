@@ -8,6 +8,16 @@ public class AddTask {
     private String status;
     private String subject;
 
+    private Long deadLine;
+
+    public Long getDeadline() {
+        return deadLine;
+    }
+
+    public void setDeadline(Long deadline) {
+        deadLine = deadline;
+    }
+
     public String getComments() {
         return comments;
     }

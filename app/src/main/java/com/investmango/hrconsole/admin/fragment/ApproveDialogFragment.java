@@ -140,7 +140,7 @@ public class ApproveDialogFragment extends DialogFragment {
         requestBody.setId(leaveId);
         requestBody.setStatus(selectedStatus);
         requestBody.setComment(commentText);
-        Call<Void> call = apiInterface.ApproveLeaves(token, requestBody, userId);
+        Call<Void> call = apiInterface.ApproveLeaves( requestBody, userId);
 
         call.enqueue(new Callback<Void>() {
             @Override

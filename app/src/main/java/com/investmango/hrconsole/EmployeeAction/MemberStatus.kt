@@ -1,6 +1,8 @@
 package com.investmango.hrconsole.EmployeeAction
 
 import TotalMemberFragment
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,25 +11,29 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.investmango.hrconsole.R
-import com.investmango.hrconsole.api.ApiClient
 import com.investmango.hrconsole.api.ApiInterface
 import com.investmango.hrconsole.databinding.FragmentMemberStatusBinding
 import com.investmango.hrconsole.model.Content
+import com.investmango.hrconsole.service.Constant
 
 
 class MemberStatus : Fragment() {
     lateinit var apiInterface: ApiInterface
     var listoftotalEmp: List<Content> = arrayListOf()
-
+    var authority: String? = null
     private lateinit var binding: FragmentMemberStatusBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val preferences: SharedPreferences =
+            context!!.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        authority = preferences.getString("Authority", "")
+
 
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
         binding =
@@ -41,8 +47,13 @@ class MemberStatus : Fragment() {
         val adapter = childFragmentManager?.let { ViewPagerAdap(it, 0) }
 
         // add fragment to the list
-        adapter?.addFragment("Present Employees",TotalMemberFragment())
-        adapter?.addFragment("Total Employees",TotalMemberFragment())
+        if(authority.equals(Constant.ADMIN)) {
+            adapter?.addFragment("Present Employees", TotalMemberFragment())
+            adapter?.addFragment("Total Employees", TotalMemberFragment())
+        }else{
+            adapter?.addFragment("Present Members", TotalMemberFragment())
+            adapter?.addFragment("Total Members", TotalMemberFragment())
+        }
         binding.viewPager.adapter = adapter
         binding.tabs.setupWithViewPager(binding.viewPager)
 

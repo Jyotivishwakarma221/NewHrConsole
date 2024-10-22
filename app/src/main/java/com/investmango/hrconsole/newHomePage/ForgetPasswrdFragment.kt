@@ -2,21 +2,23 @@ package com.investmango.hrconsole.newHomePage
 
 import android.app.ProgressDialog
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
+import com.basusingh.beautifulprogressdialog.BeautifulProgressDialog
 import com.bumptech.glide.Glide
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
 import com.investmango.hrconsole.api.ApiInterface
 import com.investmango.hrconsole.databinding.FragmentForgetPasswrdBinding
+import com.investmango.hrconsole.model.AssignMeeting
 import okhttp3.ResponseBody
 import org.json.JSONException
 import org.json.JSONObject
@@ -31,11 +33,28 @@ class ForgetPasswrdFragment : Fragment() {
     lateinit var apiInterface: ApiInterface
     lateinit var email: String
     lateinit var progressBar: ProgressDialog
-
+    lateinit var Dialog: BeautifulProgressDialog
+    lateinit var  progressDialog : AwesomeProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        progressBar = ProgressDialog(context)
 
+
+        progressDialog = AwesomeProgressDialog(context)
+        progressDialog.addTitle("Loading...") // add your title here.
+        progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
+
+
+
+
+        progressBar = ProgressDialog(activity, R.drawable.progress_bar)
+        progressBar.setProgressDrawable(
+            ContextCompat.getDrawable(
+                context!!,
+                R.drawable.progress_bar
+            )
+        )
+        progressBar!!.setCancelable(false)
     }
 
     override fun onCreateView(
@@ -68,6 +87,8 @@ class ForgetPasswrdFragment : Fragment() {
 
         binding.enter.setOnClickListener {
 //            showprogress()
+//            progressDialog.showDialog()
+
 
 //            replaceWithBundle()
         }
@@ -103,7 +124,7 @@ class ForgetPasswrdFragment : Fragment() {
         val preferences = context!!.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val token = preferences.getString("token", "0").toString()
 
-        val call = apiInterface.sendOtp(token, binding.emailId.text.toString())
+        val call = apiInterface.sendOtp( binding.emailId.text.toString())
         call.enqueue(object : Callback<ResponseBody?> {
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                 if (response.isSuccessful) {
@@ -135,13 +156,14 @@ class ForgetPasswrdFragment : Fragment() {
                             Toast.LENGTH_SHORT
                         ).show()
                     }
-                }else {
-                    // Handle the case where the response body is null
+                } else {
+//                    // Handle the case where the response body is null
                     Toast.makeText(
                         context,
-                        "Something went wrong.",
+                        response.errorBody().toString(),
                         Toast.LENGTH_SHORT
                     ).show()
+//                    handleErrorResponse(response.errorBody());
                     Log.e("forgetPass", "onResponse: " + response.errorBody())
                 }
             }
@@ -167,4 +189,21 @@ class ForgetPasswrdFragment : Fragment() {
 
     }
 
+//    private fun handleErrorResponse(response: ResponseBody?) {
+//        var errorMessage = "Failed to connect internet"
+//        if (response() != null) {
+//            try {
+//                val jsonObject = org.json.JSONObject(response.errorBody()!!.string())
+//                val message = jsonObject.optString("message")
+//                if (!message.isEmpty()) {
+//                    errorMessage = message
+//                    Log.e("errorMessage", "handleErrorResponse: " + errorMessage)
+//                }
+//            } catch (e: IOException) {
+//                e.printStackTrace()
+//            } catch (e: JSONException) {
+//                e.printStackTrace()
+//            }
+//        }
+//    }
 }

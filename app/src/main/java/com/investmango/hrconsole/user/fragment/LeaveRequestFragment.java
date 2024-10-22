@@ -225,7 +225,7 @@ public class LeaveRequestFragment extends Fragment {
             ApiClient apiClient = new ApiClient(requireContext());
             apiInterface = apiClient.getApiInterface();
 
-            Call<SaveUserLeave> call = apiInterface.saveUserLeave(token, requestBody, userId);
+            Call<SaveUserLeave> call = apiInterface.saveUserLeave(requestBody, userId);
             call.enqueue(new Callback<SaveUserLeave>() {
                 @Override
                 public void onResponse(@NonNull Call<SaveUserLeave> call, @NonNull Response<SaveUserLeave> response) {

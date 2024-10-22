@@ -1,5 +1,6 @@
 package com.investmango.hrconsole.EmployeeAction.EmplyDetail
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -49,9 +50,19 @@ class FilteredMeetingFragment : Fragment(), RecyclerViewInterface<FilterMeetingI
     lateinit var layoutManager: LinearLayoutManager
     private var currentPage = 0
     var status: String = ""
+    private var progressDialog: ProgressDialog? = null
+
+    var userId: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        var preferences = context!!.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        userId = preferences.getLong("userId", 0)
+
+        progressDialog = ProgressDialog(activity, R.style.CustomProgressDialog)
+        progressDialog!!.setMessage("Please wait ...")
+        progressDialog!!.setCancelable(false)
+
         if (arguments != null) {
             if (arguments!!.getString("ViewOf") == "child") {
                 startdate = arguments!!.getLong("startdate")
@@ -81,10 +92,15 @@ class FilteredMeetingFragment : Fragment(), RecyclerViewInterface<FilterMeetingI
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+        if (childId != 0L) {
+            userId = childId
+        }
         try {
             getMeetings(currentPage)
         } catch (e: Exception) {
-            Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG).show()
+            if (isAdded)
+                Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG).show()
         }
         binding.recyclerForMember.addOnScrollListener(object :
             PaginationScrollListener(layoutManager) {
@@ -153,7 +169,7 @@ class FilteredMeetingFragment : Fragment(), RecyclerViewInterface<FilterMeetingI
         Log.e("adapter", "showMeetingDetails: " + item?.assignedUsers)
         members?.adapter = item?.assignedUsers?.let { Member_list_Adapter(it) }
 
-            
+
         dialog1.show()
     }
 
@@ -164,7 +180,8 @@ class FilteredMeetingFragment : Fragment(), RecyclerViewInterface<FilterMeetingI
             try {
                 getMeetings(page)
             } catch (e: Exception) {
-                Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG).show()
+                if (isAdded)
+                    Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG).show()
             }
             isLoading = false
             isLastPage = meetingLis.isEmpty() == true // Assume no more data if newItems is empty
@@ -174,38 +191,276 @@ class FilteredMeetingFragment : Fragment(), RecyclerViewInterface<FilterMeetingI
     private fun getMeetings(page: Int) {
         val apiClient = ApiClient(requireContext())
         apiInterface = apiClient.apiInterface
+        progressDialog?.show()
+        //with only status
+        if (startdate == 0L && enddate == 0L && status.trim() != "--") {
+            val call: Call<MeetingListResponse>? =
+                apiInterface.getFilteredWithstatus(userId, status, page, 10)
+            call?.enqueue(object : Callback<MeetingListResponse?> {
+                override fun onResponse(
+                    call: Call<MeetingListResponse?>,
+                    response: Response<MeetingListResponse?>,
+                ) {
+                    if (response.body() != null && response.isSuccessful()) {
+                        progressDialog?.dismiss()
 
-        var preferences = context!!.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-        val userId = preferences.getLong("userId", 0)
+                        meetingLis = response.body()!!.content!!
+                        if (!meetingLis.isEmpty())
+                            setAdapt()
+                        else {
+                            binding.noMeeting.visibility = View.VISIBLE
+                            binding.recyclerForMember.visibility = View.GONE
+                        }
 
-        val call: Call<MeetingListResponse>? =
-            apiInterface.getFilteredOwnMeeting(userId, status, startdate, enddate, page, 10)
-        call?.enqueue(object : Callback<MeetingListResponse?> {
-            override fun onResponse(
-                call: Call<MeetingListResponse?>,
-                response: Response<MeetingListResponse?>,
-            ) {
-                if (response.body() != null && response.isSuccessful()) {
-                    meetingLis = response.body()!!.content!!
-                    if (!meetingLis.isEmpty())
-                        setAdapt()
-                    else {
-                        binding.noMeeting.visibility = View.VISIBLE
-                        binding.recyclerForMember.visibility = View.GONE
+                        Log.e("getmeetings", "onResponse: " + response.body())
+                    } else {
+                        progressDialog?.dismiss()
+
+                        Log.e("getmeetings", "onResponse: " + response.body().toString())
+                        if (isAdded)
+                            Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
                     }
-
-                    Log.e("getmeetings", "onResponse: " + response.body())
-                } else {
-                    Log.e("getmeetings", "onResponse: " + response.body().toString())
-                    Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
                 }
-            }
 
-            override fun onFailure(call: Call<MeetingListResponse?>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
-                Log.e("khushi123", "onFailure: " + t.message)
-            }
-        })
+                override fun onFailure(call: Call<MeetingListResponse?>, t: Throwable) {
+                    progressDialog?.dismiss()
+
+                    if (isAdded)
+                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                    Log.e("khushi123", "onFailure: " + t.message)
+                }
+            })
+        }
+        //with all three
+        if (startdate != 0L && enddate != 0L && status.trim() != "--") {
+            val call: Call<MeetingListResponse>? =
+                apiInterface.getFilteredOwnMeeting(userId, status, startdate, enddate, page, 10)
+            call?.enqueue(object : Callback<MeetingListResponse?> {
+                override fun onResponse(
+                    call: Call<MeetingListResponse?>,
+                    response: Response<MeetingListResponse?>,
+                ) {
+                    if (response.body() != null && response.isSuccessful()) {
+                        progressDialog?.dismiss()
+
+                        meetingLis = response.body()!!.content!!
+                        if (!meetingLis.isEmpty())
+                            setAdapt()
+                        else {
+                            binding.noMeeting.visibility = View.VISIBLE
+                            binding.recyclerForMember.visibility = View.GONE
+                        }
+
+                        Log.e("getmeetings", "onResponse: " + response.body())
+                    } else {
+                        Log.e("getmeetings", "onResponse: " + response.body().toString())
+                        progressDialog?.dismiss()
+                        if (isAdded)
+                            Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<MeetingListResponse?>, t: Throwable) {
+                    progressDialog?.dismiss()
+                    if (isAdded)
+                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                    Log.e("khushi123", "onFailure: " + t.message)
+                }
+            })
+        }
+
+        //with start and end date
+        if (status.trim() == "--" && startdate != 0L && enddate != 0L) {
+            val call: Call<MeetingListResponse>? =
+                apiInterface.getFilteredwithoutStaus(userId, startdate, enddate, page, 10)
+            call?.enqueue(object : Callback<MeetingListResponse?> {
+                override fun onResponse(
+                    call: Call<MeetingListResponse?>,
+                    response: Response<MeetingListResponse?>,
+                ) {
+                    if (response.body() != null && response.isSuccessful()) {
+                        progressDialog?.dismiss()
+
+                        meetingLis = response.body()!!.content!!
+                        if (!meetingLis.isEmpty())
+                            setAdapt()
+                        else {
+                            binding.noMeeting.visibility = View.VISIBLE
+                            binding.recyclerForMember.visibility = View.GONE
+                        }
+
+                        Log.e("getmeetings", "onResponse: " + response.body())
+                    } else {
+                        Log.e("getmeetings", "onResponse: " + response.body().toString())
+                        progressDialog?.dismiss()
+                        if (isAdded)
+                            Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<MeetingListResponse?>, t: Throwable) {
+                    progressDialog?.dismiss()
+                    if (isAdded)
+                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                    Log.e("khushi123", "onFailure: " + t.message)
+                }
+            })
+        }
+
+        //with status and end date
+        if (status.trim() != "--" && startdate == 0L && enddate != 0L) {
+            val call: Call<MeetingListResponse>? =
+                apiInterface.getFilteredwithoutStartdate(userId, status, enddate, page, 10)
+            call?.enqueue(object : Callback<MeetingListResponse?> {
+                override fun onResponse(
+                    call: Call<MeetingListResponse?>,
+                    response: Response<MeetingListResponse?>,
+                ) {
+                    if (response.body() != null && response.isSuccessful()) {
+                        progressDialog?.dismiss()
+
+                        meetingLis = response.body()!!.content!!
+                        if (!meetingLis.isEmpty())
+                            setAdapt()
+                        else {
+                            binding.noMeeting.visibility = View.VISIBLE
+                            binding.recyclerForMember.visibility = View.GONE
+                        }
+
+                        Log.e("getmeetings", "onResponse: " + response.body())
+                    } else {
+                        Log.e("getmeetings", "onResponse: " + response.body().toString())
+                        progressDialog?.dismiss()
+                        if (isAdded)
+                            Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<MeetingListResponse?>, t: Throwable) {
+                    progressDialog?.dismiss()
+                    if (isAdded)
+                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                    Log.e("khushi123", "onFailure: " + t.message)
+                }
+            })
+        }
+
+        //With start date only.
+        if (status.trim() == "--" && startdate != 0L && enddate == 0L) {
+            val call: Call<MeetingListResponse>? =
+                apiInterface.getFilteredwithStartdate(userId, startdate, page, 10)
+            call?.enqueue(object : Callback<MeetingListResponse?> {
+                override fun onResponse(
+                    call: Call<MeetingListResponse?>,
+                    response: Response<MeetingListResponse?>,
+                ) {
+                    if (response.body() != null && response.isSuccessful()) {
+                        progressDialog?.dismiss()
+
+                        meetingLis = response.body()!!.content!!
+                        if (!meetingLis.isEmpty())
+                            setAdapt()
+                        else {
+                            binding.noMeeting.visibility = View.VISIBLE
+                            binding.recyclerForMember.visibility = View.GONE
+                        }
+
+                        Log.e("getmeetings", "onResponse: " + response.body())
+                    } else {
+                        Log.e("getmeetings", "onResponse: " + response.body().toString())
+                        progressDialog?.dismiss()
+                        if (isAdded)
+                            Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<MeetingListResponse?>, t: Throwable) {
+                    progressDialog?.dismiss()
+                    if (isAdded)
+                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                    Log.e("khushi123", "onFailure: " + t.message)
+                }
+            })
+        }
+
+        //With End date Only
+        if (status.trim() == "--" && startdate == 0L && enddate != 0L) {
+            val call: Call<MeetingListResponse>? =
+                apiInterface.getFilteredwithEnddate(userId, enddate, page, 10)
+            call?.enqueue(object : Callback<MeetingListResponse?> {
+                override fun onResponse(
+                    call: Call<MeetingListResponse?>,
+                    response: Response<MeetingListResponse?>,
+                ) {
+                    if (response.body() != null && response.isSuccessful()) {
+                        progressDialog?.dismiss()
+
+                        meetingLis = response.body()!!.content!!
+                        if (!meetingLis.isEmpty())
+                            setAdapt()
+                        else {
+                            binding.noMeeting.visibility = View.VISIBLE
+                            binding.recyclerForMember.visibility = View.GONE
+                        }
+
+                        Log.e("getmeetings", "onResponse: " + response.body())
+                    } else {
+
+                        Log.e("getmeetings", "onResponse: " + response.body().toString())
+                        progressDialog?.dismiss()
+                        if (isAdded)
+                            Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<MeetingListResponse?>, t: Throwable) {
+                    progressDialog?.dismiss()
+                    if (isAdded)
+                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                    Log.e("khushi123", "onFailure: " + t.message)
+                }
+            })
+        }
+
+        //with status and startdate
+        if (status.trim() != "--" && startdate != 0L && enddate == 0L) {
+            val call: Call<MeetingListResponse>? =
+                apiInterface.getFilteredwithourEnddate(userId, status, startdate, page, 10)
+            call?.enqueue(object : Callback<MeetingListResponse?> {
+                override fun onResponse(
+                    call: Call<MeetingListResponse?>,
+                    response: Response<MeetingListResponse?>,
+                ) {
+                    if (response.body() != null && response.isSuccessful()) {
+                        progressDialog?.dismiss()
+
+                        meetingLis = response.body()!!.content!!
+                        if (!meetingLis.isEmpty())
+                            setAdapt()
+                        else {
+                            binding.noMeeting.visibility = View.VISIBLE
+                            binding.recyclerForMember.visibility = View.GONE
+                        }
+
+                        Log.e("getmeetings", "onResponse: " + response.body())
+                    } else {
+                        Log.e("getmeetings", "onResponse: " + response.body().toString())
+                        progressDialog?.dismiss()
+                        if (isAdded)
+                            Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<MeetingListResponse?>, t: Throwable) {
+                    progressDialog?.dismiss()
+                    if (isAdded)
+                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                    Log.e("khushi123", "onFailure: " + t.message)
+                }
+            })
+        }
+
+
     }
 
     private fun setAdapt() {

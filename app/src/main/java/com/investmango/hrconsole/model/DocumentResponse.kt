@@ -29,7 +29,7 @@ data class DocumentResponse(
 	val documentVerified: Boolean? = null,
 
 	@field:SerializedName("userId")
-	val userId: Int? = null
+	var userId: Long? = null
 )
 
 data class UrlsItem(

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,10 +15,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
+import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -33,6 +36,7 @@ import com.investmango.hrconsole.api.ApiClient;
 import com.investmango.hrconsole.api.ApiInterface;
 import com.investmango.hrconsole.databinding.FragmentAchievementBinding;
 import com.investmango.hrconsole.model.EmpPerformance;
+import com.investmango.hrconsole.model.MonthlyPerformanceResp;
 import com.investmango.hrconsole.service.DateAndTimeUtility;
 
 import java.util.ArrayList;
@@ -50,6 +54,9 @@ public class AchievementFragment extends Fragment {
     private String token;
     private SharedPreferences preferences;
     String ViewOf, authority;
+    AwesomeProgressDialog progressDialog;
+
+    MonthlyPerformanceResp progressResp;
 
     List<EmpPerformance> empPerformanceList;
 
@@ -61,6 +68,12 @@ public class AchievementFragment extends Fragment {
         userId = preferences.getLong("userId", 0);
         authority = preferences.getString("Authority", "user");
 
+        progressDialog = new AwesomeProgressDialog(getContext());
+        progressDialog.addTitle("Loading...");// add your title here.
+        progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS);
+        progressDialog.isCancelable(false);
+
+        assert getArguments() != null;
         if (getArguments().containsKey("childUserid")) {
             ViewOf = getArguments().getString("ViewOf");
             userId = getArguments().getLong("childUserid");
@@ -106,21 +119,27 @@ public class AchievementFragment extends Fragment {
                 } else {
                     EmpPerformance performance = new EmpPerformance();
 
-                    performance.setId(empPerformanceList
-                            .get(0).getId());
-                    performance.setAttendance(binding.attendanceIncDec.getCurrentValue());
-                    performance.setWorkQuality(binding.workQualityIncDec.getCurrentValue());
-                    performance.setJobKnowledge(binding.jobKnowledIncDec.getCurrentValue());
-                    performance.setTeamWork(binding.teamIncDec.getCurrentValue());
-                    performance.setGeneralConduct(binding.generalIncDec.getCurrentValue());
-                    binding.generalIncDec.setValue(5);
-                    saveUserPerformance(performance);
+                    try {
+
+                        performance.setId(empPerformanceList
+                                .get(0).getId());
+                        performance.setAttendance(binding.attendanceIncDec.getCurrentValue());
+                        performance.setWorkQuality(binding.workQualityIncDec.getCurrentValue());
+                        performance.setJobKnowledge(binding.jobKnowledIncDec.getCurrentValue());
+                        performance.setTeamWork(binding.teamIncDec.getCurrentValue());
+                        performance.setGeneralConduct(binding.generalIncDec.getCurrentValue());
+                        binding.generalIncDec.setValue(5);
+                        saveUserPerformance(performance);
+                    }catch (Exception e){
+                        Log.e("TAG", "onClick: "+e );
+                        Toast.makeText(requireContext(),"Something went wrong.",Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
 
+        fetchPerformanceReport();
         getEmployeePerformanceList(token, userId);
-        lineGraph();
     }
 
     private void setLayout(String doo) {
@@ -135,10 +154,16 @@ public class AchievementFragment extends Fragment {
         }
     }
 
-    private void populatePieChart(long totalPresent, long totalAbsent, PieChart pieChart) {
+    private void populatePieChart(long total, long obtained, PieChart pieChart) {
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
-        pieEntries.add(new PieEntry(totalPresent, "llll"));
-        pieEntries.add(new PieEntry(totalAbsent, "llll"));
+
+        float resultPercentage = ((float) obtained / total) * 100;
+        float remainingPercentage = 100 - resultPercentage;
+
+
+
+        pieEntries.add(new PieEntry(resultPercentage, "Absent"));
+        pieEntries.add(new PieEntry(remainingPercentage,"llll"));
 
 
         PieDataSet pieDataSet = new PieDataSet(pieEntries, "Employee Attendance");
@@ -176,7 +201,7 @@ public class AchievementFragment extends Fragment {
 
         // on below line we are setting center text
         pieChart.setDrawCenterText(true);
-        pieChart.setCenterText("Obtained score\n" + totalPresent);
+        pieChart.setCenterText("Obtained score\n" + resultPercentage);
         pieChart.setCenterTextColor(Color.WHITE);
         pieChart.setDrawEntryLabels(false);
         pieChart.setUsePercentValues(false);
@@ -196,13 +221,13 @@ public class AchievementFragment extends Fragment {
     }
 
     @SuppressLint("ResourceType")
-    private void lineGraph() {
+    private void lineGraph(List<Integer> months,List<Float> score) {
         ArrayList<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(0, 2));
-        entries.add(new Entry(1, 4));
-        entries.add(new Entry(2, 1));
-        entries.add(new Entry(3, 3));
-        entries.add(new Entry(4, 5));
+        for (int i=0;i<months.size();i++){
+            entries.add(new Entry(months.get(i),score.get(i)));
+            Log.e("linegraph", months.get(0)+"  "+ score.get(0));
+
+        }
 
         LineDataSet lineDataSet = new LineDataSet(entries, "Sample Data");
         lineDataSet.setColor(Color.BLUE); // Line color
@@ -218,7 +243,7 @@ public class AchievementFragment extends Fragment {
         //to make the smooth line as the graph is adrapt change so smooth curve
         lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
         //to enable the cubic density : if 1 then it will be sharp curve
-        lineDataSet.setCubicIntensity(0.2f);//to make the smooth line as the graph is adrapt change so smooth curve
+        lineDataSet.setCubicIntensity(0.2f);   //to make the smooth line as the graph is adapt change so smooth curve
 
 
         // Combine the two data sets
@@ -230,9 +255,12 @@ public class AchievementFragment extends Fragment {
         // Optional: Customize the chart
         XAxis xAxis = binding.lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setTextColor(Color.WHITE);
 
         YAxis leftAxis = binding.lineChart.getAxisLeft();
-        binding.lineChart.getAxisRight().setEnabled(true); // Disable right Y-axis
+        YAxis rightYAxis = binding.lineChart.getAxisRight();
+        leftAxis.setTextColor(Color.WHITE);
+        rightYAxis.setTextColor(Color.WHITE);
 
         leftAxis.setAxisMinimum(0); // Start at 0
 
@@ -273,14 +301,53 @@ public class AchievementFragment extends Fragment {
             }
         });
     }
-
-    private void getEmployeePerformanceList(String token, long userId) {
+    private void fetchPerformanceReport() {
         ApiClient apiClient = new ApiClient(getContext());
         apiInterface = apiClient.getApiInterface();
-        Call<List<EmpPerformance>> call = apiInterface.getSingleEmployeeAllPerformanceByEmpId(token, userId);
+
+        Call<MonthlyPerformanceResp> call = apiInterface.getMonthPerformance(userId);
+        call.enqueue(new Callback<MonthlyPerformanceResp>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onResponse(@NonNull Call<MonthlyPerformanceResp> call, @NonNull Response<MonthlyPerformanceResp> response) {
+                if (response.isSuccessful()) {
+                    progressResp = response.body();
+
+                    if (progressResp!=null && progressResp.getMom()!=null){
+                        List<Integer> months= new ArrayList<>();
+                        List<Float> score=new ArrayList<>();
+
+                        for (int i =0; i<progressResp.getProgressData().size(); i++) {
+                            months.add(DateAndTimeUtility.getMonthNumber(progressResp.getProgressData().get(i).getMonth()));
+
+                            String formattedNumber = String.format("%.2f", progressResp.getProgressData().get(i).getScore());
+                            score.add(Float.parseFloat(formattedNumber));
+
+                        }
+                        lineGraph(months,score);
+
+                    }
+                } else {
+                    Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MonthlyPerformanceResp> call, @NonNull Throwable t) {
+                Log.e("EmployeePerformance", "Server error", t);
+            }
+        });
+    }
+
+    private void getEmployeePerformanceList(String token, long userId)  {
+        ApiClient apiClient = new ApiClient(getContext());
+        apiInterface = apiClient.getApiInterface();
+        progressDialog.showDialog();
+        Call<List<EmpPerformance>> call = apiInterface.getSingleEmployeeAllPerformanceByEmpId(userId);
         call.enqueue(new Callback<List<EmpPerformance>>() {
             @Override
             public void onResponse(@NonNull Call<List<EmpPerformance>> call, @NonNull Response<List<EmpPerformance>> response) {
+                progressDialog.dismissDialog();
                 if (response.isSuccessful()) {
                     empPerformanceList = response.body();
                     if (empPerformanceList != null && !empPerformanceList.isEmpty()) {
@@ -297,22 +364,24 @@ public class AchievementFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<EmpPerformance>> call, Throwable t) {
+                progressDialog.dismissDialog();
                 Log.e("EmployeePerformance", "Server error", t);
             }
         });
     }
 
     private long getPercentage(float value) {
-        return (long) (value / 5 * 100);
+        return (long) value;
     }
 
     private void setUpData() {
         Log.e("percentage", "setUpData: " + getPercentage(3));
-        binding.attendanceProg.setProgress((int) getPercentage(empPerformanceList.get(0).getAttendance()));
+        binding.attendanceProg.setProgress(Math.toIntExact(empPerformanceList.get(0).getAttendance()));
         binding.generalProg.setProgress((int) getPercentage(empPerformanceList.get(0).getGeneralConduct()));
         binding.jobKnowProg.setProgress((int) getPercentage(empPerformanceList.get(0).getJobKnowledge()));
         binding.teamWorkprog.setProgress((int) getPercentage(empPerformanceList.get(0).getTeamWork()));
         binding.skillProg.setProgress((int) getPercentage(empPerformanceList.get(0).getSkills()));
+        binding.workQualityProg.setProgress((int) getPercentage(empPerformanceList.get(0).getWorkQuality()));
 
 
         binding.attendanceIncDec.setMiddleText(empPerformanceList.get(0).getAttendance().toString());

@@ -1,0 +1,21 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Background image -->
+    <item>
+        <bitmap
+            android:src="@drawable/bg_img"
+            android:gravity="fill" />
+    </item>
+
+    <!-- Border with rounded corners -->
+    <item android:left="0dp" android:right="0dp" android:top="0dp" android:bottom="0dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <corners android:radius="16dp" />
+            <stroke
+                android:width="3dp"
+            android:color="@color/lightGreycolor" />
+        </shape>
+    </item>
+
+</layer-list>

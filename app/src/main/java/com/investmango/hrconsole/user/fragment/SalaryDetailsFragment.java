@@ -121,7 +121,7 @@ public class SalaryDetailsFragment extends Fragment {
 
     private void getUserSalaryDetails(long userId) {
         progressDialog.show();
-        Call<List<Salary>> call = apiInterface.userSalary(token, userId);
+        Call<List<Salary>> call = apiInterface.userSalary( userId);
         call.enqueue(new Callback<List<Salary>>() {
             @Override
             public void onResponse(@NonNull Call<List<Salary>> call, @NonNull Response<List<Salary>> response) {
@@ -162,7 +162,7 @@ public class SalaryDetailsFragment extends Fragment {
 
     private void downloadUserSalaryPdf(long userId) {
         progressDialog.show();
-        Call<Void> call = apiInterface.getUserSalaryPdf(token, userId);
+        Call<Void> call = apiInterface.getUserSalaryPdf( userId);
         String title = "PDF Download";
         final String[] message = {"Downloading PDF..."};
 

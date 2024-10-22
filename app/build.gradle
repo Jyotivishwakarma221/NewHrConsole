@@ -6,15 +6,18 @@ android {
     namespace 'com.investmango.hrconsole'
     compileSdk 34
 
+    packagingOptions {
+        exclude("META-INF/DEPENDENCIES")
+    }
     defaultConfig {
         ndk {
             abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
         }
         applicationId "com.investmango.hrconsole"
         minSdk 21
-        targetSdk 33
-        versionCode 11
-        versionName "1.9"
+        targetSdk 34
+        versionCode 21
+        versionName "2.9"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -71,6 +74,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:21.0.0'
     implementation 'com.google.firebase:firebase-installations:18.0.0'
     implementation 'com.google.firebase:firebase-messaging:24.0.0'
+
+    implementation("com.google.auth:google-auth-library-oauth2-http:1.3.0")
+
     implementation 'com.itextpdf:itextg:5.5.10'
     implementation 'com.github.dmytrodanylyk.shadow-layout:library:1.0.3'
     implementation 'androidx.appcompat:appcompat:1.6.1'
@@ -120,6 +126,10 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
+    //Dialog box
+    implementation 'com.github.basusingh:BeautifulProgressDialog:1.001'
+
+    implementation 'com.github.Abhay-cloud:AwesomeProgressDialog-Android:0.1'
 
 }
 

@@ -323,7 +323,7 @@ private void uploadAndSaveDocument(String documentType) {
     private void saveUserDoc(List<String> cloudinaryUrls) {
         DocumentModel documentModel = new DocumentModel(cloudinaryUrls);
 
-        Call<DocumentModel> call = apiInterface.saveDocByUserId(token, documentModel, userId);
+        Call<DocumentModel> call = apiInterface.saveDocByUserId( documentModel, userId);
         call.enqueue(new Callback<DocumentModel>() {
             @Override
             public void onResponse(Call<DocumentModel> call, Response<DocumentModel> response) {

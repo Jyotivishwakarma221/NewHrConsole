@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -91,11 +91,22 @@ public class ManagerFragment extends Fragment implements RecyclerViewInterface<M
         textViewSeeAll = view.findViewById(R.id.textViewSeeAll);
         textViewImportantMeetings = view.findViewById(R.id.textViewImportantMeetings);
         CardView message = view.findViewById(R.id.CheckNowMessage);
+        CardView MeetingsCard = view.findViewById(R.id.CheckMeeting);
         CardView leaves = view.findViewById(R.id.leavesCheckNowBtn);
         Button fabAttendance = view.findViewById(R.id.fabAttendance);
         CardView CreateAssignmnet = view.findViewById(R.id.CreateAssignmnet);
         CardView assignmet = view.findViewById(R.id.assignments);
         CardView feedbackBtn = view.findViewById(R.id.feedbackBtn);
+
+        ImageView FeedBtn = view.findViewById(R.id.FeedBackBtn);
+        ImageView payBtn = view.findViewById(R.id.payBtn);
+        ImageView MessgeBtn = view.findViewById(R.id.MessgeBtn);
+        ImageView Meetings = view.findViewById(R.id.Meetings);
+        ImageView TaskBtn = view.findViewById(R.id.TaskBtn);
+        ImageView MyLeaveBtn = view.findViewById(R.id.MyLeaveBtn);
+        ImageView AssignMntBtn = view.findViewById(R.id.AssignMntBtn);
+        ImageView performanceBtn = view.findViewById(R.id.performanceBtn);
+
         meetings = view.findViewById(R.id.meetingRecycle);
 
 
@@ -104,58 +115,63 @@ public class ManagerFragment extends Fragment implements RecyclerViewInterface<M
 
         // Set click listeners
         fabAttendance.setOnClickListener(v -> {
-            ((ManagerActivity) getActivity()).replaceFragment(new AttendanceFragment());
-
-//            Fragment newFragment = new ();
-//            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.full_Layout, newFragment, newFragment.getTag()).addToBackStack(newFragment.getTag()).commit();
+            ((ManagerActivity) getActivity()).replaceFragment2(new AttendanceFragment(), "ATTENDANCE");
         });
+
         performance.setOnClickListener(v -> {
             ((ManagerActivity) getActivity()).replaceFragment(new MyPerformance());
-
-//            Fragment newFragment = new MyPerformance();
-//            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.full_Layout, newFragment, newFragment.getTag()).addToBackStack(newFragment.getTag()).commit();
         });
+        performanceBtn.setOnClickListener(v -> {
+            ((ManagerActivity) getActivity()).replaceFragment(new MyPerformance());
+        });
+
+        MeetingsCard.setOnClickListener(v -> {
+            AddMeeting fragment = new AddMeeting();
+            Bundle bb = new Bundle();
+            bb.putString("ViewOf", "Own");
+            fragment.setArguments(bb);
+            ((ManagerActivity) getActivity()).replaceFragment(fragment);
+        });
+
+        Meetings.setOnClickListener(v -> {
+            AddMeeting fragment = new AddMeeting();
+            Bundle bb = new Bundle();
+            bb.putString("ViewOf", "Own");
+            fragment.setArguments(bb);
+
+            ((ManagerActivity) getActivity()).replaceFragment(fragment);
+        });
+
+
         textViewSeeAll.setOnClickListener(v -> {
             ((ManagerActivity) getActivity()).replaceFragment(new AddMeeting());
-
-//            Fragment newFragment = new MyPerformance();
-//            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.full_Layout, newFragment, newFragment.getTag()).addToBackStack(newFragment.getTag()).commit();
         });
+
         // Set click listeners
         message.setOnClickListener(v -> {
             ((ManagerActivity) getActivity()).replaceFragment(new MessageFragment());
-
-//            Fragment newFragment = new MessageFragment();
-//            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.full_Layout, newFragment, newFragment.getTag()).addToBackStack(newFragment.getTag()).commit();
+        });
+        MessgeBtn.setOnClickListener(v -> {
+            ((ManagerActivity) getActivity()).replaceFragment(new MessageFragment());
         });
 
-//        actions.setOnClickListener(v -> {
-//            ((ManagerActivity)getActivity()).replaceFragment(new EmployeeActions());
-
-//            Fragment newFragment = new EmployeeActions();
-//            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.full_Layout, newFragment, newFragment.getTag()).addToBackStack(newFragment.getTag()).commit();
-//        });
 
         leaves.setOnClickListener(v -> {
             ((ManagerActivity) getActivity()).replaceFragment(new Leaves());
-
-//            Fragment newFragment = new Leaves();
-//            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.full_Layout, newFragment, newFragment.getTag()).addToBackStack(newFragment.getTag()).commit();
         });
+        MyLeaveBtn.setOnClickListener(v -> {
+            ((ManagerActivity) getActivity()).replaceFragment(new Leaves());
+        });
+
 
         payouts.setOnClickListener(v -> {
             ((ManagerActivity) getActivity()).replaceFragment(new PayrollPanel());
-
-//            Fragment newFragment = new PayrollPanel();
-//            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.full_Layout, newFragment, newFragment.getTag()).addToBackStack(newFragment.getTag()).commit();
         });
+
+        payBtn.setOnClickListener(v -> {
+            ((ManagerActivity) getActivity()).replaceFragment(new PayrollPanel());
+        });
+
 
         tasks.setOnClickListener(v -> {
             TasksFragment fragment = new TasksFragment();
@@ -164,19 +180,38 @@ public class ManagerFragment extends Fragment implements RecyclerViewInterface<M
             fragment.setArguments(bb);
 
             ((ManagerActivity) getActivity()).replaceFragment(fragment);
-
-//            Fragment newFragment = new TasksFragment();
-//            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.full_Layout, newFragment, newFragment.getTag()).addToBackStack(newFragment.getTag()).commit();
         });
+        TaskBtn.setOnClickListener(v -> {
+            TasksFragment fragment = new TasksFragment();
+            Bundle bb = new Bundle();
+            bb.putString("ViewOf", "Own");
+            fragment.setArguments(bb);
+
+            ((ManagerActivity) getActivity()).replaceFragment(fragment);
+        });
+
 
         feedbackBtn.setOnClickListener(v -> {
             ((ManagerActivity) getActivity()).replaceFragment(new NewFeedBackFragment());
         });
+        FeedBtn.setOnClickListener(v -> {
+            ((ManagerActivity) getActivity()).replaceFragment(new NewFeedBackFragment());
+        });
+
 
         CreateAssignmnet.setOnClickListener(v -> {
-            Toast.makeText(getContext(),"Comming Soon..",Toast.LENGTH_SHORT).show();
-//            ((ManagerActivity) getActivity()).replaceFragment(new ProjectsFragment());
+            AllProjectsFragment fragment = new AllProjectsFragment();
+            Bundle bb = new Bundle();
+            bb.putString("ViewOf", "Own");
+            fragment.setArguments(bb);
+            ((ManagerActivity) getActivity()).replaceFragment(fragment);
+        });
+        AssignMntBtn.setOnClickListener(v -> {
+            AllProjectsFragment fragment = new AllProjectsFragment();
+            Bundle bb = new Bundle();
+            bb.putString("ViewOf", "Own");
+            fragment.setArguments(bb);
+            ((ManagerActivity) getActivity()).replaceFragment(fragment);
         });
 
     }

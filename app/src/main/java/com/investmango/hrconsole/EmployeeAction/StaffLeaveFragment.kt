@@ -1,17 +1,24 @@
 package com.investmango.hrconsole.EmployeeAction
 
+import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.HrConsole.tv.official.console.premium.CommonAdapter
 import com.HrConsole.tv.official.console.premium.RecyclerViewInterface
+import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
 import com.investmango.hrconsole.api.ApiInterface
@@ -37,9 +44,21 @@ class StaffLeaveFragment : Fragment(), RecyclerViewInterface<LeaveRequestRecycle
     var token: String = ""
     var authority: String = ""
     var list: List<ContentItem?> = arrayListOf()
+    lateinit var progressDialog: AwesomeProgressDialog
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        var preferences = context!!.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        token = preferences.getString("token", "0").toString()
+        userId = preferences.getLong("userId", 0)
+        authority = preferences.getString("Authority", "user")!!
+
+        progressDialog = AwesomeProgressDialog(context)
+        progressDialog.addTitle("Loading...") // add your title here.
+        progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
 
     }
 
@@ -55,10 +74,7 @@ class StaffLeaveFragment : Fragment(), RecyclerViewInterface<LeaveRequestRecycle
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Initialize SharedPreferences and retrieve the token and userId
-        var preferences = context!!.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-        token = preferences.getString("token", "0").toString()
-        userId = preferences.getLong("userId", 0)
-        authority = preferences.getString("Authority", "user")!!
+
 
         if (authority.equals(Constant.MANAGER))
             LeaveRequest()
@@ -73,57 +89,61 @@ class StaffLeaveFragment : Fragment(), RecyclerViewInterface<LeaveRequestRecycle
 
     private fun LeaveRequest() {
         try {
-
+            progressDialog?.showDialog()
             val apiClient = ApiClient(requireContext())
             apiInterface = apiClient.apiInterface
 
             val call: Call<LeaveReqResponse> =
-                apiInterface.getPendingLeaves(token, userId, true, "PENDING", 0, 10)
+                apiInterface.getPendingLeaves( userId, true, "PENDING", 0, 10)
             call?.enqueue(object : Callback<LeaveReqResponse> {
                 override fun onResponse(
                     call: Call<LeaveReqResponse>,
                     response: Response<LeaveReqResponse>,
                 ) {
                     if (response.body() != null && response.isSuccessful()) {
-                        Log.e(
-                            "getLeaves",
-                            "onResponse: 1" + response.body()?.content?.size + " " + authority
-                        )
+                        progressDialog?.dismissDialog()
+
+                        Log.e("getLeaves", "onResponse: 1" + response.body()?.content?.size + " " + authority)
 
                         list = response.body()!!.content!!
 
                         binding.leaverequest.adapter = CommonAdapter(this@StaffLeaveFragment)
                         binding.leaverequest.layoutManager =
-                            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+                            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                     } else {
                         Log.e("getmeetings", "onResponse: " + response.body().toString())
-
-                        Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+                        progressDialog?.dismissDialog()
+                        if (isAdded)
+                            Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<LeaveReqResponse>, t: Throwable) {
-                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                    progressDialog?.dismissDialog()
+                    if (isAdded)
+                        Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                     Log.e("khushi123", "onFailure: " + t.message)
                 }
             })
-        }catch (e:Exception){
-            Log.d("TAG", "LeaveRequest: "+e)
+        } catch (e: Exception) {
+            Log.d("TAG", "LeaveRequest: " + e)
         }
     }
 
     private fun AllLeaveRequest() {
         val apiClient = ApiClient(requireContext())
         apiInterface = apiClient.apiInterface
-
+        progressDialog?.showDialog()
         val call: Call<LeaveReqResponse> =
-            apiInterface.newgetAllPendingLeave(token)
+            apiInterface.newgetAllPendingLeave()
         call?.enqueue(object : Callback<LeaveReqResponse> {
             override fun onResponse(
                 call: Call<LeaveReqResponse>,
                 response: Response<LeaveReqResponse>,
             ) {
                 if (response.body() != null && response.isSuccessful()) {
+                    progressDialog?.dismissDialog()
+
                     Log.e(
                         "getLeaves",
                         "onResponse: 2" + response.body()?.content?.size + " " + authority
@@ -134,15 +154,20 @@ class StaffLeaveFragment : Fragment(), RecyclerViewInterface<LeaveRequestRecycle
                     binding.leaverequest.adapter = CommonAdapter(this@StaffLeaveFragment)
                     binding.leaverequest.layoutManager =
                         LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+
                 } else {
                     Log.e("getmeetings", "onResponse: " + response.body().toString())
-
-                    Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
+                    progressDialog?.dismissDialog()
+                    if (isAdded)
+                        Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<LeaveReqResponse>, t: Throwable) {
-                Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                progressDialog?.dismissDialog()
+                if (isAdded)
+                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
                 Log.e("khushi123", "onFailure: " + t.message)
             }
         })
@@ -156,58 +181,71 @@ class StaffLeaveFragment : Fragment(), RecyclerViewInterface<LeaveRequestRecycle
 
         val requestBody = LeaveRequestUpdateStatus()
         requestBody.id = leaveId
+
         if (authority.equals(Constant.MANAGER))
             requestBody.managerStatus = selectedStatus
         else if (authority.equals(Constant.ADMIN))
             requestBody.status = selectedStatus
-try {
+        try {
+            progressDialog?.showDialog()
 
-    val apiClient = ApiClient(requireContext())
-    apiInterface = apiClient.apiInterface
-    Log.e(
-        "getLeaves",
-        "onResponse:  " + requestBody.id + " " + requestBody.managerStatus + " " + userid.toLong()
-    )
+            val apiClient = ApiClient(requireContext())
+            apiInterface = apiClient.apiInterface
+            Log.e(
+                "getLeaves",
+                "onResponse:  " + requestBody.id + " " + requestBody.managerStatus + " " + userid.toLong()
+            )
 
-    val call = apiInterface.ApproveLeaves(token, requestBody, userid.toLong())
-    Log.e("API Error", "Error in API response: " + userid)
+            val call = apiInterface.ApproveLeaves(requestBody, userid.toLong())
+            Log.e("API Error", "Error in API response: " + userid)
 
 
-    call.enqueue(object : Callback<Void?> {
-        override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
-            Log.e("API Response", "Response code: " + response.code())
-            if (response.isSuccessful) {
-                LeaveRequest()
-                if (selectedStatus == LeaveRequestUpdateStatus.Status.APPROVED) {
-                    Toast.makeText(requireContext(), "Leave approved.", Toast.LENGTH_SHORT)
-                        .show()
-                } else if (selectedStatus == LeaveRequestUpdateStatus.Status.REJECTED) {
-                    Toast.makeText(activity!!, "Leave rejected.", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            } else {
-                try {
-                    val errorMessage = if (response.errorBody() != null) response.errorBody()!!
-                        .string() else "Unknown error"
-                    Log.e("API Error", "Error in API response: $errorMessage")
+            call.enqueue(object : Callback<Void?> {
+                override fun onResponse(call: Call<Void?>, response: Response<Void?>) {
+                    Log.e("API Response", "Response code: " + response.code())
+                    if (response.isSuccessful) {
+                        progressDialog?.dismissDialog()
+
+                        LeaveRequest()
+                        if (selectedStatus == LeaveRequestUpdateStatus.Status.APPROVED) {
+                            Toast.makeText(requireContext(), "Leave approved.", Toast.LENGTH_SHORT)
+                                .show()
+                        } else if (selectedStatus == LeaveRequestUpdateStatus.Status.REJECTED) {
+                            Toast.makeText(activity!!, "Leave rejected.", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    } else {
+                        progressDialog?.dismissDialog()
+
+                        try {
+                            val errorMessage =
+                                if (response.errorBody() != null) response.errorBody()!!
+                                    .string() else "Unknown error"
+                            Log.e("API Error", "Error in API response: $errorMessage")
 //                    Toast.makeText(context, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
-                } catch (e: IOException) {
-                    e.printStackTrace()
+                        } catch (e: IOException) {
+                            e.printStackTrace()
 //                    Toast.makeText(context, "Error processing request", Toast.LENGTH_SHORT)
 //                        .show()
+                        }
+                    }
                 }
-            }
-        }
 
-        override fun onFailure(call: Call<Void?>, t: Throwable) {
-            Log.e("API Failure", "API Request Failed: " + t.message)
-            Toast.makeText(context, "Network Error. Please try again.", Toast.LENGTH_SHORT)
-                .show()
+                override fun onFailure(call: Call<Void?>, t: Throwable) {
+                    Log.e("API Failure", "API Request Failed: " + t.message)
+                    progressDialog?.dismissDialog()
+                    if (isAdded)
+                        Toast.makeText(
+                            context,
+                            "Network Error. Please try again.",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                }
+            })
+        } catch (e: Exception) {
+            Log.d("TAG", "approveLeaves: ", e)
         }
-    })
-}catch (e:Exception){
-    Log.d("TAG", "approveLeaves: ",e)
-}
     }
 
     override fun getViewBinding(viewGroup: ViewGroup, viewType: Int): LeaveRequestRecyclerBinding {
@@ -240,7 +278,9 @@ try {
                 it
             )
         }
-
+        viewBind.Reason.setOnClickListener {
+            showReasonAlert(list.get(position)?.reason!!)
+        }
         viewBind.accept.setOnClickListener {
             list.get(position)?.id?.let { it1 ->
                 list.get(position)!!.userId?.let { it2 ->
@@ -263,6 +303,27 @@ try {
         }
 
 
+    }
+
+    fun showReasonAlert(rsn: String) {
+        // Create an alert builder
+        val builder = AlertDialog.Builder(context)
+        builder.setCancelable(true)
+
+        // set the custom layout
+        val customLayout: View = layoutInflater.inflate(R.layout.custom_progress2, null)
+        builder.setView(customLayout)
+
+        val reasonTxt = customLayout.findViewById<TextView>(R.id.Reason)
+        val okBtn = customLayout.findViewById<TextView>(R.id.ok_btn)
+        reasonTxt.setText(rsn)
+        reasonTxt.movementMethod = ScrollingMovementMethod()
+
+        val dialog = builder.create()
+        okBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 
     private fun convertTimestampToReadableFormat(timestamp: Long): String {

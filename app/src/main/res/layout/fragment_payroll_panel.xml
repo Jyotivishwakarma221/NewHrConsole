@@ -8,6 +8,7 @@
         android:layout_height="match_parent"
         android:background="@android:color/black"
         android:clickable="true"
+        android:layout_marginTop="@dimen/_10"
         android:orientation="vertical"
         android:padding="@dimen/_10dp"
         tools:context=".EmployeeAction.EmployeeActions">
@@ -295,7 +296,7 @@
                     android:background="@drawable/black_button"
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
-                    android:text="121"
+                    android:text=" "
                     android:textColor="@color/greyforText"
                     android:textSize="@dimen/_15" />
 
@@ -308,7 +309,7 @@
                     android:background="@drawable/black_button"
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
-                    android:text="Aman Verma"
+                    android:text=" "
                     android:textColor="@color/greyforText"
                     android:textSize="@dimen/_15" />
 
