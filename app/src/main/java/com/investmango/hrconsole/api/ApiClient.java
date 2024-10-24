@@ -49,7 +49,7 @@ public class ApiClient extends Application {
 //    public static final String BASE_URL = "https://api.gopropify.in/";
 
 
-    //            public static final String BASE_URL = "http://192.168.29.202:8080/";
+    // public static final String BASE_URL = "http://192.168.29.202:8080/";
     private final ApiInterface apiInterface;
     private final Context context;
     private Context appcontext;

@@ -40,6 +40,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.time.LocalDate
+import java.time.Period
+import java.time.format.DateTimeFormatter
 import java.util.Objects
 import java.util.concurrent.atomic.AtomicReference
 
@@ -146,9 +149,9 @@ class ProfileFragment : Fragment() {
                     if (isAdded)
                         Toast.makeText(context, "Profile Updated Successfully.", Toast.LENGTH_SHORT)
                             .show()
-                        getCurrentUser(token)
+                    getCurrentUser(token)
 
-                }else{
+                } else {
                     progressDialog.dismissDialog()
                     if (isAdded)
                         Toast.makeText(
@@ -300,9 +303,19 @@ class ProfileFragment : Fragment() {
         }
         Log.e("lastLogin", "setupData: " + user.lastLogin)
 
-//        binding.lastlogin.setText(
-//            DateAndTimeUtility.getDateFromLong(user.lastLogin).toString() + " " + "hours ago"
-//        )
+        val currentDate = LocalDate.now()
+        val givenDate = DateAndTimeUtility.getDATEFromLong(user.createdDate)
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
+        // Convert string to LocalDate using the custom format
+        val localDate = LocalDate.parse(givenDate, formatter)
+        Log.e("setupData", "setupData: " + currentDate + " " + localDate)
+        val period = Period.between(localDate,currentDate)
+
+        binding.tenure.setText(
+            period.months.toString()+ " months"
+        )
+
         binding.lastlogin.setText(
             DateAndTimeUtility.getRelativeTime(user.lastLogin).toString()
         )
