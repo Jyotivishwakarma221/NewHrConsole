@@ -83,7 +83,7 @@ public class AdminTaskFragment extends Fragment {
         progressDialog.show();
         ApiClient apiClient = new ApiClient(getActivity());
         apiInterface = apiClient.getApiInterface();
-        Call<List<AdminTask>> call = apiInterface.getUserAllTask(token);
+        Call<List<AdminTask>> call = apiInterface.getUserAllTask();
         call.enqueue(new Callback<List<AdminTask>>() {
             @Override
             public void onResponse(@NonNull Call<List<AdminTask>> call, @NonNull Response<List<AdminTask>> response) {

@@ -209,7 +209,7 @@ public class SignUpFragment extends Fragment {
                 // Set the list of roles in the requestBody
                 requestBody.setRoles(roles);
 
-                Call<SignUp> call = apiInterface.signUp(token, requestBody);
+                Call<SignUp> call = apiInterface.signUp( requestBody);
                 call.enqueue(new Callback<SignUp>() {
                     @Override
                     public void onResponse(@NonNull Call<SignUp> call, @NonNull Response<SignUp> response) {

@@ -39,6 +39,13 @@
                             android:padding="@dimen/_5dp"
                             android:background="@drawable/grey_bg_rounded"
                             android:layout_gravity="center" />
+                        <com.investmango.hrconsole.commonclasses.InitialAvatarView
+                            android:id="@+id/initialAvatar"
+                            android:layout_width="@dimen/_100dp"
+                            android:layout_height="@dimen/_100dp"
+                            android:padding="@dimen/_5dp"
+                            android:visibility="gone"
+                            android:layout_gravity="center"/>
 
                         <TextView
                             android:id="@+id/name"

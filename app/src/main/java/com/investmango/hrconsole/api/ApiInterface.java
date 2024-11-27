@@ -33,7 +33,6 @@ import com.investmango.hrconsole.model.LeaveRequestUpdateStatus;
 import com.investmango.hrconsole.model.MeetingDetails;
 import com.investmango.hrconsole.model.MeetingDetailsAdmin;
 import com.investmango.hrconsole.model.MeetingListResponse;
-import com.investmango.hrconsole.model.MeetingResponse;
 import com.investmango.hrconsole.model.Message;
 import com.investmango.hrconsole.model.MessageResponse;
 import com.investmango.hrconsole.model.MonthlyPerformanceResp;
@@ -64,7 +63,6 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
@@ -83,8 +81,8 @@ public interface ApiInterface {
     Call<User> refreshToken(@Body RequestBody requestBody);
 
     // Current User
-    @GET("current-user")
-    Call<User> getCurrentUser(@Header("Authorization") String token);
+//    @GET("current-user")
+//    Call<User> getCurrentUser(@Header("Authorization") String token);
   // Current User
     @GET("current-user")
     Call<User> getCurrentUser();
@@ -94,18 +92,15 @@ public interface ApiInterface {
 
     // Sign Up
     @POST("user/save/new")
-    Call<SignUp> signUp(@Header("Authorization") String token, @Body SignUp requestBody);
+    Call<SignUp> signUp( @Body SignUp requestBody);
 
     // Save FCM Token
     @POST("save/device/token/by/id/{user_id}")
-    Call<String> saveDeviceToken(@Header("Authorization") String token, @Body RequestBody deviceToken, @Path("user_id") Long id);
+    Call<String> saveDeviceToken(@Body RequestBody deviceToken, @Path("user_id") Long id);
 
-    @GET("get/meeting/by/meeting/id/{id}")
-    Call<MeetingResponse> getmeetings(@Header("Authorization") String token, @Path("id") Long id);
-
-    @GET("get/message/by/user/id/{user_id}")
-    Call<List<MessageResponse>> getMessages(@Header("Authorization") String token, @Path("user_id") Long user_id);
-
+//    @GET("get/meeting/by/meeting/id/{id}")
+//    Call<MeetingResponse> getmeetings( @Path("id") Long id);
+//
     @GET("get/leaves/of/user/by/userId/{user_id}")
     Call<AllLeaveResponse>
     getAllLeaves(@Path("user_id") Long user_id, @Query("page") int page, @Query("size") int size);
@@ -295,7 +290,6 @@ public interface ApiInterface {
 
     @GET("get/attendance/record/of/user/by/{userId}")
     Call<ResponseBody> getMonthlyAttendance(
-            @Header("Authorization") String token,
             @Path("userId") long userId);
 
     @GET("get/today/attendance/{user_id}")
@@ -305,7 +299,6 @@ public interface ApiInterface {
     // Meeting
     @GET("get/meeting/by/attendees/by/user/id/{user_id}")
     Call<List<MeetingDetails>> getAllTodayMeeting(
-            @Header("Authorization") String token,
             @Path("user_id") Long id
     );
 
@@ -406,13 +399,10 @@ public interface ApiInterface {
     );
 
     @GET("get/today/all/attendance/list")
-    Call<List<PresentEmployee>> getAllTodayAttendance(
-            @Header("Authorization") String token
-    );
+    Call<List<PresentEmployee>> getAllTodayAttendance();
 
     @GET("get/today/all/attendance/list")
     Call<PresentEmpRes> newgetAllTodayAttendance(
-            @Header("Authorization") String token,
             @Query("size") int size
     );
 
@@ -424,13 +414,11 @@ public interface ApiInterface {
 
     @GET("get/all/time/total/salary/cycle/by/user/{user_id}")
     Call<AllSalaryDetail> allSalaryTaken(
-            @Header("Authorization") String token,
             @Path("user_id") Long id
     );
 
     @GET("get/all/salary")
-    Call<List<AdminSalaryDetails>> getAllSalaryDetails(
-            @Header("Authorization") String token);
+    Call<List<AdminSalaryDetails>> getAllSalaryDetails();
 
     // Task
     @PUT("update/task/status/by/user/id/{user_id}")
@@ -441,7 +429,6 @@ public interface ApiInterface {
 
     @GET("get/task/by/user/id/{user_id}")
     Call<List<Task>> getAllTask(
-            @Header("Authorization") String token,
             @Path("user_id") Long id
 
     );
@@ -449,6 +436,11 @@ public interface ApiInterface {
     @DELETE("/user/s3/delete/folder/docs")
     Call<String> deleteDocument(
             @Query("file") String file
+
+    );
+ @DELETE("/delete/story/by/{Id}")
+    Call<String> deleteStory(
+            @Path("Id") Integer Id
 
     );
 
@@ -530,7 +522,6 @@ public interface ApiInterface {
 
     @GET("get/task/by/user/id/{user_id}")
     Call<List<Task>> getFilterTask(
-            @Header("Authorization") String token,
             @Path("user_id") Long id,
             @Query("taskStatus") String taskStatus
     );
@@ -555,20 +546,17 @@ public interface ApiInterface {
 
     @PUT("update/task/by/user/id/{user_id}")
     Call<AddTask> addComment(
-            @Header("Authorization") String token,
             @Body AddTask task, @Path("user_id") Long id
     );
 
     @GET("get/todays/task/of/all/user")
-    Call<List<AdminTask>> getUserAllTask(
-            @Header("Authorization") String token);
+    Call<List<AdminTask>> getUserAllTask();
 
     @GET("get/all/previous/task")
-    Call<List<PreviousTask>> getPreviousTask(
-            @Header("Authorization") String token);
+    Call<List<PreviousTask>> getPreviousTask();
 
     @GET("monthly-statistics/by/{user_id}")
-    Call<ResponseBody> getMonthlyTaskStatistics(@Header("Authorization") String token, @Path("user_id") long userId);
+    Call<ResponseBody> getMonthlyTaskStatistics(@Path("user_id") long userId);
 
     // Leave
     @POST("save/leave/by/user/id/{user_id}")
@@ -577,16 +565,9 @@ public interface ApiInterface {
             @Path("user_id") Long id
     );
 
-    @POST("save/leave/by/user/id/{user_id}")
-    Call<String> askForLeave(
-            @Header("Authorization") String token,
-            @Body RequestBody requestBody,
-            @Path("user_id") Long id
-    );
 
     @GET("get/leaves/of/user/by/userId/{user_id}")
     Call<List<SaveUserLeave>> getUserLeave(
-            @Header("Authorization") String token,
             @Path("user_id") Long id
     );
 
@@ -597,36 +578,32 @@ public interface ApiInterface {
     );
 
     @GET("get/all/pending/leaves")
-    Call<List<LeaveRequest>> getAllPendingLeave(
-            @Header("Authorization") String token);
+    Call<List<LeaveRequest>> getAllPendingLeave();
 
     @GET("get/all/pending/leaves")
     Call<LeaveReqResponse> newgetAllPendingLeave();
     @GET("get/all/approved/leaves")
-    Call<List<ApprovedLeaves>> getApprovedLeaves(
-            @Header("Authorization") String token);
+    Call<List<ApprovedLeaves>> getApprovedLeaves();
 
     // Meeting
     @GET("get/meeting/by/meeting/host/{user_id}")
     Call<List<MeetingDetailsAdmin>> getAllMeeting(
-            @Header("Authorization") String token,
             @Path("user_id") Long id
     );
 
     @PUT("update/meeting/status/by/user/id/{user_id}")
     Call<ResponseBody> updateAdminMeetingStatus(
-            @Header("Authorization") String token,
             @Body UpdateMeeting requestBody,
             @Path("user_id") long userId
     );
 
     // Assignment
     @GET("get/all/pending/assignments")
-    Call<List<Assignment>> getAssignment(@Header("Authorization") String token);
+    Call<List<Assignment>> getAssignment();
 
     // All active user
     @GET("user/active/all")
-    Call<List<AllActiveUsers>> getAllActiveUser(@Header("Authorization") String token);
+    Call<List<AllActiveUsers>> getAllActiveUser();
 
     // PDF generate
     @GET("generate/active/user/pdf")

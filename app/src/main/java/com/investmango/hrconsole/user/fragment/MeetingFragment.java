@@ -70,7 +70,7 @@ public class MeetingFragment extends Fragment {
     }
     private void getAllTodayMeeting() {
         progressDialog.show();
-        Call<List<MeetingDetails>> call = apiInterface.getAllTodayMeeting(token, userId);
+        Call<List<MeetingDetails>> call = apiInterface.getAllTodayMeeting( userId);
         call.enqueue(new Callback<List<MeetingDetails>>() {
             @Override
             public void onResponse(@NonNull Call<List<MeetingDetails>> call, @NonNull Response<List<MeetingDetails>> response) {

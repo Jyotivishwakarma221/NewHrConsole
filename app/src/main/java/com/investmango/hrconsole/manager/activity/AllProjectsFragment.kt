@@ -39,7 +39,7 @@ class AllProjectsFragment : Fragment(), RecyclerViewInterface<ProjectItemBinding
     private lateinit var binding: FragmentAllProjectsBinding
     lateinit var apiInterface: ApiInterface
     private var userId: Long = 0
-    private lateinit var assignment: List<AssignmentItem?>
+    private  var assignment: List<AssignmentItem?> = ArrayList()
     private var from: String? = null
     lateinit var progressDialog: AwesomeProgressDialog
     var authority: String = ""

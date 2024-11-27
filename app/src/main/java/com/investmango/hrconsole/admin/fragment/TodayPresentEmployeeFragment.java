@@ -56,7 +56,7 @@ public class TodayPresentEmployeeFragment extends Fragment {
         swipeRefreshLayout.setRefreshing(true);
         ApiClient apiClient = new ApiClient(requireActivity());
         apiInterface = apiClient.getApiInterface();
-        Call<List<PresentEmployee>> call = apiInterface.getAllTodayAttendance(token);
+        Call<List<PresentEmployee>> call = apiInterface.getAllTodayAttendance();
         call.enqueue(new Callback<List<PresentEmployee>>() {
             @Override
             public void onResponse(@NonNull Call<List<PresentEmployee>> call, @NonNull Response<List<PresentEmployee>> response) {

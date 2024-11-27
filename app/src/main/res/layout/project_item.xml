@@ -3,7 +3,7 @@
 
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10dp"
         android:elevation="@dimen/_5dp"
         app:cardBackgroundColor="#000000"
@@ -56,6 +56,7 @@
                 android:gravity="start"
                 android:padding="@dimen/_5dp"
                 android:text="    "
+                android:maxLines="2"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />

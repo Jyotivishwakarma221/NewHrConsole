@@ -213,6 +213,9 @@ class ProfileFragment : Fragment() {
         binding.profilePhoto.setOnClickListener {
             UploadFileAws().openGallery(launcher)
         }
+        binding.initialAvatar.setOnClickListener {
+            UploadFileAws().openGallery(launcher)
+        }
     }
 
     fun getCurrentUser(token: String) {
@@ -296,7 +299,15 @@ class ProfileFragment : Fragment() {
 
         if (isAdded) {
             try {
-                Glide.with(requireContext()).load(user.profileImage).into(binding.profilePhoto)
+                if (user.profileImage!="" && user.profileImage!=null) {
+                    Glide.with(requireContext()).load(user.profileImage).into(binding.profilePhoto)
+                    binding.profilePhoto.visibility=View.VISIBLE
+                    binding.initialAvatar.visibility=View.GONE
+                }else{
+                    binding.initialAvatar.setName(user.firstName)
+                    binding.profilePhoto.visibility=View.GONE
+                    binding.initialAvatar.visibility=View.VISIBLE
+                }
             } catch (e: Exception) {
                 Log.e("TAG", "setupData: " + e)
             }

@@ -103,7 +103,7 @@ public class AttendanceGraphFragment extends Fragment {
     }
 
     private void fetchAndDisplayCurrentMonthData() {
-        Call<ResponseBody> call = apiInterface.getMonthlyAttendance(token, userId);
+        Call<ResponseBody> call = apiInterface.getMonthlyAttendance( userId);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody>  call, @NonNull Response<ResponseBody> response) {

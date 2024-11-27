@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.HrConsole.tv.official.console.premium.CommonAdapter
 import com.HrConsole.tv.official.console.premium.RecyclerViewInterface
 import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
+import com.bumptech.glide.Glide
 import com.investmango.hrconsole.EmployeeAction.EmployeeActions
 import com.investmango.hrconsole.EmployeeAction.EmplyPerFormanceFragment
 import com.investmango.hrconsole.R
@@ -99,7 +100,7 @@ class TotalMemberFragment : Fragment(), RecyclerViewInterface<ActiveMemberRecycl
         apiInterface = apiClient.apiInterface
         progressDialog.showDialog()
 
-        val call: Call<PresentEmpRes>? = apiInterface.PresentEmployee( userId, true, 100)
+        val call: Call<PresentEmpRes>? = apiInterface.PresentEmployee(userId, true, 100)
         call?.enqueue(object : Callback<PresentEmpRes?> {
             override fun onResponse(
                 call: Call<PresentEmpRes?>,
@@ -141,7 +142,7 @@ class TotalMemberFragment : Fragment(), RecyclerViewInterface<ActiveMemberRecycl
 
         try {
 
-            val call: Call<PresentEmpRes>? = apiInterface.newgetAllTodayAttendance(token, 100)
+            val call: Call<PresentEmpRes>? = apiInterface.newgetAllTodayAttendance(100)
             call?.enqueue(object : Callback<PresentEmpRes?> {
                 override fun onResponse(
                     call: Call<PresentEmpRes?>,
@@ -277,7 +278,20 @@ class TotalMemberFragment : Fragment(), RecyclerViewInterface<ActiveMemberRecycl
         if (listofpresentEmp.size != 0) {
             viewBind.name.setText(listofpresentEmp.get(position)?.userName)
             viewBind.position.setText(listofpresentEmp.get(position)?.designation)
-            viewBind.id.setText(listofpresentEmp.get(position)?.id.toString())
+            viewBind.id.setText(listofpresentEmp.get(position)?.userId.toString())
+
+            if (listofpresentEmp[position]?.profileImage != "" && listofpresentEmp[position]?.profileImage != null) {
+                if (isAdded)
+                    Glide.with(context!!).load(listofpresentEmp[position]?.profileImage)
+                        .into(viewBind.profilepic)
+                viewBind.profilepic.visibility = View.VISIBLE
+                viewBind.initialAvatar.visibility = View.GONE
+            } else {
+                viewBind.initialAvatar.setName(listofpresentEmp[position]?.userName!!)
+                viewBind.profilepic.visibility = View.GONE
+                viewBind.initialAvatar.visibility = View.VISIBLE
+            }
+
             viewBind.layoutfull.setOnClickListener {
                 (activity as ManagerActivity?)!!.replaceFragment(
                     putChildId(
@@ -288,9 +302,22 @@ class TotalMemberFragment : Fragment(), RecyclerViewInterface<ActiveMemberRecycl
                 )
             }
         } else {
-            viewBind.name.setText(listoftotalEmp.get(position)?.userName)
-            viewBind.position.setText(listoftotalEmp.get(position)?.designation)
-            viewBind.id.setText(listoftotalEmp.get(position)?.id.toString())
+            viewBind.name.setText(listoftotalEmp.get(position).userName)
+            viewBind.position.setText(listoftotalEmp.get(position).designation)
+            viewBind.id.setText(listoftotalEmp.get(position).id.toString())
+
+            if (listoftotalEmp[position].profile != "" && listoftotalEmp[position].profile != null) {
+                if (isAdded)
+                    Glide.with(context!!).load(listoftotalEmp[position].profile)
+                        .into(viewBind.profilepic)
+                viewBind.profilepic.visibility = View.VISIBLE
+                viewBind.initialAvatar.visibility = View.GONE
+            } else {
+                viewBind.initialAvatar.setName(listoftotalEmp[position].userName)
+                viewBind.profilepic.visibility = View.GONE
+                viewBind.initialAvatar.visibility = View.VISIBLE
+            }
+
             viewBind.layoutfull.setOnClickListener {
                 (activity as ManagerActivity?)!!.replaceFragment(
                     putChildId(

@@ -21,7 +21,10 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.HrConsole.tv.official.console.premium.CommonAdapter;
+import com.HrConsole.tv.official.console.premium.RecyclerViewInterface;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -38,7 +41,9 @@ import com.investmango.hrconsole.R;
 import com.investmango.hrconsole.api.ApiClient;
 import com.investmango.hrconsole.api.ApiInterface;
 import com.investmango.hrconsole.databinding.FragmentPerformanceBinding;
+import com.investmango.hrconsole.databinding.TimeLineBinding;
 import com.investmango.hrconsole.model.MonthlyPerformanceResp;
+import com.investmango.hrconsole.model.TimelineItem;
 import com.investmango.hrconsole.service.DateAndTimeUtility;
 
 import org.json.JSONObject;
@@ -47,18 +52,20 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PerformanceFragment extends Fragment {
+public class PerformanceFragment extends Fragment implements RecyclerViewInterface<TimeLineBinding> {
 
     private FragmentPerformanceBinding binding;
     private long userId;
     String[] languages;
     private ApiInterface apiInterface;
     MonthlyPerformanceResp empPerformanceList;
+    List<TimelineItem> timeline;
     boolean firstMonthEncountered = false;
 
 
@@ -104,6 +111,7 @@ public class PerformanceFragment extends Fragment {
             LocalDate currentdate = LocalDate.now();
             Month thismonth = currentdate.getMonth();
             month = thismonth.toString();
+            binding.months.setText(month);
 
             Log.e("performance", "onResponse: " + month);
         }
@@ -119,21 +127,22 @@ public class PerformanceFragment extends Fragment {
             }
         });
 
-        stepBar(new String[]{"", "", "", ""});
-    }
-
-    private void stepBar(String[] descriptionData) {
-        binding.stepsView.setLabels(descriptionData);
-        binding.stepsView.setBarColorIndicator(Color.BLACK);
-        binding.stepsView.setProgressColorIndicator(getResources().getColor(R.color.greyOfEye));
-        binding.stepsView.setLabelColorIndicator(getResources().getColor(R.color.orange));
-        binding.stepsView.setCompletedPosition(0);
-        binding.stepsView.drawView();
-        if (descriptionData.length != 1)
-            binding.stepsView.setCompletedPosition(descriptionData.length - 1);
-        else binding.stepsView.setCompletedPosition(0);
+//        stepBar(new String[]{"", "", "", ""});
 
     }
+
+//    private void stepBar(String[] descriptionData) {
+//        binding.stepsView.setLabels(descriptionData);
+//        binding.stepsView.setBarColorIndicator(Color.BLACK);
+//        binding.stepsView.setProgressColorIndicator(getResources().getColor(R.color.greyOfEye));
+//        binding.stepsView.setLabelColorIndicator(getResources().getColor(R.color.orange));
+//        binding.stepsView.setCompletedPosition(0);
+//        binding.stepsView.drawView();
+//        if (descriptionData.length != 1)
+//            binding.stepsView.setCompletedPosition(descriptionData.length - 1);
+//        else binding.stepsView.setCompletedPosition(0);
+//
+//    }
 
     private void populatePieChart(long totalPresent, long halfDay, long totalAbsent, long totaldays, long total, PieChart pieChart) {
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
@@ -351,24 +360,13 @@ public class PerformanceFragment extends Fragment {
                 if (response.isSuccessful()) {
                     empPerformanceList = response.body();
 
+                    Log.e("setdata", "onResponse: "+ empPerformanceList);
+                    setUpData();
                     if (empPerformanceList != null && empPerformanceList.getTimeline() != null) {
                         int size = empPerformanceList.getTimeline().size();
-                        Log.e("performance", "onResponse: " + size);
-
                         if (size > 0) {
-                            String[] descriptionData = new String[size];
-                            for (int i = 0; i < size; i++) {
-                                descriptionData[i] = empPerformanceList.getTimeline().get(i).getAchievement();
-                                Log.e("performance", "onResponse: " + descriptionData[i]);
-                            }
-                            try {
-                                if (descriptionData.length != 0 || descriptionData != null)
-                                    stepBar(descriptionData);
-                                setUpData();
-                            } catch (IndexOutOfBoundsException e) {
-                                Log.e("performance", "IndexOutOfBoundsException caught: " + e.getMessage());
-                                e.printStackTrace();
-                            }
+                            timeline = empPerformanceList.getTimeline();
+                            setAdapt();
                         } else {
                             Log.e("performance", "Timeline data is empty");
                         }
@@ -401,13 +399,19 @@ public class PerformanceFragment extends Fragment {
         });
     }
 
+    private void setAdapt() {
+        binding.recyclerView.setAdapter(new CommonAdapter(this));
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false));
+    }
+
     private void setUpData() {
-        binding.performancePercent.setText(String.format("%.2f", empPerformanceList.getOverAllPerformace())+ "%");
+        binding.performancePercent.setText(String.format("%.2f", empPerformanceList.getOverAllPerformace()) + "%");
 
         binding.PendingCount.setText(empPerformanceList.getPendingTasks().toString());
         binding.AssignedCount.setText(empPerformanceList.getAssignedTasks().toString());
         binding.DoneCount.setText(empPerformanceList.getTotalTasks().toString());
 
+        Log.e("empPerformanceList", "setUpData: "+empPerformanceList.getAssignedTasks().toString() );
         binding.PendingCount2.setText(empPerformanceList.getPendingTasks().toString());
         binding.AssignedCount2.setText(empPerformanceList.getAssignedTasks().toString());
         binding.DoneCount2.setText(empPerformanceList.getTotalTasks().toString());
@@ -442,4 +446,30 @@ public class PerformanceFragment extends Fragment {
         return errorMessage;
     }
 
+    @NonNull
+    @Override
+    public TimeLineBinding getViewBinding(@NonNull ViewGroup viewGroup, int viewType) {
+        return TimeLineBinding.inflate(getLayoutInflater(), viewGroup, false);
+    }
+
+    @Override
+    public void bindView(@NonNull TimeLineBinding viewBind, int position) {
+        viewBind.tvTitle.setText(timeline.get(position).getAchievement());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            viewBind.tvDate.setText(DateAndTimeUtility.getDATEFromLong(timeline.get(position).getDate()));
+        }
+        int[] drawableArray = {R.drawable.green_dot, R.drawable.red_dot, R.drawable.blue_dot, R.drawable.orange_dot};
+        int[] textcolor = {R.color.dotGreen, R.color.brightred, R.color.lightBlue, R.color.yellow};
+
+        Random random = new Random();
+        int i = random.nextInt(drawableArray.length);
+
+        viewBind.timelineDot.setBackground(getResources().getDrawable(drawableArray[i]));
+        viewBind.tvDate.setTextColor(getResources().getColor(textcolor[i]));
+    }
+
+    @Override
+    public int getListCount() {
+        return timeline.size();
+    }
 }

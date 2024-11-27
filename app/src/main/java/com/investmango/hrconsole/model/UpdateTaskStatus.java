@@ -1,5 +1,7 @@
 package com.investmango.hrconsole.model;
 
+import java.util.List;
+
 public class UpdateTaskStatus {
     private long id;
     private Date dateTime;
@@ -16,7 +18,7 @@ public class UpdateTaskStatus {
         this.deadLine = deadLine;
     }
 
-    private String fileUrl;
+    private List<String> fileUrl;
 
     public long getId() {
         return id;
@@ -58,11 +60,11 @@ public class UpdateTaskStatus {
         this.status = status;
     }
 
-    public String getFileUrl() {
+    public List<String> getFileUrl() {
         return fileUrl;
     }
 
-    public void setFileUrl(String fileUrl) {
+    public void setFileUrl(List<String> fileUrl) {
         this.fileUrl = fileUrl;
     }
 

@@ -2,6 +2,7 @@ package com.investmango.hrconsole.manager.activity.fragment;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DownloadManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -14,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -38,10 +40,13 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog;
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.datepicker.MaterialDatePicker;
+import com.investmango.hrconsole.Adapter.fileAdapter;
 import com.investmango.hrconsole.EmployeeAction.AssignTask;
 import com.investmango.hrconsole.R;
 import com.investmango.hrconsole.api.ApiClient;
@@ -52,6 +57,7 @@ import com.investmango.hrconsole.model.TaskItems;
 import com.investmango.hrconsole.model.TaskResponse;
 import com.investmango.hrconsole.model.TotalEmpResponseItem;
 import com.investmango.hrconsole.model.UpdateTaskStatus;
+import com.investmango.hrconsole.model.User;
 import com.investmango.hrconsole.service.Constant;
 import com.investmango.hrconsole.service.DateAndTimeUtility;
 import com.shawnlin.numberpicker.NumberPicker;
@@ -123,38 +129,39 @@ public class TasksFragment extends Fragment {
         getbundle();
 
 
-        binding.showImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                progressDialog.showDialog();
-                if (tasks.get(0) != null)
-                    if (tasks.get(0).getFileUrl() != null) {
-                        try {
+//        binding.showImg.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                progressDialog.showDialog();
+//                if (tasks.get(0) != null)
+//                    if (tasks.get(0).getFileurl() != null) {
+//                        try {
+//
+//                            Intent urlIntent = new Intent(
+//                                    Intent.ACTION_VIEW,
+//                                    Uri.parse(tasks.get(0).getFileurl())
+//                            );
+//                            startActivity(urlIntent);
+//                        } catch (Exception e) {
+//                            Toast.makeText(getContext(), "Try again Later.", Toast.LENGTH_SHORT).show();
+//                            Log.e("Exception", "onClick: " + e);
+//                        }
+////                    progressDialog.dismissDialog();
+//                    }
+//            }
+//        });
 
-                            Intent urlIntent = new Intent(
-                                    Intent.ACTION_VIEW,
-                                    Uri.parse(tasks.get(0).getFileUrl())
-                            );
-                            startActivity(urlIntent);
-                        } catch (Exception e) {
-                            Toast.makeText(getContext(), "Try again Later.", Toast.LENGTH_SHORT).show();
-                            Log.e("Exception", "onClick: " + e);
-                        }
-//                    progressDialog.dismissDialog();
-                    }
-            }
-        });
+//        binding.numberPicker.setMaxValue(20);
+//        binding.numberPicker.setOrientation(LinearLayout.VERTICAL);
+//
+//        binding.numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+//            @Override
+//            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+//                Log.d("numberPicker", String.format(Locale.US, "oldVal: %d, newVal: %d", oldVal, newVal));
+//
+//            }
+//        });
 
-        binding.numberPicker.setMaxValue(20);
-        binding.numberPicker.setOrientation(LinearLayout.VERTICAL);
-
-        binding.numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                Log.d("numberPicker", String.format(Locale.US, "oldVal: %d, newVal: %d", oldVal, newVal));
-
-            }
-        });
         binding.previousPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -230,7 +237,6 @@ public class TasksFragment extends Fragment {
                     requestBody.setId(tasks.get(0).getId());
                     requestBody.setComments(binding.comment.getText().toString());
                     ChangeTaskStatus(requestBody);
-
                 }
 
             }
@@ -325,6 +331,8 @@ public class TasksFragment extends Fragment {
                     bb.putSerializable("editTask", task);
                     fragment.setArguments(bb);
                     ((ManagerActivity) getContext()).replaceFragment(fragment);
+                }else {
+
                 }
             }
         });
@@ -355,18 +363,53 @@ public class TasksFragment extends Fragment {
             getTaskList("");
             binding.taskreport.setVisibility(View.VISIBLE);
         } else {
-
             if (authority.equals(Constant.MANAGER))
                 memberTaskOFManager();
             else if (authority.equals(Constant.ADMIN))
                 AdmingetAllTask();
-
+            getUser();
             binding.Addcomments.setVisibility(View.VISIBLE);
             binding.myteamTask.setVisibility(View.VISIBLE);
 
         }
     }
 
+    private void getUser(){
+        ApiClient apiClient = new ApiClient(getContext());
+        ApiInterface apiInterface = apiClient.getApiInterface();
+        Call<User> call = apiInterface.getCurrentUser();
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+                if (response.isSuccessful()) {
+                    User user = response.body();
+                    if (user != null) {
+
+                        // Show Profile Image
+                        String imageUrl = user.getProfileImage();
+                        if (!Objects.equals(imageUrl, "")) {
+                            Log.e("getProfileImage", "onResponse: " + imageUrl);
+                            Glide.with(getContext()).load(imageUrl).into(binding.profilephoto);
+                            binding.profilephoto.setVisibility(View.VISIBLE);
+                            binding.initialAvatar.setVisibility(View.GONE);
+                        } else {
+                            binding.initialAvatar.setName(user.getFirstName());
+                            binding.profilephoto.setVisibility(View.GONE);
+                            binding.initialAvatar.setVisibility(View.VISIBLE);
+
+                        }
+                    }
+                } else {
+                    Log.e("UserProfile", "Failed to retrieve current user. Response code: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+                Log.e("UserProfile", "Error retrieving profile: " + t.getMessage());
+            }
+        });
+    }
     private void ChangeTaskStatus(UpdateTaskStatus requestBody) {
         progressDialog.showDialog();
         Call<ResponseBody> call = apiInterface.updateUserTaskStatus(requestBody, userId);
@@ -487,7 +530,7 @@ public class TasksFragment extends Fragment {
                 Log.e("startdate", "showFilterBox: " + startdate);
 
                 long enddate = DateAndTimeUtility.dateToEpoch(endDate.getText().toString());
-                count=0;
+                count = 0;
 //                if (from.equals("own")) {
 //                    if (!statusSpin.getSelectedItem().toString().equals("--"))
 //                    getFiltered(statusSpin.getSelectedItem().toString(), startdate, enddate);
@@ -608,7 +651,7 @@ public class TasksFragment extends Fragment {
                 Log.e("startdate", "showFilterBox: " + statusSpin.getSelectedItem().toString().trim());
 
                 long enddate = DateAndTimeUtility.dateToEpoch(endDate.getText().toString());
-                count=0;
+                count = 0;
 
                 if (startdate == 0L && enddate == 0L && statusSpin.getSelectedItem().toString().trim().equals("--"))
                     Toast.makeText(context, "Select Date or status", Toast.LENGTH_SHORT).show();
@@ -875,12 +918,43 @@ public class TasksFragment extends Fragment {
 
         showResult.setOnClickListener(view -> {
             count = Integer.parseInt(customEditText.getText().toString());
-            getTaskList("");
+//            getTaskList("");
+            if (isFiltered) {
+                handleFilteredTask();
+            } else {
+                handleUnfilteredTask();
+            }
+
             alertDialog.dismiss();
         });
 
         // Show the AlertDialog
         alertDialog.show();
+    }
+
+    void showReasonAlert( String rsn) {
+        // Create an alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setCancelable(true);
+
+        // set the custom layout
+        View customLayout = getLayoutInflater().inflate(R.layout.custom_progress2, null);
+        builder.setView(customLayout);
+
+        TextView reasonTxt = customLayout.findViewById(R.id.Reason);
+                TextView okBtn = customLayout.findViewById(R.id.ok_btn);
+                reasonTxt.setText(rsn);
+        reasonTxt.setMovementMethod(new ScrollingMovementMethod());
+
+        Dialog dialog = builder.create();
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+            }
+        });
+        dialog.show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -904,14 +978,18 @@ public class TasksFragment extends Fragment {
             isFirstSelection = 1;
             binding.name.setText(tasks.get(0).getUserName().toString());
 
-            if (!Objects.requireNonNull(tasks.get(0).getFileUrl()).isEmpty())
-                binding.showImg.setVisibility(View.VISIBLE);
-            else binding.showImg.setVisibility(View.GONE);
+            if (!tasks.get(0).getFileurl().isEmpty()){
+                binding.fileRecycler.setVisibility(View.VISIBLE);
+            binding.fileRecycler.setAdapter(new fileAdapter(getContext(),tasks.get(0).getFileurl()));
+            binding.fileRecycler.setLayoutManager(new GridLayoutManager(getContext(),2));
+            }
+//            else binding.fileRecycler.setVisibility(View.GONE);
 
 
 //            binding.recyclerView.adapter = CommonAdapter(this)
 //            binding.recyclerView.layoutManager =
 //                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
         } catch (Exception e) {
             Log.e("TAG", "setAdapt: " + e);
         }
@@ -1641,4 +1719,8 @@ public class TasksFragment extends Fragment {
 //        dialog.getWindow().getAttributes().windowAnimations = R.style.animation;
 //    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }

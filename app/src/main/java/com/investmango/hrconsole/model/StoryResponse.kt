@@ -35,7 +35,7 @@ data class StoryResponse(
 	val createdTime: Long? = null,
 
 	@field:SerializedName("fileUrl")
-	val fileUrl: String? = null,
+	val fileUrl: List<String>? = null,
 
 	@field:SerializedName("assignmentSubject")
 	val assignmentSubject: String? = null,
@@ -49,9 +49,36 @@ data class StoryResponse(
 	@field:SerializedName("assignedById")
 	val assignedById: Int? = null,
 
-	@field:SerializedName("story")
-    var story: List<String?>? = null,
+	@field:SerializedName("stories")
+	val story: List<Stories>? = null,
 
 	@field:SerializedName("status")
 	val status: String? = null
 )
+data class  Stories(
+
+
+	@field:SerializedName("id")
+	val assignedToId: Any? = null,
+
+	@field:SerializedName("createdDate")
+	val createdDate: Long? = null,
+
+	@field:SerializedName("updatedDate")
+	val updatedTime: Long? = null,
+
+	@field:SerializedName("assignedToName")
+	val assignedToName: Any? = null,
+
+	@field:SerializedName("userId")
+	val userId: Any? = null,
+
+	@field:SerializedName("id")
+	val id: Int? = null,
+
+	@field:SerializedName("userName")
+	val userName: String? = null,
+				@field:SerializedName("strory")
+	val strory: String? = null,
+
+	)

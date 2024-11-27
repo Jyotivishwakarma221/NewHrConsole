@@ -31,6 +31,7 @@ import com.investmango.hrconsole.user.activity.UserHomeActivity;
 import com.investmango.hrconsole.user.adapter.TaskAdapter;
 
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -118,8 +119,9 @@ public class TaskFragment extends Fragment {
     }
 
     private void getFilteredTasks(String taskStatus) {
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<Task>> call = apiInterface.getFilterTask(token, userId, taskStatus);
+        ApiClient apiClient = new ApiClient(Objects.requireNonNull(getContext()));
+        ApiInterface apiInterface = apiClient.getApiInterface();
+        Call<List<Task>> call = apiInterface.getFilterTask( userId, taskStatus);
         call.enqueue(new Callback<List<Task>>() {
             @Override
             public void onResponse(@NonNull Call<List<Task>> call, @NonNull Response<List<Task>> response) {
@@ -146,8 +148,9 @@ public class TaskFragment extends Fragment {
     private void getAllTasks() {
         swipeRefreshLayout.setRefreshing(true);
         progressDialog.show();
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<Task>> call = apiInterface.getAllTask(token, userId);
+        ApiClient apiClient = new ApiClient(getActivity());
+        ApiInterface apiInterface = apiClient.getApiInterface();
+        Call<List<Task>> call = apiInterface.getAllTask(userId);
         call.enqueue(new Callback<List<Task>>() {
             @Override
             public void onResponse(@NonNull Call<List<Task>> call, @NonNull Response<List<Task>> response) {

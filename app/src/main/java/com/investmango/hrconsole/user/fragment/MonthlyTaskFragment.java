@@ -131,7 +131,7 @@ public class MonthlyTaskFragment extends Fragment {
     }
 
     private void taskMonthData() {
-    Call<ResponseBody> call = apiInterface.getMonthlyTaskStatistics(token, userId);
+    Call<ResponseBody> call = apiInterface.getMonthlyTaskStatistics(userId);
 
     call.enqueue(new Callback<ResponseBody>() {
         @Override

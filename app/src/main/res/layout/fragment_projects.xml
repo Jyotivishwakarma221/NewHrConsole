@@ -260,12 +260,12 @@
                     android:layout_marginStart="@dimen/_20dp"
                     android:layout_marginTop="@dimen/_10"
                     android:gravity="start"
-                    android:text="  Due Date "
+                    android:text=" Created Date "
                     android:textColor="@color/lightWhite"
                     android:textSize="15sp" />
 
                 <TextView
-                    android:id="@+id/duedate"
+                    android:id="@+id/createddate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/projectNamee"
@@ -283,7 +283,7 @@
                     android:id="@+id/Assign"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/duedate"
+                    android:layout_below="@+id/createddate"
                     android:layout_marginStart="@dimen/_20dp"
                     android:layout_marginTop="@dimen/_15"
                     android:gravity="start"

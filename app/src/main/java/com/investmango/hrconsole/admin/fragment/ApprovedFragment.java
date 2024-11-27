@@ -70,7 +70,7 @@ public class ApprovedFragment extends Fragment {
         progressDialog.show();
 
         // Make the API call with 'token' and 'userId'
-        Call<List<ApprovedLeaves>> call = apiInterface.getApprovedLeaves(token);
+        Call<List<ApprovedLeaves>> call = apiInterface.getApprovedLeaves();
 
         call.enqueue(new Callback<List<ApprovedLeaves>>() {
             @Override

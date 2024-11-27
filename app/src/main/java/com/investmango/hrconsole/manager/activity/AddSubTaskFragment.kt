@@ -1,5 +1,6 @@
 package com.investmango.hrconsole.manager.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Context
@@ -17,16 +18,19 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
 import com.cloudinary.Cloudinary
 import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.investmango.hrconsole.Adapter.fileAdapter
 import com.investmango.hrconsole.AwsUpload.UploadFileAws
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
@@ -68,13 +72,14 @@ class AddSubTaskFragment : Fragment() {
     var uri: Uri? = Uri.parse("")
     lateinit var nameIndex: String
     var sizeIndex: Long = 0
-    var uriStr = ""
+    var uriStr : ArrayList<String> = arrayListOf()
     lateinit var file1:File
     private var allActiveUsers: List<UsersItem?>? = null
     var selectedId: Long = 0
     var projectId: Int = 0
     lateinit var progressDialog: AwesomeProgressDialog
     lateinit var launcher: ActivityResultLauncher<Intent>
+    private lateinit var  pickMultipleMedia: ActivityResultLauncher<PickVisualMediaRequest>
     private val apiKey = "974981595445112"
     private val apiSecret = "4URnjaut9IehzWDZZ8_AVH8pKoQ"
     var publicId = ""
@@ -103,57 +108,110 @@ class AddSubTaskFragment : Fragment() {
                 projectId = arguments!!.getInt("id")
         }
 
-        launcher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-                uri = result.data!!.data!!
-                Log.e("launcherrrr", "onCreate: " + uri)
+//        launcher = registerForActivityResult(
+//            ActivityResultContracts.StartActivityForResult()
+//        ) { result ->
+//            if (result.resultCode == Activity.RESULT_OK && result.data != null) {
+//                uri = result.data!!.data!!
+//                Log.e("launcherrrr", "onCreate: " + uri)
+//
+//                result.data?.let { returnUri ->
+//                    context?.contentResolver?.query(uri!!, null, null, null, null)
+//                }?.use { cursor ->
+//                    /*
+//                     * Get the column indexes of the data in the Cursor,
+//                     * move to the first row in the Cursor, get the data,
+//                     * and display it.
+//                     */
+//                    nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME).toString()
+//                    val size = cursor.getColumnIndex(OpenableColumns.SIZE)
+//                    cursor.moveToFirst()
+//                    sizeIndex = cursor.getLong(size)
+//                    Log.e("launcherrrr", "onCreate: " + sizeIndex)
+//
+//                    cursor.moveToFirst()
+//
+//                     file1= File(Objects.requireNonNull<String>(UploadFileAws().getRealPathFromUri(uri!!,context!!)))
+//                     val requestBody1 = RequestBody.create("image/*".toMediaTypeOrNull(), file1)
+//                     image = MultipartBody.Part.createFormData("image", file1.name, requestBody1)
+//                     Log.e("khushi1111", "onClick: " + image)
+//
+//                    if (isAdded)
+//                        CoroutineScope(Dispatchers.Main).launch {
+//                            uriStr = UploadFileAws().uploadFile(file1, "subtasksDocs", context!!).toString()
+//                            if (uriStr != "") {
+//                                // Handle the success case here
+//                                Log.e("uploadimg", "onCreate: "+uriStr )
+//                                binding.uploadDocname.visibility = View.VISIBLE
+//                                binding.uploadDoc.visibility = View.GONE
+//                            } else {
+//                                // Handle the failure case here
+//                                Toast.makeText(
+//                                    context,
+//                                    "Some error in uploading .",
+//                                    Toast.LENGTH_SHORT
+//                                ).show()
+//                            }
+//                        }
+//
+//                }
+//            }
+//
+//        };
+//
 
-                result.data?.let { returnUri ->
-                    context?.contentResolver?.query(uri!!, null, null, null, null)
-                }?.use { cursor ->
-                    /*
-                     * Get the column indexes of the data in the Cursor,
-                     * move to the first row in the Cursor, get the data,
-                     * and display it.
-                     */
-                    nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME).toString()
-                    val size = cursor.getColumnIndex(OpenableColumns.SIZE)
-                    cursor.moveToFirst()
-                    sizeIndex = cursor.getLong(size)
-                    Log.e("launcherrrr", "onCreate: " + sizeIndex)
+         pickMultipleMedia =
+            registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) { uris ->
+                // Callback is invoked after the user selects media items or closes the
+                // photo picker.
+                if (uris.isNotEmpty()) {
+                    Log.e("PhotoPicker", "Number of items selected: ${uris.size}")
+                    for( i in 0..uris.size-1 ) {
+                        file1 = File(
+                            Objects.requireNonNull<String>(
+                                UploadFileAws().getRealPathFromUri(
+                                    uris[i],
+                                    context!!
+                                )
+                            )
+                        )
+                        val requestBody1 = RequestBody.create("image/*".toMediaTypeOrNull(), file1)
+                        image = MultipartBody.Part.createFormData("image", file1.name, requestBody1)
+                        Log.e("khushi1111", "onClick: " + image)
+                        if (isAdded)
+                            CoroutineScope(Dispatchers.Main).launch {
+                                progressDialog.showDialog()
+                               var url =
+                                    UploadFileAws().uploadFile(file1, "subtasksDocs", context!!)
+                                        .toString()
+                                uriStr.add(url)
+                                if (url != "") {
+                                    // Handle the success case here
+                                    Log.e("uploadimg", "onCreate: " + uriStr)
 
-                    cursor.moveToFirst()
+                                    progressDialog.dismissDialog()
 
-                     file1= File(Objects.requireNonNull<String>(UploadFileAws().getRealPathFromUri(uri!!,context!!)))
-                     val requestBody1 = RequestBody.create("image/*".toMediaTypeOrNull(), file1)
-                     image = MultipartBody.Part.createFormData("image", file1.name, requestBody1)
-                     Log.e("khushi1111", "onClick: " + image)
+                                    if (isAdded)
+                                        binding.fileRecycler.adapter = fileAdapter(requireContext(), uriStr)
+                                    binding.fileRecycler.layoutManager =
+                                        GridLayoutManager(context, 2)
+                                } else {
+                                    progressDialog.dismissDialog()
+                                    // Handle the failure case here
+                                    Toast.makeText(
+                                        context,
+                                        "Some error in uploading .",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
 
-                    if (isAdded)
-                        CoroutineScope(Dispatchers.Main).launch {
-                            uriStr = UploadFileAws().uploadFile(file1, "subtasksDocs", context!!).toString()
-                            if (uriStr != "") {
-                                // Handle the success case here
-                                Log.e("uploadimg", "onCreate: "+uriStr )
-                                binding.uploadDocname.visibility = View.VISIBLE
-                                binding.uploadDoc.visibility = View.GONE
-                            } else {
-                                // Handle the failure case here
-                                Toast.makeText(
-                                    context,
-                                    "Some error in uploading .",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                }
                             }
-                        }
+                    }
 
+                } else {
+                    Log.e("PhotoPicker", "No media selected")
                 }
             }
-
-        };
-
     }
 
     private fun getRealPathFromUri(uri: Uri): String? {
@@ -172,13 +230,14 @@ class AddSubTaskFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_sub_task, container, false)
         // Inflate the layout for this fragment
         return binding.root
     }
 
+    @SuppressLint("SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -207,13 +266,18 @@ class AddSubTaskFragment : Fragment() {
         binding.delete.setOnClickListener {
             binding.taskDescription.setText("")
             binding.deadline.setText("Select Date ")
-            if (!publicId.isEmpty()) {
+            if (!uriStr.isEmpty()) {
+                progressDialog.showDialog()
                 // Delete the old image from Cloudinary in a background thread
-                Thread {
-                    deleteImageFromCloudinary(publicId)
-                }.start()
+                CoroutineScope(Dispatchers.Main).launch {
+                    for (i in 0 until uriStr.size) {
+                        uriStr[i].let { UploadFileAws().deleteFile(it, context!!) }
+                    }
+                        uriStr.clear()
+                    binding.fileRecycler.adapter!!.notifyDataSetChanged()
+                    progressDialog.dismissDialog()
+                }
 
-                binding.uploadDocname.visibility = View.GONE
                 binding.taskDescription.setText("")
 //            activity?.runOnUiThread(Runnable {
 //                deleteImageFromCloudinary(publicId)
@@ -244,75 +308,8 @@ class AddSubTaskFragment : Fragment() {
 
     }
 
-    //    private fun uploadImage(filename:String) {
-//        val apiClient = ApiClient(requireContext())
-//        apiInterface = apiClient.apiInterface
-//
-//        val jsonObject = JSONObject()
-//        filename?.let {
-//            if (it.isNotEmpty()) {
-//                jsonObject.put("file", it)
-//            }
-//        }
-//
-//        val jsonString = jsonObject.toString()
-//        val requestBody= jsonString.toRequestBody("application/json".toMediaTypeOrNull())
-//
-//        Log.e("UPLOADimg", "uploadImage: "+ image + " "+ jsonString)
-//        val call: Call<String>? = apiInterface.saveImage(requestBody,"subtasksDocs")
-//        call?.enqueue(object : Callback<String> {
-//            override fun onResponse(
-//                call: Call<String?>,
-//                response: Response<String?>,
-//            ) {
-//                if (response.body() != null && response.isSuccessful()) {
-//                    Log.e("UPLOADimg", "onResponse: "+ response.message())
-//
-//                } else {
-//                    Log.e("UPLOADimg", "onResponse: " + response.body().toString())
-//                    if (isAdded)
-//                        Toast.makeText(context, "Empty", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<String?>, t: Throwable) {
-//                if (isAdded)
-//                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
-//                Log.e("UPLOADimg", "onFailure: " + t.message)
-//            }
-//        })
-//    }
-    fun uploadFile(file: File, folderName: String) {
-        val apiClient = ApiClient(requireContext())
-        apiInterface = apiClient.apiInterface
-//
-        // Create RequestBody instance from file
-        val requestFile = file.asRequestBody("application/octet-stream".toMediaTypeOrNull())
+    private fun deleteImageFromAWS(publicId: List<String>) {
 
-        // MultipartBody.Part is used to send the actual file
-        val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
-
-        // Call the API
-        val call = apiInterface.saveImage(body, folderName)
-        call.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                if (response.isSuccessful) {
-                    val resp = response.body().toString()
-                    val json =JSONObject(resp)
-                    uriStr=json.optString("message")
-
-                    Log.e("uploadimg", "onResponse: " + response.body())
-
-                } else {
-                    Log.e("uploadimg", "onResponse: " + response.errorBody())
-                }
-            }
-
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                Log.e("uploadimg", "onResponse: " + t)
-            }
-
-        })
     }
 
     private fun getActiveUser() {
@@ -354,7 +351,7 @@ class AddSubTaskFragment : Fragment() {
 
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun sendTask(imageUrl: String) {
+    private fun sendTask(imageUrl: List<String>) {
         val apiClient = ApiClient(requireContext())
         apiInterface = apiClient.apiInterface
 
@@ -362,26 +359,30 @@ class AddSubTaskFragment : Fragment() {
         progressDialog.showDialog()
 
         val taskObj = AddSubTask()
+        if (imageUrl.isNotEmpty())
+                taskObj.fileurl=imageUrl
+
+
         taskObj.subtaskDescription = binding.taskDescription.text.toString()
         taskObj.assignById = userId
+
 
         if (selectedId != 0L)
             taskObj.assignToId = selectedId
         else
             taskObj.assignToId = userId
 
-        taskObj.fileUrl = imageUrl
         taskObj.subtaskName = binding.taskname.text.toString()
-        Log.e(
-            "imageUrl",
-            "sendTask: " + DateAndTimeUtility.convertToEpochMillis(binding.deadline.text.toString())
-        )
 
         taskObj.taskDeadline =
             DateAndTimeUtility.convertToEpochMillis(
                 binding.deadline.text.toString(),
                 binding.selectedTime.text.toString()
             )
+        Log.e(
+            "imageUrl",
+            "sendTask: " + taskObj)
+
         val call = apiInterface.addSubTask(projectId, taskObj)
         call.enqueue(object : Callback<String?> {
             override fun onResponse(call: Call<String?>, response: Response<String?>) {
@@ -397,10 +398,10 @@ class AddSubTaskFragment : Fragment() {
                         ).show()
                     binding.taskDescription.setText("")
                     uri = null
-                    uriStr = ""
+                    uriStr.clear()
+                    binding.fileRecycler.adapter!!.notifyDataSetChanged()
                     binding.deadline.text = "Select Date "
                     binding.selectedTime.text = "Select Time "
-                    binding.uploadDocname.visibility = View.GONE
                     binding.taskname.setText("")
                     selectedId = 0
                     binding.selectEmployee.setText("")
@@ -428,74 +429,6 @@ class AddSubTaskFragment : Fragment() {
         })
     }
 
-    fun deleteImageFromCloudinary(publicId: String) {
-        CoroutineScope(Dispatchers.Main).launch {
-            try {
-                withContext(Dispatchers.IO) {
-                    // Initialize Cloudinary with your cloud name, API key, and API secret
-                    val cloudinary = Cloudinary("cloudinary://$apiKey:$apiSecret@dzvsmmraz")
-
-                    // Delete the image from Cloudinary
-                    cloudinary.uploader().destroy(publicId, null)
-                }
-                Log.d("Cloudinary", "Image deleted successfully from Cloudinary-----$publicId")
-            } catch (e: IOException) {
-                Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show()
-                Log.e("Cloudinary", "Error deleting image from Cloudinary: " + e.message)
-            }
-        }
-    }
-
-    private fun uploadImageToCloud(imageUri: Uri?) {
-//        val fileSize: Long = getFileSize(imageUri)
-        if (sizeIndex > 300 * 1024) {
-            Toast.makeText(
-                requireContext(),
-                "File size exceeds 300 KB limit. Please upload a file smaller than 300 KB",
-                Toast.LENGTH_SHORT
-            ).show()
-            return
-        }
-        val progressDialog = ProgressDialog.show(requireContext(), "", "Uploading image...", true)
-        val folderName = "taskfiles"
-        publicId = folderName + "/" + System.currentTimeMillis()
-        // Configure the Cloudinary upload options
-        MediaManager.get().upload(imageUri)
-            .option("public_id", publicId) // Specify the folder name
-            .callback(object : UploadCallback {
-                override fun onStart(requestId: String) {}
-
-                override fun onProgress(requestId: String, bytes: Long, totalBytes: Long) {}
-
-                override fun onSuccess(requestId: String, resultData: Map<*, *>) {
-                    progressDialog.dismiss()
-                    uriStr = uri?.toString()!!
-                    uriStr = (resultData["url"] as String?).toString()
-                    Log.e("uriStr", "onSuccess: " + uriStr)
-                    Toast.makeText(
-                        requireContext(),
-                        "Image uploaded successfully",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    // Dismiss progress dialog when upload is successful
-                    progressDialog.dismiss()
-                    binding.uploadDocname.visibility = View.VISIBLE
-                    binding.uploadDocname.text = "img. " + nameIndex
-                    binding.uploadDoc.visibility = View.INVISIBLE
-                }
-
-                override fun onError(requestId: String, error: ErrorInfo) {
-                    progressDialog.dismiss()
-                    Toast.makeText(
-                        requireContext(),
-                        "Upload failed: " + error.description,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                override fun onReschedule(requestId: String, error: ErrorInfo) {}
-            }).dispatch()
-    }
     fun setClock() {
         val c = Calendar.getInstance()
 
@@ -565,7 +498,10 @@ class AddSubTaskFragment : Fragment() {
     private fun openGallery() {
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
 //        startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST)
-        launcher.launch(galleryIntent)
+//        launcher.launch(galleryIntent)
+
+        pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo))
+
     }
 
 }

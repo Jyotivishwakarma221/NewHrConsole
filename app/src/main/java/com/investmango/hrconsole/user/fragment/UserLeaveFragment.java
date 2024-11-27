@@ -26,6 +26,7 @@ import com.investmango.hrconsole.user.activity.UserHomeActivity;
 import com.investmango.hrconsole.user.adapter.UserLeaveAdapter;
 
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,7 +52,8 @@ public class UserLeaveFragment extends Fragment {
         userId = userPreferences.getLong("userId", 0);
 
         recyclerView = view.findViewById(R.id.userLeaveRecyclerView);
-        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiClient apiClient = new ApiClient(Objects.requireNonNull(getContext()));
+         apiInterface = apiClient.getApiInterface();
         progressDialog = new ProgressDialog(getActivity(), R.style.CustomProgressDialog);
         progressDialog.setMessage("Loading..");
         progressDialog.setCancelable(false);
@@ -67,7 +69,7 @@ public class UserLeaveFragment extends Fragment {
 
     private void getUserLeave() {
         progressDialog.show();
-        Call<List<SaveUserLeave>> call = apiInterface.getUserLeave(token, userId);
+        Call<List<SaveUserLeave>> call = apiInterface.getUserLeave( userId);
         call.enqueue(new Callback<List<SaveUserLeave>>() {
             @Override
             public void onResponse(@NonNull Call<List<SaveUserLeave>> call, @NonNull Response<List<SaveUserLeave>> response) {

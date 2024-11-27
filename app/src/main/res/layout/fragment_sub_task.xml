@@ -81,7 +81,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:background="@drawable/grey_bg_rounded"
-                android:gravity="center"
                 android:inputType="textMultiLine"
                 android:isScrollContainer="true"
                 android:lines="2"
@@ -202,22 +201,28 @@
                     android:padding="@dimen/_5dp"
                     android:src="@drawable/uploadwhite" />
 
-                <TextView
-                    android:id="@+id/uploadDocname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_margin="@dimen/_5dp"
-                    android:layout_weight="1"
-                    android:drawableEnd="@drawable/baseline_close_24"
-                    android:gravity="center"
-                    android:paddingTop="@dimen/_20dp"
-                    android:src="@drawable/uploadwhite"
-                    android:text="File "
-                    android:textColor="@color/white"
-                    android:visibility="gone" />
-            </LinearLayout>
 
+<!--                <TextView-->
+<!--                    android:id="@+id/uploadDocname"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="end"-->
+<!--                    android:layout_margin="@dimen/_5dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:drawableEnd="@drawable/baseline_close_24"-->
+<!--                    android:gravity="center"-->
+<!--                    android:paddingTop="@dimen/_20dp"-->
+<!--                    android:src="@drawable/uploadwhite"-->
+<!--                    android:text="File "-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:visibility="gone" />-->
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fileRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/file"
+                android:padding="5dp" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

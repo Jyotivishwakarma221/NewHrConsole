@@ -58,7 +58,7 @@ public class SalaryDetailsAdminFragment extends Fragment {
     }
     private void getAllSalaryDetails() {
         progressDialog.show();
-        Call<List<AdminSalaryDetails>> call = apiInterface.getAllSalaryDetails(token);
+        Call<List<AdminSalaryDetails>> call = apiInterface.getAllSalaryDetails();
         call.enqueue(new Callback<List<AdminSalaryDetails>>() {
             @Override
             public void onResponse(@NonNull Call<List<AdminSalaryDetails>> call, @NonNull Response<List<AdminSalaryDetails>> response) {

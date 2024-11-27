@@ -110,7 +110,8 @@ sealed class TimeSlotViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
         val timeTextView: TextView = itemView.findViewById(com.investmango.hrconsole.R.id.Time)
     }
 
-    class Meeting(itemView: View) : TimeSlotViewHolder(itemView) {
+    class
+    Meeting(itemView: View) : TimeSlotViewHolder(itemView) {
         val timeTextView: TextView = itemView.findViewById(com.investmango.hrconsole.R.id.Time)
         val details: TextView = itemView.findViewById(com.investmango.hrconsole.R.id.details)
         val acceptMeet: TextView = itemView.findViewById(com.investmango.hrconsole.R.id.acceptMeet)

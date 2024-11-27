@@ -159,21 +159,29 @@
                     android:padding="@dimen/_5dp"
                     android:src="@drawable/uploadwhite" />
 
-                <TextView
-                    android:id="@+id/uploadDocname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_margin="@dimen/_5dp"
-                    android:layout_weight="1"
-                    android:drawableEnd="@drawable/baseline_close_24"
-                    android:gravity="center"
-                    android:padding="@dimen/_5dp"
-                    android:src="@drawable/uploadwhite"
-                    android:text="naskdn"
-                    android:textColor="@color/white"
-                    android:visibility="gone" />
+<!--                <TextView-->
+<!--                    android:id="@+id/uploadDocname"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="end"-->
+<!--                    android:layout_margin="@dimen/_5dp"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:drawableEnd="@drawable/baseline_close_24"-->
+<!--                    android:gravity="center"-->
+<!--                    android:padding="@dimen/_5dp"-->
+<!--                    android:src="@drawable/uploadwhite"-->
+<!--                    android:text="naskdn"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:visibility="gone" />-->
             </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fileRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/scroll"
+                android:foregroundGravity="center"
+                android:padding="5dp" />
 
 
             <Button

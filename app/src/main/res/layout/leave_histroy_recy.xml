@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,12 +24,20 @@
             android:padding="@dimen/_5dp">
 
 
-            <ImageView
+            <com.makeramen.roundedimageview.RoundedImageView
                 android:id="@+id/profilepic"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/profile" />
-
+                android:src="@drawable/profile"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                app:riv_oval="true"/>
+            <com.investmango.hrconsole.commonclasses.InitialAvatarView
+                android:id="@+id/initialAvatar"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_margin="@dimen/_5dp"
+                android:padding="@dimen/_5dp" />
             <TextView
                 android:id="@+id/name"
                 android:layout_width="120dp"
@@ -98,8 +107,24 @@
                     android:textColor="@color/white"
                     android:textSize="14sp" />
             </LinearLayout>
-
-        </LinearLayout>
+            <TextView
+                android:id="@+id/showImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/Addcomments"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:background="@drawable/blue_bg"
+                android:gravity="center"
+                android:paddingStart="@dimen/_30dp"
+                android:paddingTop="@dimen/_5dp"
+                android:paddingEnd="@dimen/_30dp"
+                android:layout_marginTop="@dimen/_15"
+                android:paddingBottom="@dimen/_5dp"
+                android:text="Show Image"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_15"
+                android:textStyle="bold" />        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/approveLay"

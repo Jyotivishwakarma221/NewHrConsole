@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
 import com.investmango.hrconsole.api.ApiInterface
@@ -24,8 +25,15 @@ class OtpFragment : Fragment() {
     lateinit var binding: FragmentOtpBinding
     lateinit var apiInterface: ApiInterface
     lateinit var email:String
+    lateinit var progressDialog: AwesomeProgressDialog
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        progressDialog = AwesomeProgressDialog(context)
+        progressDialog.addTitle("Loading...") // add your title here.
+        progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
 
         arguments?.takeIf { it.containsKey("email") }?.apply {
             Log.e("arguments", "onViewCreated: " + getString("email"))
@@ -59,7 +67,7 @@ class OtpFragment : Fragment() {
         val apiClient = ApiClient(requireContext())
         apiInterface = apiClient.apiInterface
         // Call the sendOtp API
-
+progressDialog.showDialog()
         val call = apiInterface.verifyOtp(email,binding.otp.text.toString())
         call.enqueue(object : Callback<ResponseBody?> {
             override fun onResponse(
@@ -67,6 +75,7 @@ class OtpFragment : Fragment() {
                 response: Response<ResponseBody?>,
             ) {
                 if (response.isSuccessful) {
+                    progressDialog.dismissDialog()
                     if (response.body() != null) {
                         try {
                             // Parse the response body if it's not null
@@ -91,11 +100,13 @@ class OtpFragment : Fragment() {
                         ).show()
                     }
                 }else{
+                    progressDialog.dismissDialog()
                     Toast.makeText(context,"Something went wrong.",Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                progressDialog.dismissDialog()
                 if (t is IOException) {
                     Toast.makeText(
                         context,

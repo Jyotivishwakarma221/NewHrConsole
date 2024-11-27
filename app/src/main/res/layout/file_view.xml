@@ -17,7 +17,8 @@
         android:id="@+id/textName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_5dp"
+        android:layout_marginStart="@dimen/_10"
+        android:layout_marginEnd="@dimen/_10"
         android:fontFamily="@font/dm_sans"
         android:text=" "
         android:textColor="@color/white" />
