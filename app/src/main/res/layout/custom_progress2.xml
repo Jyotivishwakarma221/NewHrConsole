@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/black"
@@ -50,4 +50,4 @@
         android:background="@drawable/blue_bg"
         android:text="Ok" />
 </LinearLayout>
-</LinearLayout>
+</ScrollView>

@@ -75,7 +75,7 @@ public class AdminProfileFragment extends Fragment {
 
     private void getCurrentUser() {
         progressDialog.show();
-        apiInterface.getCurrentUser(token).enqueue(new Callback<User>() {
+        apiInterface.getCurrentUser().enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
                 progressDialog.dismiss();

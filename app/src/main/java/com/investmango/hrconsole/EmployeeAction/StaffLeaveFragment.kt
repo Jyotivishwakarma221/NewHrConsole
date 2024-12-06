@@ -1,16 +1,15 @@
 package com.investmango.hrconsole.EmployeeAction
 
 import android.app.AlertDialog
-import android.app.ProgressDialog
 import android.content.Context
-import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -19,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.HrConsole.tv.official.console.premium.CommonAdapter
 import com.HrConsole.tv.official.console.premium.RecyclerViewInterface
 import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
+import com.bumptech.glide.Glide
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
 import com.investmango.hrconsole.api.ApiInterface
@@ -94,7 +94,7 @@ class StaffLeaveFragment : Fragment(), RecyclerViewInterface<LeaveRequestRecycle
             apiInterface = apiClient.apiInterface
 
             val call: Call<LeaveReqResponse> =
-                apiInterface.getPendingLeaves( userId, true, "PENDING", 0, 10)
+                apiInterface.getPendingLeaves(userId, true, "PENDING", 0, 10)
             call?.enqueue(object : Callback<LeaveReqResponse> {
                 override fun onResponse(
                     call: Call<LeaveReqResponse>,
@@ -103,7 +103,10 @@ class StaffLeaveFragment : Fragment(), RecyclerViewInterface<LeaveRequestRecycle
                     if (response.body() != null && response.isSuccessful()) {
                         progressDialog?.dismissDialog()
 
-                        Log.e("getLeaves", "onResponse: 1" + response.body()?.content?.size + " " + authority)
+                        Log.e(
+                            "getLeaves",
+                            "onResponse: 1" + response.body()?.content?.size + " " + authority
+                        )
 
                         list = response.body()!!.content!!
 
@@ -259,6 +262,18 @@ class StaffLeaveFragment : Fragment(), RecyclerViewInterface<LeaveRequestRecycle
     override fun bindView(viewBind: LeaveRequestRecyclerBinding, position: Int) {
         viewBind.name.text = list.get(position)?.userName
 
+        if (list.get(position)?.userprofile != "" && list.get(position)?.userprofile != null) {
+            if (isAdded)
+                Glide.with(context!!).load(list.get(position)?.userprofile!!)
+                    .into(viewBind.profilepic)
+            viewBind.profilepic.visibility = View.VISIBLE
+            viewBind.initialAvatar.visibility = View.GONE
+        } else {
+            viewBind.initialAvatar.setName(list.get(position)?.userName!!)
+            viewBind.profilepic.visibility = View.GONE
+            viewBind.initialAvatar.visibility = View.VISIBLE
+        }
+
         if (!list.get(position)?.reason.equals("string"))
             viewBind.Reason.text =
                 list.get(position)?.reason
@@ -284,6 +299,7 @@ class StaffLeaveFragment : Fragment(), RecyclerViewInterface<LeaveRequestRecycle
         viewBind.accept.setOnClickListener {
             list.get(position)?.id?.let { it1 ->
                 list.get(position)!!.userId?.let { it2 ->
+                    Log.e("Accept", "bindView: " + it1 + " " + it1)
                     approveLeaves(
                         LeaveRequestUpdateStatus.Status.APPROVED,
                         it1.toLong(), it2
@@ -301,8 +317,24 @@ class StaffLeaveFragment : Fragment(), RecyclerViewInterface<LeaveRequestRecycle
                 }
             }
         }
+        viewBind.showImg.setOnClickListener {
+            if (list.get(position)!!.fileUrl != "" && list.get(position)!!.fileUrl != null) {
+                try {
+                    val urlIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse(list.get(position)!!.fileUrl)
+                    )
+                    startActivity(urlIntent)
+                } catch (e: java.lang.Exception) {
+                    Toast.makeText(context, "Try again Later.", Toast.LENGTH_SHORT).show()
+                    Log.e("Exception", "onClick: $e")
+                }
+            }
+        }
 
-
+        if (list.get(position)!!.fileUrl != "" && list.get(position)!!.fileUrl != null) {
+            viewBind.showImg.setVisibility(View.VISIBLE)
+        } else viewBind.showImg.setVisibility(View.GONE)
     }
 
     fun showReasonAlert(rsn: String) {

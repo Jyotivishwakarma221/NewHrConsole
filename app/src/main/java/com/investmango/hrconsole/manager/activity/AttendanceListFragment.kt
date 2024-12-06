@@ -37,6 +37,7 @@ import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
+import kotlin.math.log
 
 
 class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListRecycBinding> {
@@ -60,12 +61,12 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
         token = preferences.getString("token", "0").toString()
         userId = preferences.getLong("userId", 0)
 
-        progressDialog = AwesomeProgressDialog(context)
+        progressDialog = AwesomeProgressDialog(requireContext())
         progressDialog.addTitle("Loading...") // add your title here.
         progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
         progressDialog.isCancelable(false)
 
-        layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 
     override fun onCreateView(
@@ -140,8 +141,12 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
                     response: Response<AttendanceResponse>,
                 ) {
                     if (response.isSuccessful && response.body() != null && progressDialog != null) {
-                        progressDialog.dismissDialog()
-
+                        try {
+                            if (isAdded) // check isAdded to ensure fragment is still added
+                                progressDialog.dismissDialog()
+                        }catch (e:Exception){
+                            Log.e("Exception", "onResponse: "+ e.message)
+                        }
                         val size = response.body()?.content?.size!!
                         val content = response.body()?.content?.filterNotNull() ?: emptyList()
                         if (content.isNotEmpty()) {
@@ -268,8 +273,13 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
 
 
     fun setAdapt() {
-        binding.recycler.adapter = CommonAdapter(this)
-        binding.recycler.layoutManager = layoutManager
+        try {
+            binding.recycler.adapter = CommonAdapter(this)
+            binding.recycler.layoutManager = layoutManager
+        }catch (e:Exception){
+            Log.e("Exception", "setAdapt: "+ e.message)
+        }
+
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -374,10 +384,10 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
             viewBind.date.text = attendanceDay.date.toString()
             viewBind.present.visibility = View.GONE
 
-            Log.e(
-                "intime",
-                "bindView: 2 " + attendanceDay.inTime + " " + list[position].date.toString() + " " + attendanceDay.dayType
-            )
+//            Log.e(
+//                "intime",
+//                "bindView: 2 " + attendanceDay.inTime + " " + list[position].date.toString() + " " + attendanceDay.dayType
+//            )
 
             if (attendanceDay.dayType != null) {
                 viewBind.present.visibility = View.GONE

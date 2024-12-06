@@ -1,6 +1,12 @@
+plugins {
+    id "com.android.application"
+    id "io.sentry.android.gradle" version "4.13.0"
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'org.jetbrains.kotlin.android'
+
 
 android {
     namespace 'com.investmango.hrconsole'
@@ -16,8 +22,8 @@ android {
         applicationId "com.investmango.hrconsole"
         minSdk 21
         targetSdk 34
-        versionCode 21
-        versionName "2.9"
+        versionCode 24
+        versionName "3.2"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

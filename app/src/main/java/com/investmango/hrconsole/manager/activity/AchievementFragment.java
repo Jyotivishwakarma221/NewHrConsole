@@ -400,13 +400,19 @@ public class AchievementFragment extends Fragment {
         binding.skillIncDec.setMiddleText(String.valueOf(empPerformanceList.get(0).getSkills()));
 
 
-        binding.description.setText(empPerformanceList.get(0).getComment());
-        binding.messgFrom.setText(empPerformanceList.get(0).getGivenByName());
-        binding.dateTime.setText(DateAndTimeUtility.getDateAndTimeFromLong(empPerformanceList.get(0).getCreatedOn()));
+        if (!empPerformanceList.get(0).getComment().isEmpty()) {
+            binding.reviewFrom.setVisibility(View.VISIBLE);
+            binding.description.setText(empPerformanceList.get(0).getComment());
+            binding.messgFrom.setText(empPerformanceList.get(0).getGivenByName());
+            binding.dateTime.setText(DateAndTimeUtility.getDateAndTimeFromLong(empPerformanceList.get(0).getCreatedOn()));
+        }else {
+            binding.reviewFrom.setVisibility(View.GONE);
 
-        if (empPerformanceList.get(0).getObtainedScore() > 50) {
-            binding.keepItUp.setVisibility(View.VISIBLE);
         }
+        if (empPerformanceList.get(0).getObtainedScore() > 50 && empPerformanceList.get(0).getObtainedScore()!=0L) {
+            binding.keepItUp.setVisibility(View.VISIBLE);
+        }else binding.keepItUp.setVisibility(View.GONE);
+
         populatePieChart(empPerformanceList.get(0).getTotalScore(), empPerformanceList.get(0).getObtainedScore(), binding.pieChart);
 
 

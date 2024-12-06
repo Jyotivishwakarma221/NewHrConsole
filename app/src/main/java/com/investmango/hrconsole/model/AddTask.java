@@ -1,9 +1,11 @@
 package com.investmango.hrconsole.model;
 
+import java.util.List;
+
 public class AddTask {
     private String comments;
     private Date dateTime;
-    private String fileUrl;
+    private List<String> fileurl;
     private long id;
     private String status;
     private String subject;
@@ -34,12 +36,12 @@ public class AddTask {
         this.dateTime = dateTime;
     }
 
-    public String getFileUrl() {
-        return fileUrl;
+    public List<String> getFileurl() {
+        return fileurl;
     }
 
-    public void setFileUrl(String fileUrl) {
-        this.fileUrl = fileUrl;
+    public void setFileurl( List<String> fileUrl) {
+        this.fileurl = fileUrl;
     }
 
     public long getId() {

@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.sentry.android.core.SentryAndroid;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -37,10 +38,10 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class ApiClient extends Application {
 
     //development
-//         public static final String BASE_URL = "http://api.imconsole.in:8080/";
+          public static final String BASE_URL = "https://dev.virtualintelligence.co.in/";
 
     // Live
-    public static final String BASE_URL = "https://api.virtualintelligence.co.in/";
+//    public static final String BASE_URL = "https://api.virtualintelligence.co.in/";
 
 //     public static final String BASE_URL = "https://api.gopropify.in/";
 
@@ -49,20 +50,18 @@ public class ApiClient extends Application {
 //    public static final String BASE_URL = "https://api.gopropify.in/";
 
 
-    //            public static final String BASE_URL = "http://192.168.29.202:8080/";
+    // public static final String BASE_URL = "http://192.168.29.202:8080/";
     private final ApiInterface apiInterface;
     private final Context context;
     private Context appcontext;
     private SharedPreferences preferences;
     static String token = "";
+    private  Retrofit retrofit;
 
     public ApiClient(Context context) {
         this.context = context;
         preferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
 
-//        var preferences =context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
-
-//        String token = preferences.getString("token", "0");
 
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
@@ -71,6 +70,7 @@ public class ApiClient extends Application {
         httpClientBuilder.addInterceptor(chain -> {
                     if (preferences != null && preferences.getString("token", "0") != null) {
                         token = preferences.getString("token", "0");
+                        Log.e("getToken", "ApiClient: "+ token );
                     }
                     Request request = chain.request()
                             .newBuilder()
@@ -92,6 +92,7 @@ public class ApiClient extends Application {
     }
 
     public static Retrofit getClient() {
+
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -102,6 +103,9 @@ public class ApiClient extends Application {
     public void onCreate() {
         super.onCreate();
         appcontext = this.context;
+        SentryAndroid.init(this, options -> {
+            options.setDsn("https://215c72dcf1cc7e9534590f4e675c0556@o4508319798001664.ingest.us.sentry.io/4508319808552960");
+        });
     }
 
     public ApiInterface getApiInterface() {
@@ -281,7 +285,7 @@ public class ApiClient extends Application {
         preferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
         String token = preferences.getString("token", "0");
 
-        Call<String> call = apiInterface.saveDeviceToken(token, requestBody, id);
+        Call<String> call = apiInterface.saveDeviceToken( requestBody, id);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {

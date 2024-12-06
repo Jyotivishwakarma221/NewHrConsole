@@ -40,6 +40,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.time.LocalDate
+import java.time.Period
+import java.time.format.DateTimeFormatter
 import java.util.Objects
 import java.util.concurrent.atomic.AtomicReference
 
@@ -146,9 +149,9 @@ class ProfileFragment : Fragment() {
                     if (isAdded)
                         Toast.makeText(context, "Profile Updated Successfully.", Toast.LENGTH_SHORT)
                             .show()
-                        getCurrentUser(token)
+                    getCurrentUser(token)
 
-                }else{
+                } else {
                     progressDialog.dismissDialog()
                     if (isAdded)
                         Toast.makeText(
@@ -208,6 +211,9 @@ class ProfileFragment : Fragment() {
 
 
         binding.profilePhoto.setOnClickListener {
+            UploadFileAws().openGallery(launcher)
+        }
+        binding.initialAvatar.setOnClickListener {
             UploadFileAws().openGallery(launcher)
         }
     }
@@ -293,16 +299,34 @@ class ProfileFragment : Fragment() {
 
         if (isAdded) {
             try {
-                Glide.with(requireContext()).load(user.profileImage).into(binding.profilePhoto)
+                if (user.profileImage!="" && user.profileImage!=null) {
+                    Glide.with(requireContext()).load(user.profileImage).into(binding.profilePhoto)
+                    binding.profilePhoto.visibility=View.VISIBLE
+                    binding.initialAvatar.visibility=View.GONE
+                }else{
+                    binding.initialAvatar.setName(user.firstName)
+                    binding.profilePhoto.visibility=View.GONE
+                    binding.initialAvatar.visibility=View.VISIBLE
+                }
             } catch (e: Exception) {
                 Log.e("TAG", "setupData: " + e)
             }
         }
         Log.e("lastLogin", "setupData: " + user.lastLogin)
 
-//        binding.lastlogin.setText(
-//            DateAndTimeUtility.getDateFromLong(user.lastLogin).toString() + " " + "hours ago"
-//        )
+        val currentDate = LocalDate.now()
+        val givenDate = DateAndTimeUtility.getDATEFromLong(user.createdDate)
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
+        // Convert string to LocalDate using the custom format
+        val localDate = LocalDate.parse(givenDate, formatter)
+        Log.e("setupData", "setupData: " + currentDate + " " + localDate)
+        val period = Period.between(localDate,currentDate)
+
+        binding.tenure.setText(
+            period.months.toString()+ " months"
+        )
+
         binding.lastlogin.setText(
             DateAndTimeUtility.getRelativeTime(user.lastLogin).toString()
         )

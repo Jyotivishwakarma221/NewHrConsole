@@ -182,7 +182,7 @@ public class AssignTaskFragment extends Fragment implements ImageDeleteListener,
     private void getAllActiveUser() {
         ApiClient apiClient = new ApiClient(getActivity());
         apiInterface = apiClient.getApiInterface();
-        Call<List<AllActiveUsers>> call = apiInterface.getAllActiveUser(token);
+        Call<List<AllActiveUsers>> call = apiInterface.getAllActiveUser();
         call.enqueue(new Callback<List<AllActiveUsers>>() {
             @Override
             public void onResponse(@NonNull Call<List<AllActiveUsers>> call, @NonNull Response<List<AllActiveUsers>> response) {
@@ -252,7 +252,7 @@ public class AssignTaskFragment extends Fragment implements ImageDeleteListener,
         AssignTask taskObj = new AssignTask();
         taskObj.setSubject(task);
         taskObj.setUserId(selectedUserId);
-        taskObj.setFileUrl(imageUrl);
+//        taskObj.setFileurl(imageUrl);
         Call<AssignTask> call = apiInterface.assignTaskUser(selectedUserId, taskObj);
         call.enqueue(new Callback<AssignTask>() {
             @Override

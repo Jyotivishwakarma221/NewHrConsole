@@ -39,6 +39,13 @@
                             android:padding="@dimen/_5dp"
                             android:background="@drawable/grey_bg_rounded"
                             android:layout_gravity="center" />
+                        <com.investmango.hrconsole.commonclasses.InitialAvatarView
+                            android:id="@+id/initialAvatar"
+                            android:layout_width="@dimen/_100dp"
+                            android:layout_height="@dimen/_100dp"
+                            android:padding="@dimen/_5dp"
+                            android:visibility="gone"
+                            android:layout_gravity="center"/>
 
                         <TextView
                             android:id="@+id/name"
@@ -128,6 +135,41 @@
 
                             <TextView
                                 android:id="@+id/userId"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/dm_sans"
+                                android:gravity="start"
+                                android:padding="@dimen/_15"
+                                android:text="      "
+                                android:textColor="#989898"
+                                android:textSize="14dp" />
+
+                        </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10"
+                            android:layout_marginTop="@dimen/_5dp"
+                            android:fontFamily="@font/dm_sans"
+                            android:text="Tenure"
+                            android:textColor="#989898"
+                            android:textSize="@dimen/_18sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/grey_bg_rounded">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/_10dp"
+                                android:src="@drawable/calender2" />
+
+                            <TextView
+                                android:id="@+id/tenure"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/dm_sans"

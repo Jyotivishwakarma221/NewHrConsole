@@ -13,6 +13,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ import com.investmango.hrconsole.EmployeeAction.ViewPagerAdap;
 import com.investmango.hrconsole.R;
 import com.investmango.hrconsole.api.ApiClient;
 import com.investmango.hrconsole.api.ApiInterface;
+import com.investmango.hrconsole.commonclasses.InitialAvatarView;
 import com.investmango.hrconsole.model.Event;
 import com.investmango.hrconsole.model.User;
 import com.investmango.hrconsole.profile.ProfileFragment;
@@ -48,6 +50,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,7 +64,7 @@ public class ManagerActivity extends AppCompatActivity {
     Intent intent;
     ViewPager viewPager;
     RelativeLayout eventLay;
-    ImageView cutImageView, poster;
+    ImageView cutImageView, poster,imgDrawer;
     TextView subjecttext;
     String posterImageUrl, formattedDate, formattedTime, description, subject;
 
@@ -84,7 +87,19 @@ public class ManagerActivity extends AppCompatActivity {
         cutImageView = findViewById(R.id.cutImageView);
         poster = findViewById(R.id.poster);
         viewPager = findViewById(R.id.viewPager);
+        LinearLayout imgDrawer=findViewById(R.id.imgDrawer);
+        InitialAvatarView avatarView=findViewById(R.id.initialAvatar);
 
+
+        imgDrawer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = getIntent();
+                finish(); // Finish the current activity
+                startActivity(intent); // Restart the activity
+
+            }
+        });
 
         intent = new Intent(this, MyBackgroundLocationService.class);
         runConnectionCheckThread(this);
@@ -95,26 +110,6 @@ public class ManagerActivity extends AppCompatActivity {
             addFragment(new ManagerFragment());
         } else setAdapter();
 
-
-//        Button performance = findViewById(R.id.checkNowButton);
-//        Button actions = findViewById(R.id.actionsButton);
-//        Button message = findViewById(R.id.CheckNowMessage);
-//        Button leaves = findViewById(R.id.leavesCheckNowBtn);
-//        Button fabAttendance = findViewById(R.id.fabAttendance);
-//        CardView assignmet=findViewById(R.id.assignments);
-//        CardView employeeAction=findViewById(R.id.employeeAction);
-//
-//
-//        Button payouts = findViewById(R.id.checkPayoutsBtn);
-//        Button tasks = findViewById(R.id.createTaskButton);
-//
-//        if (authority.equals(Constant.USER)){
-//            assignmet.setVisibility(View.VISIBLE);
-//            employeeAction.setVisibility(View.GONE);
-//        }else if (authority.equals(Constant.MANAGER)){
-//            employeeAction.setVisibility(View.VISIBLE);
-//            assignmet.setVisibility(View.GONE);
-//        }
 
         cutImageView.setOnClickListener(v -> {
             eventLay.setVisibility(View.GONE);
@@ -128,54 +123,12 @@ public class ManagerActivity extends AppCompatActivity {
         });
 
 
-//        // Set click listeners
-//        fabAttendance.setOnClickListener(v -> {
-//            Fragment newFragment = new AttendanceFragment();
-//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.full_Layout, newFragment, newFragment.getTag()).addToBackStack(newFragment.getTag()).commit();
-//        });
-//        performance.setOnClickListener(v -> {
-//            Fragment newFragment = new MyPerformance();
-//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.full_Layout, newFragment, newFragment.getTag()).addToBackStack(newFragment.getTag()).commit();
-//        });
-//        // Set click listeners
-//        message.setOnClickListener(v -> {
-//            Fragment newFragment = new MessageFragment();
-//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.full_Layout, newFragment, newFragment.getTag()).addToBackStack(newFragment.getTag()).commit();
-//        });
-//
-//        actions.setOnClickListener(v -> {
-//            Fragment newFragment = new EmployeeActions();
-//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.full_Layout, newFragment, newFragment.getTag()).addToBackStack(newFragment.getTag()).commit();
-//        });
-//
-//        leaves.setOnClickListener(v -> {
-//            Fragment newFragment = new Leaves();
-//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.full_Layout, newFragment, newFragment.getTag()).addToBackStack(newFragment.getTag()).commit();
-//        });
-//
-//        payouts.setOnClickListener(v -> {
-//            Fragment newFragment = new PayrollPanel();
-//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.full_Layout, newFragment, newFragment.getTag()).addToBackStack(newFragment.getTag()).commit();
-//        });
-//
-//        tasks.setOnClickListener(v -> {
-//            Fragment newFragment = new TasksFragment();
-//            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//            fragmentTransaction.replace(R.id.full_Layout, newFragment, newFragment.getTag()).addToBackStack(newFragment.getTag()).commit();
-//        });
-//
-//        // Call the API to get the current user data
+
 
         fetchUpcomingEvents(token);
-
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<User> call = apiInterface.getCurrentUser(token);
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        ApiInterface apiInterface = apiClient.getApiInterface();
+        Call<User> call = apiInterface.getCurrentUser();
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
@@ -187,8 +140,17 @@ public class ManagerActivity extends AppCompatActivity {
 
                         // Show Profile Image
                         String imageUrl = user.getProfileImage();
-                        Log.e("getProfileImage", "onResponse: " + imageUrl);
-                        Glide.with(getApplicationContext()).load(imageUrl).into(image);
+                        if (!Objects.equals(imageUrl, "")) {
+                            Log.e("getProfileImage", "onResponse: " + imageUrl);
+                            Glide.with(getApplicationContext()).load(imageUrl).into(image);
+                            image.setVisibility(View.VISIBLE);
+                            avatarView.setVisibility(View.GONE);
+                        } else {
+                            avatarView.setName(username);
+                            image.setVisibility(View.GONE);
+                            avatarView.setVisibility(View.VISIBLE);
+
+                        }
                     }
                 } else {
                     Log.e("UserProfile", "Failed to retrieve current user. Response code: " + response.code());
@@ -209,7 +171,6 @@ public class ManagerActivity extends AppCompatActivity {
 
 
     }
-
     public void replaceFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager()
                 .beginTransaction();
@@ -297,7 +258,8 @@ public void addFragment(Fragment fragment) {
 
     private void fetchUpcomingEvents(String token) {
 
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        ApiInterface apiInterface = apiClient.getApiInterface();
         Call<List<Event>> call = apiInterface.upcomingEvents();
         call.enqueue(new Callback<List<Event>>() {
             @SuppressLint("SuspiciousIndentation")

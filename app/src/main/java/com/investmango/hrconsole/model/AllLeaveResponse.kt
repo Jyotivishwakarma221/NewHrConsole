@@ -97,7 +97,10 @@ data class LeaveItem(
 	val ofBycompany: Any? = null,
 
 	@field:SerializedName("status")
-	val status: String? = null
+	val status: String? = null,
+
+	@field:SerializedName("userprofile")
+val userprofile: String? = null,
 ) {
 
 }

@@ -85,7 +85,7 @@ public class LeaveRequestAdminFragment extends Fragment {
     private void getAllPendingLeave() {
         progressDialog.show();
 
-        Call<List<LeaveRequest>> call = apiInterface.getAllPendingLeave(token);
+        Call<List<LeaveRequest>> call = apiInterface.getAllPendingLeave();
         call.enqueue(new Callback<List<LeaveRequest>>() {
             @Override
             public void onResponse(@NonNull Call<List<LeaveRequest>> call, @NonNull Response<List<LeaveRequest>> response) {

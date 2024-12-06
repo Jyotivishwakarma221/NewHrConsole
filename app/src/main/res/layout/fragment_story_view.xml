@@ -289,38 +289,45 @@
                     android:text="  Project files: "
                     android:textColor="#E2E2E2"
                     android:textSize="15sp" />
-
-                <LinearLayout
-                    android:id="@+id/fileView"
-                    android:layout_width="wrap_content"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/FileRecycler"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/file"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="@dimen/_20dp"
                     android:layout_marginTop="@dimen/_5dp"
-                    android:background="@drawable/dark_grey_bg"
-                    android:padding="10dp">
+                    android:background="@drawable/grey_bg_rounded" />
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/fileView"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@+id/file"-->
+<!--                    android:layout_marginStart="10dp"-->
+<!--                    android:layout_marginTop="@dimen/_5dp"-->
+<!--                    android:background="@drawable/dark_grey_bg"-->
+<!--                    android:padding="10dp">-->
 
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_marginStart="@dimen/_5dp"
-                        android:src="@drawable/baseline_insert_drive_file_24" />
+<!--                    <ImageView-->
+<!--                        android:layout_width="15dp"-->
+<!--                        android:layout_height="15dp"-->
+<!--                        android:layout_marginStart="@dimen/_5dp"-->
+<!--                        android:src="@drawable/baseline_insert_drive_file_24" />-->
 
-                    <TextView
-                        android:id="@+id/textName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_5dp"
-                        android:fontFamily="@font/dm_sans"
-                        android:text=" File 1"
-                        android:textColor="@color/white" />
-                </LinearLayout>
+<!--                    <TextView-->
+<!--                        android:id="@+id/textName"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginStart="@dimen/_5dp"-->
+<!--                        android:fontFamily="@font/dm_sans"-->
+<!--                        android:text=" File 1"-->
+<!--                        android:textColor="@color/white" />-->
+<!--                </LinearLayout>-->
 
                 <LinearLayout
                     android:id="@+id/statusDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/fileView"
+                    android:layout_below="@+id/FileRecycler"
                     android:layout_margin="@dimen/_10"
                     android:orientation="vertical">
 

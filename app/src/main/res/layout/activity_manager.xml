@@ -57,16 +57,16 @@
 
         <ImageView
             android:id="@+id/poster"
-            android:layout_width="wrap_content"
-            android:layout_height="320dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/subject"
-            android:layout_gravity="center"
             android:layout_marginStart="75dp"
-            android:layout_marginTop="5dp"
+            android:adjustViewBounds="true"
+            android:layout_marginTop="@dimen/_15"
             android:layout_marginEnd="@dimen/_20dp"
-            android:layout_marginBottom="@dimen/_10dp"
-            android:background="@color/black"
+            android:layout_marginBottom="@dimen/_20dp"
             android:elevation="@dimen/_20dp"
+            android:scaleType="fitXY"
             android:fontFamily="@font/dm_sans"
             android:src="@drawable/demo" />
 

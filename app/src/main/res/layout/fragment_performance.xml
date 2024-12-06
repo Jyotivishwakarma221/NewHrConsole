@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -55,21 +55,28 @@
                         android:visibility="gone" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+<!--                <ScrollView-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content">-->
 
-                    <com.anton46.stepsview.StepsView
-                        android:id="@+id/stepsView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/grey_bg_rounded"
-                        android:backgroundTint="@color/lightGreycolor"
-                        android:paddingTop="-10dp"
-                        android:scrollbarAlwaysDrawVerticalTrack="true"
-                        android:paddingBottom="@dimen/_20dp" />
-                </ScrollView>
+<!--                    <com.anton46.stepsview.StepsView-->
+<!--                        android:id="@+id/stepsView"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="10dp"-->
+<!--                        android:background="@drawable/grey_bg_rounded"-->
+<!--                        android:backgroundTint="@color/lightGreycolor"-->
+<!--                        android:paddingTop="-10dp"-->
+<!--                        android:scrollbarAlwaysDrawVerticalTrack="true"-->
+<!--                        android:paddingBottom="@dimen/_20dp" />-->
+<!--                </ScrollView>-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:clipToPadding="false"
+                    android:scrollbars="horizontal" />
             </RelativeLayout>
 
             <LinearLayout

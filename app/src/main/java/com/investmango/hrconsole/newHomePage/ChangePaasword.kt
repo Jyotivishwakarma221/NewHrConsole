@@ -1,6 +1,5 @@
 package com.investmango.hrconsole.newHomePage
 
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -15,12 +14,12 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
 import com.investmango.hrconsole.api.ApiInterface
 import com.investmango.hrconsole.databinding.FragmentChangePaaswordBinding
 import com.investmango.hrconsole.service.LoginActivity
-import com.investmango.hrconsole.service.Popup
 import okhttp3.ResponseBody
 import org.json.JSONException
 import org.json.JSONObject
@@ -34,9 +33,16 @@ class ChangePaasword : Fragment() {
     lateinit var apiInterface: ApiInterface
     var email: String = "email"
     private var passwordVisible = false
+    lateinit var progressDialog: AwesomeProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        progressDialog = AwesomeProgressDialog(context)
+        progressDialog.addTitle("Loading...") // add your title here.
+        progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
+
         arguments?.takeIf { it.containsKey("email") }?.apply {
             Log.e("arguments", "onViewCreated: " + getString("email"))
 
@@ -47,7 +53,7 @@ class ChangePaasword : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(
             layoutInflater,
             R.layout.fragment_change_paasword,
@@ -63,14 +69,18 @@ class ChangePaasword : Fragment() {
         binding.chngePassword.setOnClickListener {
             Log.e("chngePasswrd", "onViewCreated:2 " + email)
 
-            if (binding.psswrd.text.toString() == binding.confirmPsswrd.text.toString() && !binding.psswrd.text.equals("")) {
+            if (binding.psswrd.text.toString() == binding.confirmPsswrd.text.toString() && !binding.psswrd.text.equals(
+                    ""
+                )
+            ) {
                 if (email.equals("email")) {
                     changePasswordApiCall()
                 } else {
                     chngePassword()
                     Log.e("chngePasswrd", "onViewCreated: " + email)
                 }
-            } else Toast.makeText(context, "Password is not same or Empty.", Toast.LENGTH_LONG).show()
+            } else Toast.makeText(context, "Password is not same or Empty.", Toast.LENGTH_LONG)
+                .show()
         }
 
         binding.confirmPsswrdEye.setOnClickListener {
@@ -107,13 +117,17 @@ class ChangePaasword : Fragment() {
     fun chngePassword() {
         val apiClient = ApiClient(requireContext())
         apiInterface = apiClient.apiInterface
+
+        progressDialog.showDialog()
         val verifyCall = apiInterface.resetPassword(
-            "khushisaxena@investmango.com",
+            email,
             binding.psswrd.text.toString()
         )
         verifyCall.enqueue(object : Callback<ResponseBody?> {
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                 if (response.isSuccessful) {
+                    progressDialog.dismissDialog()
+
                     if (response.body() != null) {
                         try {
                             // Parse the response body if it's not null
@@ -122,8 +136,15 @@ class ChangePaasword : Fragment() {
                             val apiMessage = responseObject.getString("message")
                             Toast.makeText(context, apiMessage, Toast.LENGTH_SHORT)
                                 .show()
+                            val i = Intent(context, LoginActivity::class.java)
 
-                            context?.startActivity(Intent(context, LoginActivity::class.java))
+
+                            // on below line adding a flag for our activity to clear the history stack.
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+
+                            // on below line calling finish to close the current activity.
+                            activity?.finish()
+                            context?.startActivity(i)
 
                         } catch (e: IOException) {
                             e.printStackTrace()
@@ -142,6 +163,7 @@ class ChangePaasword : Fragment() {
             }
 
             override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                progressDialog.dismissDialog()
                 if (t is IOException) {
                     // Network error
                     Toast.makeText(
@@ -168,15 +190,19 @@ class ChangePaasword : Fragment() {
 
         apiInterface = apiClient.apiInterface
 
+        progressDialog.showDialog()
+
         val call = apiInterface.updatePassword(userId, binding.psswrd.text.toString())
         call.enqueue(object : Callback<ResponseBody?> {
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                 if (response.isSuccessful) {
+                    progressDialog.dismissDialog()
                     // Handle successful update
                     Toast.makeText(context, "Password updated successfully!", Toast.LENGTH_LONG)
                         .show()
                     fragmentManager?.beginTransaction()?.remove(this@ChangePaasword)?.commit()
                 } else {
+                    progressDialog.dismissDialog()
                     // Handle error response
                     Toast.makeText(
                         context,
@@ -188,6 +214,7 @@ class ChangePaasword : Fragment() {
             }
 
             override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
+                progressDialog.dismissDialog()
                 // Handle API call failure
                 Toast.makeText(context, "Network error. Please try again later.", Toast.LENGTH_LONG)
                     .show()

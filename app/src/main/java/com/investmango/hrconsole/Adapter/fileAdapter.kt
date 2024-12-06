@@ -14,7 +14,7 @@ import com.investmango.hrconsole.manager.activity.ManagerActivity
 import com.investmango.hrconsole.manager.activity.ProjectsFragment
 import com.investmango.hrconsole.model.SubTaskItem
 
-class fileAdapter(val context: ProjectsFragment,val list: List<String?>) : RecyclerView.Adapter<FileHolder>() {
+class fileAdapter(val context: Context,val list: List<String?>) : RecyclerView.Adapter<FileHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FileHolder {
         val view =
@@ -30,8 +30,15 @@ class fileAdapter(val context: ProjectsFragment,val list: List<String?>) : Recyc
         val count=position+1
         holder.textName.text = "File "+ count.toString()
         holder.textName.setOnClickListener {
-              context.openfile(list.get(position)!!)
+              openfile(list.get(position)!!)
         }
+    }
+    fun openfile(url: String) {
+        val urlIntent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse(url)
+        )
+        context.startActivity(urlIntent)
     }
 }
 

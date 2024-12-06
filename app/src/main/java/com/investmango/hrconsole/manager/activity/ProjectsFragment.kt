@@ -233,11 +233,15 @@ class ProjectsFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding> 
                 "   " + DateAndTimeUtility.getDATEFromLong(assignment.deadLine) + " " + DateAndTimeUtility.getTimeInHourFromLong(
                     assignment.deadLine
                 )
-            binding.duedate.text = "  " + DateAndTimeUtility.getDATEFromLong(assignment.deadLine)
+            binding.createddate.text = "  " + DateAndTimeUtility.getDATEFromLong(assignment.deadLine)
         }else{
             binding.deadlineDate.text =" -- "
-            binding.duedate.text =" -- "
         }
+
+        if (assignment.createdDate!=0L){
+            binding.createddate.text = "  " + DateAndTimeUtility.getDATEFromLong(assignment.createdDate)
+        }else  binding.createddate.text =" -- "
+
         if (assignment.stages != null)
             binding.stageName.text = assignment.stages.toString()
 
@@ -297,7 +301,8 @@ class ProjectsFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding> 
             }
         }
         if (assignment.files != null || assignment.files?.size != 0) {
-            binding.fileRecycler.adapter = fileAdapter(this, assignment.files!!)
+            if (isAdded)
+            binding.fileRecycler.adapter = fileAdapter(requireContext(), assignment.files!!)
             binding.fileRecycler.layoutManager =
                 GridLayoutManager(context, 2)
         }

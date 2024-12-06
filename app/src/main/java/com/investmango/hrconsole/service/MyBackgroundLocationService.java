@@ -81,8 +81,12 @@ public class MyBackgroundLocationService extends Service {
         Log.d(TAG, "onStartCommand : Called.");
         // Create a notification channel for Android Oreo and higher.
         createNotificationChannel();
-        startForeground(NOTIFICATION_ID, getNotification());
-        getLocationUpdate();
+        try {
+            startForeground(NOTIFICATION_ID, getNotification());
+            getLocationUpdate();
+        }catch (Exception e){
+            Log.e(TAG, "onStartCommand: "+e.getMessage() );
+        }
         return START_STICKY;
     }
     // Create a notification channel for Android Oreo and higher.

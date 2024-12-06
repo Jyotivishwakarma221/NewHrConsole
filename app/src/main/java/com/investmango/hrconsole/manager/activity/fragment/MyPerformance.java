@@ -102,7 +102,16 @@ public class MyPerformance extends Fragment {
 
     @SuppressLint("SuspiciousIndentation")
     private void setUpData() {
-        Glide.with(getContext()).load(empPerformanceList.getProfilePhoto()).into(binding.profilePhoto);
+        if (empPerformanceList.getProfilePhoto()!="" &&  empPerformanceList.getProfilePhoto()!=null ) {
+            Glide.with(getContext()).load(empPerformanceList.getProfilePhoto()).into(binding.profilePhoto);
+            binding.profilePhoto.setVisibility(View.VISIBLE);
+            binding.initialAvatar.setVisibility(View.GONE);
+        }else {
+            binding.initialAvatar.setName(empPerformanceList.getUserName());
+            binding.profilePhoto.setVisibility(View.GONE);
+            binding.initialAvatar.setVisibility(View.VISIBLE);
+
+        }
         binding.department.setText(empPerformanceList.getDepartment());
         binding.name.setText(empPerformanceList.getUserName());
         if (!empPerformanceList.getPendingTaskData().isEmpty())

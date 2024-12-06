@@ -74,7 +74,7 @@ public class AssignmentFragment extends Fragment {
         // Create an instance of ApiClient and initialize apiInterface
         ApiClient apiClient = new ApiClient(getActivity());
         apiInterface = apiClient.getApiInterface();
-        Call<List<Assignment>> call = apiInterface.getAssignment(token);
+        Call<List<Assignment>> call = apiInterface.getAssignment();
         call.enqueue(new Callback<List<Assignment>>() {
             @Override
             public void onResponse(@NonNull Call<List<Assignment>> call, @NonNull Response<List<Assignment>> response) {

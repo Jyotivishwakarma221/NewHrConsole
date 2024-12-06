@@ -32,7 +32,7 @@ data class SubTaskItem(
 	val createdTime: Long? = null,
 
 	@field:SerializedName("fileUrl")
-	val fileUrl: String? = null,
+	val fileUrl: Any? = null,
 
 	@field:SerializedName("assignmentSubject")
 	val assignmentSubject: String? = null,

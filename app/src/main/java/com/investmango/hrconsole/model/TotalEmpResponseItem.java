@@ -18,6 +18,45 @@ public class TotalEmpResponseItem implements Serializable {
     @SerializedName("designation")
     private String designation;
 
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setDesignation(String designation) {
+        this.designation = designation;
+    }
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
+    public void setManagerId(Object managerId) {
+        this.managerId = managerId;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setManagerName(Object managerName) {
+        this.managerName = managerName;
+    }
+
+    @SerializedName("profile")
+    private String profile;
+
     @SerializedName("managerId")
     private Object managerId;
 

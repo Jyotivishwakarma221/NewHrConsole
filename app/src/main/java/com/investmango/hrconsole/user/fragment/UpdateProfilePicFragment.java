@@ -125,7 +125,7 @@ public class UpdateProfilePicFragment extends Fragment {
     }
 
     private void getCurrentUser(String token) {
-        Call<User> call = apiInterface.getCurrentUser(token);
+        Call<User> call = apiInterface.getCurrentUser();
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {

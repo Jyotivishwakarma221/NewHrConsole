@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.HrConsole.tv.official.console.premium.CommonAdapter
 import com.HrConsole.tv.official.console.premium.RecyclerViewInterface
+import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
@@ -59,7 +60,7 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
     var finalList: ArrayList<TotalEmpResponseItem> = arrayListOf()
     var assignedUser: ArrayList<AssignedUsersItem> = arrayListOf()
     var authority: String = ""
-    lateinit var progressBar: ProgressDialog
+    lateinit var progressDialog: AwesomeProgressDialog
     private val uniqueItems = mutableSetOf<TotalEmpResponseItem>()
     var allActiveUsers: List<TotalEmpResponseItem?>? = null
     lateinit var meetingItem: MeetingItem
@@ -74,12 +75,12 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
         userId = preferences.getLong("userId", 0)
 
 
-        progressBar = ProgressDialog(context)
-        progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressBar.setMessage("Please wait...")
-        progressBar.setCancelable(true)
-
-
+        progressDialog = AwesomeProgressDialog(context)
+        progressDialog.addTitle("Loading...") // add your title here.
+        progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
+//        progressDialog.showDialog()
+        
         if (authority.equals(Constant.MANAGER))
             getChildActiveUser()
         else if (authority.equals(Constant.ADMIN)) {
@@ -228,7 +229,7 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
         val call = apiInterface.assignMeetingUser(
             userId, assignMeeting
         )
-        progressBar.show()
+        progressDialog.showDialog()
 
         call.enqueue(object : Callback<AssignMeeting?> {
             @SuppressLint("SuspiciousIndentation")
@@ -237,7 +238,7 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
                 response: Response<AssignMeeting?>,
             ) {
                 if (response.isSuccessful) {
-                    progressBar.dismiss()
+                    progressDialog.dismissDialog()
                     // Redirect to MeetingFragment
                     delete()
                     if (context != null)
@@ -264,14 +265,14 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
                         handleErrorResponse(response)
                     }
                 }
-                progressBar.dismiss()
+                progressDialog.dismissDialog()
             }
 
             override fun onFailure(call: Call<AssignMeeting?>, t: Throwable) {
                 if (isAdded)
                 Toast.makeText(context, "Something Went Wrong.", Toast.LENGTH_LONG).show()
                 Log.e("meetingAssigned", "onFailure: " + t.message)
-                progressBar.dismiss()
+                progressDialog.dismissDialog()
             }
         })
     }
@@ -280,7 +281,7 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
         val call = apiInterface.editMeetingUser(
             userId, assignMeeting
         )
-        progressBar.show()
+        progressDialog.showDialog()
 
         call.enqueue(object : Callback<AssignMeeting?> {
             override fun onResponse(
@@ -289,7 +290,7 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
             ) {
                 Log.e("isSuccessful", "onResponse: "+assignMeeting.userIds+ " "+ userId )
                 if (response.isSuccessful) {
-                    progressBar.dismiss()
+                    progressDialog.dismissDialog()
 
                     // Redirect to MeetingFragment
                     delete()
@@ -313,14 +314,14 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
                         handleErrorResponse(response)
                     }
                 }
-                progressBar.dismiss()
+                progressDialog.dismissDialog()
             }
 
             override fun onFailure(call: Call<AssignMeeting?>, t: Throwable) {
                 if (isAdded)
                 Toast.makeText(context, "Something Went Wrong.", Toast.LENGTH_LONG).show()
                 Log.e("meetingAssigned", "onFailure: " + t.message)
-                progressBar.dismiss()
+                progressDialog.dismissDialog()
             }
         })
     }
@@ -331,7 +332,7 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
         val call = apiInterface.assignMeetingDepartment(
             userId, assignMeeting, Department
         )
-        progressBar.show()
+        progressDialog.showDialog()
         call.enqueue(object : Callback<AssignMeeting?> {
             override fun onResponse(
                 call: Call<AssignMeeting?>,
@@ -360,14 +361,14 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
                         handleErrorResponse(response)
                     }
                 }
-                progressBar.dismiss()
+                progressDialog.dismissDialog()
             }
 
             override fun onFailure(call: Call<AssignMeeting?>, t: Throwable) {
                 if (isAdded)
                 Toast.makeText(context, "Something Went Wrong.", Toast.LENGTH_LONG).show()
                 Log.e("meetingAssigned", "onFailure: " + t.message)
-                progressBar.dismiss()
+                progressDialog.dismissDialog()
             }
         })
     }
@@ -541,7 +542,8 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
                 finalList.removeAt(position)
                 binding.memberRecycler.adapter?.notifyItemRemoved(position)
             }
-        } else if (!assignedUser.isEmpty()) {
+        }
+        else if (!assignedUser.isEmpty()) {
             viewBind.nameOfMember.setText(assignedUser[position].assignToName)
             Log.d("assignToName", "bindView: " + assignedUser[position].assignToName)
             viewBind.delete.setOnClickListener {

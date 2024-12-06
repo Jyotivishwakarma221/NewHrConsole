@@ -2,6 +2,8 @@ package com.investmango.hrconsole.EmployeeAction
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
@@ -23,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.HrConsole.tv.official.console.premium.CommonAdapter
 import com.HrConsole.tv.official.console.premium.RecyclerViewInterface
 import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.investmango.hrconsole.R
@@ -641,6 +644,17 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
             viewBind.comment.text = list.get(position)?.leaveType.toString()
             viewBind.name.text = list.get(position)?.userName
 
+            if (list.get(position)?.userprofile!="" && list.get(position)?.userprofile!=null){
+                if (isAdded)
+                    Glide.with(context!!).load(list.get(position)?.userprofile).into(viewBind.profilepic)
+                viewBind.profilepic.visibility=View.VISIBLE
+                viewBind.initialAvatar.visibility=View.GONE
+            }else{
+                viewBind.initialAvatar.setName(list.get(position)?.userName!!)
+                viewBind.profilepic.visibility=View.GONE
+                viewBind.initialAvatar.visibility=View.VISIBLE
+            }
+
             if (!list.get(position)?.reason.equals("string"))
                 viewBind.Reason.text = list.get(position)?.reason
 
@@ -669,12 +683,44 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
             viewBind.Reason.setOnClickListener {
                 showReasonAlert(list.get(position)?.reason!!)
             }
+
+            if (list.get(position)!!.fileUrl != "" && list.get(position)!!.fileUrl!=null) {
+                viewBind.showImg.setVisibility(View.VISIBLE)
+            } else viewBind.showImg.setVisibility(View.GONE)
+
+            if (list.get(position)!!.fileUrl != "" && list.get(position)!!.fileUrl!=null) {
+}
+                viewBind.showImg.setOnClickListener {
+                if (list.get(position)!!.fileUrl != "" && list.get(position)!!.fileUrl!=null) {
+                    try {
+                        val urlIntent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(list.get(position)!!.fileUrl)
+                        )
+                        startActivity(urlIntent)
+                    } catch (e: java.lang.Exception) {
+                        Toast.makeText(context, "Try again Later.", Toast.LENGTH_SHORT).show()
+                        Log.e("Exception", "onClick: $e")
+                    }
+                }
+            }
         } else if (Filteredlist.isNotEmpty()) {
             viewBind.comment.text = Filteredlist.get(position)?.leaveType.toString()
             viewBind.name.text = Filteredlist.get(position)?.userName
 
             if (!Filteredlist.get(position)?.reason.equals("string"))
                 viewBind.Reason.text = Filteredlist.get(position)?.reason
+
+            if (Filteredlist.get(position)?.userprofile!="" && Filteredlist.get(position)?.userprofile!=null){
+                if (isAdded)
+                    Glide.with(context!!).load(Filteredlist.get(position)?.userprofile).into(viewBind.profilepic)
+                viewBind.profilepic.visibility=View.VISIBLE
+                viewBind.initialAvatar.visibility=View.GONE
+            }else{
+                viewBind.initialAvatar.setName(Filteredlist.get(position)?.userName!!)
+                viewBind.profilepic.visibility=View.GONE
+                viewBind.initialAvatar.visibility=View.VISIBLE
+            }
 
             if (Filteredlist.get(position)?.status == "PENDING" || Filteredlist.get(position)?.status == "REJECTED") {
                 viewBind.pendingOrReject.text = Filteredlist.get(position)?.status
@@ -706,6 +752,24 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
 
             viewBind.Reason.setOnClickListener {
                 showReasonAlert(Filteredlist.get(position)?.reason!!)
+            }
+            if (Filteredlist.get(position)!!.fileUrl != "" && Filteredlist.get(position)!!.fileUrl!=null) {
+                viewBind.showImg.setVisibility(View.VISIBLE)
+            } else viewBind.showImg.setVisibility(View.GONE)
+
+            viewBind.showImg.setOnClickListener {
+                if (Filteredlist.get(position)!!.fileUrl != "" && Filteredlist.get(position)!!.fileUrl!=null) {
+                    try {
+                        val urlIntent = Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(list.get(position)!!.fileUrl)
+                        )
+                        startActivity(urlIntent)
+                    } catch (e: java.lang.Exception) {
+                        Toast.makeText(context, "Try again Later.", Toast.LENGTH_SHORT).show()
+                        Log.e("Exception", "onClick: $e")
+                    }
+                }
             }
         }
     }
@@ -864,6 +928,7 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
             }
         })
     }
+
     fun showReasonAlert(rsn: String) {
         // Create an alert builder
         val builder = AlertDialog.Builder(context)
@@ -875,6 +940,9 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
 
         val reasonTxt = customLayout.findViewById<TextView>(R.id.Reason)
         val okBtn = customLayout.findViewById<TextView>(R.id.ok_btn)
+//        val showImg = customLayout.findViewById<TextView>(R.id.showImg)
+//        showImg.visibility=View.GONE
+
         reasonTxt.setText(rsn)
         reasonTxt.movementMethod = ScrollingMovementMethod()
 
@@ -884,6 +952,5 @@ class LeaveHistoryFragment : Fragment(), RecyclerViewInterface<LeaveHistroyRecyB
         }
         dialog.show()
     }
-
 
 }

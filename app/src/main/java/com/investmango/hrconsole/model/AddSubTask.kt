@@ -25,8 +25,8 @@ data class AddSubTask(
 	@field:SerializedName("subtaskName")
 	var subtaskName: String? = null,
 
-	@field:SerializedName("fileUrl")
-	var fileUrl: String? = null,
+	@field:SerializedName("fileurl")
+	var fileurl: List<String>? = null,
 
 	@field:SerializedName("id")
 	var id: Int? = null,

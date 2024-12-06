@@ -228,7 +228,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // Call the API to get the current user data
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<User> call = apiInterface.getCurrentUser(token);
+        Call<User> call = apiInterface.getCurrentUser();
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
@@ -316,7 +316,7 @@ public class HomeActivity extends AppCompatActivity {
          {
             ApiClient apiClient = new ApiClient(HomeActivity.this);
             apiInterface = apiClient.getApiInterface();
-            Call<List<AdminTask>> callApi = apiInterface.getUserAllTask(token);
+            Call<List<AdminTask>> callApi = apiInterface.getUserAllTask();
             callApi.enqueue(new Callback<List<AdminTask>>() {
                 @Override
                 public void onResponse(@NonNull Call<List<AdminTask>> call, @NonNull Response<List<AdminTask>> response) {
@@ -344,7 +344,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // Get cont of Meeting.
         {
-            Call<List<MeetingDetailsAdmin>> meetingCount= apiInterface.getAllMeeting(token, userId);
+            Call<List<MeetingDetailsAdmin>> meetingCount= apiInterface.getAllMeeting( userId);
             meetingCount.enqueue(new Callback<List<MeetingDetailsAdmin>>() {
                 @Override
                 public void onResponse(@NonNull Call<List<MeetingDetailsAdmin>> call, @NonNull Response<List<MeetingDetailsAdmin>> response) {
@@ -367,7 +367,7 @@ public class HomeActivity extends AppCompatActivity {
         }
             // Get count of Leave Request.
              {
-                Call<List<LeaveRequest>> leaveCount = apiInterface.getAllPendingLeave(token);
+                Call<List<LeaveRequest>> leaveCount = apiInterface.getAllPendingLeave();
                 leaveCount.enqueue(new Callback<List<LeaveRequest>>() {
                 @Override
                 public void onResponse(@NonNull Call<List<LeaveRequest>> call, @NonNull Response<List<LeaveRequest>> response) {
@@ -748,7 +748,7 @@ public class HomeActivity extends AppCompatActivity {
     private void fetchLeaveRequestAndOpenFragment() {
         ApiClient apiClient = new ApiClient(HomeActivity.this);
         apiInterface = apiClient.getApiInterface();
-        Call<List<LeaveRequest>> call = apiInterface.getAllPendingLeave(token);
+        Call<List<LeaveRequest>> call = apiInterface.getAllPendingLeave();
         call.enqueue(new Callback<List<LeaveRequest>>() {
             @Override
             public void onResponse(@NonNull Call<List<LeaveRequest>> call, @NonNull Response<List<LeaveRequest>> response) {
@@ -776,7 +776,7 @@ public class HomeActivity extends AppCompatActivity {
     private void fetchTodayTaskAndOpenFragment() {
         ApiClient apiClient = new ApiClient(HomeActivity.this);
         apiInterface = apiClient.getApiInterface();
-        Call<List<AdminTask>> call = apiInterface.getUserAllTask(token);
+        Call<List<AdminTask>> call = apiInterface.getUserAllTask();
         call.enqueue(new Callback<List<AdminTask>>() {
             @Override
             public void onResponse(@NonNull Call<List<AdminTask>> call, @NonNull Response<List<AdminTask>> response) {
@@ -804,7 +804,7 @@ public class HomeActivity extends AppCompatActivity {
     private void fetchAllMeetingsAndOpenFragment() {
         ApiClient apiClient = new ApiClient(HomeActivity.this);
         apiInterface = apiClient.getApiInterface();
-        Call<List<MeetingDetailsAdmin>> call = apiInterface.getAllMeeting(token, userId);
+        Call<List<MeetingDetailsAdmin>> call = apiInterface.getAllMeeting(userId);
         call.enqueue(new Callback<List<MeetingDetailsAdmin>>() {
             @Override
             public void onResponse(@NonNull Call<List<MeetingDetailsAdmin>> call, @NonNull Response<List<MeetingDetailsAdmin>> response) {
@@ -829,7 +829,7 @@ public class HomeActivity extends AppCompatActivity {
     private void fetchAllSalaryDetailAndOpenFragment() {
         ApiClient apiClient = new ApiClient(HomeActivity.this);
         apiInterface = apiClient.getApiInterface();
-        Call<List<AdminSalaryDetails>> call = apiInterface.getAllSalaryDetails(token);
+        Call<List<AdminSalaryDetails>> call = apiInterface.getAllSalaryDetails();
         call.enqueue(new Callback<List<AdminSalaryDetails>>() {
             @Override
             public void onResponse(@NonNull Call<List<AdminSalaryDetails>> call, @NonNull Response<List<AdminSalaryDetails>> response) {
@@ -880,7 +880,7 @@ public class HomeActivity extends AppCompatActivity {
         ApiClient apiClient = new ApiClient(HomeActivity.this);
         apiInterface = apiClient.getApiInterface();
 
-        Call<ResponseBody> call = apiInterface.getMonthlyAttendance(token, userId);
+        Call<ResponseBody> call = apiInterface.getMonthlyAttendance( userId);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
@@ -915,7 +915,7 @@ public class HomeActivity extends AppCompatActivity {
     private void fetchTodayPresentEmpAndOpenFragment() {
         ApiClient apiClient = new ApiClient(HomeActivity.this);
         apiInterface = apiClient.getApiInterface();
-        Call<List<PresentEmployee>> call = apiInterface.getAllTodayAttendance(token);
+        Call<List<PresentEmployee>> call = apiInterface.getAllTodayAttendance();
         call.enqueue(new Callback<List<PresentEmployee>>() {
             @Override
             public void onResponse(@NonNull Call<List<PresentEmployee>> call, @NonNull Response<List<PresentEmployee>> response) {
@@ -941,7 +941,7 @@ public class HomeActivity extends AppCompatActivity {
     private void fetchApproveLeaveAndOpenFragment() {
         ApiClient apiClient = new ApiClient(HomeActivity.this);
         apiInterface = apiClient.getApiInterface();
-        Call<List<ApprovedLeaves>> call = apiInterface.getApprovedLeaves(token);
+        Call<List<ApprovedLeaves>> call = apiInterface.getApprovedLeaves();
 
         call.enqueue(new Callback<List<ApprovedLeaves>>() {
             @Override

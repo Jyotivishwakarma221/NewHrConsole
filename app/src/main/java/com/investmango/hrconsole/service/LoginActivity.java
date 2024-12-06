@@ -37,6 +37,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import io.sentry.Sentry;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -54,8 +55,9 @@ public class LoginActivity extends AppCompatActivity {
     private boolean passwordVisible = false;
     private ApiClient apiClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 100;
-//    private TextView signUp;
+    //    private TextView signUp;
     AwesomeProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +68,15 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS);
         progressDialog.isCancelable(false);
 
+
+        Sentry.init(options -> {
+            options.setDsn("https://215c72dcf1cc7e9534590f4e675c0556@o4508319798001664.ingest.us.sentry.io/4508319808552960");
+
+            // Set traces_sample_rate to 1.0 to capture 100%
+            // of transactions for tracing.
+            // We recommend adjusting this value in production.
+            options.setTracesSampleRate(1.0);
+        });
 
         getSupportFragmentManager().addOnBackStackChangedListener(() -> {
             int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
@@ -105,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
         TextView forgetButton = findViewById(R.id.forgetButton);
 
         forgetButton.setOnClickListener(v -> {
-                      startActivity(new Intent(this, ForgetPasswordActivity.class));
+            startActivity(new Intent(this, ForgetPasswordActivity.class));
 //            showForgetPasswordDialog();
         });
 
@@ -150,36 +161,35 @@ public class LoginActivity extends AppCompatActivity {
                 progressDialog.showDialog();
                 RequestBody requestBody = RequestBody.create(jsonBody.toString(), MediaType.parse("application/json; charset=utf-8"));
                 apiClient.loginUser(requestBody, new ApiClient.LoginCallback() {
-                            @Override
-                            public void onLoginSuccess() {
-                                Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
-                                preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
-                                token = preferences.getString("token", "0");
-                                try {
-                                    progressDialog.dismissDialog();
+                    @Override
+                    public void onLoginSuccess() {
+                        Toast.makeText(LoginActivity.this, "Login Successfully", Toast.LENGTH_SHORT).show();
+                        preferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
+                        token = preferences.getString("token", "0");
+                        try {
+                            progressDialog.dismissDialog();
 
-                                }catch (Exception e){
-                                    Log.e("Exception", "onLoginSuccess: "+e );
-                                }
+                        } catch (Exception e) {
+                            Log.e("Exception", "onLoginSuccess: " + e);
+                        }
 
-                                ExecutorService executor = Executors.newSingleThreadExecutor();
-                                // Submit a task to the ExecutorService
-                                executor.execute(() -> {
-                                    try {
-                                        AccessToken accessToken = new AccessToken();
-                                        String data = accessToken.getAccessToken();
-                                        // Logging the access token
-                                        Log.e("AccessToken", "AccessToken is: " + data);
-                                    } catch (Exception e) {
-                                        Log.e("AccessTokenExecp", "Error fetching access token", e);
-                                    }
-                                });
+                        ExecutorService executor = Executors.newSingleThreadExecutor();
+                        // Submit a task to the ExecutorService
+                        executor.execute(() -> {
+                            try {
+                                AccessToken accessToken = new AccessToken();
+                                String data = accessToken.getAccessToken();
+                                // Logging the access token
+                                Log.e("AccessToken", "AccessToken is: " + data);
+                            } catch (Exception e) {
+                                Log.e("AccessTokenExecp", "Error fetching access token", e);
+                            }
+                        });
 
-                                // Shutdown the executor when done, if necessary
-                                executor.shutdown();
+                        // Shutdown the executor when done, if necessary
+                        executor.shutdown();
 
-                        apiClient.getCurrentUser(token, new ApiClient.CurrentUserCallback()
-                        {
+                        apiClient.getCurrentUser(token, new ApiClient.CurrentUserCallback() {
                             @Override
                             public void onAdminLoggedIn(String userRole) {
                                 SharedPreferences preferences = getApplicationContext().getSharedPreferences("my_preferences", Context.MODE_PRIVATE);
@@ -241,75 +251,73 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
-
-
     // Forget Password
     private void showForgetPasswordDialog() {
-    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-    // Inflate the custom layout
-    View dialogView = getLayoutInflater().inflate(R.layout.dialog_forget_password, null);
-    EditText emailEditText = dialogView.findViewById(R.id.editTextEmail);
+        // Inflate the custom layout
+        View dialogView = getLayoutInflater().inflate(R.layout.dialog_forget_password, null);
+        EditText emailEditText = dialogView.findViewById(R.id.editTextEmail);
 
-    builder.setTitle("Forget Password")
-            .setMessage("Enter your email to receive an OTP.")
-            .setView(dialogView)
-            .setPositiveButton("Send OTP", (dialog, which) -> {
-                // Handle the "Send OTP" button click
-                String email = emailEditText.getText().toString().trim();
-                if (TextUtils.isEmpty(email)) {
-                    emailEditText.setError("Please enter your email");
-                } else {
-                    // Call the sendOtp API
-                    if (isNetworkAvailable(LoginActivity.this)) {
-                        Call<ResponseBody> call = apiInterface.sendOtp(email);
-                        call.enqueue(new Callback<ResponseBody>() {
-                            @Override
-                            public void onResponse(Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                                if (response.isSuccessful()) {
-                                    if (response.body() != null) {
-                                        try {
-                                            // Parse the response body if it's not null
-                                            String responseBodyString = response.body().string();
-                                            JSONObject responseObject = new JSONObject(responseBodyString);
-                                            String apiMessage = responseObject.getString("message");
-                                            Toast.makeText(LoginActivity.this, apiMessage, Toast.LENGTH_SHORT).show();
-                                            showOtpInputDialog(email);
-                                        } catch (IOException | JSONException e) {
-                                            e.printStackTrace();
+        builder.setTitle("Forget Password")
+                .setMessage("Enter your email to receive an OTP.")
+                .setView(dialogView)
+                .setPositiveButton("Send OTP", (dialog, which) -> {
+                    // Handle the "Send OTP" button click
+                    String email = emailEditText.getText().toString().trim();
+                    if (TextUtils.isEmpty(email)) {
+                        emailEditText.setError("Please enter your email");
+                    } else {
+                        // Call the sendOtp API
+                        if (isNetworkAvailable(LoginActivity.this)) {
+                            Call<ResponseBody> call = apiInterface.sendOtp(email);
+                            call.enqueue(new Callback<ResponseBody>() {
+                                @Override
+                                public void onResponse(Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                                    if (response.isSuccessful()) {
+                                        if (response.body() != null) {
+                                            try {
+                                                // Parse the response body if it's not null
+                                                String responseBodyString = response.body().string();
+                                                JSONObject responseObject = new JSONObject(responseBodyString);
+                                                String apiMessage = responseObject.getString("message");
+                                                Toast.makeText(LoginActivity.this, apiMessage, Toast.LENGTH_SHORT).show();
+                                                showOtpInputDialog(email);
+                                            } catch (IOException | JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        } else {
+                                            // Handle the case where the response body is null
+                                            Toast.makeText(LoginActivity.this, "Response body is empty", Toast.LENGTH_SHORT).show();
                                         }
-                                    }else {
-                                        // Handle the case where the response body is null
-                                        Toast.makeText(LoginActivity.this, "Response body is empty", Toast.LENGTH_SHORT).show();
                                     }
                                 }
-                            }
 
-                            @Override
-                            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                                if (t instanceof IOException) {
-                                    Toast.makeText(LoginActivity.this, "Network error. Please check your internet connection.", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    // Non-network error
-                                    String errorMessage = "Failed to send OTP. Please try again later.";
+                                @Override
+                                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
+                                    if (t instanceof IOException) {
+                                        Toast.makeText(LoginActivity.this, "Network error. Please check your internet connection.", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        // Non-network error
+                                        String errorMessage = "Failed to send OTP. Please try again later.";
 
-                                    Log.e("API_ERROR", "Error: " + t.getMessage());
+                                        Log.e("API_ERROR", "Error: " + t.getMessage());
 
-                                    Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
 
-                    } else {
-                        Toast.makeText(LoginActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "No Internet Connection", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
-            })
-            .setNegativeButton("Cancel", (dialog, which) -> {
-            })
-            .show();
-}
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                })
+                .show();
+    }
+
     private void showOtpInputDialog(String email) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -328,7 +336,7 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         // Call the verifyOtp API
                         if (isNetworkAvailable(LoginActivity.this)) {
-                            Call<ResponseBody> verifyCall = apiInterface.verifyOtp( email, otp);
+                            Call<ResponseBody> verifyCall = apiInterface.verifyOtp(email, otp);
                             verifyCall.enqueue(new Callback<ResponseBody>() {
                                 @Override
                                 public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
@@ -345,7 +353,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 e.printStackTrace();
                                             }
                                         }
-                                    }else{
+                                    } else {
                                         ResponseBody errorBody = response.errorBody();
                                         if (errorBody != null) {
                                             try {
@@ -373,9 +381,10 @@ public class LoginActivity extends AppCompatActivity {
                 })
                 .show();
     }
+
     private void changePassword(String email) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        ApiClient apiClient = new  ApiClient(this);
+        ApiClient apiClient = new ApiClient(this);
 
         // Inflate the custom layout
         View dialogView = getLayoutInflater().inflate(R.layout.sendpassword, null);
@@ -400,7 +409,7 @@ public class LoginActivity extends AppCompatActivity {
                     } else {
                         // Call the resetPassword API
                         if (isNetworkAvailable(LoginActivity.this)) {
-                            Call<ResponseBody> verifyCall = apiInterface.resetPassword( email, newPassword);
+                            Call<ResponseBody> verifyCall = apiInterface.resetPassword(email, newPassword);
                             verifyCall.enqueue(new Callback<ResponseBody>() {
                                 @Override
                                 public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {

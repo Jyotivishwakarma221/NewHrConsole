@@ -216,7 +216,7 @@ public class AddTasksFragment extends Fragment implements ImageDeleteListener, A
         apiInterface = apiClient.getApiInterface();
         AddTask taskObj = new AddTask();
         taskObj.setSubject(task);
-        taskObj.setFileUrl(imageUrl);
+//        taskObj.setFileUrl(imageUrl);
 
         Call<AddTask> call = apiInterface.addTask(taskObj, userId);
         call.enqueue(new Callback<AddTask>() {

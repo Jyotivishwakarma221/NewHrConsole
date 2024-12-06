@@ -284,6 +284,7 @@ public class DateAndTimeUtility {
         // Calculate the duration between the epoch time and now
         Duration duration = Duration.between(epochInstant, now);
 
+
         // Get the relative time in days, hours, minutes, and seconds
         long totalSeconds = duration.getSeconds();
         long days = totalSeconds / (24 * 3600);

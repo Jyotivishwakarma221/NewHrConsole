@@ -54,7 +54,7 @@ data class TaskItems(
 	val createdTime: Long? = null,
 
 	@field:SerializedName("fileUrl")
-	val fileUrl: String? = null,
+	val fileurl: List<String>? = null,
 
 	@field:SerializedName("userEmail")
 	val userEmail: String? = null,

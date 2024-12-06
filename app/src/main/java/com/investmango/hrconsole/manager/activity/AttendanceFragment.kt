@@ -318,6 +318,7 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
                     response: Response<ResponseBody?>,
                 ) {
                     if (response.code() == 200) {
+                        if (isAdded)
                         progressDialog.dismissDialog()
                         try {
                             val resp = Objects.requireNonNull(response.body())?.string()
@@ -382,7 +383,7 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
                 call: Call<TodayAttendnce?>,
                 response: Response<TodayAttendnce?>,
             ) {
-                Log.e("TodayAttendnce", "onResponse: " + response.body()?.id)
+//                Log.e("TodayAttendnce", "onResponse: " + response.body()?.id)
                 if (response.body()!!.id != null) {
                     outId = response.body()?.id!!
                     inTime = response.body()!!.inTime!!

@@ -29,9 +29,9 @@ class StagesAdapter(val list: List<Stage>, val context: Context) :
         if (list.get(position).stageName != null)
             holder.stageDescription.text = list.get(position).stageName
 
-        if (list.get(position).status != "COMPLETED") {
-            holder.image.setImageDrawable(ContextCompat.getDrawable(context, imgs[1]))
-        } else holder.image.setImageDrawable(ContextCompat.getDrawable(context, imgs[0]))
+        if (list.get(position).status != "COMPLETED" || list.get(position).status!="DONE") {
+            holder.image.setImageDrawable(ContextCompat.getDrawable(context, imgs[0]))
+        } else holder.image.setImageDrawable(ContextCompat.getDrawable(context, imgs[1]))
 
 
     }

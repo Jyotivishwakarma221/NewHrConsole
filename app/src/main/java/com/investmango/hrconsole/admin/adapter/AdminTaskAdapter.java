@@ -152,7 +152,7 @@ public class AdminTaskAdapter extends RecyclerView.Adapter<AdminTaskAdapter.Admi
         AddTask taskObj = new AddTask();
         taskObj.setId(taskId);
         taskObj.setComments(comment);
-        Call<AddTask> call = apiInterface.addComment(token, taskObj, userId);
+        Call<AddTask> call = apiInterface.addComment( taskObj, userId);
         call.enqueue(new Callback<AddTask>() {
             @Override
             public void onResponse(@NonNull Call<AddTask> call, @NonNull Response<AddTask> response) {

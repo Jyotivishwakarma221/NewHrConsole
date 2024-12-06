@@ -2,12 +2,16 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:clickable="true">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/black"
-        android:clickable="true"
         android:orientation="vertical"
         tools:context=".manager.activity.fragment.TasksFragment">
 
@@ -129,7 +133,7 @@
         <!--        </androidx.viewpager.widget.ViewPager>-->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/_5dp"
             android:layout_marginTop="@dimen/_20dp"
             android:layout_weight="2"
@@ -325,105 +329,113 @@
             <!--                android:layout_marginTop="@dimen/_10"-->
             <!--                android:layout_marginRight="@dimen/_5dp"-->
             <!--                android:layout_marginBottom="@dimen/_20dp" />-->
+<ScrollView
+    android:id="@+id/scroll"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_below="@+id/taskk"
+    android:layout_marginLeft="@dimen/_5dp"
+    android:layout_marginTop="@dimen/_10"
+    android:layout_marginRight="@dimen/_5dp"
+    android:layout_marginBottom="@dimen/_40dp">
+    <TextView
+        android:id="@+id/taskComments"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text=""
+        android:paddingBottom="@dimen/_30dp"
+        android:textColor="@color/white" />
+</ScrollView>
 
-            <TextView
-                android:id="@+id/taskComments"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/taskk"
-                android:layout_marginLeft="@dimen/_5dp"
-                android:layout_marginTop="@dimen/_10"
-                android:layout_marginRight="@dimen/_5dp"
-                android:layout_marginBottom="@dimen/_20dp"
-                android:gravity="center"
-                android:text=""
-                android:textColor="@color/white" />
 
-            <TextView
-                android:id="@+id/showImg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/Addcomments"
-                android:gravity="center"
-                android:text="Show Image"
-                android:layout_centerInParent="true"
-                android:paddingStart="@dimen/_30dp"
-                android:paddingEnd="@dimen/_30dp"
-                android:paddingTop="@dimen/_5dp"
-                android:paddingBottom="@dimen/_5dp"
-                android:background="@drawable/blue_bg"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_15"
-                android:textStyle="bold" />
+<!--            <TextView-->
+<!--                android:id="@+id/showImg"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="center"-->
+<!--                android:layout_alignParentBottom="true"-->
+<!--                android:text="Show Image"-->
+<!--                android:paddingStart="@dimen/_30dp"-->
+<!--                android:paddingEnd="@dimen/_30dp"-->
+<!--                android:paddingTop="@dimen/_5dp"-->
+<!--                android:paddingBottom="@dimen/_5dp"-->
+<!--                android:layout_marginStart="@dimen/_60dp"-->
+<!--                android:layout_marginEnd="@dimen/_60dp"-->
+<!--                android:layout_marginBottom="@dimen/_5dp"-->
+<!--                android:background="@drawable/blue_bg"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="@dimen/_15"-->
+<!--                android:textStyle="bold" />-->
 
-            <LinearLayout
-                android:id="@+id/Addcomments"
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fileRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_margin="5dp"
-                android:background="@color/greyBackground"
-                android:clickable="false"
-                android:orientation="horizontal"
-                android:padding="@dimen/_5dp"
-                android:visibility="gone"
-              >
+                android:layout_below="@+id/scroll"
+                android:foregroundGravity="center"
+                android:padding="5dp" />
 
-                <ImageView
-                    android:id="@+id/profilephoto"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:src="@drawable/profile"
-                    android:layout_margin="5dp"
-                    android:textColor="@color/white" />
-
-                <EditText
-                    android:id="@+id/comment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:background="@drawable/grey_bg_rounded"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:hint="Write a comment"
-                    android:padding="10dp"
-                    android:textColor="@color/greyforText"
-                    android:textColorHint="@color/white"
-                    android:textSize="14dp" />
-
-                <ImageView
-                    android:id="@+id/sendComment"
-                    android:layout_width="50dp"
-                    android:layout_height="30dp"
-                    android:layout_margin="@dimen/_5dp"
-                    android:clickable="true"
-                    android:src="@drawable/baseline_arrow_circle_right_24" />
-
-
-            </LinearLayout>
 
         </RelativeLayout>
-
-
-        <com.shawnlin.numberpicker.NumberPicker
-            android:id="@+id/number_picker"
+        <LinearLayout
+            android:id="@+id/Addcomments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/dark_grey_bg"
+            android:clickable="false"
+            android:orientation="horizontal"
             android:visibility="gone"
-            app:np_dividerColor="@color/colorPrimary"
-            app:np_height="180dp"
-            app:np_max="59"
-            app:np_min="0"
-            app:np_orientation="horizontal"
-            app:np_selectedTextColor="@color/colorPrimary"
-            app:np_selectedTextSize="@dimen/_20dp"
-            app:np_textColor="@color/colorPrimary"
-            app:np_textSize="14dp"
-            app:np_value="3"
-            app:np_width="64dp" />
+            android:padding="@dimen/_5dp"
+            android:layout_below="@+id/fileRecycler"
+            >
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/profilephoto"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:src="@drawable/profile"
+                android:layout_margin="5dp"
+                android:scaleType="centerCrop"
+                app:riv_oval="true"
+                android:textColor="@color/white" />
+
+            <com.investmango.hrconsole.commonclasses.InitialAvatarView
+                android:id="@+id/initialAvatar"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:layout_margin="5dp"/>
+            <EditText
+                android:id="@+id/comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:background="@drawable/grey_bg_rounded"
+                android:clickable="true"
+                android:gravity="center"
+                android:hint="Write a comment"
+                android:padding="10dp"
+                android:textColor="@color/greyforText"
+                android:textColorHint="@color/white"
+                android:textSize="14dp" />
+
+            <ImageView
+                android:id="@+id/sendComment"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_margin="@dimen/_5dp"
+                android:clickable="true"
+                android:src="@drawable/baseline_arrow_circle_right_24" />
+
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/paging"
@@ -465,5 +477,6 @@
                 android:src="@drawable/left_arrow" />
         </LinearLayout>
     </LinearLayout>
+</ScrollView>
 </layout>
 

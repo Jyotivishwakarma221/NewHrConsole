@@ -78,7 +78,7 @@ public class AllTotalSalaryFragment extends DialogFragment {
 
     private void allSalaryTaken(String token, long userId) {
         progressDialog.show();
-        Call<AllSalaryDetail> call = apiInterface.allSalaryTaken(token, userId);
+        Call<AllSalaryDetail> call = apiInterface.allSalaryTaken( userId);
         call.enqueue(new Callback<AllSalaryDetail>() {
             @Override
             public void onResponse(@NonNull Call<AllSalaryDetail> call, @NonNull Response<AllSalaryDetail> response) {

@@ -32,9 +32,7 @@ class ForgetPasswrdFragment : Fragment() {
     lateinit var binding: FragmentForgetPasswrdBinding
     lateinit var apiInterface: ApiInterface
     lateinit var email: String
-    lateinit var progressBar: ProgressDialog
-    lateinit var Dialog: BeautifulProgressDialog
-    lateinit var  progressDialog : AwesomeProgressDialog
+    lateinit var progressDialog: AwesomeProgressDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -44,17 +42,6 @@ class ForgetPasswrdFragment : Fragment() {
         progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
         progressDialog.isCancelable(false)
 
-
-
-
-        progressBar = ProgressDialog(activity, R.drawable.progress_bar)
-        progressBar.setProgressDrawable(
-            ContextCompat.getDrawable(
-                context!!,
-                R.drawable.progress_bar
-            )
-        )
-        progressBar!!.setCancelable(false)
     }
 
     override fun onCreateView(
@@ -123,8 +110,8 @@ class ForgetPasswrdFragment : Fragment() {
         apiInterface = apiClient.apiInterface
         val preferences = context!!.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
         val token = preferences.getString("token", "0").toString()
-
-        val call = apiInterface.sendOtp( binding.emailId.text.toString())
+        progressDialog.showDialog()
+        val call = apiInterface.sendOtp(binding.emailId.text.toString())
         call.enqueue(object : Callback<ResponseBody?> {
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                 if (response.isSuccessful) {
@@ -140,7 +127,7 @@ class ForgetPasswrdFragment : Fragment() {
                                 Toast.LENGTH_SHORT
                             )
                                 .show()
-                            progressBar.dismiss()
+                            progressDialog.dismissDialog()
                             replaceWithBundle()
 
                         } catch (e: IOException) {
@@ -157,10 +144,14 @@ class ForgetPasswrdFragment : Fragment() {
                         ).show()
                     }
                 } else {
+                    progressDialog.dismissDialog()
+                    val responseBodyString = response.errorBody()!!.string()
+                    val responseObject = JSONObject(responseBodyString)
+                    val apiMessage = responseObject.getString("message")
 //                    // Handle the case where the response body is null
                     Toast.makeText(
                         context,
-                        response.errorBody().toString(),
+                        apiMessage,
                         Toast.LENGTH_SHORT
                     ).show()
 //                    handleErrorResponse(response.errorBody());

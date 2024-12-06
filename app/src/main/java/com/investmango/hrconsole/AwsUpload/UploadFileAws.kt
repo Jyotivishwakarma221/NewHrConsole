@@ -26,7 +26,7 @@ class UploadFileAws() {
     fun getRealPathFromUri(uri: Uri, context: Context): String? {
         val projection = arrayOf(MediaStore.Images.Media.DATA)
         val cursor =
-            context!!.contentResolver.query(uri, projection, null, null, null) ?: return null
+            context.contentResolver.query(uri, projection, null, null, null) ?: return null
 
 
         val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)

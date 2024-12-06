@@ -21,10 +21,12 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.HrConsole.tv.official.console.premium.CommonAdapter
 import com.HrConsole.tv.official.console.premium.RecyclerViewInterface
 import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
+import com.investmango.hrconsole.Adapter.fileAdapter
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
 import com.investmango.hrconsole.api.ApiInterface
@@ -90,17 +92,18 @@ class StoryViewFragment : Fragment(), RecyclerViewInterface<ViewStoryBinding> {
         binding.details.setOnClickListener {
             showEditAlert()
         }
-        binding.fileView.setOnClickListener {
-            try {
-                val urlIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(storyResponse.fileUrl)
-                )
-                activity!!.startActivity(urlIntent)
-            } catch (e: Exception) {
-                Log.e("TAG", "onViewCreated: " + e)
-            }
-        }
+
+//        binding.fileView.setOnClickListener {
+//            try {
+//                val urlIntent = Intent(
+//                    Intent.ACTION_VIEW,
+//                    Uri.parse(storyResponse.fileUrl[])
+//                )
+//                activity!!.startActivity(urlIntent)
+//            } catch (e: Exception) {
+//                Log.e("TAG", "onViewCreated: " + e)
+//            }
+//        }
     }
 
     private fun getStoryBySubTaskId() {
@@ -143,14 +146,19 @@ class StoryViewFragment : Fragment(), RecyclerViewInterface<ViewStoryBinding> {
         binding.heading.text = storyResponse.name
 
 
-        if (storyResponse.fileUrl != "") {
-            binding.file.visibility = View.VISIBLE
-            binding.fileView.visibility = View.VISIBLE
-        } else {
-            binding.file.visibility = View.GONE
-            binding.fileView.visibility = View.GONE
+//        if (storyResponse.fileUrl!!.isNotEmpty()) {
+//            binding.file.visibility = View.VISIBLE
+//            binding.fileView.visibility = View.VISIBLE
+//        } else {
+//            binding.file.visibility = View.GONE
+//            binding.fileView.visibility = View.GONE
+//        }
+        if (storyResponse.fileUrl != null || storyResponse.fileUrl?.size != 0) {
+            if (isAdded)
+                binding.FileRecycler.adapter = fileAdapter(requireContext(), storyResponse.fileUrl!!)
+            binding.FileRecycler.layoutManager =
+                GridLayoutManager(context, 2)
         }
-
         if (storyResponse.priorityLevel != null) {
             binding.priorityy.visibility = View.VISIBLE
             binding.priorityy.text = " " + storyResponse.priorityLevel + " priority"
@@ -191,15 +199,19 @@ class StoryViewFragment : Fragment(), RecyclerViewInterface<ViewStoryBinding> {
         return storyResponse.story?.size!!
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun bindView(viewBind: ViewStoryBinding, position: Int) {
         val imgs = intArrayOf(R.drawable.hour_glass, R.drawable.tick)
 
-        val drawableId = if (position == 0) imgs[0] else imgs[1]
-        val drawable = ContextCompat.getDrawable(viewBind.root.context, drawableId)
-        viewBind.image.setImageDrawable(drawable)
+        viewBind.storyDescription.text = storyResponse.story?.get(position)?.strory
+        viewBind.name.text=storyResponse.story!!.get(position).userName
+        viewBind.Date.text=DateAndTimeUtility.getDATEFromLong(storyResponse.story!!.get(position).createdDate)
 
-        viewBind.storyDescription.text = storyResponse.story?.get(position)
-
+        viewBind.layout.setOnLongClickListener{
+            Toast.makeText(context, "Long click detected", Toast.LENGTH_SHORT).show()
+            showDeleteAlert(storyResponse.story!![position].id!!)
+            return@setOnLongClickListener true
+        }
     }
 
     @SuppressLint("MissingInflatedId")
@@ -225,6 +237,31 @@ class StoryViewFragment : Fragment(), RecyclerViewInterface<ViewStoryBinding> {
                 updateStory(reasonTxt.text.toString())
                 dialog.dismiss()
             }
+        }
+        dialog.show()
+    }
+    fun showDeleteAlert(id:Int)
+    {
+        // Create an alert builder
+        val builder = AlertDialog.Builder(context)
+        builder.setCancelable(true)
+
+        // set the custom layout
+        val customLayout: View =
+            layoutInflater.inflate(com.investmango.hrconsole.R.layout.delete_box, null)
+        builder.setView(customLayout)
+
+        val yesbtn =
+            customLayout.findViewById<TextView>(R.id.yes_btn)
+        val NoBtn = customLayout.findViewById<TextView>(R.id.No_btn)
+
+        val dialog = builder.create()
+        NoBtn.setOnClickListener { dialog.dismiss() }
+        yesbtn.setOnClickListener {
+                progressDialog.showDialog()
+            deleteStory(id)
+            dialog.dismiss()
+
         }
         dialog.show()
     }
@@ -383,6 +420,35 @@ class StoryViewFragment : Fragment(), RecyclerViewInterface<ViewStoryBinding> {
         })
     }
 
+    private fun deleteStory(id:Int){
+        val call = apiInterface.deleteStory(id)
+        progressDialog.showDialog()
+        call.enqueue(object : Callback<String?> {
+            override fun onResponse(
+                call: Call<String?>,
+                response: Response<String?>,
+            ) {
+                progressDialog.dismissDialog()
+
+                if (response.isSuccessful) {
+                    Toast.makeText(requireContext(), " Updated.", Toast.LENGTH_LONG).show()
+                    getStoryBySubTaskId()
+                } else {
+                    Log.e("failure", "onResponse: " + response.message())
+                    Toast.makeText(
+                        activity,
+                        "Server error " + response.message(),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<String?>, t: Throwable) {
+                progressDialog.dismissDialog()
+                Toast.makeText(activity, "Server error " + t.message, Toast.LENGTH_SHORT).show()
+                Log.e("Failure", Objects.requireNonNull(t.message!!))
+            }
+        })    }
 }
 
 data class SubtaskRequestBody(

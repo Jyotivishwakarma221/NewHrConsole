@@ -15,9 +15,11 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.HrConsole.tv.official.console.premium.CommonAdapter
 import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
@@ -25,6 +27,7 @@ import com.cloudinary.android.MediaManager
 import com.cloudinary.android.callback.ErrorInfo
 import com.cloudinary.android.callback.UploadCallback
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.investmango.hrconsole.Adapter.fileAdapter
 import com.investmango.hrconsole.AwsUpload.UploadFileAws
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.admin.fragment.AdminTaskFragment
@@ -39,6 +42,9 @@ import com.investmango.hrconsole.service.Constant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -61,9 +67,10 @@ class AssignTask : Fragment() {
     var selectedId: Long = 0
     lateinit var progressDialog: AwesomeProgressDialog
     var uri: Uri? = Uri.parse("")
-    var uriStr = ""
+    var uriStr : ArrayList<String> = arrayListOf()
     lateinit var nameIndex: String
-    lateinit var launcher: ActivityResultLauncher<Intent>
+    lateinit var image: MultipartBody.Part
+    private lateinit var  pickMultipleMedia: ActivityResultLauncher<PickVisualMediaRequest>
     lateinit var file1: File
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,59 +90,110 @@ class AssignTask : Fragment() {
         progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
         progressDialog.isCancelable(false)
 
-
-
-        launcher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) { result ->
-            if (result.resultCode == RESULT_OK && result.data != null) {
-                uri = result.data!!.data!!
-                Log.e("launcherrrr", "onCreate: " + uri)
-
-                result.data?.let { returnUri ->
-                    context?.contentResolver?.query(uri!!, null, null, null, null)
-                }?.use { cursor ->
-                    /*
-                     * Get the column indexes of the data in the Cursor,
-                     * move to the first row in the Cursor, get the data,
-                     * and display it.
-                     */
-                    nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME).toString()
-                    val size = cursor.getColumnIndex(OpenableColumns.SIZE)
-                    cursor.moveToFirst()
-                    sizeIndex = cursor.getLong(size)
-                    Log.e("launcherrrr", "onCreate: " + sizeIndex)
-
-                    cursor.moveToFirst()
-
-                    cursor.moveToFirst()
-                    file1 = File(
-                        Objects.requireNonNull<String>(
-                            UploadFileAws().getRealPathFromUri(
-                                uri!!,
-                                context!!
+        pickMultipleMedia =
+            registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(5)) { uris ->
+                // Callback is invoked after the user selects media items or closes the
+                // photo picker.
+                if (uris.isNotEmpty()) {
+                    Log.e("PhotoPicker", "Number of items selected: ${uris.size}")
+                    for( i in 0..uris.size-1 ) {
+                        file1 = File(
+                            Objects.requireNonNull<String>(
+                                UploadFileAws().getRealPathFromUri(
+                                    uris[i],
+                                    context!!
+                                )
                             )
                         )
-                    )
-                    if (isAdded)
-                        CoroutineScope(Dispatchers.Main).launch {
-                             uriStr = UploadFileAws().uploadFile(file1, "taskDocs", context!!).toString()
-                            if (uriStr != "") {
-                                // Handle the success case here
-                                Log.e("uploadimg", "onCreate: "+uriStr )
-                                binding.uploadDocname.visibility = View.VISIBLE
-                                binding.uploadDoc.visibility = View.GONE
-                            } else {
-                                // Handle the failure case here
-                                Toast.makeText(context,"Some error in uploading .",Toast.LENGTH_SHORT).show()
+                        val requestBody1 = RequestBody.create("image/*".toMediaTypeOrNull(), file1)
+                        image = MultipartBody.Part.createFormData("image", file1.name, requestBody1)
+                        Log.e("khushi1111", "onClick: " + image)
+                        if (isAdded)
+                            CoroutineScope(Dispatchers.Main).launch {
+                                progressDialog.showDialog()
+                                var url =
+                                    UploadFileAws().uploadFile(file1, "subtasksDocs", context!!)
+                                        .toString()
+                                uriStr.add(url)
+                                if (url != "") {
+                                    // Handle the success case here
+                                    Log.e("uploadimg", "onCreate: " + uriStr)
+                                    progressDialog.dismissDialog()
+
+                                    if (isAdded)
+                                        binding.fileRecycler.adapter = fileAdapter(requireContext(), uriStr)
+                                    binding.fileRecycler.layoutManager =
+                                        GridLayoutManager(context, 2)
+                                } else {
+                                    progressDialog.dismissDialog()
+                                    // Handle the failure case here
+                                    Toast.makeText(
+                                        context,
+                                        "Some error in uploading .",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                }
                             }
-                        }
+                    }
 
-
+                } else {
+                    Log.e("PhotoPicker", "No media selected")
                 }
             }
 
-        };
+
+//        launcher = registerForActivityResult(
+//            ActivityResultContracts.StartActivityForResult()
+//        ) { result ->
+//            if (result.resultCode == RESULT_OK && result.data != null) {
+//                uri = result.data!!.data!!
+//                Log.e("launcherrrr", "onCreate: " + uri)
+//
+//                result.data?.let { returnUri ->
+//                    context?.contentResolver?.query(uri!!, null, null, null, null)
+//                }?.use { cursor ->
+//                    /*
+//                     * Get the column indexes of the data in the Cursor,
+//                     * move to the first row in the Cursor, get the data,
+//                     * and display it.
+//                     */
+//                    nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME).toString()
+//                    val size = cursor.getColumnIndex(OpenableColumns.SIZE)
+//                    cursor.moveToFirst()
+//                    sizeIndex = cursor.getLong(size)
+//                    Log.e("launcherrrr", "onCreate: " + sizeIndex)
+//
+//                    cursor.moveToFirst()
+//
+//                    cursor.moveToFirst()
+//                    file1 = File(
+//                        Objects.requireNonNull<String>(
+//                            UploadFileAws().getRealPathFromUri(
+//                                uri!!,
+//                                context!!
+//                            )
+//                        )
+//                    )
+//                    if (isAdded)
+//                        CoroutineScope(Dispatchers.Main).launch {
+//                             uriStr = UploadFileAws().uploadFile(file1, "taskDocs", context!!).toString()
+//                            if (uriStr != "") {
+//                                // Handle the success case here
+//                                Log.e("uploadimg", "onCreate: "+uriStr )
+//                                binding.uploadDocname.visibility = View.VISIBLE
+//                                binding.uploadDoc.visibility = View.GONE
+//                            } else {
+//                                // Handle the failure case here
+//                                Toast.makeText(context,"Some error in uploading .",Toast.LENGTH_SHORT).show()
+//                            }
+//                        }
+//
+//
+//                }
+//            }
+//
+//        };
     }
 
 
@@ -168,14 +226,14 @@ class AssignTask : Fragment() {
         binding.uploadDoc.setOnClickListener {
             openGallery()
         }
-        binding.uploadDocname.setOnClickListener {
-
-            uriStr=""
-            binding.uploadDocname.text = ""
-            binding.uploadDoc.visibility = View.VISIBLE
-            binding.uploadDocname.visibility = View.INVISIBLE
-
-        }
+//        binding.uploadDocname.setOnClickListener {
+//
+//            uriStr=""
+//            binding.uploadDocname.text = ""
+//            binding.uploadDoc.visibility = View.VISIBLE
+//            binding.uploadDocname.visibility = View.INVISIBLE
+//
+//        }
         binding.assignTask.setOnClickListener {
             if (binding.taskDescription.text.isEmpty()) {
 
@@ -209,7 +267,7 @@ class AssignTask : Fragment() {
     private fun openGallery() {
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
 //        startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST)
-        launcher.launch(galleryIntent)
+        pickMultipleMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo))
     }
 
 //    private fun uploadImageToCloud(imageUri: Uri?) {
@@ -336,7 +394,7 @@ class AssignTask : Fragment() {
         })
     }
 
-    private fun sendTaskWithImage(imageUrl: String) {
+    private fun sendTaskWithImage(imageUrl: List<String>) {
         Log.e("uploadimg", "sendTaskWithImage: "+ uriStr)
         if (selectedId.toInt() == 0) {
             Toast.makeText(context, "Please select a user.", Toast.LENGTH_SHORT).show()
@@ -348,7 +406,7 @@ class AssignTask : Fragment() {
 
         progressDialog.showDialog()
 
-        taskObj.fileUrl = imageUrl
+        taskObj.fileurl = imageUrl
 
         val call = apiInterface.assignTaskUser(selectedId, taskObj)
         call.enqueue(object : Callback<AssignTask?> {
@@ -363,6 +421,8 @@ class AssignTask : Fragment() {
                     binding.taskDescription.setText("")
                     binding.deadline.setText("  Select Date ")
                     uri = null
+                    uriStr.clear()
+                    binding.fileRecycler.adapter!!.notifyDataSetChanged()
                 } else {
                     progressDialog.dismissDialog()
                     if (isAdded) Toast.makeText(context, "Some Error Occurred", Toast.LENGTH_SHORT)

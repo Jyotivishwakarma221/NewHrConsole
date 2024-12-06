@@ -56,7 +56,7 @@ public class PreviousTaskFragment extends Fragment {
         progressDialog.show();
         ApiClient apiClient = new ApiClient(getActivity());
         apiInterface = apiClient.getApiInterface();
-        Call<List<PreviousTask>> call = apiInterface.getPreviousTask(token);
+        Call<List<PreviousTask>> call = apiInterface.getPreviousTask();
         call.enqueue(new Callback<List<PreviousTask>>() {
             @Override
             public void onResponse(@NonNull Call<List<PreviousTask>> call, @NonNull Response<List<PreviousTask>> response) {

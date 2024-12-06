@@ -189,7 +189,7 @@ public class MeetingAdapterAdmin extends RecyclerView.Adapter<MeetingAdapterAdmi
                     requestBody.setId(meetingId);
                     requestBody.setStatus(selectedStatus);
 
-                    Call<ResponseBody> call = apiInterface.updateAdminMeetingStatus(token, requestBody, userId);
+                    Call<ResponseBody> call = apiInterface.updateAdminMeetingStatus(requestBody, userId);
                     call.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {

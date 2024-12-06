@@ -249,8 +249,9 @@ public class UserHomeActivity extends AppCompatActivity {
         long userId = preferences.get().getLong("userId", 0);
 
         // Call the API to get the current user data
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<User> call = apiInterface.getCurrentUser(token);
+        ApiClient apiClient = new ApiClient(getApplicationContext());
+        ApiInterface apiInterface = apiClient.getApiInterface();
+        Call<User> call = apiInterface.getCurrentUser();
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
@@ -362,7 +363,7 @@ public class UserHomeActivity extends AppCompatActivity {
         }
         // Get meeting count
         {
-            Call<List<MeetingDetails>> meetingCount = apiInterface.getAllTodayMeeting(token, userId);
+            Call<List<MeetingDetails>> meetingCount = apiInterface.getAllTodayMeeting( userId);
             meetingCount.enqueue(new Callback<List<MeetingDetails>>() {
                 @Override
                 public void onResponse(@NonNull Call<List<MeetingDetails>> call, @NonNull Response<List<MeetingDetails>> response) {
@@ -388,9 +389,8 @@ public class UserHomeActivity extends AppCompatActivity {
         }
         // Get task count of user
         {
-            ApiClient apiClient = new ApiClient(UserHomeActivity.this);
-            apiInterface = apiClient.getApiInterface();
-            Call<List<Task>> taskCount = apiInterface.getAllTask(token, userId);
+
+            Call<List<Task>> taskCount = apiInterface.getAllTask(userId);
             taskCount.enqueue(new Callback<List<Task>>() {
                 @Override
                 public void onResponse(@NonNull Call<List<Task>> call, @NonNull Response<List<Task>> response) {
@@ -417,7 +417,7 @@ public class UserHomeActivity extends AppCompatActivity {
         }
         // Get the count of user leave
         {
-            Call<List<SaveUserLeave>> userLeaveCount = apiInterface.getUserLeave(token, userId);
+            Call<List<SaveUserLeave>> userLeaveCount = apiInterface.getUserLeave( userId);
 
             userLeaveCount.enqueue(new Callback<List<SaveUserLeave>>() {
                 @Override
@@ -676,7 +676,7 @@ public class UserHomeActivity extends AppCompatActivity {
     private void fetchMonthlyTaskAndOpenFragment() {
         ApiClient apiClient = new ApiClient(UserHomeActivity.this);
         apiInterface = apiClient.getApiInterface();
-        Call<ResponseBody> call = apiInterface.getMonthlyTaskStatistics(token, userId);
+        Call<ResponseBody> call = apiInterface.getMonthlyTaskStatistics( userId);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
@@ -709,7 +709,7 @@ public class UserHomeActivity extends AppCompatActivity {
     private void fetchTasksAndOpenFragment() {
         ApiClient apiClient = new ApiClient(UserHomeActivity.this);
         apiInterface = apiClient.getApiInterface();
-        Call<List<Task>> call = apiInterface.getAllTask(token, userId);
+        Call<List<Task>> call = apiInterface.getAllTask( userId);
         call.enqueue(new Callback<List<Task>>() {
             @Override
             public void onResponse(@NonNull Call<List<Task>> call, @NonNull Response<List<Task>> response) {
@@ -770,7 +770,7 @@ public class UserHomeActivity extends AppCompatActivity {
     private void fetchUserLeaveAndOpenFragment() {
         ApiClient apiClient = new ApiClient(UserHomeActivity.this);
         apiInterface = apiClient.getApiInterface();
-        Call<List<SaveUserLeave>> call = apiInterface.getUserLeave(token, userId);
+        Call<List<SaveUserLeave>> call = apiInterface.getUserLeave( userId);
         call.enqueue(new Callback<List<SaveUserLeave>>() {
             @Override
             public void onResponse(@NonNull Call<List<SaveUserLeave>> call, @NonNull Response<List<SaveUserLeave>> response) {
@@ -797,7 +797,7 @@ public class UserHomeActivity extends AppCompatActivity {
     private void fetchMeetingAndOpenFragment() {
         ApiClient apiClient = new ApiClient(UserHomeActivity.this);
         apiInterface = apiClient.getApiInterface();
-        Call<List<MeetingDetails>> call = apiInterface.getAllTodayMeeting(token, userId);
+        Call<List<MeetingDetails>> call = apiInterface.getAllTodayMeeting(userId);
         call.enqueue(new Callback<List<MeetingDetails>>() {
             @Override
             public void onResponse(@NonNull Call<List<MeetingDetails>> call, @NonNull Response<List<MeetingDetails>> response) {
@@ -849,7 +849,7 @@ public class UserHomeActivity extends AppCompatActivity {
     private void fetchMonthlyAttendanceAndOpenFragment() {
         ApiClient apiClient = new ApiClient(UserHomeActivity.this);
         apiInterface = apiClient.getApiInterface();
-        Call<ResponseBody> call = apiInterface.getMonthlyAttendance(token, userId);
+        Call<ResponseBody> call = apiInterface.getMonthlyAttendance( userId);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {

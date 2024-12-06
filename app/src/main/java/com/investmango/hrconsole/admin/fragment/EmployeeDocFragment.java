@@ -155,7 +155,7 @@ public class EmployeeDocFragment extends Fragment implements EmployeeDocAdapter.
     }
 
     private void getAllActiveUser() {
-        Call<List<AllActiveUsers>> call = apiInterface.getAllActiveUser("Bearer " + token);
+        Call<List<AllActiveUsers>> call = apiInterface.getAllActiveUser();
         call.enqueue(new Callback<List<AllActiveUsers>>() {
             @Override
             public void onResponse(@NonNull Call<List<AllActiveUsers>> call, @NonNull Response<List<AllActiveUsers>> response) {
