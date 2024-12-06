@@ -46,6 +46,8 @@ data class TaskItems(
 
 	@field:SerializedName("subject")
 	val subject: String? = null,
+	@field:SerializedName("title")
+	val title: String? = null,
 
 	@field:SerializedName("userPhone")
 	val userPhone: String? = null,

@@ -33,6 +33,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="Leave Requests"
+                    android:textFontWeight="700"
+                    android:fontFamily="@font/dm_sans"
                     android:textColor="@color/greyforText"
                     android:textSize="22sp" />
 
@@ -42,6 +44,8 @@
                 android:id="@+id/today"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textFontWeight="500"
+                android:fontFamily="@font/dm_sans"
                 android:layout_margin="5dp"
                 android:layout_marginTop="@dimen/_10"
                 android:text="Today"
@@ -67,6 +71,8 @@
                 android:background="@drawable/grey_bg_rounded"
                 android:drawableRight="@drawable/baseline_arrow_forward_24"
                 android:gravity="center"
+                android:textFontWeight="500"
+                android:fontFamily="@font/dm_sans"
                 android:padding="@dimen/_10"
                 android:layout_below="@+id/leaverequest"
                 android:layout_alignParentEnd="true"

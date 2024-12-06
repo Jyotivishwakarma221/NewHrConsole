@@ -262,7 +262,8 @@ class NewTaskFragment : Fragment() {
             } else if (task[0].subject != null) binding.taskDescription.setText(task[0].subject)
             else if (task[0].comments != null) binding.taskDescription.setText(task[0].comments)
 
-
+if (task[0].title!=null)
+    binding.tasktitle.setText(task[0].title.toString())
 
             if (task.get(0).deadLine != null && task.get(0).deadLine != 0L) {
                 binding.deadline.setText(DateAndTimeUtility.getDATEFromLong(task.get(0).deadLine))
@@ -355,7 +356,7 @@ class NewTaskFragment : Fragment() {
         }
 
         binding.assignTask.setOnClickListener {
-            if (binding.taskDescription.text.isEmpty()) {
+            if (binding.tasktitle.text.isEmpty()) {
                 Toast.makeText(context, "Please fill some information .", Toast.LENGTH_SHORT).show()
             } else {
                 if (!task.isEmpty()) {
@@ -364,15 +365,9 @@ class NewTaskFragment : Fragment() {
                             "isValidTine",
                             "onViewCreated: " + (binding.deadline.text.toString() + binding.selectedTime.text.toString())
                         )
+                        if (binding.tasktitle.text.toString()!="")
+                        UpdateTask(task[0].id?.toLong()!!, task[0].status!!, uriStr)
 
-                        if (isValid(binding.deadline.text.toString()) && isValidTine(binding.selectedTime.text.toString()))
-                            UpdateTask(task[0].id?.toLong()!!, task[0].status!!, uriStr)
-                        else {
-                            Log.e(
-                                "isValidTine",
-                                "onViewCreated: " + isValid(binding.selectedTime.text.toString())
-                            )
-                        }
                     } catch (e: Exception) {
                         Log.e("Exception", "onViewCreated: " + e.message)
                     }
@@ -452,8 +447,13 @@ class NewTaskFragment : Fragment() {
 
 
         val taskDescription = binding.taskDescription.text.toString()
+        val taskTitle = binding.tasktitle.text.toString()
+
         if (taskDescription.isNotEmpty()) {
             taskObj.subject = taskDescription
+        }
+        if (taskTitle.isNotEmpty()) {
+            taskObj.title = taskTitle
         }
 
         if (imageUrl.isNotEmpty())
@@ -504,7 +504,7 @@ class NewTaskFragment : Fragment() {
 
         val taskObj = AddTask()
         taskObj.subject = binding.taskDescription.text.toString()
-
+        taskObj.title = binding.tasktitle.text.toString()
         if (imageUrl.isNotEmpty())
             taskObj.fileurl = imageUrl
 
@@ -537,17 +537,15 @@ class NewTaskFragment : Fragment() {
                         )
                             .show()
                     binding.taskDescription.setText("")
+                    binding.tasktitle.setText("")
                     uri = null
                     uriStr.clear()
-                    if (binding.fileRecycler.adapter!=null)
-                    binding.fileRecycler.adapter!!.notifyDataSetChanged()
+                    if (binding.fileRecycler.adapter != null)
+                        binding.fileRecycler.adapter!!.notifyDataSetChanged()
                     binding.deadline.setText("Select Date ")
                     binding.selectedTime.setText("Select Time ")
 
 //                    binding.uploadDocname.visibility = View.GONE
-
-
-
 
 
                 } else {

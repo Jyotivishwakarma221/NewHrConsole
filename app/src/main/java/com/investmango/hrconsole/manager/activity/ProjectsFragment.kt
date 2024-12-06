@@ -225,8 +225,8 @@ class ProjectsFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding> 
     fun setData() {
         progressDialog.dismissDialog()
 
-        binding.projectName.text = assignment.subject
-        binding.projectName.text = assignment.subject
+        binding.projectName.text = assignment.headings
+        binding.projectNamee.text = assignment.subject
 
         if (assignment.deadLine!=0L) {
             binding.deadlineDate.text =

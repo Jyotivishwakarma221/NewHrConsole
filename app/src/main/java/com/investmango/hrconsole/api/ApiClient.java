@@ -38,10 +38,10 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class ApiClient extends Application {
 
     //development
-          public static final String BASE_URL = "https://dev.virtualintelligence.co.in/";
+//          public static final String BASE_URL = "https://dev.virtualintelligence.co.in/";
 
     // Live
-//    public static final String BASE_URL = "https://api.virtualintelligence.co.in/";
+    public static final String BASE_URL = "https://api.virtualintelligence.co.in/";
 
 //     public static final String BASE_URL = "https://api.gopropify.in/";
 

@@ -14,7 +14,7 @@
         <RelativeLayout
             android:id="@+id/cardView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="250dp"
             android:background="@drawable/dark_grey_bg"
             android:padding="16dp">
 
@@ -27,6 +27,8 @@
                 android:layout_marginTop="@dimen/_20dp"
                 android:background="@drawable/dark_grey_bg"
                 android:padding="@dimen/_10"
+                android:textFontWeight="400"
+                android:fontFamily="@font/dm_sans"
                 android:text="     "
                 android:textColor="@color/greyforText"
                 android:textSize="@dimen/_10" />
@@ -41,6 +43,8 @@
                 android:background="@drawable/dark_grey_bg"
                 android:drawableStart="@drawable/red_dot"
                 android:padding="@dimen/_10"
+                android:textFontWeight="400"
+                android:fontFamily="@font/dm_sans"
                 android:text="     "
                 android:textColor="@color/greyforText"
                 android:textSize="@dimen/_10" />
@@ -57,6 +61,8 @@
                 android:padding="@dimen/_5dp"
                 android:text="    "
                 android:maxLines="2"
+                android:textFontWeight="500"
+                android:fontFamily="@font/dm_sans"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -69,6 +75,8 @@
                 android:layout_marginStart="@dimen/_10"
                 android:layout_marginTop="@dimen/_10"
                 android:gravity="start"
+                android:textFontWeight="500"
+                android:fontFamily="@font/dm_sans"
                 android:text="  Progress :"
                 android:textColor="@color/white"
                 android:textSize="10sp" />
@@ -91,6 +99,8 @@
                 android:layout_marginStart="@dimen/_10"
                 android:layout_marginTop="@dimen/_10"
                 android:gravity="start"
+                android:textFontWeight="500"
+                android:fontFamily="@font/dm_sans"
                 android:text="  Project member "
                 android:textColor="@color/white"
                 android:textSize="10sp" />
@@ -132,6 +142,8 @@
                 android:id="@+id/dead"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textFontWeight="500"
+                android:fontFamily="@font/dm_sans"
                 android:layout_below="@+id/progressbar"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="@dimen/_10"
@@ -148,6 +160,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/dead"
                 android:layout_alignParentEnd="true"
+                android:textFontWeight="400"
+                android:fontFamily="@font/dm_sans"
                 android:layout_marginStart="@dimen/_10"
                 android:layout_marginTop="@dimen/_10"
                 android:layout_marginEnd="@dimen/_30dp"

@@ -25,6 +25,8 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5dp"
                     android:padding="5dp"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="700"
                     android:text="Career Timeline"
                     android:textColor="@color/greyforText"
                     android:textSize="18dp"
@@ -76,6 +78,7 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp"
                     android:clipToPadding="false"
+                    android:layout_below="@+id/timelinetxt"
                     android:scrollbars="horizontal" />
             </RelativeLayout>
 
@@ -95,6 +98,8 @@
                     android:layout_weight="2"
                     android:padding="5dp"
                     android:text="Task Insights"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="700"
                     android:textColor="@color/greyforText"
                     android:textSize="18dp"
                     android:textStyle="bold" />
@@ -166,6 +171,7 @@
                                 android:layout_height="wrap_content"
                                 android:padding="5dp"
                                 android:text="Assigned"
+                                android:fontFamily="@font/dm_sans"
                                 android:textColor="@color/black" />
 
                             <TextView
@@ -207,6 +213,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="5dp"
+                                android:fontFamily="@font/dm_sans"
                                 android:text="    Done   "
                                 android:textColor="@color/black" />
 
@@ -248,6 +255,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="5dp"
+                                android:fontFamily="@font/dm_sans"
                                 android:text="Pending"
                                 android:textColor="@color/black" />
 
@@ -428,6 +436,7 @@
                         android:layout_marginStart="@dimen/_20dp"
                         android:layout_weight="3"
                         android:padding="5dp"
+                        android:fontFamily="@font/dm_sans"
                         android:text="On-time Completion Rate"
                         android:textColor="@color/white" />
 
@@ -460,6 +469,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_20dp"
                     android:layout_weight="2"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="700"
                     android:padding="5dp"
                     android:text="Presence"
                     android:textColor="@color/greyforText"
@@ -502,6 +513,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5dp"
                         android:text="Present :"
+                        android:fontFamily="@font/dm_sans"
                         android:textColor="@color/white" />
 
                     <TextView
@@ -524,6 +536,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5dp"
                         android:text="Half Day :"
+                        android:fontFamily="@font/dm_sans"
                         android:textColor="@color/white" />
 
                     <TextView
@@ -545,6 +558,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5dp"
+                        android:fontFamily="@font/dm_sans"
                         android:text="Absent : "
                         android:textColor="@color/white" />
 
@@ -567,6 +581,8 @@
                 android:layout_marginTop="@dimen/_10"
                 android:layout_weight="2"
                 android:padding="5dp"
+                android:fontFamily="@font/dm_sans"
+                android:textFontWeight="700"
                 android:text="My Meetings Analysis"
                 android:textColor="@color/greyforText"
                 android:textSize="18dp" />
@@ -584,6 +600,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10dp"
                     android:text="Total :"
+                    android:fontFamily="@font/dm_sans"
                     android:textColor="@color/white" />
 
                 <TextView
@@ -622,6 +639,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5dp"
                         android:text="Present :"
+                        android:fontFamily="@font/dm_sans"
                         android:textColor="@color/white" />
 
                     <TextView
@@ -646,6 +664,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5dp"
                         android:text="Absent :"
+                        android:fontFamily="@font/dm_sans"
                         android:textColor="@color/white" />
 
                     <TextView
@@ -669,6 +688,8 @@
                 android:layout_marginTop="@dimen/_10"
                 android:layout_weight="2"
                 android:padding="5dp"
+                android:fontFamily="@font/dm_sans"
+                android:textFontWeight="700"
                 android:text="MoM Growth Rate"
                 android:textColor="@color/greyforText"
                 android:textSize="18dp" />
@@ -689,6 +710,7 @@
                     android:layout_marginStart="@dimen/_20dp"
                     android:layout_weight="3"
                     android:padding="5dp"
+                    android:fontFamily="@font/dm_sans"
                     android:text="This Month Performance :"
                     android:textColor="@color/white" />
 
@@ -700,6 +722,7 @@
                     android:maxLength="6"
                     android:padding="5dp"
                     android:text=" %"
+                    android:fontFamily="@font/dm_sans"
                     android:textColor="@color/light_green"
                     android:textSize="16dp"
                     android:textStyle="bold" />

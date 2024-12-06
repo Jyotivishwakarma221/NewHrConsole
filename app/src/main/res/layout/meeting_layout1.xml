@@ -26,6 +26,7 @@
         android:layout_marginEnd="@dimen/_10"
         android:layout_weight="3"
         android:weightSum="3"
+        android:gravity="center"
         android:background="@drawable/black_button"
         android:orientation="horizontal">
 
@@ -38,7 +39,7 @@
         android:layout_marginStart="10dp"
         android:maxLines="3"
         android:layout_weight="2"
-        android:text="Meeting With Sales Team"
+        android:text=" "
         android:drawableStart="@drawable/sparkles"
         android:textColor="@color/white"
         android:textSize="@dimen/_15sp" />

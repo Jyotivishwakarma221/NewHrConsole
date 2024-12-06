@@ -45,6 +45,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
+                android:text="Task Title"
+                android:textColor="@color/greyforText"
+                android:textSize="22sp" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:fillViewport="true">
+
+                <EditText
+                    android:id="@+id/tasktitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:background="@drawable/grey_bg_rounded"
+                    android:gravity="top"
+                    android:inputType="textMultiLine"
+                    android:isScrollContainer="true"
+                    android:lines="5"
+                    android:padding="10dp"
+                    android:textColor="@color/white" />
+            </ScrollView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
                 android:text="Task Description"
                 android:textColor="@color/greyforText"
                 android:textSize="22sp" />
@@ -64,7 +90,7 @@
                     android:gravity="top"
                     android:inputType="textMultiLine"
                     android:isScrollContainer="true"
-                    android:lines="10"
+                    android:lines="5"
                     android:padding="10dp"
                     android:textColor="@color/white" />
             </ScrollView>

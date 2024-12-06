@@ -33,6 +33,7 @@
                 android:fontFamily="@font/dm_sans"
                 android:gravity="center"
                 android:text="Payroll Panel"
+                android:textFontWeight="700"
                 android:textColor="@color/greyforText"
                 android:textSize="22sp" />
         </LinearLayout>
@@ -58,6 +59,8 @@
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
                     android:text="ID"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="500"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15" />
 
@@ -68,6 +71,8 @@
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
                     android:text="Name"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="500"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15" />
 
@@ -77,6 +82,8 @@
                     android:layout_margin="@dimen/_5dp"
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="500"
                     android:text="Basic Salary"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15" />
@@ -87,6 +94,8 @@
                     android:layout_margin="@dimen/_5dp"
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="500"
                     android:text="Medical Fund"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15" />
@@ -98,6 +107,8 @@
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
                     android:text="HRA"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="500"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15" />
 
@@ -108,6 +119,8 @@
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
                     android:text="Bonus"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="500"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15" />
 
@@ -117,6 +130,8 @@
                     android:layout_margin="@dimen/_5dp"
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="500"
                     android:text="Incentive"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15" />
@@ -127,6 +142,8 @@
                     android:layout_margin="@dimen/_5dp"
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="500"
                     android:text="Convenience"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15" />
@@ -137,6 +154,8 @@
                     android:layout_margin="@dimen/_5dp"
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="500"
                     android:text="Total Salary"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15" />
@@ -148,6 +167,8 @@
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
                     android:text="Deduction"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="500"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15" />
 
@@ -158,6 +179,8 @@
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
                     android:text="Pay Salary"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="500"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_15" />
 
@@ -295,6 +318,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/black_button"
                     android:gravity="center"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="400"
                     android:padding="@dimen/_5dp"
                     android:text=" "
                     android:textColor="@color/greyforText"
@@ -309,6 +334,8 @@
                     android:background="@drawable/black_button"
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="400"
                     android:text=" "
                     android:textColor="@color/greyforText"
                     android:textSize="@dimen/_15" />
@@ -325,6 +352,8 @@
                     android:padding="@dimen/_5dp"
                     android:text="---"
                     android:textColor="@color/greyforText"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="400"
                     android:textSize="@dimen/_15" />
 
                 <TextView
@@ -352,6 +381,8 @@
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
                     android:text="---"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="400"
                     android:textColor="@color/greyforText"
                     android:textSize="@dimen/_15" />
 
@@ -364,6 +395,8 @@
                     android:background="@drawable/black_button"
                     android:drawableStart="@drawable/baseline_currency_rupee_24"
                     android:gravity="center"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="400"
                     android:padding="@dimen/_5dp"
                     android:text="---"
                     android:textColor="@color/greyforText"
@@ -374,6 +407,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:layout_margin="5dp"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="400"
                     android:layout_weight="1"
                     android:background="@drawable/black_button"
                     android:drawableStart="@drawable/baseline_currency_rupee_24"
@@ -391,6 +426,8 @@
                     android:background="@drawable/black_button"
                     android:drawableStart="@drawable/baseline_currency_rupee_24"
                     android:gravity="center"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="400"
                     android:padding="@dimen/_5dp"
                     android:text="---"
                     android:textColor="@color/greyforText"
@@ -405,6 +442,8 @@
                     android:background="@drawable/black_button"
                     android:drawableStart="@drawable/baseline_currency_rupee_24"
                     android:gravity="center"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="400"
                     android:padding="@dimen/_5dp"
                     android:text="---"
                     android:textColor="@color/greyforText"
@@ -420,6 +459,8 @@
                     android:drawableStart="@drawable/baseline_currency_rupee_24"
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="400"
                     android:text="---"
                     android:textColor="@color/greyforText"
                     android:textSize="@dimen/_15" />
@@ -434,6 +475,8 @@
                     android:drawableStart="@drawable/baseline_currency_rupee_24"
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="400"
                     android:text="---"
                     android:textColor="@color/light_green"
                     android:textSize="@dimen/_15" />

@@ -15,6 +15,17 @@ public class TotalEmpResponseItem implements Serializable {
     @SerializedName("id")
     private long id;
 
+    @SerializedName("isTodayPresent")
+    private boolean isTodayPresent;
+
+    public boolean isTodayPresent() {
+        return isTodayPresent;
+    }
+
+    public void setTodayPresent(boolean todayPresent) {
+        isTodayPresent = todayPresent;
+    }
+
     @SerializedName("designation")
     private String designation;
 
@@ -64,15 +75,15 @@ public class TotalEmpResponseItem implements Serializable {
     private String userName;
     boolean isSelected;
 
-	public boolean isSelected() {
-		return isSelected;
-	}
+    public boolean isSelected() {
+        return isSelected;
+    }
 
-	public void setSelected(boolean selected) {
-		isSelected = selected;
-	}
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
 
-	@SerializedName("managerName")
+    @SerializedName("managerName")
     private Object managerName;
 
     public String getUserPhone() {

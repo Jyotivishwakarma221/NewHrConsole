@@ -18,6 +18,8 @@
             android:layout_marginTop="@dimen/_10"
             android:gravity="center"
             android:text="All Projects "
+            android:fontFamily="@font/dm_sans"
+            android:textFontWeight="700"
             android:textColor="@color/greyforText"
             android:textSize="22sp" />
 

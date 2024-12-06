@@ -32,6 +32,8 @@
                 android:gravity="center"
                 android:text="Attendance Report"
                 android:textColor="#CCCCCC"
+                android:fontFamily="@font/dm_sans"
+                android:textFontWeight="700"
                 android:textSize="22sp" />
 
         </LinearLayout>

@@ -5,11 +5,30 @@ import java.util.List;
 public class AssignTask {
     private long userId;
     private String subject;
+    private String title;
     private List<String> fileurl;
+    private Long deadLine;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Long getDeadline() {
+        return deadLine;
+    }
+
+    public void setDeadline(Long deadline) {
+        deadLine = deadline;
+    }
 
     public String getSubject() {
         return subject;
     }
+
     public void setSubject(String subject) {
         this.subject = subject;
     }

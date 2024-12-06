@@ -27,6 +27,8 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/dm_sans"
+            android:textFontWeight="400"
             android:text="Sales Meeting"
             android:textColor="@android:color/white"
             android:textSize="13sp" />
@@ -37,6 +39,8 @@
             android:layout_height="wrap_content"
             android:text="10 minutes remaining"
             android:textColor="#989898"
+            android:fontFamily="@font/dm_sans"
+            android:textFontWeight="400"
             android:paddingEnd="@dimen/_10"
             android:textSize="12sp" />
 

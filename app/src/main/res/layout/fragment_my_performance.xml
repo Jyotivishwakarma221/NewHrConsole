@@ -29,6 +29,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="My Performance"
+                android:fontFamily="@font/dm_sans"
+                android:textFontWeight="700"
                 android:textColor="@color/greyforText"
                 android:textSize="22sp" />
 
@@ -130,6 +132,7 @@
                     android:layout_margin="@dimen/_5dp"
                     android:padding="5dp"
                     android:text="Task History"
+                    android:fontFamily="@font/dm_sans"
                     android:textColor="@color/greyforText"
                     android:textSize="18dp"
                     android:textStyle="bold" />
@@ -147,6 +150,7 @@
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5dp"
                         android:text="Last Tasks to Do"
+                        android:fontFamily="@font/dm_sans"
                         android:textColor="@color/white"
                         android:textSize="14dp" />
 
@@ -157,6 +161,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignEnd="@+id/text1"
                         android:drawableStart="@drawable/red_dot"
+                        android:fontFamily="@font/dm_sans"
                         android:padding="@dimen/_5dp"
                         android:text="  Very Important"
                         android:textColor="@color/white"

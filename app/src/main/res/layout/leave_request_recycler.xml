@@ -46,6 +46,8 @@
                     android:layout_margin="2dp"
                     android:maxLines="2"
                     android:text="Abhay"
+                    android:textFontWeight="500"
+                    android:fontFamily="@font/dm_sans"
                     android:textColor="@color/white" />
 
 
@@ -65,6 +67,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginStart="@dimen/_20dp"
+                android:textFontWeight="500"
+                android:fontFamily="@font/dm_sans"
                 android:maxLines="1"
                 android:layout_marginTop="@dimen/_15"
                 android:layout_marginEnd="@dimen/_30dp"
@@ -189,6 +193,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="Leave Date :     "
+                    android:textFontWeight="500"
+                    android:fontFamily="@font/dm_sans"
                     android:textColor="@color/greyforText"
                     android:textSize="14sp" />
 
@@ -198,6 +204,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_10"
                     android:maxLines="2"
+                    android:textFontWeight="400"
+                    android:fontFamily="@font/dm_sans"
                     android:padding="2dp"
                     android:text="April 1 2024 "
                     android:textColor="@color/white"
@@ -215,6 +223,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:textFontWeight="500"
+                    android:fontFamily="@font/dm_sans"
                     android:text="    Duration :    "
                     android:textColor="@color/greyforText"
                     android:textSize="14sp" />
@@ -223,7 +233,8 @@
                     android:id="@+id/duration"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-
+                    android:textFontWeight="400"
+                    android:fontFamily="@font/dm_sans"
                     android:layout_marginLeft="@dimen/_10"
                     android:maxLines="2"
                     android:padding="2dp"
@@ -243,6 +254,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:textFontWeight="500"
+                    android:fontFamily="@font/dm_sans"
                     android:text="Manager Status :            "
                     android:textColor="@color/greyforText"
                     android:textSize="14sp" />
@@ -255,6 +268,8 @@
                     android:layout_marginLeft="@dimen/_10"
                     android:maxLines="5"
                     android:padding="2dp"
+                    android:textFontWeight="400"
+                    android:fontFamily="@font/dm_sans"
                     android:text="    -----   "
                     android:textColor="@color/white"
                     android:textSize="14sp" />
@@ -272,6 +287,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="      Reason :     "
+                    android:textFontWeight="500"
+                    android:fontFamily="@font/dm_sans"
                     android:textColor="@color/greyforText"
                     android:textSize="14sp" />
 
@@ -284,6 +301,8 @@
                     android:maxLines="2"
                     android:padding="2dp"
                     android:text="    -----   "
+                    android:textFontWeight="400"
+                    android:fontFamily="@font/dm_sans"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
             </LinearLayout>
@@ -298,6 +317,8 @@
                 android:paddingStart="@dimen/_30dp"
                 android:paddingEnd="@dimen/_30dp"
                 android:paddingTop="@dimen/_5dp"
+                android:textFontWeight="500"
+                android:fontFamily="@font/dm_sans"
                 android:layout_gravity="center"
                 android:paddingBottom="@dimen/_5dp"
                 android:background="@drawable/blue_bg"
@@ -319,6 +340,8 @@
                     android:layout_marginLeft="@dimen/_20dp"
                     android:layout_marginRight="@dimen/_20dp"
                     android:layout_weight="1"
+                    android:textFontWeight="500"
+                    android:fontFamily="@font/dm_sans"
                     android:background="@drawable/red_border"
                     android:gravity="center"
                     android:padding="@dimen/_5dp"
@@ -335,6 +358,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/green_borderbg"
                     android:gravity="center"
+                    android:textFontWeight="500"
+                    android:fontFamily="@font/dm_sans"
                     android:padding="@dimen/_5dp"
                     android:text="Accept"
                     android:textColor="@color/white"

@@ -14,8 +14,15 @@
         android:layout_width="30dp"
         app:riv_oval="true"
         android:layout_height="30dp"
+        android:visibility="gone"
         android:src="@drawable/profilephoto" />
 
+    <com.investmango.hrconsole.commonclasses.InitialAvatarView
+        android:id="@+id/initialAvatar"
+        android:layout_width="30dp"
+        app:riv_oval="true"
+        android:layout_height="30dp"
+        android:src="@drawable/profilephoto" />
     <TextView
         android:id="@+id/nameOfMember"
         android:layout_width="wrap_content"

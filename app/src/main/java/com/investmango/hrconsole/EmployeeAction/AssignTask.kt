@@ -5,6 +5,7 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.OpenableColumns
@@ -17,6 +18,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -39,6 +41,7 @@ import com.investmango.hrconsole.model.AllActiveUsers
 import com.investmango.hrconsole.model.AssignTask
 import com.investmango.hrconsole.model.TotalEmpResponseItem
 import com.investmango.hrconsole.service.Constant
+import com.investmango.hrconsole.service.DateAndTimeUtility
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -52,6 +55,9 @@ import java.io.File
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import java.util.Calendar
 import java.util.Objects
 
@@ -208,6 +214,7 @@ class AssignTask : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (authority.equals(Constant.MANAGER)) {
@@ -222,7 +229,9 @@ class AssignTask : Fragment() {
         binding.deadline.setOnClickListener {
             setDatePicker()
         }
-
+        binding.time.setOnClickListener {
+            setClock()
+        }
         binding.uploadDoc.setOnClickListener {
             openGallery()
         }
@@ -235,14 +244,12 @@ class AssignTask : Fragment() {
 //
 //        }
         binding.assignTask.setOnClickListener {
-            if (binding.taskDescription.text.isEmpty()) {
-
+            if (binding.tasktitle.text.isEmpty()) {
                 Toast.makeText(context, "Please fill some information.", Toast.LENGTH_SHORT).show()
             } else {
                 try {
-                    if (isValid(binding.deadline.text.toString()))
+
                         sendTaskWithImage(uriStr)
-                    else Toast.makeText(context, "Fill deadline date.", Toast.LENGTH_SHORT).show()
 
                 } catch (e: Exception) {
                     Log.e("Exception", "onViewCreated: " + e.message)
@@ -394,6 +401,7 @@ class AssignTask : Fragment() {
         })
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun sendTaskWithImage(imageUrl: List<String>) {
         Log.e("uploadimg", "sendTaskWithImage: "+ uriStr)
         if (selectedId.toInt() == 0) {
@@ -401,12 +409,26 @@ class AssignTask : Fragment() {
             return
         }
         val taskObj = AssignTask()
-        taskObj.subject = binding.taskDescription.text.toString()
+
+//        taskObj.title = binding.tasktitle.text.toString()
+        if (binding.taskDescription.text.toString()!="")
+            taskObj.subject = binding.taskDescription.text.toString()
+ if (binding.tasktitle.text.toString()!="")
+            taskObj.title=binding.tasktitle.text.toString()
+
         taskObj.userId = selectedId
 
+        if (isValid(binding.deadline.text.toString()) && isValidTine(binding.selectedTime.text.toString())) {
+            taskObj.deadline =
+                DateAndTimeUtility.convertToEpochMillis(
+                    binding.deadline.text.toString(),
+                    binding.selectedTime.text.toString()
+                )
+        }
         progressDialog.showDialog()
 
-        taskObj.fileurl = imageUrl
+        if (imageUrl.isNotEmpty())
+            taskObj.fileurl = imageUrl
 
         val call = apiInterface.assignTaskUser(selectedId, taskObj)
         call.enqueue(object : Callback<AssignTask?> {
@@ -419,10 +441,13 @@ class AssignTask : Fragment() {
                     selectedId = 0
                     binding.selectEmployee.setText("")
                     binding.taskDescription.setText("")
+                    binding.tasktitle.setText("")
                     binding.deadline.setText("  Select Date ")
+                    binding.selectedTime.setText("Select Time ")
                     uri = null
                     uriStr.clear()
-                    binding.fileRecycler.adapter!!.notifyDataSetChanged()
+                    if (binding.fileRecycler.adapter!=null)
+                        binding.fileRecycler.adapter!!.notifyDataSetChanged()
                 } else {
                     progressDialog.dismissDialog()
                     if (isAdded) Toast.makeText(context, "Some Error Occurred", Toast.LENGTH_SHORT)
@@ -439,6 +464,43 @@ class AssignTask : Fragment() {
 
             }
         })
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun isValidTine(timeStr: String?): Boolean {
+        return try {
+            // Trim the input and validate using the "HH:mm" format
+            LocalTime.parse(timeStr?.trim(), DateTimeFormatter.ofPattern("HH:mm"))
+            true
+        } catch (e: DateTimeParseException) {
+            false
+        }
+    }
+    fun setClock() {
+        val c = Calendar.getInstance()
+
+        // on below line we are getting our hour, minute.
+        val hour = c.get(Calendar.HOUR_OF_DAY)
+        val minute = c.get(Calendar.MINUTE)
+
+        // on below line we are initializing
+        // our Time Picker Dialog
+        val timePickerDialog = android.app.TimePickerDialog(
+            context,
+            { view, hourOfDay, minute ->
+                // on below line we are setting selected
+                // time in our text view.
+                val formattedTime = java.lang.String.format("%02d:%02d", hourOfDay, minute)
+
+                binding.selectedTime.setText(formattedTime)
+            },
+            hour,
+            minute,
+            false
+        )
+        // at last we are calling show to
+        // display our time picker dialog.
+        timePickerDialog.show()
+
     }
 
     fun setDatePicker() {

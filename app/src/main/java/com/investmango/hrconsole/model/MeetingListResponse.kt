@@ -24,8 +24,12 @@ data class AssignedUsersItem(
 	val assignToName: String? = null,
 
 	@field:SerializedName("assignToEmail")
-	val assignToEmail: String? = null
-)
+	val assignToEmail: String? = null,
+
+	@field:SerializedName("assignByProfile")
+	val assignByProfile: String? = null,
+
+	)
 
 data class MeetingItem(
 

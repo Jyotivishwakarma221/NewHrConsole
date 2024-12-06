@@ -49,6 +49,10 @@ import com.investmango.hrconsole.service.DateAndTimeUtility
 import com.investmango.hrconsole.service.SharedUtils
 import com.zerobranch.layout.SwipeLayout
 import com.zerobranch.layout.SwipeLayout.SwipeActionsListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -78,9 +82,9 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
     var latitude = 0.0
     lateinit var geocoder: Geocoder
     private val MY_PERMISSIONS_REQUEST = 1001
-      var gpsEnable:Boolean = false
+    var gpsEnable: Boolean = false
     lateinit var progressDialog: AwesomeProgressDialog
-      var isWithin10km:Boolean = false
+    var isWithin10km: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -99,9 +103,7 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
         progressDialog.isCancelable(false)
         progressDialog.showDialog();
 
-        gpsEnable= isGpsEnabled()
-
-
+        gpsEnable = isGpsEnabled()
 
 
     }
@@ -170,30 +172,30 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
 //                        tryToAddMarkerAndZoom(requireContext(), latitude, longitude, MAX_RETRIES)
 //                    }
 //                } else {
-                    if (direction == SwipeLayout.RIGHT) {
+                if (direction == SwipeLayout.RIGHT) {
 //                    val animationZoomIn = AnimationUtils.loadAnimation(context, R.anim.move)
 //                    binding.someswipe.startAnimation(animationZoomIn)
-                        Log.e("ACTION_MOVEG", "onViewCreated: right")
-                        binding.swipeIn.visibility = View.GONE
-                        binding.swipeOut.visibility = View.VISIBLE
-                        binding.someswipe.visibility = View.GONE
-                        updateUserOutTimee("out")
+                    Log.e("ACTION_MOVEG", "onViewCreated: right")
+                    binding.swipeIn.visibility = View.GONE
+                    binding.swipeOut.visibility = View.VISIBLE
+                    binding.someswipe.visibility = View.GONE
+                    updateUserOutTimee("out")
 //                    binding.swipeLayout.openLeft()
 //                    binding.swipeLayout.close()
 
-                    } else if (direction == SwipeLayout.LEFT) {
+                } else if (direction == SwipeLayout.LEFT) {
 //                    val animationZoomIn = AnimationUtils.loadAnimation(context, R.anim.move)
 //                    binding.someswipe.startAnimation(animationZoomIn)
-                        Log.e("ACTION_MOVEG", "onViewCreated: left")
-                        binding.swipeOut.visibility = View.GONE
-                        binding.swipeIn.visibility = View.VISIBLE
-                        binding.someswipe.visibility = View.GONE
+                    Log.e("ACTION_MOVEG", "onViewCreated: left")
+                    binding.swipeOut.visibility = View.GONE
+                    binding.swipeIn.visibility = View.VISIBLE
+                    binding.someswipe.visibility = View.GONE
 //                        if (isWithin10km)
-                        saveUserInTimeAndLocation("In")
+                    saveUserInTimeAndLocation("In")
 //                        else Toast.makeText(context,"Not in Range",Toast.LENGTH_SHORT).show()
 
-                    }
                 }
+            }
 //            }
 
             override fun onClose() {
@@ -285,7 +287,11 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
             if (isAdded) {
                 mLocationCallbackInitialization()
                 tryToAddMarkerAndZoom(requireContext(), latitude, longitude, MAX_RETRIES)
-                Toast.makeText(context, "Please check your internet and Try again .", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "Please check your internet and Try again .",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -307,11 +313,11 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
 //            attendance?.outTime=epochMillis
         if (latitude != 0.0 && longitude != 0.0) {
 
-                Log.e("AttendanceFrag", "saveUserInTimeAndLocation: " + attendance.outLatLong)
+            Log.e("AttendanceFrag", "saveUserInTimeAndLocation: " + attendance.outLatLong)
             val apiClient = ApiClient(requireContext())
             apiInterface = apiClient.apiInterface
             val call: Call<ResponseBody> =
-                apiInterface.updateUserAttendance( attendance, userId)
+                apiInterface.updateUserAttendance(attendance, userId)
             call.enqueue(object : Callback<ResponseBody?> {
                 override fun onResponse(
                     call: Call<ResponseBody?>,
@@ -319,7 +325,7 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
                 ) {
                     if (response.code() == 200) {
                         if (isAdded)
-                        progressDialog.dismissDialog()
+                            progressDialog.dismissDialog()
                         try {
                             val resp = Objects.requireNonNull(response.body())?.string()
 
@@ -364,7 +370,11 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
         } else {
 
             if (isAdded) {
-                Toast.makeText(context, "Please check your internet and Try again .", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    "Please check your internet and Try again .",
+                    Toast.LENGTH_SHORT
+                ).show()
                 mLocationCallbackInitialization()
                 tryToAddMarkerAndZoom(requireContext(), latitude, longitude, MAX_RETRIES)
             }
@@ -476,9 +486,9 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
 
         Handler(Looper.getMainLooper()).postDelayed({
             mLocationClient?.lastLocation
-                ?.addOnSuccessListener { location : Location? ->
+                ?.addOnSuccessListener { location: Location? ->
                     // Got last known location. In some rare situations this can be null.
-                    if (location!=null)
+                    if (location != null)
                         userLocationResult(Objects.requireNonNull<Location?>(location))
                 }
         }, 300)
@@ -575,50 +585,61 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
             return
         }
 
-        geocoder = Geocoder(context)
-        val inLatLng = LatLng(latitudee, longitudee)
-//         addressList: List<Address>? = null
-        val someHandler = Handler(Looper.getMainLooper())
-        someHandler.postDelayed(object : Runnable {
-            override fun run() {
-                try {
-                    addressList = geocoder.getFromLocation(latitudee, longitudee, 1)!!
-
-                    if (!addressList.isNullOrEmpty()) {
-                        latitude = latitudee
-                        longitude = longitudee
-
-                        progressDialog.dismissDialog()
-
-                        val address = addressList[0]
-                        val marker = mMap?.addMarker(
-                            MarkerOptions()
-                                .position(inLatLng)
-                                .title("${address.featureName}, ${address.subLocality}, ${address.locality}, ${address.countryName}")
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-                        )
-
-                        mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(inLatLng, 14f))
-                        marker?.position = inLatLng
-                        checkRange10km(latitudee, longitudee)
-                        progressDialog.dismissDialog();
-
-                    } else {
-                        // Retry fetching address if addressList is empty
-                        Log.d("Geocoder", "Address list is empty. Retrying...")
-                        tryToAddMarkerAndZoom(context, latitude, longitude, retries)
-
+        // Launch a coroutine on the main thread
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                // Perform geocoding on the IO dispatcher (background thread)
+                val addressList = withContext(Dispatchers.IO) {
+                    try {
+                        Geocoder(context).getFromLocation(latitudee, longitudee, 1)
+                    } catch (e: IOException) {
+                        Log.e("Geocoder", "IOException: ${e.message}")
+                        null
                     }
+                }
 
-                } catch (e: IOException) {
-                    Log.e("Geocoder", "IOException: ${e.message}")
-                    // Retry on IOException
+                if (!addressList.isNullOrEmpty()) {
+                    latitude = latitudee
+                    longitude = longitudee
+
+                    // Dismiss progress dialog (if any)
                     progressDialog.dismissDialog()
+
+                    val address = addressList[0]
+                    val marker = mMap?.addMarker(
+                        MarkerOptions()
+                            .position(LatLng(latitudee, longitudee))
+                            .title("${address.featureName}, ${address.subLocality}, ${address.locality}, ${address.countryName}")
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
+                    )
+
+                    mMap?.animateCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                            LatLng(
+                                latitudee,
+                                longitudee
+                            ), 14f
+                        )
+                    )
+                    marker?.position = LatLng(latitudee, longitudee)
+
+                    checkRange10km(latitudee, longitudee)
+
+                } else {
+                    // Retry fetching address if addressList is empty
+                    Log.d("Geocoder", "Address list is empty. Retrying...")
                     tryToAddMarkerAndZoom(context, latitude, longitude, retries - 1)
                 }
+
+            } catch (e: Exception) {
+                // Handle any other exception
+                Log.e("Geocoder", "Error during geocoding: ${e.message}")
+                progressDialog.dismissDialog()
+                tryToAddMarkerAndZoom(context, latitude, longitude, retries - 1)
             }
-        }, 10)
+        }
     }
+
 
     fun checkRange10km(latitudee: Double, longitudee: Double) {
         if (latitudee != 0.0 && longitudee != 0.0) {
@@ -631,7 +652,7 @@ class AttendanceFragment : Fragment(), OnMapReadyCallback {
                 results
             )
             val distanceInMeters = results[0]
-             isWithin10km = distanceInMeters < 1000
+            isWithin10km = distanceInMeters < 1000
             Log.e(
                 "isWithin10km",
                 "onViewCreated: " + isWithin10km + " " + latitudee + " " + longitudee

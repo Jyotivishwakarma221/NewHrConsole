@@ -13,6 +13,9 @@ import com.investmango.hrconsole.EmployeeAction.AddMeeting
 import com.investmango.hrconsole.model.MeetingItem
 import com.investmango.hrconsole.service.DateAndTimeUtility
 import java.security.AccessController.getContext
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 
 class AdapterForTimeSlot(
@@ -40,6 +43,7 @@ class AdapterForTimeSlot(
     }
 
     override fun onBindViewHolder(holder: TimeSlotViewHolder, position: Int) {
+
         when (holder) {
             is TimeSlotViewHolder.NoMeeting -> {
                 holder.timeTextView.text = timeslots[position]
@@ -48,7 +52,7 @@ class AdapterForTimeSlot(
 
             is TimeSlotViewHolder.Meeting -> {
                 holder.timeTextView.text = timeslots[position]
-                Log.e("meetings time", "getItemViewType: 1" + timeslots[position])
+//                Log.e("meetings time", "getItemViewType: 1" + timeslots[position])
 
                 for (i in 0..meetings.size - 1) {
 //                    Log.e(
@@ -84,21 +88,68 @@ class AdapterForTimeSlot(
 
     }
 
+//    override fun getItemViewType(position: Int): Int {
+//        Log.e("checking meeting", "getItemViewType: "+meetings.size )
+//        if (meetings != null && meetings.isNotEmpty()) {
+//
+//            for (meeting in meetings) {
+//                Log.e("checking meeting",
+//                    DateAndTimeUtility.convertEpochToTime(meeting?.meetingTime) + "  " + timeslots[position]
+//                )
+//                if (DateAndTimeUtility.convertEpochToTime(meeting?.meetingTime)
+//                        .equals(timeslots[position], ignoreCase = true)
+//                ) {
+//
+//                    return 0 // Meeting found
+//                }
+//            }
+//        }
+//        return 1
+//    }
+
     override fun getItemViewType(position: Int): Int {
+        Log.e("checking meeting", "getItemViewType: " + meetings.size)
         if (meetings != null && meetings.isNotEmpty()) {
+
             for (meeting in meetings) {
-                if (DateAndTimeUtility.convertEpochToTime(meeting?.meetingTime)
-                        .equals(timeslots[position])
-                ) {
-                    Log.e(
-                        "meetings time",
-                        DateAndTimeUtility.convertEpochToTime(meeting?.meetingTime) + "  " + timeslots[position]
-                    )
+                val meetingTimeStr = DateAndTimeUtility.convertEpochToTime(meeting?.meetingTime)
+                Log.e("checking meeting", "$meetingTimeStr  ${timeslots[position]}")
+
+                // Convert the meeting time and timeslot to a Date/Calendar object for easier comparison
+                val meetingTime = convertToCalendar(meetingTimeStr)
+                val timeslotStart = convertToCalendar(timeslots[position])
+
+                // Check if the meeting time falls within the timeslot
+                if (isTimeInSlot(meetingTime, timeslotStart)) {
                     return 0 // Meeting found
                 }
             }
         }
         return 1
+    }
+
+    // Convert time string (e.g., "5:30") to Calendar object
+    fun convertToCalendar(time: String): Calendar {
+        val calendar = Calendar.getInstance()
+        val format = SimpleDateFormat("h:mm a", Locale.getDefault()) // 12-hour format with AM/PM
+        try {
+            val date = format.parse(time)
+            calendar.time = date
+        } catch (e: Exception) {
+            Log.e("convertToCalendar", "Error parsing time: $time")
+        }
+        return calendar
+    }
+
+    // Check if the meeting time is within the timeslot (e.g., 5:30 is in 5:00-6:00)
+    fun isTimeInSlot(meetingTime: Calendar, slotStart: Calendar): Boolean {
+        // Adjust slot start time to match the 1-hour range
+        val slotEnd = Calendar.getInstance()
+        slotEnd.timeInMillis = slotStart.timeInMillis
+        slotEnd.add(Calendar.HOUR_OF_DAY, 1)
+
+        // Check if the meeting time falls within the slot range
+        return meetingTime.after(slotStart) && meetingTime.before(slotEnd)
     }
 
 

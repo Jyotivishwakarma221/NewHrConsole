@@ -48,7 +48,7 @@ data class AssignmentItem(
 	val description: String? = null,
 
 	@field:SerializedName("banner")
-	val banner: Any? = null,
+	val banner: String? = null,
 
 	@field:SerializedName("Users")
 	val users: List<UsersItem?>? = null,
@@ -75,7 +75,7 @@ data class AssignmentItem(
 	val stages: Any? = null,
 
 	@field:SerializedName("headings")
-	val headings: Any? = null,
+	val headings: String? = null,
 
 	@field:SerializedName("files")
 	val files: List<String>? = null,

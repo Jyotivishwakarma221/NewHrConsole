@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:fontFamily="@font/robotomedium"
+        android:fontFamily="@font/dm_sans"
         android:text="1 April"
         android:textColor="@color/Blue"
         android:textSize="16sp" />
@@ -59,6 +59,7 @@ android:layout_alignStart="@+id/timelineDot"
         android:fontFamily="@font/dm_sans"
         android:text="Joining"
         android:paddingStart="@dimen/_10"
+        android:textFontWeight="400"
         android:textColor="#FFFFFF"
         android:paddingEnd="@dimen/_40dp"
         android:textSize="18sp" />

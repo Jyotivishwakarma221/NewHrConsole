@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.HrConsole.tv.official.console.premium.CommonAdapter
 import com.HrConsole.tv.official.console.premium.RecyclerViewInterface
 import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
+import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
@@ -538,6 +539,17 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
     override fun bindView(viewBind: MemberLayoutBinding, position: Int) {
         if (finalList.isNotEmpty()) {
             viewBind.nameOfMember.setText(finalList[position].userName)
+
+            if (finalList.get(position).profile!="" && finalList.get(position).profile!=null){
+                Glide.with(context!!).load(finalList.get(position).profile).into(viewBind.profilephoto)
+                viewBind.profilephoto.visibility=View.VISIBLE
+                viewBind.initialAvatar.visibility=View.GONE
+            }else{
+                viewBind.initialAvatar.setName(finalList.get(position).userName!!)
+                viewBind.profilephoto.visibility=View.GONE
+                viewBind.initialAvatar.visibility=View.VISIBLE
+            }
+
             viewBind.delete.setOnClickListener {
                 finalList.removeAt(position)
                 binding.memberRecycler.adapter?.notifyItemRemoved(position)
@@ -546,6 +558,7 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
         else if (!assignedUser.isEmpty()) {
             viewBind.nameOfMember.setText(assignedUser[position].assignToName)
             Log.d("assignToName", "bindView: " + assignedUser[position].assignToName)
+
             viewBind.delete.setOnClickListener {
                 assignedUser.removeAt(position)
                 binding.memberRecycler.adapter?.notifyItemRemoved(position)
@@ -651,6 +664,8 @@ class CreateNewFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding>
             departments = ""
             binding.departName.visibility = View.GONE
             binding.memberRecycler.visibility = View.VISIBLE
+
+
         } else if (assignedUser != null && !assignedUser!!.isEmpty()) {
             binding.memberRecycler.layoutManager = GridLayoutManager(context, 2)
             binding.memberRecycler.adapter = CommonAdapter(this)

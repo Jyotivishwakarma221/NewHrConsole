@@ -67,8 +67,6 @@ public class PerformanceFragment extends Fragment implements RecyclerViewInterfa
     MonthlyPerformanceResp empPerformanceList;
     List<TimelineItem> timeline;
     boolean firstMonthEncountered = false;
-
-
     private String token;
     String month, ViewOf;
     int monthNumber, maxMonthNumber;

@@ -89,6 +89,8 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:padding="@dimen/_10"
+                android:fontFamily="@font/dm_sans"
+                android:textFontWeight="500"
                 android:text="+ Add Task"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
@@ -214,6 +216,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="500"
                     android:text="  Name  "
                     android:textColor="@color/white" />
 
@@ -232,6 +236,8 @@
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text=" "
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="400"
                     android:textColor="@color/greyforText"
                     android:textSize="14dp" />
 
@@ -252,6 +258,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="Update Task"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="500"
                     android:textColor="@color/white" />
 
 
@@ -264,6 +272,8 @@
                     android:hint="Select From Below"
                     android:spinnerMode="dropdown"
                     android:textColor="@color/white"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="400"
                     android:textColorHint="@color/white"
                     android:textSize="15dp" />
 
@@ -284,6 +294,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="500"
                     android:gravity="center"
                     android:text="Deadline"
                     android:textColor="@color/white" />
@@ -302,6 +314,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
+                    android:fontFamily="@font/dm_sans"
+                    android:textFontWeight="400"
                     android:text=" -- "
                     android:textColor="@color/greyforText"
                     android:textSize="14dp" />
@@ -316,6 +330,8 @@
                 android:layout_marginStart="@dimen/_5dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="@dimen/_5dp"
+                android:fontFamily="@font/dm_sans"
+                android:textFontWeight="500"
                 android:gravity="center"
                 android:text="Tasks"
                 android:textColor="@color/white" />
@@ -344,6 +360,8 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text=""
+        android:fontFamily="@font/dm_sans"
+        android:textFontWeight="400"
         android:paddingBottom="@dimen/_30dp"
         android:textColor="@color/white" />
 </ScrollView>
@@ -465,6 +483,8 @@
                 android:clickable="true"
                 android:gravity="center"
                 android:text="0/0"
+                android:fontFamily="@font/dm_sans"
+                android:textFontWeight="500"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_18sp" />
 

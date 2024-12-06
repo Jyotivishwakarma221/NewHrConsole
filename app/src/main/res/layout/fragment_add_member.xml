@@ -34,6 +34,7 @@
                 android:gravity="center"
                 android:text="Scheduled Meeting"
                 android:fontFamily="@font/dm_sans"
+                android:textFontWeight="700"
                 android:textColor="@color/greyforText"
                 android:textSize="22sp" />
         </LinearLayout>

@@ -31,15 +31,15 @@ public class EmployeeActions extends Fragment {
             @Override
             public void onClick(View v) {
 //                ((ManagerActivity) getActivity()).replaceFragment(new EmplyPerFormanceFragment());
-                ((ManagerActivity) getActivity()).replaceFragment(new MemberStatus());
+                ((ManagerActivity) getActivity()).replaceFragment(new TotalMemberFragment());
             }
         });
         binding.ManageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                ((ManagerActivity) getActivity()).replaceFragment(new EmplyPerFormanceFragment());
-                ((ManagerActivity) getActivity()).replaceFragment(new MemberStatus());
-            }
+//                ((ManagerActivity) getActivity()).replaceFragment(new MemberStatus());
+                ((ManagerActivity) getActivity()).replaceFragment(new TotalMemberFragment());            }
         });
 
 //        binding.ActiveMember.setOnClickListener(new View.OnClickListener() {

@@ -1,12 +1,14 @@
 package com.investmango.hrconsole.manager.activity.fragment
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -242,6 +244,28 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
         binding.recyclerView.layoutManager = layoutManager
     }
 
+
+    fun showReasonAlert(rsn: String) {
+        // Create an alert builder
+        val builder = AlertDialog.Builder(context)
+        builder.setCancelable(true)
+
+        // set the custom layout
+        val customLayout: View = layoutInflater.inflate(R.layout.custom_progress2, null)
+        builder.setView(customLayout)
+
+        val reasonTxt = customLayout.findViewById<TextView>(R.id.Reason)
+        val okBtn = customLayout.findViewById<TextView>(R.id.ok_btn)
+        reasonTxt.setText(rsn)
+        reasonTxt.movementMethod = ScrollingMovementMethod()
+
+        val dialog = builder.create()
+        okBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
     override fun getViewBinding(viewGroup: ViewGroup, viewType: Int): LeaveRecyclerBinding {
         return LeaveRecyclerBinding.inflate(layoutInflater, viewGroup, false)
     }
@@ -254,16 +278,21 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
 
     override fun bindView(viewBind: LeaveRecyclerBinding, position: Int) {
         if (leaveType == "All") {
+            viewBind.reason.setOnClickListener {
+                showReasonAlert(leavelist?.get(position)?.reason!!)
+            }
 
-           if( leavelist?.get(position)?.fileUrl!="" && leavelist?.get(position)?.fileUrl!=null){
+            viewBind.showImg.setOnClickListener {
+                openImg(leavelist?.get(position)?.fileUrl!!)
+            }
+
+
+            if( leavelist?.get(position)?.fileUrl!="" && leavelist?.get(position)?.fileUrl!=null){
                viewBind.showImg.visibility=View.VISIBLE
            }else{
                viewBind.showImg.visibility=View.GONE
            }
 
-            viewBind.showImg.setOnClickListener {
-                openImg(leavelist?.get(position)?.fileUrl!!)
-            }
 
             if (leavelist?.get(position)?.leaveType == "HALF_DAY") {
                 viewBind.id.text = "Half Day "
@@ -278,6 +307,7 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
                 viewBind.approovedType.text = " Absent "
                 viewBind.leavetypeReject.text = " Absent "
             }
+
 
             val size = leavelist?.get(position)?.leaveDates?.size
             Log.e("leaveSize", "bindView: "+leavelist?.get(position)?.leaveDates?.size+" "+  size )
@@ -323,6 +353,11 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
             viewBind.showImg.setOnClickListener {
                 openImg(filterredList.get(position)?.fileUrl!!)
             }
+
+            viewBind.reason.setOnClickListener {
+                showReasonAlert(filterredList[position]?.reason!!)
+            }
+
             if( filterredList.get(position)?.fileUrl!="" && filterredList.get(position)?.fileUrl!=null){
                 viewBind.showImg.visibility=View.VISIBLE
             }else{

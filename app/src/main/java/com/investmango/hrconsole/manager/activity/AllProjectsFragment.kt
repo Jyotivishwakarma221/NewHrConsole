@@ -2,10 +2,12 @@ package com.investmango.hrconsole.manager.activity
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.transition.Transition
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +21,7 @@ import com.HrConsole.tv.official.console.premium.CommonAdapter
 import com.HrConsole.tv.official.console.premium.RecyclerViewInterface
 import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
 import com.bumptech.glide.Glide
-import com.cloudinary.ProgressCallback
+import com.bumptech.glide.request.target.CustomTarget
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
 import com.investmango.hrconsole.api.ApiInterface
@@ -36,6 +38,8 @@ import retrofit2.Response
 
 
 class AllProjectsFragment : Fragment(), RecyclerViewInterface<ProjectItemBinding> {
+
+
     private lateinit var binding: FragmentAllProjectsBinding
     lateinit var apiInterface: ApiInterface
     private var userId: Long = 0
@@ -234,7 +238,7 @@ class AllProjectsFragment : Fragment(), RecyclerViewInterface<ProjectItemBinding
     @SuppressLint("SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun bindView(viewBind: ProjectItemBinding, position: Int) {
-        viewBind.projectName.text = assignment[position]?.subject?.toUpperCase()
+        viewBind.projectName.text = assignment[position]?.headings?.toUpperCase()
         viewBind.deadlineDate.text =
             DateAndTimeUtility.getDATEFromLong(assignment[position]?.deadLine)
         viewBind.createdOn.text =   DateAndTimeUtility.getDATEFromLong(assignment[position]?.createdDate)
@@ -245,6 +249,22 @@ class AllProjectsFragment : Fragment(), RecyclerViewInterface<ProjectItemBinding
             viewBind.priority.visibility = View.GONE
         }
 
+
+        if (assignment[position]?.banner!="" || assignment[position]?.banner!=null){
+            Glide.with(this)
+                .load(assignment[position]?.banner)
+                .into(object : CustomTarget<Drawable?>() {
+                    override fun onResourceReady(
+                        resource: Drawable,
+                        transition: com.bumptech.glide.request.transition.Transition<in Drawable?>?,
+                    ) {
+                        viewBind.cardView.setBackground(resource)
+                    }
+
+                    override fun onLoadCleared(placeholder: Drawable?) {
+                        // Optionally handle cleanup
+                    }
+                })        }
 
         for (i in 0 until progress.size) {
             Log.e(
@@ -272,6 +292,7 @@ class AllProjectsFragment : Fragment(), RecyclerViewInterface<ProjectItemBinding
                     Glide.with(requireContext())
                         .load(assignment.get(position)?.users?.get(1)!!.assignToProfile)
                         .into(viewBind.photo2)
+                    Log.e("assignmentget", "bindView: "+assignment.get(position)?.users?.get(1)!!.assignToProfile )
                 }
                 if (assignment.get(position)?.users?.size!! >= 3) {
                     Glide.with(requireContext())

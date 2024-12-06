@@ -33,6 +33,7 @@ import com.investmango.hrconsole.manager.activity.fragment.PayrollPanel;
 import com.investmango.hrconsole.manager.activity.fragment.TasksFragment;
 import com.investmango.hrconsole.model.MeetingItem;
 import com.investmango.hrconsole.model.MeetingListResponse;
+import com.investmango.hrconsole.service.Constant;
 import com.investmango.hrconsole.service.DateAndTimeUtility;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -70,6 +71,7 @@ public class ManagerFragment extends Fragment implements RecyclerViewInterface<M
         userId = preferences.getLong("userId", 0);
         authority = preferences.getString("Authority", "user");
 
+
         getMeetings();
 
     }
@@ -98,6 +100,7 @@ public class ManagerFragment extends Fragment implements RecyclerViewInterface<M
         CardView assignmet = view.findViewById(R.id.assignments);
         CardView feedbackBtn = view.findViewById(R.id.feedbackBtn);
 
+        TextView dashboard=view.findViewById(R.id.dashboard);
         ImageView FeedBtn = view.findViewById(R.id.FeedBackBtn);
         ImageView payBtn = view.findViewById(R.id.payBtn);
         ImageView MessgeBtn = view.findViewById(R.id.MessgeBtn);
@@ -112,6 +115,11 @@ public class ManagerFragment extends Fragment implements RecyclerViewInterface<M
 
         CardView payouts = view.findViewById(R.id.checkPayoutsBtn);
         CardView tasks = view.findViewById(R.id.createTaskButton);
+
+        if (authority.equals(Constant.USER)){
+            dashboard.setVisibility(View.VISIBLE);
+        }else dashboard.setVisibility(View.GONE);
+
 
         // Set click listeners
         fabAttendance.setOnClickListener(v -> {

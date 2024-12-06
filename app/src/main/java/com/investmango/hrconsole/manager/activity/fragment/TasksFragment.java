@@ -960,9 +960,22 @@ public class TasksFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setAdapt() {
         try {
-            if (tasks.get(0).getComments() != null)
-                binding.taskComments.setText(tasks.get(0).getSubject() + "\n \n" + tasks.get(0).getComments());
-            else binding.taskComments.setText(tasks.get(0).getSubject());
+
+            if (tasks.get(0).getTitle() != null) {
+                String displayText = tasks.get(0).getTitle();
+                if (tasks.get(0).getComments() != null) {
+                    displayText += "\n\n" + tasks.get(0).getComments();  // Append comments
+                }
+                binding.taskComments.setText(displayText);
+            }
+            else if (tasks.get(0).getSubject() != null) {
+                String displayText = tasks.get(0).getSubject();
+                if (tasks.get(0).getComments() != null) {
+                    displayText += "\n\n" + tasks.get(0).getComments();  // Append comments
+                }
+                binding.taskComments.setText(displayText);
+            }
+
             binding.date.setText(DateAndTimeUtility.getDateAndTimeFromLong(tasks.get(0).getCreatedTime()));
 
             if (tasks.get(0).getDeadLine() != null && tasks.get(0).getDeadLine() != 0) {

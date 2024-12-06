@@ -234,7 +234,7 @@
                     android:layout_marginStart="@dimen/_10"
                     android:layout_marginTop="@dimen/_10"
                     android:gravity="start"
-                    android:text="  Hr Console UI"
+                    android:text="  "
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -275,7 +275,7 @@
                     android:drawableStart="@drawable/calender2"
                     android:gravity="start"
                     android:paddingStart="5dp"
-                    android:text="  24 May 2024 "
+                    android:text="   "
                     android:textColor="@color/lightWhite"
                     android:textSize="15sp" />
 

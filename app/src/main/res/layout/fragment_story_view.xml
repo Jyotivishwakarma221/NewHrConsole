@@ -22,6 +22,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_10"
                 android:gravity="center"
+                android:textFontWeight="700"
+                android:fontFamily="@font/dm_sans"
                 android:text=" Project Tasks "
                 android:textColor="@color/greyforText"
                 android:textSize="22sp" />
@@ -40,6 +42,8 @@
                     android:layout_margin="@dimen/_5dp"
                     android:drawableEnd="@drawable/plus"
                     android:padding="@dimen/_5dp"
+                    android:textFontWeight="500"
+                    android:fontFamily="@font/dm_sans"
                     android:paddingEnd="@dimen/_20dp"
                     android:text=" Task Story "
                     android:textColor="@color/white"
@@ -65,6 +69,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5dp"
+                    android:textFontWeight="500"
+                    android:fontFamily="@font/dm_sans"
                     android:padding="@dimen/_5dp"
                     android:text=" Task "
                     android:textColor="@color/white"
@@ -77,6 +83,8 @@
                     android:layout_below="@id/task"
                     android:layout_margin="@dimen/_5dp"
                     android:padding="@dimen/_5dp"
+                    android:textFontWeight="400"
+                    android:fontFamily="@font/dm_sans"
                     android:text="Thumbnail Created"
                     android:textColor="@color/Blue" />
 
@@ -95,6 +103,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingStart="10dp"
+                        android:textFontWeight="500"
+                        android:fontFamily="@font/dm_sans"
                         android:text="ID :"
                         android:textColor="@color/greyforText" />
 
@@ -104,6 +114,8 @@
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/_10"
                         android:paddingEnd="@dimen/_10"
+                        android:textFontWeight="400"
+                        android:fontFamily="@font/dm_sans"
                         android:text="****"
                         android:textColor="@color/white" />
 
@@ -115,6 +127,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/heading"
                     android:layout_margin="@dimen/_10dp"
+                    android:textFontWeight="400"
+                    android:fontFamily="@font/dm_sans"
                     android:text="Lorem ipsum dolor sit amet, consectetur adipi elit.
                     Ut id dui   mi. Fusce varius bibendum ante, non lacinia. Fall "
                     android:textColor="@color/greyforText" />
@@ -138,12 +152,16 @@
                     android:gravity="start"
                     android:text="  Task Details"
                     android:textColor="@color/white"
+                    android:textFontWeight="500"
+                    android:fontFamily="@font/dm_sans"
                     android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/priorityy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textFontWeight="500"
+                    android:fontFamily="@font/dm_sans"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="@dimen/_20dp"
                     android:background="@drawable/dark_grey_bg"
@@ -167,6 +185,8 @@
                         android:layout_marginStart="@dimen/_20dp"
                         android:layout_marginTop="@dimen/_10"
                         android:gravity="start"
+                        android:textFontWeight="500"
+                        android:fontFamily="@font/dm_sans"
                         android:text=" Assigned Date "
                         android:textColor="#E2E2E2"
                         android:textSize="15sp" />
@@ -179,6 +199,8 @@
                         android:layout_marginStart="@dimen/_30dp"
                         android:layout_marginTop="@dimen/_10"
                         android:layout_toEndOf="@+id/due"
+                        android:textFontWeight="400"
+                        android:fontFamily="@font/dm_sans"
                         android:background="@drawable/dark_grey_bg"
                         android:drawableStart="@drawable/calender2"
                         android:gravity="start"
@@ -206,6 +228,8 @@
                         android:layout_marginTop="@dimen/_10"
                         android:gravity="start"
                         android:text=" Deadline Date "
+                        android:textFontWeight="500"
+                        android:fontFamily="@font/dm_sans"
                         android:textColor="#E2E2E2"
                         android:textSize="15sp" />
 
@@ -221,6 +245,8 @@
                         android:drawableStart="@drawable/calender2"
                         android:gravity="start"
                         android:paddingStart="10dp"
+                        android:textFontWeight="400"
+                        android:fontFamily="@font/dm_sans"
                         android:paddingTop="5dp"
                         android:paddingEnd="10dp"
                         android:paddingBottom="5dp"
@@ -244,6 +270,8 @@
                         android:layout_marginTop="@dimen/_10"
                         android:gravity="start"
                         android:text=" Assigned by :"
+                        android:textFontWeight="500"
+                        android:fontFamily="@font/dm_sans"
                         android:textColor="#E2E2E2"
                         android:textSize="15sp" />
 
@@ -270,6 +298,7 @@
                             android:fontFamily="@font/dm_sans"
                             android:paddingStart="@dimen/_10"
                             android:text="Shakshi"
+                            android:textFontWeight="400"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_15" />
 
@@ -288,6 +317,8 @@
                     android:gravity="start"
                     android:text="  Project files: "
                     android:textColor="#E2E2E2"
+                    android:textFontWeight="500"
+                    android:fontFamily="@font/dm_sans"
                     android:textSize="15sp" />
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/FileRecycler"
@@ -338,6 +369,8 @@
                         android:layout_marginTop="@dimen/_10"
                         android:gravity="start"
                         android:text=" Task Status :"
+                        android:textFontWeight="500"
+                        android:fontFamily="@font/dm_sans"
                         android:textColor="#E2E2E2"
                         android:textSize="15sp" />
 
@@ -366,6 +399,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingStart="10dp"
+                            android:textFontWeight="400"
+                            android:fontFamily="@font/dm_sans"
                             android:text="In Progress"
                             android:textColor="@color/greyforText" />
 
@@ -388,6 +423,8 @@
                         android:layout_marginTop="@dimen/_10"
                         android:gravity="start"
                         android:text=" Task Last Update  "
+                        android:textFontWeight="500"
+                        android:fontFamily="@font/dm_sans"
                         android:textColor="#E2E2E2"
                         android:textSize="15sp" />
 
@@ -402,6 +439,8 @@
                         android:background="@drawable/dark_grey_bg"
                         android:drawableStart="@drawable/calender2"
                         android:gravity="start"
+                        android:textFontWeight="400"
+                        android:fontFamily="@font/dm_sans"
                         android:paddingStart="10dp"
                         android:paddingTop="5dp"
                         android:paddingEnd="10dp"

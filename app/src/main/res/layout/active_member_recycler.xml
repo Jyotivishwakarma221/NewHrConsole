@@ -4,73 +4,107 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="7dp"
         android:id="@+id/layoutfull"
-        android:background="@drawable/cardview_border"
-        android:gravity="center"
+        android:layout_margin="@dimen/_7dp"
         android:orientation="horizontal"
-        android:padding="@dimen/_5dp"
-        android:weightSum="5">
+        android:background="@drawable/cardview_border"
+        android:gravity="center_vertical"
+        android:padding="@dimen/_10dp"
+        android:weightSum="6">
 
+        <!-- Employee ID -->
         <TextView
             android:id="@+id/id"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_5dp"
-            android:layout_weight="1"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:layout_marginHorizontal="@dimen/_5dp"
             android:text="103"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textFontWeight="400"
+            android:fontFamily="@font/dm_sans"
+            android:textSize="@dimen/_12"
+            android:maxLines="1"
+            android:ellipsize="end" />
 
+        <!-- Profile Picture -->
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/profilepic"
-            android:layout_width="50dp"
-            android:layout_height="55dp"
-            android:scaleType="centerCrop"
-            app:riv_oval="true"
-            android:layout_margin="@dimen/_5dp"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
             android:layout_weight="1"
-            android:visibility="gone"
-            android:src="@drawable/profile" />
+            android:layout_marginHorizontal="@dimen/_5dp"
+            app:riv_oval="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile"
+            android:visibility="gone" />
+
+        <!-- Initial Avatar -->
         <com.investmango.hrconsole.commonclasses.InitialAvatarView
             android:id="@+id/initialAvatar"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_margin="@dimen/_5dp"
-            android:padding="@dimen/_5dp"
-            android:layout_weight="1"/>
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="@dimen/_5dp"
+            android:padding="@dimen/_5dp" />
 
-
+        <!-- Employee Name -->
         <TextView
             android:id="@+id/name"
-            android:layout_width="70dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_5dp"
-            android:layout_marginStart="@dimen/_25dp"
-            android:layout_weight="1"
-            android:maxLines="2"
+            android:layout_weight="1.3"
+            android:gravity="center"
+            android:layout_marginHorizontal="@dimen/_5dp"
             android:text="Abhay"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textFontWeight="400"
+            android:fontFamily="@font/dm_sans"
+            android:textSize="@dimen/_12"
+            android:maxLines="3"
+            android:ellipsize="end" />
 
+        <!-- Department -->
         <TextView
             android:id="@+id/department"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_5dp"
             android:layout_weight="1"
-            android:text="  IT "
-            android:textColor="@color/white" />
+            android:gravity="center"
+            android:layout_marginHorizontal="@dimen/_5dp"
+            android:text="IT"
+            android:textColor="@color/white"
+            android:textFontWeight="400"
+            android:fontFamily="@font/dm_sans"
+            android:textSize="@dimen/_12"
+            android:maxLines="2"
+            android:ellipsize="end" />
 
+        <!-- Position -->
         <TextView
             android:id="@+id/position"
-            android:layout_width="70dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_5dp"
-            android:maxLines="2"
-            android:layout_marginStart="@dimen/_25dp"
             android:layout_weight="1"
-            android:text="  UI DEVELOPER"
-            android:textColor="@color/white" />
+            android:gravity="center"
+            android:layout_marginHorizontal="@dimen/_5dp"
+            android:text="UI DEVELOPER"
+            android:textColor="@color/white"
+            android:textFontWeight="400"
+            android:fontFamily="@font/dm_sans"
+            android:textSize="@dimen/_12"
+            android:maxLines="3"
+            android:ellipsize="end" />
 
+        <!-- Status Indicator -->
+        <ImageView
+            android:id="@+id/statusIndicator"
+            android:layout_width="0dp"
+            android:layout_height="16dp"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="@dimen/_5dp"
+            android:src="@drawable/green_dot" />
 
     </LinearLayout>
 

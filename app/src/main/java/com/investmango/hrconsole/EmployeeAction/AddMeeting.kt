@@ -141,6 +141,7 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
         date = currentDate.toString()
 
         val maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        list.clear()
         for (x in currentDate..maxDay) {
 
             list.add(calenderDate(x.toString(), daysList.get(daysInMonth - 1)))
@@ -431,6 +432,8 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
     }
 
     fun setAdapter2() {
+        Log.e("meetingList", "bindView: " + meetingList3)
+
         binding.recyclerFortime.adapter =
             AdapterForTimeSlot(this, timeSlots, meetingList3!!, userId)
         progressDialog.dismissDialog()
@@ -473,7 +476,6 @@ class AddMeeting : Fragment(), RecyclerViewInterface<CalenderHolderBinding> {
                     ).date
                 }
             }
-            Log.e("meetingList", "bindView: " + meetingList3)
             setAdapter2()
 
         }

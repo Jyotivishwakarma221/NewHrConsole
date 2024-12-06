@@ -7,8 +7,17 @@ public class UpdateTaskStatus {
     private Date dateTime;
     private String subject;
     private String comments;
+    private String title;
     private long deadLine;
     private Status status;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public long getDeadLine() {
         return deadLine;

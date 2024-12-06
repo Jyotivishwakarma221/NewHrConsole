@@ -9,8 +9,25 @@ public class AddTask {
     private long id;
     private String status;
     private String subject;
-
+    private String title;
     private Long deadLine;
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Long getDeadLine() {
+        return deadLine;
+    }
+
+    public void setDeadLine(Long deadLine) {
+        this.deadLine = deadLine;
+    }
+
+
 
     public Long getDeadline() {
         return deadLine;

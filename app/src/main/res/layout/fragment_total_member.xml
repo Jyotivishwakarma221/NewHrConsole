@@ -1,17 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/black"
-
-    tools:context=".EmployeeAction.TotalMemberFragment">
-    <androidx.recyclerview.widget.RecyclerView
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/recyclerView"/>
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:orientation="vertical"
+        tools:context=".EmployeeAction.TotalMemberFragment">
 
-</FrameLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10"
+            android:fontFamily="@font/dm_sans"
+            android:gravity="center"
+            android:text="My Team "
+            android:textColor="@color/greyforText"
+            android:textFontWeight="700"
+            android:textSize="22sp" />
+
+        <ImageView
+            android:id="@+id/Filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/_10"
+            android:layout_marginBottom="@dimen/_10"
+            android:src="@drawable/outline_filter_alt_24" />
+        <!-- Container for table header -->
+        <LinearLayout
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/Filter"
+            android:layout_margin="@dimen/_5dp"
+            android:background="@drawable/grey_bg_rounded"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10dp">
+
+            <!-- Emp. ID -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/dm_sans"
+                android:gravity="center"
+                android:text="Emp. ID"
+                android:textColor="@color/white"
+                android:textFontWeight="400"
+                android:textSize="@dimen/_14sp" />
+
+            <!-- Divider -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_5dp"
+                android:src="@drawable/horizontal_line" />
+
+            <!-- Emp. Name -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/dm_sans"
+                android:gravity="center"
+                android:text="Emp. Name"
+                android:textColor="@color/white"
+                android:textFontWeight="400"
+                android:textSize="@dimen/_14sp" />
+
+            <!-- Divider -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_5dp"
+                android:src="@drawable/horizontal_line" />
+
+            <!-- Department -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/dm_sans"
+                android:gravity="center"
+                android:text="Depart."
+                android:textColor="@color/white"
+                android:textFontWeight="400"
+                android:textSize="@dimen/_14sp" />
+
+            <!-- Divider -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_5dp"
+                android:src="@drawable/horizontal_line" />
+
+            <!-- Role -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/dm_sans"
+                android:gravity="center"
+                android:text="Role"
+                android:textColor="@color/white"
+                android:textFontWeight="400"
+                android:textSize="@dimen/_14sp" />
+
+            <!-- Divider -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_5dp"
+                android:src="@drawable/horizontal_line" />
+
+            <!-- Status -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/dm_sans"
+                android:gravity="center"
+                android:text="Status"
+                android:textFontWeight="400"
+                android:textColor="@color/white"
+                android:textSize="14dp" />
+        </LinearLayout>
+
+        <!-- Recycler View for listing employees -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/title"
+            android:layout_marginTop="@dimen/_10dp"
+            android:clipToPadding="false"
+            android:padding="@dimen/_10dp" />
+
+    </RelativeLayout>
 </layout>
