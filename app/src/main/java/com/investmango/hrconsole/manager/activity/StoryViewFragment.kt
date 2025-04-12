@@ -182,6 +182,7 @@ class StoryViewFragment : Fragment(), RecyclerViewInterface<ViewStoryBinding> {
         binding.statusDetail.setOnClickListener {
             showStatusAlert()
         }
+        Log.e("storyResponse", "setData: "+storyResponse.story )
         if (storyResponse.story != null) {
             binding.storyRecycler.adapter = CommonAdapter(this)
             if (isAdded)

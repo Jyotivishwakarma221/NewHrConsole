@@ -25,9 +25,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.HrConsole.tv.official.console.premium.CommonAdapter
 import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
-import com.cloudinary.android.MediaManager
-import com.cloudinary.android.callback.ErrorInfo
-import com.cloudinary.android.callback.UploadCallback
+//import com.cloudinary.android.MediaManager
+//import com.cloudinary.android.callback.ErrorInfo
+//import com.cloudinary.android.callback.UploadCallback
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.investmango.hrconsole.Adapter.fileAdapter
 import com.investmango.hrconsole.AwsUpload.UploadFileAws

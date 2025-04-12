@@ -1,5 +1,7 @@
 package com.investmango.hrconsole.model;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
@@ -48,12 +50,23 @@ public class SaveUserLeave implements Serializable {
 
         public static LeaveType fromString(String text) {
             for (LeaveType leaveType : LeaveType.values()) {
+                Log.e("SpinnerSelection", "fromString: "+ leaveType.label+text );
                 if (leaveType.label.equalsIgnoreCase(text)) {
                     return leaveType;
                 }
             }
             return null;
         }
+        public static LeaveType fromConst(String text) {
+            for (LeaveType leaveType : LeaveType.values()) {
+                Log.e("SpinnerSelection", "fromString: "+ leaveType.label+text );
+                if (leaveType.name().equalsIgnoreCase(text)) {
+                    return leaveType;
+                }
+            }
+            return null;
+        }
+
     }
 
     public String getApprovedByName() {

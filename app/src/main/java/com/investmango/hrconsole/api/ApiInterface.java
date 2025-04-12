@@ -19,6 +19,8 @@ import com.investmango.hrconsole.model.AssignmentItem;
 import com.investmango.hrconsole.model.AssignmentsResponse;
 import com.investmango.hrconsole.model.Attendance;
 import com.investmango.hrconsole.model.AttendanceResponse;
+import com.investmango.hrconsole.model.BreakMeeting;
+import com.investmango.hrconsole.model.BreaksListResponse;
 import com.investmango.hrconsole.model.Departments;
 import com.investmango.hrconsole.model.DocsModel;
 import com.investmango.hrconsole.model.DocumentModel;
@@ -30,6 +32,7 @@ import com.investmango.hrconsole.model.FeedbackResponseItem;
 import com.investmango.hrconsole.model.LeaveReqResponse;
 import com.investmango.hrconsole.model.LeaveRequest;
 import com.investmango.hrconsole.model.LeaveRequestUpdateStatus;
+import com.investmango.hrconsole.model.MeetingBreakResp;
 import com.investmango.hrconsole.model.MeetingDetails;
 import com.investmango.hrconsole.model.MeetingDetailsAdmin;
 import com.investmango.hrconsole.model.MeetingListResponse;
@@ -200,6 +203,15 @@ public interface ApiInterface {
 
     @POST("forget/send-otp")
     Call<String> NewsendOtp(@Query("email") String email);
+  @POST("/service-record/save/new" )
+    Call<String> AddBreak(@Body RequestBody requestBody);
+
+  @POST("/leads-details/save/new" )
+    Call<MeetingBreakResp> AddMeetingBreak(@Body RequestBody requestBody);
+    @PUT("/leads-details/update/by/{Id}")
+    Call<String> StopMeeting(@Path("Id")Integer Id,@Body RequestBody body);
+  @PUT("/service-record/update/by/{Id}")
+    Call<String> StopBreak(@Path("Id")Integer Id,@Body RequestBody body);
 
     // Verify - OTP
     @POST("forget/verify-otp")
@@ -273,7 +285,20 @@ public interface ApiInterface {
     @GET("get/attendance/record/by/{userId}")
     Call<AttendanceResponse> getAttendance(
             @Path("userId") Long userId, @Query("page") int page);
+    @GET("/service-record/get-all")
+    Call<BreaksListResponse> getBreak(@Query("page") int page,@Query("userId") int userId, @Query("size") int size);
+ @GET("/leads-details/get/by/user" )
+    Call<BreakMeeting> getMeetingBreak(@Query("page") int page, @Query("userId") int userId, @Query("size") int size);
 
+    @GET("/service-record/get-all")
+    Call<BreaksListResponse> getBreaksByBothMonth(
+           @Query("startDate") Long startDate, @Query("endDate") Long endDate, @Query("size") int size,@Query("userId") int userId,@Query("page") int page);
+    @GET("/service-record/get-all")
+    Call<BreaksListResponse> getBreaksByStartMonth(
+           @Query("startDate") Long startDate, @Query("size") int size,@Query("userId") int userId,@Query("page") int page);
+    @GET("/service-record/get-all")
+    Call<BreaksListResponse> getBreaksByEndMonth(
+        @Query("endDate") Long endDate, @Query("size") int size,@Query("userId") int userId,@Query("page") int page);
     @GET("get/user/attendance/{user_id}/{start_date}/{end_date}")
     Call<AttendanceResponse> getUsernewAttendancebyMonth(
             @Path("user_id") Long id, @Path("start_date") Long start_date, @Path("end_date") Long end_date, @Query("size") int size);
@@ -540,7 +565,7 @@ public interface ApiInterface {
 
     @POST("assign/task/to/employee/by/id")
     Call<AssignTask> assignTaskUser(
-            @Query("user_id") long selectedUserId,
+            @Query("userId") long selectedUserId,
             @Body AssignTask assignTask
     );
 
@@ -559,11 +584,23 @@ public interface ApiInterface {
     Call<ResponseBody> getMonthlyTaskStatistics(@Path("user_id") long userId);
 
     // Leave
-    @POST("save/leave/by/user/id/{user_id}")
+    @POST("/leaves/save/by/user/{userId}")
     Call<SaveUserLeave> saveUserLeave(
             @Body RequestBody requestBody,
-            @Path("user_id") Long id
+            @Path("userId ") Long id
     );
+
+@PATCH("/update/leave/status/by/user/id/{userId}" )
+    Call<SaveUserLeave> ChangeUserLeave(
+            @Body RequestBody requestBody,
+            @Path("userId") Long id
+    );
+
+@PATCH("/update/leave/{leaveId}" )
+    Call<SaveUserLeave> EditLeave(
+        @Path("leaveId") Integer leaveId,
+        @Body RequestBody requestBody
+);
 
 
     @GET("get/leaves/of/user/by/userId/{user_id}")

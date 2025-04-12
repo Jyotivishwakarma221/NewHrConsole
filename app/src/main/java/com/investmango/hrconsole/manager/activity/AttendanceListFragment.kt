@@ -147,7 +147,6 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
                         }catch (e:Exception){
                             Log.e("Exception", "onResponse: "+ e.message)
                         }
-                        val size = response.body()?.content?.size!!
                         val content = response.body()?.content?.filterNotNull() ?: emptyList()
                         if (content.isNotEmpty()) {
                             list.addAll(content)  // Add all new items to the list
@@ -179,13 +178,15 @@ class AttendanceListFragment : Fragment(), RecyclerViewInterface<AttendanceListR
                             }
                         }
                     } else {
-                        progressDialog.dismissDialog()
-                        if (isAdded)
+
+                        if (isAdded) {
+                            progressDialog.dismissDialog()
                             Toast.makeText(
                                 requireContext(),
                                 "Something went wrong",
                                 Toast.LENGTH_SHORT
                             ).show()
+                        }
                     }
                 }
 

@@ -55,7 +55,7 @@
             android:id="@+id/liveMapOfUser"
             android:layout_margin="@dimen/_10"
             android:layout_width="match_parent"
-            android:layout_height="300dp" />
+            android:layout_height="200dp" />
 
         <!--            <ImageView-->
         <!--                android:layout_width="match_parent"-->
@@ -93,128 +93,364 @@
         </LinearLayout>
 
 
-        <RelativeLayout
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="@dimen/_20dp"-->
+<!--            android:background="@color/black"-->
+<!--            android:padding="@dimen/_20dp"-->
+<!--            app:cardCornerRadius="@dimen/_10"-->
+<!--            app:cardElevation="@dimen/_10"-->
+<!--            app:cardUseCompatPadding="true">-->
+
+<!--            <com.zerobranch.layout.SwipeLayout-->
+<!--                android:id="@+id/swipeLayout"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:draggedItem="@id/someswipe"-->
+<!--                app:isFreeDragAfterOpen="false"-->
+<!--                app:isFreeHorizontalDrag="true"-->
+<!--                android:visibility="gone"-->
+<!--                app:leftItem="@id/swipeIn"-->
+<!--                app:rightItem="@id/swipeOut"-->
+<!--                app:swipeDirection="left|right">-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/swipeOut"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="@dimen/_60dp"-->
+<!--                    android:layout_gravity="start"-->
+<!--                    android:background="@drawable/attendance_bg"-->
+<!--                    android:weightSum="2">-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/outTime"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:background="@drawable/red_attendace_bg"-->
+<!--                        android:fontFamily="@font/dm_sans"-->
+<!--                        android:gravity="center"-->
+<!--                        android:text="    "-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="@dimen/_20dp" />-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:fontFamily="@font/dm_sans"-->
+<!--                        android:gravity="center"-->
+<!--                        android:text="OUT"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="@dimen/_20dp" />-->
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/swipeIn"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="@dimen/_60dp"-->
+<!--                    android:layout_gravity="end"-->
+<!--                    android:background="@drawable/attendance_bg"-->
+<!--                    android:weightSum="2">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:fontFamily="@font/dm_sans"-->
+<!--                        android:gravity="center"-->
+<!--                        android:text="IN"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="@dimen/_20dp" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/inTime"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:background="@drawable/green_attendance_bg"-->
+<!--                        android:fontFamily="@font/dm_sans"-->
+<!--                        android:gravity="center"-->
+<!--                        android:text="  &#45;&#45; "-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="@dimen/_20dp" />-->
+
+<!--                </LinearLayout>-->
+
+<!--                <LinearLayout-->
+<!--                    android:id="@+id/someswipe"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="@dimen/_60dp"-->
+<!--                    android:background="@drawable/attendance_bg"-->
+<!--                    android:weightSum="3">-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:fontFamily="@font/dm_sans"-->
+<!--                        android:gravity="center"-->
+<!--                        android:text="OUT"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="@dimen/_20dp" />-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="100dp"-->
+<!--                        android:layout_height="70dp"-->
+<!--                        android:layout_marginTop="-10dp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:src="@drawable/baseline_do_not_disturb_on_total_silence_24" />-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:fontFamily="@font/dm_sans"-->
+<!--                        android:gravity="center"-->
+<!--                        android:text="IN"-->
+<!--                        android:textColor="@color/white"-->
+<!--                        android:textSize="@dimen/_20dp" />-->
+<!--                </LinearLayout>-->
+
+<!--            </com.zerobranch.layout.SwipeLayout>-->
+<!--        </RelativeLayout>-->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/_10"
+    android:paddingHorizontal="@dimen/_10"
+    android:layout_marginVertical="20dp"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Daily Tracking"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_14sp"
+        android:textFontWeight="600"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Manage your attendanceg"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12"
+        android:textFontWeight="600"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:padding="8dp">
+
+        <!-- First Card: Today -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/light_grey_bg"
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:layout_marginEnd="@dimen/_10"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/clock"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Today"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/InTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00 AM"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp"/>
+
+        </LinearLayout>
+
+        <!-- Second Card: Break Time -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/light_grey_bg"
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/clock"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Break Time"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:layout_marginStart="8dp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/BreakTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00 Hrs"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/punchIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@drawable/pink_bg"
+        android:layout_weight="1">
+       <TextView
+           android:layout_height="30dp"
+           android:layout_width="wrap_content"
+           android:text="Punch In"
+           android:textSize="@dimen/_20dp"
+           android:textColor="@color/white"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/backToWork"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="gone"
+        android:background="@drawable/pink_bg"
+        android:layout_weight="1">
+       <TextView
+           android:layout_height="30dp"
+           android:layout_width="wrap_content"
+           android:text="Back To Work"
+           android:textSize="@dimen/_20dp"
+           android:textColor="@color/white"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/reasons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="@dimen/_10"
+        android:visibility="gone"
+        android:textAlignment="center"
+        android:orientation="horizontal">
+         <ImageView
+             android:layout_gravity="center"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:padding="@dimen/_5dp"
+             android:src="@drawable/clock"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_marginTop="4dp"
+            android:text="Reason :"/>
+        <Spinner
+            android:id="@+id/breakType"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20dp"
-            android:background="@color/black"
-            android:padding="@dimen/_20dp"
-            app:cardCornerRadius="@dimen/_10"
-            app:cardElevation="@dimen/_10"
-            app:cardUseCompatPadding="true">
+            android:layout_margin="@dimen/_5dp"
+            android:background="@drawable/light_grey_bg"
+            android:drawableEnd="@drawable/spinner_dropdown"
+            android:padding="@dimen/_5dp"
+            android:spinnerMode="dropdown" />
 
-            <com.zerobranch.layout.SwipeLayout
-                android:id="@+id/swipeLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:draggedItem="@id/someswipe"
-                app:isFreeDragAfterOpen="false"
-                app:isFreeHorizontalDrag="true"
-                app:leftItem="@id/swipeIn"
-                app:rightItem="@id/swipeOut"
-                app:swipeDirection="left|right">
-
-                <LinearLayout
-                    android:id="@+id/swipeOut"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_60dp"
-                    android:layout_gravity="start"
-                    android:background="@drawable/attendance_bg"
-                    android:weightSum="2">
-
-                    <TextView
-                        android:id="@+id/outTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/red_attendace_bg"
-                        android:fontFamily="@font/dm_sans"
-                        android:gravity="center"
-                        android:text="    "
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_20dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/dm_sans"
-                        android:gravity="center"
-                        android:text="OUT"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_20dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/swipeIn"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_60dp"
-                    android:layout_gravity="end"
-                    android:background="@drawable/attendance_bg"
-                    android:weightSum="2">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/dm_sans"
-                        android:gravity="center"
-                        android:text="IN"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_20dp" />
-
-                    <TextView
-                        android:id="@+id/inTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="@drawable/green_attendance_bg"
-                        android:fontFamily="@font/dm_sans"
-                        android:gravity="center"
-                        android:text="  -- "
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_20dp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/someswipe"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_60dp"
-                    android:background="@drawable/attendance_bg"
-                    android:weightSum="3">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/dm_sans"
-                        android:gravity="center"
-                        android:text="OUT"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_20dp" />
-
-                    <ImageView
-                        android:layout_width="100dp"
-                        android:layout_height="70dp"
-                        android:layout_marginTop="-10dp"
-                        android:layout_weight="1"
-                        android:src="@drawable/baseline_do_not_disturb_on_total_silence_24" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/dm_sans"
-                        android:gravity="center"
-                        android:text="IN"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_20dp" />
-                </LinearLayout>
-
-            </com.zerobranch.layout.SwipeLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/breaks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/_5dp"
+        android:orientation="horizontal">
+        <RelativeLayout
+            android:id="@+id/takeBreak"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/red_border"
+            android:layout_marginStart="@dimen/_20dp"
+            android:layout_weight="1">
+            <TextView
+                android:layout_height="30dp"
+                android:layout_width="wrap_content"
+                android:text="Take a Break"
+                android:textSize="@dimen/_20dp"
+                android:textColor="@color/white"/>
         </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/punchOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/attendance_bg"
+            android:layout_marginStart="@dimen/_10dp"
+            android:layout_weight="1">
+            <TextView
+                android:layout_height="30dp"
+                android:layout_width="wrap_content"
+                android:text="Punch Out"
+                android:textSize="@dimen/_20dp"
+                android:textColor="@color/white"/>
+        </RelativeLayout>
+    </LinearLayout>
 
+
+    <TextView
+        android:id="@+id/breakReports"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Breaks Report >"
+        android:textAlignment="viewEnd"
+        android:layout_marginEnd="@dimen/_10"
+        android:padding="@dimen/_5dp"
+        android:textStyle="bold"
+        android:textColor="@color/white"/>
+</LinearLayout>
         <TextView
             android:id="@+id/AttendanceReport"
             android:layout_width="match_parent"

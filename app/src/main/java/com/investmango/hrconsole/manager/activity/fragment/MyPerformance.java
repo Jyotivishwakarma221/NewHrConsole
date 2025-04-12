@@ -22,7 +22,6 @@ import com.investmango.hrconsole.R;
 import com.investmango.hrconsole.api.ApiClient;
 import com.investmango.hrconsole.api.ApiInterface;
 import com.investmango.hrconsole.databinding.FragmentMyPerformanceBinding;
-import com.investmango.hrconsole.manager.activity.AchievementFragment;
 import com.investmango.hrconsole.manager.activity.PerformanceFragment;
 import com.investmango.hrconsole.model.MonthlyPerformanceResp;
 
@@ -134,7 +133,7 @@ public class MyPerformance extends Fragment {
 
         // add fragment to the list
         adapter.addFragment("Performance", new PerformanceFragment());
-        adapter.addFragment("Achievements", new AchievementFragment());
+//        adapter.addFragment("Achievements", new AchievementFragment());
         binding.viewPager.setAdapter(adapter);
         binding.tabs.setupWithViewPager(binding.viewPager);
 

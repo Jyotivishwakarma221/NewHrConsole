@@ -247,13 +247,17 @@ public class DateAndTimeUtility {
         return timeInHour;
     }
 
-    public static int getDifferenceOfTwoDateInHour(String startDate, String endDate) {
+    public static int getDifferenceInMinutes(Long startDate, Long endDate) {
+        if (startDate == null || endDate == null) {
+            throw new IllegalArgumentException("Start date or end date cannot be null");
+        }
 
-        long diff = 0;
-        diff = DateAndTimeUtility.getLongFromStringDateFormat(endDate) - DateAndTimeUtility.getLongFromStringDateFormat(startDate);
-        int timeInHour = (int) (diff / (3600000));
-        return timeInHour;
+        long diffInMillis = endDate - startDate;
+        return (int) (diffInMillis / 60000); // 1 minute = 60000 ms
     }
+
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     public static long dateToEpoch(String dateString) {

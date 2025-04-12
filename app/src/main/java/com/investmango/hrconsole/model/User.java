@@ -17,6 +17,16 @@ public class User {
     private String dob;
     private String managerName;
 
+    public String getLatlong() {
+        return latlong;
+    }
+
+    public void setLatlong(String latlong) {
+        this.latlong = latlong;
+    }
+
+    private String latlong;
+
     public String getManagerName() {
         return managerName;
     }

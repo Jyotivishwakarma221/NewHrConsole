@@ -735,6 +735,7 @@
                 android:layout_height="@dimen/_200dp"
                 android:layout_marginBottom="@dimen/_5dp"
                 android:layout_marginTop="@dimen/_5dp"
+
                 android:background="@drawable/dark_grey_bg"
                 android:padding="@dimen/_15" />
 

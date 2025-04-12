@@ -18,9 +18,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
-import com.cloudinary.android.MediaManager
-import com.cloudinary.android.callback.ErrorInfo
-import com.cloudinary.android.callback.UploadCallback
+//import com.cloudinary.android.MediaManager
+//import com.cloudinary.android.callback.ErrorInfo
+//import com.cloudinary.android.callback.UploadCallback
 import com.investmango.hrconsole.AwsUpload.UploadFileAws
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient

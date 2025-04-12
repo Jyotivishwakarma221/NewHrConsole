@@ -57,10 +57,6 @@ data class StoryResponse(
 )
 data class  Stories(
 
-
-	@field:SerializedName("id")
-	val assignedToId: Any? = null,
-
 	@field:SerializedName("createdDate")
 	val createdDate: Long? = null,
 

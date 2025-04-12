@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.HrConsole.tv.official.console.premium.CommonAdapter
 import com.HrConsole.tv.official.console.premium.RecyclerViewInterface
+import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
 import com.investmango.hrconsole.EmployeeAction.Member_list_Adapter
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.api.ApiClient
@@ -44,6 +45,7 @@ class NewMessageFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding
     var selectedId: Long = 0
     var finalList: ArrayList<TotalEmpResponseItem> = arrayListOf()
     private var allActiveUsers: List<TotalEmpResponseItem?>? = null
+    lateinit var progressDialog: AwesomeProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +54,10 @@ class NewMessageFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding
         token = preferences.getString("token", "0")!!
         userId = preferences.getLong("userId", 0)
         authority = preferences.getString("Authority", "0").toString()
+        progressDialog = AwesomeProgressDialog(context)
+        progressDialog.addTitle("Loading...") // add your title here.
+        progressDialog.setStyle(AwesomeProgressDialog.STYLE_LOADING_DOTS)
+        progressDialog.isCancelable(false)
 
         if (authority.equals(Constant.MANAGER))
             getChildActiveUser()
@@ -100,22 +106,25 @@ class NewMessageFragment : Fragment(), RecyclerViewInterface<MemberLayoutBinding
     private fun sendMessage(message: messageItem) {
         val apiClient = ApiClient(context)
         apiInterface = apiClient.apiInterface
-
+        progressDialog.showDialog()
         val call = apiInterface.sendMessage( message)
         call.enqueue(object : Callback<String> {
             override fun onResponse(
                 call: Call<String>,
                 response: Response<String>,
             ) {
+
                 if (response.isSuccessful) {
                     if (response.code() == 201) {
                         delete()
                         Toast.makeText(context, "Sent successfully", Toast.LENGTH_LONG).show()
                     }
                 } else Toast.makeText(context, "Something went wrong.", Toast.LENGTH_LONG).show()
+                progressDialog.dismissDialog()
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
+                progressDialog.dismissDialog()
                 Log.e("onFailure", "onFailure: " + t.message)
             }
         })

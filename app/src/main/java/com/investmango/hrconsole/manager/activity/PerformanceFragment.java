@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,6 +50,7 @@ import org.json.JSONObject;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -139,7 +139,322 @@ public class PerformanceFragment extends Fragment implements RecyclerViewInterfa
 //        if (descriptionData.length != 1)
 //            binding.stepsView.setCompletedPosition(descriptionData.length - 1);
 //        else binding.stepsView.setCompletedPosition(0);
+@SuppressLint("ResourceType")
+//    private void lineGraph(List<Integer> month, List<Float> score) {
+//        ArrayList<Entry> entries = new ArrayList<>();
+//        ArrayList<Entry> entries2 = new ArrayList<>();
 //
+//
+//        if (month.get(0) != 1)
+//            entries.add(new Entry(month.get(0) - 1, 0));
+//        else entries.add(new Entry(0, 0));
+//
+//        for (int i = 0; i < month.size(); i++) {
+//            if (month.get(i) == 1) {
+//                firstMonthEncountered = true;
+//                entries2.add(new Entry(month.get(i), score.get(i)));
+//            } else {
+//                entries.add(new Entry(month.get(i), score.get(i)));
+//            }
+//        }
+//
+//
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            LocalDate currentdate = LocalDate.now();
+//            monthNumber = currentdate.getMonthValue();
+//            LocalDate maxMonth = currentdate.minusMonths(6);
+//            maxMonthNumber = maxMonth.getMonthValue();
+//            Log.e("maxMonth", "lineGraph: " + monthNumber + " " + maxMonthNumber);
+//
+//        }
+//
+//        Log.e("entryyyyyyy", "lineGraph: " + entries);
+//
+//        LineDataSet lineDataSet = new LineDataSet(entries, "This Month");
+//        lineDataSet.setColor(Color.BLUE); // Line color
+//        lineDataSet.setDrawFilled(true); // Enable filling
+//        lineDataSet.setFillColor(Color.BLUE); // Fill color
+//        lineDataSet.setFillAlpha(70); // Fill transparency
+//        lineDataSet.setValueTextColor(Color.WHITE); // Change to your preferred color
+//        lineDataSet.setValueTextSize(9f); // Set text size
+//        lineDataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
+//
+//        binding.lineChart.setDoubleTapToZoomEnabled(false); // for double tap zooming.
+//        binding.lineChart.setScaleEnabled(false); // for two finger zooming
+//
+//
+////        entries2.add(new Entry(0, 20));
+////        entries2.add(new Entry(1, 30));
+////        entries2.add(new Entry(2, 40));
+////        entries2.add(new Entry(3, 100));
+////        entries2.add(new Entry(4, 70));
+//
+//        LineDataSet lineDataSet2 = new LineDataSet(entries2, " Previous");
+//        lineDataSet2.setColor(Color.parseColor("#FFBD59")); // Line color
+//        lineDataSet2.setDrawFilled(false); // Enable filling
+//        lineDataSet2.setFillColor(Color.YELLOW); // Fill color
+//        lineDataSet.setValueTextColor(Color.WHITE); // Change to your preferred color
+//        lineDataSet2.setFillAlpha(50); // Fill transparency
+//
+//        // Use a custom value formatter to set the color
+//        lineDataSet.setValueFormatter(new ValueFormatter() {
+//            @Override
+//            public String getFormattedValue(float value) {
+//                return String.format("%.2f", value); // Format value to 2 decimal places
+//            }
+//        });
+//        lineDataSet2.setValueFormatter(new ValueFormatter() {
+//            @Override
+//            public String getFormattedValue(float value) {
+//                return String.format("%.2f", value); // Format value to 2 decimal places
+//            }
+//        });
+//        lineDataSet.setValueTextColor(Color.WHITE);
+//        lineDataSet2.setValueTextColor(Color.WHITE);
+//
+//
+//        lineDataSet.setDrawCircles(false);
+//        lineDataSet2.setDrawCircles(false);
+//        lineDataSet.setCircleRadius(0);
+//
+//        //to make the smooth line as the graph is adapt change so smooth curve
+//        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+//        //to enable the cubic density : if 1 then it will be sharp curve
+//        lineDataSet.setCubicIntensity(0.2f);//to make the smooth line as the graph is adapt change so smooth curve
+//
+//        lineDataSet2.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+//        //to enable the cubic density : if 1 then it will be sharp curve
+//        lineDataSet2.setCubicIntensity(0.2f);
+//
+//
+//        // Combine the two data sets
+//        LineData lineData = new LineData(lineDataSet, lineDataSet2);
+//        binding.lineChart.setData(lineData);
+//        binding.lineChart.invalidate();
+//
+//
+//        // Optional: Customize the chart
+//        XAxis xAxis = binding.lineChart.getXAxis();
+//        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+//        xAxis.setTextColor(Color.WHITE);
+//        if (month.get(0) != 0)
+//            xAxis.setAxisMinimum(maxMonthNumber + 1);
+//        xAxis.setAxisMaximum(monthNumber + 1); // Set Y-axis maximum value
+//        xAxis.setLabelCount(6, true); // 11 steps for labels (0, 10, 20, ..., 100)
+//        xAxis.setGranularity(1f);
+//
+//
+//        YAxis leftAxis = binding.lineChart.getAxisLeft();
+//        YAxis rightYAxis = binding.lineChart.getAxisRight();
+//        leftAxis.setTextColor(Color.WHITE);
+//        rightYAxis.setTextColor(Color.WHITE);
+//        rightYAxis.setEnabled(false); // Disable the right Y-axis if not needed
+//
+//        Legend legend = binding.lineChart.getLegend();
+//        legend.setTextColor(Color.WHITE);
+//        binding.lineChart.getAxisRight().setEnabled(true); // Disable right Y-axis
+//
+//        leftAxis.setAxisMinimum(0);// Start at 0
+//        leftAxis.setAxisMaximum(100); // Set Y-axis maximum value
+//        leftAxis.setLabelCount(11, true); // 11 steps for labels (0, 10, 20, ..., 100)
+//        leftAxis.setGranularity(10f); // Set interval to 10
+//
+//
+//        lineDataSet.setLineWidth(2f); // Set line width
+////        lineDataSet.setFillColor(getResources().getColor(R.drawable.fill_chart)); // Change fill color
+//        lineDataSet.setDrawFilled(true);
+//
+//        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.fill_chart);
+//        lineDataSet.setFillDrawable(drawable);
+//
+//        lineDataSet.setFillAlpha(100); // Change fill transparency
+//        xAxis.setDrawGridLines(false); // Disable X-axis grid lines
+//        leftAxis.setDrawGridLines(false); // Disable Y-axis grid lines
+//
+//    }
+private void lineGraph(List<Integer> month, List<Float> score) {
+    ArrayList<Entry> entries = new ArrayList<>();
+    ArrayList<Entry> entries2 = new ArrayList<>();
+
+    if (month == null || score == null || month.isEmpty() || score.isEmpty()) {
+        Log.e("Error", "Month or Score list is empty! Skipping graph update.");
+        return;
+    }
+
+    Log.e("lineGraph", "Month List: " + month.toString());
+    Log.e("lineGraph", "Score List: " + score.toString());
+
+    // Ensure no negative values
+    for (int i = 0; i < month.size(); i++) {
+        int monthValue = Math.max(0, month.get(i));
+        float scoreValue = Math.max(0, score.get(i));
+
+        Log.e("Entry lineGraph", "Adding Entry: x=" + monthValue + ", y=" + scoreValue);
+
+        if (monthValue == 1) {
+            entries2.add(new Entry(monthValue, scoreValue));
+        } else {
+            entries.add(new Entry(monthValue, scoreValue));
+        }
+    }
+
+    if (entries.isEmpty() && entries2.isEmpty()) {
+        Log.e("Error", "Entries are empty after processing! Adding fallback data...");
+        entries.add(new Entry(1, 10)); // Example fallback data
+        entries.add(new Entry(2, 20));
+        entries2.add(new Entry(1, 5));
+        entries2.add(new Entry(2, 15));
+    }
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        LocalDate currentdate = LocalDate.now();
+        int monthNumber = currentdate.getMonthValue();
+        LocalDate maxMonth = currentdate.minusMonths(6);
+        int maxMonthNumber = maxMonth.getMonthValue();
+
+        Log.e("Debug", "Current Month: " + monthNumber + ", Max Month: " + maxMonthNumber);
+    }
+
+    LineDataSet lineDataSet = new LineDataSet(entries, "This Month");
+    lineDataSet.setColor(Color.BLUE);
+    lineDataSet.setDrawFilled(true);
+    lineDataSet.setFillColor(Color.BLUE);
+    lineDataSet.setFillAlpha(70);
+    lineDataSet.setValueTextColor(Color.WHITE);
+    lineDataSet.setValueTextSize(9f);
+    lineDataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
+    lineDataSet.setDrawCircles(false);
+    lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+    lineDataSet.setCubicIntensity(0.2f);
+
+    LineDataSet lineDataSet2 = new LineDataSet(entries2, "Previous");
+    lineDataSet2.setColor(Color.parseColor("#FFBD59"));
+    lineDataSet2.setDrawFilled(false);
+    lineDataSet2.setFillColor(Color.YELLOW);
+    lineDataSet2.setFillAlpha(50);
+    lineDataSet2.setValueTextColor(Color.WHITE);
+    lineDataSet2.setDrawCircles(false);
+    lineDataSet2.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+    lineDataSet2.setCubicIntensity(0.2f);
+
+    lineDataSet.setValueFormatter(new ValueFormatter() {
+        @Override
+        public String getFormattedValue(float value) {
+            return String.format("%.2f", value);
+        }
+    });
+
+    lineDataSet2.setValueFormatter(new ValueFormatter() {
+        @Override
+        public String getFormattedValue(float value) {
+            return String.format("%.2f", value);
+        }
+    });
+
+    LineData lineData = new LineData(lineDataSet, lineDataSet2);
+    binding.lineChart.setData(lineData);
+    binding.lineChart.notifyDataSetChanged();
+    binding.lineChart.invalidate();
+
+    // X-Axis Configuration
+    XAxis xAxis = binding.lineChart.getXAxis();
+    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+    xAxis.setTextColor(Color.WHITE);
+    xAxis.setGranularity(1f);
+    xAxis.setLabelCount(6, true);
+    xAxis.setDrawGridLines(false); // Remove X-axis grid lines
+
+    int minMonth = Collections.min(month);
+    int maxMonth = Collections.max(month);
+    xAxis.setAxisMinimum(minMonth - 1);
+    xAxis.setAxisMaximum(maxMonth + 1);
+
+    // Y-Axis Configuration
+    YAxis leftAxis = binding.lineChart.getAxisLeft();
+    YAxis rightYAxis = binding.lineChart.getAxisRight();
+    leftAxis.setTextColor(Color.WHITE);
+    rightYAxis.setTextColor(Color.WHITE);
+    rightYAxis.setEnabled(false);
+
+    leftAxis.setAxisMinimum(40);
+    leftAxis.setAxisMaximum(100);
+    leftAxis.setLabelCount(7, true);
+    leftAxis.setGranularity(10f);
+    leftAxis.setDrawGridLines(false); // Remove Y-axis grid lines
+    rightYAxis.setDrawGridLines(false); // Remove right Y-axis grid lines
+
+    // Remove the background grid from the chart
+    binding.lineChart.getAxisRight().setDrawGridLines(false);
+    binding.lineChart.getAxisLeft().setDrawGridLines(false);
+    binding.lineChart.getXAxis().setDrawGridLines(false);
+    binding.lineChart.setDrawGridBackground(false);
+
+    // Chart Interaction Settings
+    binding.lineChart.setScaleEnabled(true);
+    binding.lineChart.setDragEnabled(true);
+    binding.lineChart.setPinchZoom(true);
+
+    // Legend
+    Legend legend = binding.lineChart.getLegend();
+    legend.setTextColor(Color.WHITE);
+}
+
+    private void fetchPerformanceReport() {
+        ApiClient apiClient = new ApiClient(getContext());
+        apiInterface = apiClient.getApiInterface();
+        Log.e("performance", "onResponse: 1 ");
+
+        Call<MonthlyPerformanceResp> call = apiInterface.getMonthPerformance(userId, month.toString().toLowerCase());
+        call.enqueue(new Callback<MonthlyPerformanceResp>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onResponse(@NonNull Call<MonthlyPerformanceResp> call, @NonNull Response<MonthlyPerformanceResp> response) {
+                if (response.isSuccessful()) {
+                    empPerformanceList = response.body();
+
+                    Log.e("setdata", "onResponse: "+ empPerformanceList);
+                    setUpData();
+                    int size = empPerformanceList.getTimeline().size();
+                    if (empPerformanceList != null && empPerformanceList.getTimeline() != null) {
+                        if (size > 0) {
+                            timeline = empPerformanceList.getTimeline();
+                            setAdapt();
+                        } else {
+                            Log.e("performance", "Timeline data is empty");
+                        }
+                    }
+                    if (empPerformanceList != null && empPerformanceList.getMom() != null) {
+                        List<Integer> months = new ArrayList<>();
+                        List<Float> score = new ArrayList<>();
+
+                        for (int i = 0; i < empPerformanceList.getMom().size(); i++) {
+                            months.add(DateAndTimeUtility.getMonthNumber(empPerformanceList.getMom().get(i).getMonth()));
+                            Log.e("months", "onResponse: " + DateAndTimeUtility.getMonthNumber(empPerformanceList.getMom().get(i).getMonth()));
+                            String formattedNumber = String.format("%.2f", empPerformanceList.getMom().get(i).getScore());
+                            score.add(Float.parseFloat(formattedNumber));
+
+                        }
+                        if (months.size() != 0 || score.size() != 0){
+                            lineGraph(months, score);
+                            Log.e("lineGraph", months+"onResponse: "+score );
+
+                        }
+
+//                        Log.e("StepsView", months.get(0)+"  "+ score.get(0));
+                    }
+                } else {
+                    Toast.makeText(getContext(), getErrorMessage(response), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MonthlyPerformanceResp> call, @NonNull Throwable t) {
+                Log.e("EmployeePerformance", "Server error", t);
+            }
+        });
+    }
+//
+
 //    }
 
     private void populatePieChart(long totalPresent, long halfDay, long totalAbsent, long totaldays, long total, PieChart pieChart) {
@@ -158,7 +473,7 @@ public class PerformanceFragment extends Fragment implements RecyclerViewInterfa
 
         pieDataSet.setColors(
                 ContextCompat.getColor(requireContext(), R.color.darkBlue),
-                ContextCompat.getColor(requireContext(), R.color.strokeBlack),
+                ContextCompat.getColor(requireContext(), R.color.Blue),
                 ContextCompat.getColor(requireContext(), R.color.yellow),
                 ContextCompat.getColor(requireContext(), R.color.greyOfEye)
 
@@ -209,192 +524,6 @@ public class PerformanceFragment extends Fragment implements RecyclerViewInterfa
         pieChart.getDescription().setEnabled(false);
 
         pieChart.invalidate();
-    }
-
-    @SuppressLint("ResourceType")
-    private void lineGraph(List<Integer> month, List<Float> score) {
-        ArrayList<Entry> entries = new ArrayList<>();
-        ArrayList<Entry> entries2 = new ArrayList<>();
-
-
-        if (month.get(0) != 1)
-            entries.add(new Entry(month.get(0) - 1, 0));
-        else entries.add(new Entry(0, 0));
-
-        for (int i = 0; i < month.size(); i++) {
-            if (month.get(i) == 1) {
-                firstMonthEncountered = true;
-                entries2.add(new Entry(month.get(i), score.get(i)));
-            } else {
-                entries.add(new Entry(month.get(i), score.get(i)));
-            }
-        }
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            LocalDate currentdate = LocalDate.now();
-            monthNumber = currentdate.getMonthValue();
-            LocalDate maxMonth = currentdate.minusMonths(6);
-            maxMonthNumber = maxMonth.getMonthValue();
-            Log.e("maxMonth", "lineGraph: " + monthNumber + " " + maxMonthNumber);
-
-        }
-
-        Log.e("entry", "lineGraph: " + entries);
-
-        LineDataSet lineDataSet = new LineDataSet(entries, "This Month");
-        lineDataSet.setColor(Color.BLUE); // Line color
-        lineDataSet.setDrawFilled(true); // Enable filling
-        lineDataSet.setFillColor(Color.BLUE); // Fill color
-        lineDataSet.setFillAlpha(70); // Fill transparency
-        lineDataSet.setValueTextColor(Color.WHITE); // Change to your preferred color
-        lineDataSet.setValueTextSize(9f); // Set text size
-        lineDataSet.setValueTypeface(Typeface.DEFAULT_BOLD);
-
-        binding.lineChart.setDoubleTapToZoomEnabled(false); // for double tap zooming.
-        binding.lineChart.setScaleEnabled(false); // for two finger zooming
-
-
-//        entries2.add(new Entry(0, 20));
-//        entries2.add(new Entry(1, 30));
-//        entries2.add(new Entry(2, 40));
-//        entries2.add(new Entry(3, 100));
-//        entries2.add(new Entry(4, 70));
-
-        LineDataSet lineDataSet2 = new LineDataSet(entries2, " Previous");
-        lineDataSet2.setColor(Color.parseColor("#FFBD59")); // Line color
-        lineDataSet2.setDrawFilled(false); // Enable filling
-        lineDataSet2.setFillColor(Color.YELLOW); // Fill color
-        lineDataSet.setValueTextColor(Color.WHITE); // Change to your preferred color
-        lineDataSet2.setFillAlpha(50); // Fill transparency
-
-        // Use a custom value formatter to set the color
-        lineDataSet.setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                return String.format("%.2f", value); // Format value to 2 decimal places
-            }
-        });
-        lineDataSet2.setValueFormatter(new ValueFormatter() {
-            @Override
-            public String getFormattedValue(float value) {
-                return String.format("%.2f", value); // Format value to 2 decimal places
-            }
-        });
-        lineDataSet.setValueTextColor(Color.WHITE);
-        lineDataSet2.setValueTextColor(Color.WHITE);
-
-
-        lineDataSet.setDrawCircles(false);
-        lineDataSet2.setDrawCircles(false);
-        lineDataSet.setCircleRadius(0);
-
-        //to make the smooth line as the graph is adapt change so smooth curve
-        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        //to enable the cubic density : if 1 then it will be sharp curve
-        lineDataSet.setCubicIntensity(0.2f);//to make the smooth line as the graph is adapt change so smooth curve
-
-        lineDataSet2.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        //to enable the cubic density : if 1 then it will be sharp curve
-        lineDataSet2.setCubicIntensity(0.2f);
-
-
-        // Combine the two data sets
-        LineData lineData = new LineData(lineDataSet, lineDataSet2);
-        binding.lineChart.setData(lineData);
-        binding.lineChart.invalidate();
-
-
-        // Optional: Customize the chart
-        XAxis xAxis = binding.lineChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextColor(Color.WHITE);
-        if (month.get(0) != 0)
-            xAxis.setAxisMinimum(maxMonthNumber + 1);
-        xAxis.setAxisMaximum(monthNumber + 1); // Set Y-axis maximum value
-        xAxis.setLabelCount(6, true); // 11 steps for labels (0, 10, 20, ..., 100)
-        xAxis.setGranularity(1f);
-
-
-        YAxis leftAxis = binding.lineChart.getAxisLeft();
-        YAxis rightYAxis = binding.lineChart.getAxisRight();
-        leftAxis.setTextColor(Color.WHITE);
-        rightYAxis.setTextColor(Color.WHITE);
-        rightYAxis.setEnabled(false); // Disable the right Y-axis if not needed
-
-        Legend legend = binding.lineChart.getLegend();
-        legend.setTextColor(Color.WHITE);
-        binding.lineChart.getAxisRight().setEnabled(true); // Disable right Y-axis
-
-        leftAxis.setAxisMinimum(0);// Start at 0
-        leftAxis.setAxisMaximum(100); // Set Y-axis maximum value
-        leftAxis.setLabelCount(11, true); // 11 steps for labels (0, 10, 20, ..., 100)
-        leftAxis.setGranularity(10f); // Set interval to 10
-
-
-        lineDataSet.setLineWidth(2f); // Set line width
-//        lineDataSet.setFillColor(getResources().getColor(R.drawable.fill_chart)); // Change fill color
-        lineDataSet.setDrawFilled(true);
-
-        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.fill_chart);
-        lineDataSet.setFillDrawable(drawable);
-
-        lineDataSet.setFillAlpha(100); // Change fill transparency
-        xAxis.setDrawGridLines(false); // Disable X-axis grid lines
-        leftAxis.setDrawGridLines(false); // Disable Y-axis grid lines
-
-    }
-
-    private void fetchPerformanceReport() {
-        ApiClient apiClient = new ApiClient(getContext());
-        apiInterface = apiClient.getApiInterface();
-        Log.e("performance", "onResponse: 1 ");
-
-        Call<MonthlyPerformanceResp> call = apiInterface.getMonthPerformance(userId, month.toString().toLowerCase());
-        call.enqueue(new Callback<MonthlyPerformanceResp>() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onResponse(@NonNull Call<MonthlyPerformanceResp> call, @NonNull Response<MonthlyPerformanceResp> response) {
-                if (response.isSuccessful()) {
-                    empPerformanceList = response.body();
-
-                    Log.e("setdata", "onResponse: "+ empPerformanceList);
-                    setUpData();
-                    if (empPerformanceList != null && empPerformanceList.getTimeline() != null) {
-                        int size = empPerformanceList.getTimeline().size();
-                        if (size > 0) {
-                            timeline = empPerformanceList.getTimeline();
-                            setAdapt();
-                        } else {
-                            Log.e("performance", "Timeline data is empty");
-                        }
-                    }
-                    if (empPerformanceList != null && empPerformanceList.getMom() != null) {
-                        List<Integer> months = new ArrayList<>();
-                        List<Float> score = new ArrayList<>();
-
-                        for (int i = 0; i < empPerformanceList.getMom().size(); i++) {
-                            months.add(DateAndTimeUtility.getMonthNumber(empPerformanceList.getMom().get(i).getMonth()));
-                            Log.e("months", "onResponse: " + DateAndTimeUtility.getMonthNumber(empPerformanceList.getMom().get(i).getMonth()));
-                            String formattedNumber = String.format("%.2f", empPerformanceList.getMom().get(i).getScore());
-                            score.add(Float.parseFloat(formattedNumber));
-
-                        }
-                        if (months.size() != 0 || score.size() != 0)
-                            lineGraph(months, score);
-
-//                        Log.e("StepsView", months.get(0)+"  "+ score.get(0));
-                    }
-                } else {
-                    Toast.makeText(getContext(), getErrorMessage(response), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<MonthlyPerformanceResp> call, @NonNull Throwable t) {
-                Log.e("EmployeePerformance", "Server error", t);
-            }
-        });
     }
 
     private void setAdapt() {
@@ -456,14 +585,16 @@ public class PerformanceFragment extends Fragment implements RecyclerViewInterfa
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             viewBind.tvDate.setText(DateAndTimeUtility.getDATEFromLong(timeline.get(position).getDate()));
         }
-        int[] drawableArray = {R.drawable.green_dot, R.drawable.red_dot, R.drawable.blue_dot, R.drawable.orange_dot};
-        int[] textcolor = {R.color.dotGreen, R.color.brightred, R.color.lightBlue, R.color.yellow};
+//        int[] drawableArray = {R.drawable.green_dot, R.drawable.red_dot, R.drawable.blue_dot, R.drawable.orange_dot};
+        int[] drawableArray = { R.drawable.orange_dot};
+        int[] textcolor = { R.color.yellow};
+//        int[] textcolor = {R.color.dotGreen, R.color.brightred, R.color.lightBlue, R.color.yellow};
 
         Random random = new Random();
         int i = random.nextInt(drawableArray.length);
 
-        viewBind.timelineDot.setBackground(getResources().getDrawable(drawableArray[i]));
-        viewBind.tvDate.setTextColor(getResources().getColor(textcolor[i]));
+        viewBind.timelineDot.setBackground(getResources().getDrawable(drawableArray[0]));
+        viewBind.tvDate.setTextColor(getResources().getColor(textcolor[0]));
     }
 
     @Override

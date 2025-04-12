@@ -303,6 +303,36 @@ public class TasksFragment extends Fragment {
 //            }
 //        });
 
+        binding.addMeeting.setOnClickListener(view1->{
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setCancelable(false);
+
+                // set the custom layout
+            LayoutInflater inflater = getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.meeting_form, null);
+            builder.setView(dialogView);
+
+            EditText Source = dialogView.findViewById(R.id.Source);
+            EditText ClientName = dialogView.findViewById(R.id.ClientName);
+                    EditText Feedback = dialogView.findViewById(R.id.Feedback);
+                    TextView okBtn = dialogView.findViewById(R.id.ok_btn);
+                    TextView cancel = dialogView.findViewById(R.id.cancel);
+
+
+            AlertDialog alertDialog = builder.create();
+                okBtn.setOnClickListener(view2-> {
+                    if ( Source.getText().toString().equals("") || ClientName.getText().toString().equals("") || Feedback.getText().toString().equals("")){
+                        Toast.makeText(getContext(),"source, Name and feedback are necessary.",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                cancel.setOnClickListener (view3->{
+                        alertDialog.dismiss();
+                });
+            alertDialog.show();
+
+
+        });
         binding.pagenumber.setOnClickListener(view1 -> {
             showCustomDialog();
         });
@@ -478,33 +508,6 @@ public class TasksFragment extends Fragment {
         statusSpin.setAdapter(arrayAdapter);
 
 
-        if (employeList != null && !employeList.isEmpty()) {
-            ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<>(
-                    requireContext(),
-                    R.layout.color_spinner_layout,
-                    employeList
-            );
-            arrayAdapter2.setDropDownViewResource(R.layout.spinner_dropdown_layout);
-
-            assert childSpinner != null;
-            childSpinner.setAdapter(arrayAdapter2);
-            if (!employeList.isEmpty()) {
-                childSpinner.setSelection(0);
-            }
-
-            childSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    childuserId = allActiveUsers.get(position).getId();
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
-                }
-            });
-        } else Toast.makeText(context, "Unable to Load employee.", Toast.LENGTH_SHORT).show();
         startDate = dialog1.findViewById(R.id.startDate);
         endDate = dialog1.findViewById(R.id.endDate);
 
@@ -550,6 +553,33 @@ public class TasksFragment extends Fragment {
             }
         });
         dialog1.show();
+        if (employeList != null && !employeList.isEmpty()) {
+            ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<>(
+                    requireContext(),
+                    R.layout.color_spinner_layout,
+                    employeList
+            );
+            arrayAdapter2.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+
+            assert childSpinner != null;
+            childSpinner.setAdapter(arrayAdapter2);
+            if (!employeList.isEmpty()) {
+                childSpinner.setSelection(0);
+            }
+
+            childSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    childuserId = allActiveUsers.get(position).getId();
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+        } else Toast.makeText(context, "Unable to Load employee.", Toast.LENGTH_SHORT).show();
     }
 
     private List<String> getAllActiveUser() {

@@ -22,7 +22,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
-import com.cloudinary.Cloudinary
+//import com.cloudinary.Cloudinary
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.investmango.hrconsole.Adapter.fileAdapter
 import com.investmango.hrconsole.AwsUpload.UploadFileAws

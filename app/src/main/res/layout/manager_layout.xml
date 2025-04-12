@@ -528,7 +528,7 @@
 
         <Button
             android:id="@+id/fabAttendance"
-            android:layout_width="@dimen/_150dp"
+            android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:hint="@string/add_attendance"
             android:fontFamily="@font/dm_sans"

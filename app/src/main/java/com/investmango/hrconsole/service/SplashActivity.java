@@ -252,6 +252,7 @@ public class SplashActivity extends AppCompatActivity {
 
                 @Override
                 public void onLoginFailure(String message) {
+                    Log.e("onLoginFailure", "onLoginFailure: "+message );
                     if (message.equals("User authority is empty.")) {
                         Toast.makeText(SplashActivity.this, "Login failed: User authority is empty.", Toast.LENGTH_SHORT).show();
                     }
@@ -320,7 +321,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private void redirectToManagerActivity() {
         Intent intent = new Intent(this, ManagerActivity.class);
-        System.out.println("Manager Intent: " + intent);
+        Log.e("redirectToManag", "redirectToManagerActivity: "+intent );
         startActivity(intent);
         finish();
     }

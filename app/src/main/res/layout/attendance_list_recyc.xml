@@ -4,13 +4,13 @@
     <RelativeLayout
         android:id="@+id/blue_bg"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10"
         android:background="@drawable/blue_one_side">
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10"
             android:background="@drawable/dark_grey_bg"
             android:padding="@dimen/_10">
@@ -101,7 +101,15 @@
 
 
                 </LinearLayout>
-
+<TextView
+    android:id="@+id/BreakTime"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="00"
+    android:visibility="gone"
+    android:textColor="@color/white"
+    android:layout_gravity="center"
+    />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -141,6 +149,36 @@
                 android:textColor="@color/white"
                 android:textSize="14dp"
                 android:visibility="gone" />
+            <LinearLayout
+                android:id="@+id/reasonlay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/present"
+                android:layout_marginTop="@dimen/_10"
+                android:visibility="gone"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="Reason : "
+                    android:textColor="#989898"
+                    android:textSize="14dp"
+                    android:fontFamily="@font/avenir_bold"
+                    />
+                <TextView
+                    android:id="@+id/reason"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text=" "
+                    android:textColor="#CDCDCD"
+                    android:textSize="14dp"
+                    />
+            </LinearLayout>
+
+
         </RelativeLayout>
     </RelativeLayout>
 </layout>

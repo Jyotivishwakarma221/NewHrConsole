@@ -77,6 +77,9 @@
             android:layout_margin="@dimen/_10"
             android:background="@drawable/dark_grey_bg"
             android:clickable="false">
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/addnewTask"
@@ -94,6 +97,22 @@
                 android:text="+ Add Task"
                 android:textColor="@color/white"
                 android:textSize="20sp" />
+            <TextView
+                android:id="@+id/addMeeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5dp"
+                android:background="@drawable/blue_border"
+                android:clickable="true"
+                android:layout_alignLeft="@+id/addnewTask"
+                android:gravity="center"
+                android:padding="@dimen/_10"
+                android:fontFamily="@font/dm_sans"
+                android:textFontWeight="500"
+                android:text="+ Meeting"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+</LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"

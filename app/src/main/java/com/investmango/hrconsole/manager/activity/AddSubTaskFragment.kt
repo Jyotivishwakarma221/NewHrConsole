@@ -25,10 +25,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.abhaysapp.awesomeprogressdialog.AwesomeProgressDialog
-import com.cloudinary.Cloudinary
-import com.cloudinary.android.MediaManager
-import com.cloudinary.android.callback.ErrorInfo
-import com.cloudinary.android.callback.UploadCallback
+//import com.cloudinary.Cloudinary
+//import com.cloudinary.android.MediaManager
+//import com.cloudinary.android.callback.ErrorInfo
+//import com.cloudinary.android.callback.UploadCallback
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.investmango.hrconsole.Adapter.fileAdapter
 import com.investmango.hrconsole.AwsUpload.UploadFileAws
@@ -399,7 +399,8 @@ class AddSubTaskFragment : Fragment() {
                     binding.taskDescription.setText("")
                     uri = null
                     uriStr.clear()
-                    binding.fileRecycler.adapter!!.notifyDataSetChanged()
+//                    if (uriStr!=null)
+//                    binding.fileRecycler.adapter!!.notifyDataSetChanged()
                     binding.deadline.text = "Select Date "
                     binding.selectedTime.text = "Select Time "
                     binding.taskname.setText("")

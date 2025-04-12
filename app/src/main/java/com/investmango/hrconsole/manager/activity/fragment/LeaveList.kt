@@ -35,8 +35,11 @@ import com.investmango.hrconsole.api.ApiClient
 import com.investmango.hrconsole.api.ApiInterface
 import com.investmango.hrconsole.databinding.FragmentLeaveListBinding
 import com.investmango.hrconsole.databinding.LeaveRecyclerBinding
+import com.investmango.hrconsole.manager.activity.ApplyNewLeaveFragment
+import com.investmango.hrconsole.manager.activity.ManagerActivity
 import com.investmango.hrconsole.model.AllLeaveResponse
 import com.investmango.hrconsole.model.LeaveItem
+import com.investmango.hrconsole.model.TaskItems
 import com.investmango.hrconsole.service.DateAndTimeUtility
 import com.investmango.hrconsole.service.PaginationScrollListener
 import org.json.JSONObject
@@ -277,6 +280,7 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
     }
 
     override fun bindView(viewBind: LeaveRecyclerBinding, position: Int) {
+
         if (leaveType == "All") {
             viewBind.reason.setOnClickListener {
                 showReasonAlert(leavelist?.get(position)?.reason!!)
@@ -319,6 +323,22 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
                     position
                 )?.leaveDates?.get(size - 1)
             )
+
+            if (leavelist?.get(position)?.status == "PENDING"  ) {
+                viewBind.layoutfull.setOnClickListener {
+                    val bb = Bundle()
+                    val leave = ArrayList<LeaveItem>()
+
+                    leavelist?.get(position)?.let { leave.add(it) }
+
+                    bb.putSerializable("editLeave", leave)
+                    val fragment = ApplyNewLeaveFragment().apply {
+                        arguments = bb
+                    }
+
+                    (context as ManagerActivity).replaceFragment(fragment)
+                }
+            }
 
             if (leavelist?.get(position)?.status == "APPROVED") {
                 viewBind.approved.visibility = View.VISIBLE
@@ -418,6 +438,22 @@ class LeaveList : Fragment(), RecyclerViewInterface<LeaveRecyclerBinding>,
 //                viewBind.approvedOrdecline.setText("Awaiting")
 //                viewBind.approvedBy.visibility = View.GONE
 //            }
+            if (filterredList[position]?.status == "PENDING" ) {
+                viewBind.layoutfull.setOnClickListener {
+                    val bb = Bundle()
+                    val leave = ArrayList<LeaveItem>()
+
+                    filterredList[position]?.let { leave.add(it) }
+
+                    bb.putSerializable("editLeave", leave)
+
+                    val fragment = ApplyNewLeaveFragment().apply {
+                        arguments = bb
+                    }
+
+                    (context as ManagerActivity).replaceFragment(fragment)
+                }
+            }
 
 
         }

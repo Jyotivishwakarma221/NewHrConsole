@@ -71,7 +71,7 @@ class Member_list_Adapter : RecyclerView.Adapter<MemberItem> {
 
             if (memberList.get(position)?.profile!="" && memberList.get(position)?.profile!=null){
 
-               Glide.with(frag?.context!!).load(memberList.get(position)?.profile).into(holder.profilePhoto)
+               Glide.with(holder.itemView.context).load(memberList[position]?.profile).into(holder.profilePhoto)
                 holder.profilePhoto.visibility=View.VISIBLE
                 holder.initialAvatar.visibility=View.GONE
             }else{

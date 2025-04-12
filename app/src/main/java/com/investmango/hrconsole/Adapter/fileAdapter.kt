@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.cloudinary.android.uploadwidget.UploadWidget.startActivity
 import com.investmango.hrconsole.R
 import com.investmango.hrconsole.manager.activity.ManagerActivity
 import com.investmango.hrconsole.manager.activity.ProjectsFragment

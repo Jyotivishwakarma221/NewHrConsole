@@ -9,6 +9,10 @@
     android:background="@color/black"
     tools:context=".manager.activity.ManagerActivity">
 
+<!--    <androidx.compose.ui.platform.ComposeView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"/>-->
+
     <include layout="@layout/manager_toolbar_layout" />
 
     <RelativeLayout
