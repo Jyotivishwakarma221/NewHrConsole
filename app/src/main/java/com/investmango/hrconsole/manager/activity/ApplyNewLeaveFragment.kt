@@ -222,7 +222,8 @@ class ApplyNewLeaveFragment : Fragment() {
     }
 
     fun getBundle() {
-        val leaveList: ArrayList<LeaveItem> = arguments?.getSerializable("editLeave") as ArrayList<LeaveItem>
+        //val leaveList: ArrayList<LeaveItem> = arguments?.getSerializable("editLeave") as ArrayList<LeaveItem>
+        val leaveList = arguments?.getSerializable("editLeave") as? ArrayList<LeaveItem> ?: arrayListOf()
 
         if (leaveList.isNullOrEmpty()) {
             Log.e("AssignmentsResponse", "getBundle: arguments or editLeave is null")
